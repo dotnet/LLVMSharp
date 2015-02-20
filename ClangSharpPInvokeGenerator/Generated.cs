@@ -1142,7 +1142,7 @@ namespace ClangSharp
 
     public static partial class clang
     {
-        private const string libraryPath = "libclang.dll";
+        private const string libraryPath = "libclang";
 
         [DllImport(libraryPath, EntryPoint = "clang_getCString", CallingConvention = CallingConvention.Cdecl)]
         public static extern string getCString(CXString @string);
