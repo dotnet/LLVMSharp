@@ -167,6 +167,9 @@
             }
 
             clang.disposeIndex(createIndex);
+
+            // HACK:
+            File.WriteAllText(outputFile, File.ReadAllText(outputFile).Replace("llvm_lto_status_t", "llvm_lto_status"));
         }
     }
 }
