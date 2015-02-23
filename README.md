@@ -55,6 +55,8 @@ The tutorials have been tested to run on Windows and Linux, however the build (u
 
 ## Example application
 
+Main:
+
 ```csharp
 LLVMBool False = new LLVMBool(0);
 LLVMModuleRef mod = LLVM.ModuleCreateWithName("LLVMSharpIntro");
@@ -105,3 +107,10 @@ LLVM.DumpModule(mod);
 LLVM.DisposeBuilder(builder);
 LLVM.DisposeExecutionEngine(engine);
 ````
+
+Delegate definition:
+
+```csharp
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate int Add(int a, int b);
+```
