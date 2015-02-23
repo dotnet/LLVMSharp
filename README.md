@@ -1,5 +1,4 @@
 # LLVMSharp
-===========
 
 LLVMSharp are strongly-typed safe LLVM bindings written in C# for .NET and Mono, tested on Linux and Windows. They are auto-generated using [ClangSharp](http://www.clangsharp.org) parsing LLVM-C header files.
 
