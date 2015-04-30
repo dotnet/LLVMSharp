@@ -32,7 +32,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conversions.cs" />
     <Compile Include="Generated.cs" />
+    <Compile Include="Overloads.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
