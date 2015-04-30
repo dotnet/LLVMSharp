@@ -6,7 +6,7 @@
     {
         private static readonly LLVMBool False = new LLVMBool(0);
 
-        private static readonly LLVMBool True = new LLVMBool(0);
+        private static readonly LLVMBool True = new LLVMBool(1);
 
         public static implicit operator bool(LLVMBool b)
         {
