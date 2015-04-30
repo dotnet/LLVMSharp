@@ -24,13 +24,17 @@
         public Type Type
         {
             get { return this.type ?? (this.type = new Type(LLVM.TypeOf(this.value))); }
-            protected set { this.type = value; }
+            set { this.type = value; }
         }
 
         public string Name
         {
-            get { return this.name ?? (this.name = LLVM.GetValueName(this.value)); }
-            protected set { this.name = value; }
+            get { return this.name; }
+            set
+            {
+                this.name = value;
+                LLVM.SetValueName(this.value, this.name);
+            }
         }
 
         public LLVMContext Context

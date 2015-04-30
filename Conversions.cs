@@ -23,7 +23,7 @@
     {
         public static implicit operator bool(LLVMValueRef v)
         {
-            return v.Pointer == IntPtr.Zero;
+            return v.Pointer != IntPtr.Zero;
         }
 
         public static implicit operator Value(LLVMValueRef v)
@@ -31,6 +31,11 @@
             if (LLVM.ValueIsBasicBlock(v))
             {
                 return new BasicBlock(v);
+            }
+
+            if (LLVM.IsAFunction(v))
+            {
+                return new Function(v);
             }
 
             if (LLVM.IsABinaryOperator(v))
@@ -48,7 +53,7 @@
                 return Constant(v);
             }
 
-            return null;
+            throw new Exception("Unreachable");
         }
 
         public static implicit operator LLVMValueRef(Value v)
