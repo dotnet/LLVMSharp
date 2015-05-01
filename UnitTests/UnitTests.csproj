@@ -49,7 +49,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ConstantConversionsTest.cs" />
+    <Compile Include="ConversionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="libLLVM.dll">
