@@ -807,7 +807,7 @@ namespace LLVMSharp
 
     public static partial class LLVM
     {
-        private const string libraryPath = "llvm.dll";
+        private const string libraryPath = "libLLVM";
 
         [DllImport(libraryPath, EntryPoint = "LLVMLoadLibraryPermanently", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool LoadLibraryPermanently([MarshalAs(UnmanagedType.LPStr)] string @Filename);
