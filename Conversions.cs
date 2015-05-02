@@ -21,6 +21,15 @@
 
     partial struct LLVMValueRef
     {
+        internal static LLVMValueRef[] FromArray(Value[] source)
+        {
+            var length = source.Length;
+            var target = new LLVMValueRef[length];
+            for (var i = 0; i < length; i++)
+                target[i] = source[i];
+            return target;
+        }
+
         public static implicit operator bool(LLVMValueRef v)
         {
             return v.Pointer != IntPtr.Zero;
@@ -304,6 +313,14 @@
             }
 
             return new Constant(v);
+        }
+    }
+
+    partial struct LLVMTypeRef
+    {
+        public static implicit operator LLVMTypeRef(Type type)
+        {
+            return type.TypeRef;
         }
     }
 }
