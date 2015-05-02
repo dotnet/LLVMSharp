@@ -1,5 +1,7 @@
 # LLVMSharp
 
+[![Join the chat at https://gitter.im/mjsabby/LLVMSharp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mjsabby/LLVMSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 LLVMSharp are strongly-typed safe LLVM bindings written in C# for .NET and Mono, tested on Linux and Windows. They are auto-generated using [ClangSharp](http://www.clangsharp.org) parsing LLVM-C header files.
 
 If you're on Windows, consider using the [**LLVMSharp 3.6 NuGet Package**](http://www.nuget.org/packages/LLVMSharp/3.6.0) - built from LLVM 3.6 Release.
