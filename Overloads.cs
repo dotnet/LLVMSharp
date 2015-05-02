@@ -40,7 +40,7 @@
 
             return buffer;
         }
-        
+
         public static LLVMTypeRef StructTypeInContext(LLVMContextRef C, LLVMTypeRef[] ElementTypes, LLVMBool Packed)
         {
             if (ElementTypes.Length == 0)
@@ -196,7 +196,7 @@
             {
                 GetParams(Fn, out buffer[0]);
             }
-            
+
             return buffer;
         }
 
@@ -231,7 +231,7 @@
             {
                 GetMDNodeOperands(V, out buffer[0]);
             }
-            
+
             return buffer;
         }
 
@@ -244,7 +244,7 @@
             {
                 GetBasicBlocks(Fn, out buffer[0]);
             }
-            
+
             return buffer;
         }
 

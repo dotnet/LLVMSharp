@@ -54,5 +54,10 @@
 
             return bb;
         }
+
+        public static implicit operator LLVMBasicBlockRef(BasicBlock basicBlock)
+        {
+            return LLVM.ValueAsBasicBlock(basicBlock.value);
+        }
     }
 }
