@@ -35,6 +35,16 @@
             return v.Pointer != IntPtr.Zero;
         }
 
+        public static implicit operator LLVMValueRef(LLVMBasicBlockRef b)
+        {
+            return LLVM.BasicBlockAsValue(b);
+        }
+
+        public static implicit operator LLVMBasicBlockRef(LLVMValueRef v)
+        {
+            return LLVM.ValueAsBasicBlock(v);
+        }
+
         public static implicit operator Value(LLVMValueRef v)
         {
             if (LLVM.ValueIsBasicBlock(v))

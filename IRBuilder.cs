@@ -1,4 +1,4 @@
-﻿namespace LLVMSharp
+namespace LLVMSharp
 {
     using System;
 
@@ -10,7 +10,7 @@
 
         public IRBuilder(LLVMContextRef context)
         {
-            instance = LLVM.CreateBuilderInContext(context);
+            this.instance = LLVM.CreateBuilderInContext(context);
         }
 
         public IRBuilder() : this(LLVM.GetGlobalContext())
@@ -19,7 +19,7 @@
 
         ~IRBuilder()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         public void PositionBuilder(BasicBlock @Block, Value @Instr)
@@ -39,12 +39,12 @@
 
         public BasicBlock GetInsertBlock()
         {
-            return new BasicBlock(LLVM.GetInsertBlock(instance));
+            return new BasicBlock(LLVM.GetInsertBlock(this.instance));
         }
 
         public void ClearInsertionPosition()
         {
-            LLVM.ClearInsertionPosition(instance);
+            LLVM.ClearInsertionPosition(this.instance);
         }
 
         public void InsertIntoBuilder(Value @Instr)
@@ -65,14 +65,14 @@
 
         private void Dispose(bool disposing)
         {
-            if (disposed)
+            if (this.disposed)
             {
                 return;
             }
 
-            LLVM.DisposeBuilder(instance);
+            LLVM.DisposeBuilder(this.instance);
 
-            disposed = true;
+            this.disposed = true;
         }
 
         public void SetCurrentDebugLocation(Value @L)
@@ -82,7 +82,7 @@
 
         public Value GetCurrentDebugLocation()
         {
-            return LLVM.GetCurrentDebugLocation(instance);
+            return LLVM.GetCurrentDebugLocation(this.instance);
         }
 
         public void SetInstDebugLocation(Value @Inst)
@@ -92,7 +92,7 @@
 
         public Value CreateRetVoid()
         {
-            return LLVM.BuildRetVoid(instance);
+            return LLVM.BuildRetVoid(this.instance);
         }
 
         public Value CreateRet(Value @V)
@@ -130,7 +130,7 @@
             return LLVM.BuildInvoke(this.instance, @Fn, LLVMValueRef.FromArray(Args), @Then, @Catch, @Name);
         }
 
-        public Value CreateLandingPad(Type @Ty, Value @PersFn, uint @NumClauses, string @Name)
+        public Value CreateLandingPad(LLVMTypeRef @Ty, Value @PersFn, uint @NumClauses, string @Name)
         {
             return LLVM.BuildLandingPad(this.instance, @Ty, @PersFn, @NumClauses, @Name);
         }
@@ -142,7 +142,7 @@
 
         public Value CreateUnreachable()
         {
-            return LLVM.BuildUnreachable(instance);
+            return LLVM.BuildUnreachable(this.instance);
         }
 
         public Value CreateAdd(Value @LHS, Value @RHS, string @Name)
@@ -300,22 +300,22 @@
             return LLVM.BuildNot(this.instance, @V, @Name);
         }
 
-        public Value CreateMalloc(Type @Ty, string @Name)
+        public Value CreateMalloc(LLVMTypeRef @Ty, string @Name)
         {
             return LLVM.BuildMalloc(this.instance, @Ty, @Name);
         }
 
-        public Value CreateArrayMalloc(Type @Ty, Value @Val, string @Name)
+        public Value CreateArrayMalloc(LLVMTypeRef @Ty, Value @Val, string @Name)
         {
             return LLVM.BuildArrayMalloc(this.instance, @Ty, @Val, @Name);
         }
 
-        public Value CreateAlloca(Type @Ty, string @Name)
+        public Value CreateAlloca(LLVMTypeRef @Ty, string @Name)
         {
             return LLVM.BuildAlloca(this.instance, @Ty, @Name);
         }
 
-        public Value CreateArrayAlloca(Type @Ty, Value @Val, string @Name)
+        public Value CreateArrayAlloca(LLVMTypeRef @Ty, Value @Val, string @Name)
         {
             return LLVM.BuildArrayAlloca(this.instance, @Ty, @Val, @Name);
         }
@@ -337,7 +337,7 @@
 
         public Value CreateGEP(Value @Pointer, Value[] @Indices, string @Name)
         {
-            return LLVM.BuildGEP(this.instance, @Pointer, LLVMValueRef.FromArray(Indices), @Name);
+            return LLVM.BuildGEP(this.instance, @Pointer, LLVMValueRef.FromArray(@Indices), @Name);
         }
 
         public Value CreateInBoundsGEP(Value @Pointer, Value[] @Indices, string @Name)
@@ -360,102 +360,102 @@
             return LLVM.BuildGlobalStringPtr(this.instance, @Str, @Name);
         }
 
-        public Value CreateTrunc(Value @Val, Type @DestTy, string @Name)
+        public Value CreateTrunc(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildTrunc(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateZExt(Value @Val, Type @DestTy, string @Name)
+        public Value CreateZExt(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildZExt(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateSExt(Value @Val, Type @DestTy, string @Name)
+        public Value CreateSExt(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildSExt(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateFPToUI(Value @Val, Type @DestTy, string @Name)
+        public Value CreateFPToUI(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildFPToUI(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateFPToSI(Value @Val, Type @DestTy, string @Name)
+        public Value CreateFPToSI(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildFPToSI(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateUIToFP(Value @Val, Type @DestTy, string @Name)
+        public Value CreateUIToFP(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildUIToFP(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateSIToFP(Value @Val, Type @DestTy, string @Name)
+        public Value CreateSIToFP(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildSIToFP(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateFPTrunc(Value @Val, Type @DestTy, string @Name)
+        public Value CreateFPTrunc(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildFPTrunc(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateFPExt(Value @Val, Type @DestTy, string @Name)
+        public Value CreateFPExt(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildFPExt(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreatePtrToInt(Value @Val, Type @DestTy, string @Name)
+        public Value CreatePtrToInt(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildPtrToInt(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateIntToPtr(Value @Val, Type @DestTy, string @Name)
+        public Value CreateIntToPtr(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildIntToPtr(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateBitCast(Value @Val, Type @DestTy, string @Name)
+        public Value CreateBitCast(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildBitCast(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateAddrSpaceCast(Value @Val, Type @DestTy, string @Name)
+        public Value CreateAddrSpaceCast(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildAddrSpaceCast(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateZExtOrBitCast(Value @Val, Type @DestTy, string @Name)
+        public Value CreateZExtOrBitCast(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildZExtOrBitCast(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateSExtOrBitCast(Value @Val, Type @DestTy, string @Name)
+        public Value CreateSExtOrBitCast(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildSExtOrBitCast(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateTruncOrBitCast(Value @Val, Type @DestTy, string @Name)
+        public Value CreateTruncOrBitCast(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildTruncOrBitCast(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateCast(LLVMOpcode @Op, Value @Val, Type @DestTy, string @Name)
+        public Value CreateCast(LLVMOpcode @Op, Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildCast(this.instance, @Op, @Val, @DestTy, @Name);
         }
 
-        public Value CreatePointerCast(Value @Val, Type @DestTy, string @Name)
+        public Value CreatePointerCast(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildPointerCast(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateIntCast(Value @Val, Type @DestTy, string @Name)
+        public Value CreateIntCast(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildIntCast(this.instance, @Val, @DestTy, @Name);
         }
 
-        public Value CreateFPCast(Value @Val, Type @DestTy, string @Name)
+        public Value CreateFPCast(Value @Val, LLVMTypeRef @DestTy, string @Name)
         {
             return LLVM.BuildFPCast(this.instance, @Val, @DestTy, @Name);
         }
@@ -470,7 +470,7 @@
             return LLVM.BuildFCmp(this.instance, @Op, @LHS, @RHS, @Name);
         }
 
-        public Value CreatePhi(Type @Ty, string @Name)
+        public Value CreatePhi(LLVMTypeRef @Ty, string @Name)
         {
             return LLVM.BuildPhi(this.instance, @Ty, @Name);
         }
@@ -485,7 +485,7 @@
             return LLVM.BuildSelect(this.instance, @If, @Then, @Else, @Name);
         }
 
-        public Value CreateVAArg(Value @List, Type @Ty, string @Name)
+        public Value CreateVAArg(Value @List, LLVMTypeRef @Ty, string @Name)
         {
             return LLVM.BuildVAArg(this.instance, @List, @Ty, @Name);
         }
@@ -530,12 +530,12 @@
             return LLVM.BuildPtrDiff(this.instance, @LHS, @RHS, @Name);
         }
 
-        public Value CreateFence(LLVMAtomicOrdering @ordering, bool @singleThread, string @Name)
+        public Value CreateFence(LLVMAtomicOrdering @ordering, LLVMBool @singleThread, string @Name)
         {
             return LLVM.BuildFence(this.instance, @ordering, @singleThread, @Name);
         }
 
-        public Value CreateAtomicRMW(LLVMAtomicRMWBinOp @op, Value @PTR, Value @Val, LLVMAtomicOrdering @ordering, bool @singleThread)
+        public Value CreateAtomicRMW(LLVMAtomicRMWBinOp @op, Value @PTR, Value @Val, LLVMAtomicOrdering @ordering, LLVMBool @singleThread)
         {
             return LLVM.BuildAtomicRMW(this.instance, @op, @PTR, @Val, @ordering, @singleThread);
         }
