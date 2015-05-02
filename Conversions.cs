@@ -10,7 +10,6 @@
         }
     }
 
-
     partial struct LLVMBool
     {
         private static readonly LLVMBool False = new LLVMBool(0);
@@ -34,7 +33,7 @@
         {
             var length = source.Length;
             var target = new LLVMValueRef[length];
-            for (var i = 0; i < length; i++)
+            for (var i = 0; i < length; ++i)
                 target[i] = source[i];
             return target;
         }

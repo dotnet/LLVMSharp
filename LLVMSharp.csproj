@@ -42,10 +42,13 @@
     <Compile Include="Values\Instructions\Binary\FAdd.cs" />
     <Compile Include="Values\Instructions\Binary\FDiv.cs" />
     <Compile Include="Values\Instructions\Binary\FMul.cs" />
+    <Compile Include="Values\Instructions\Binary\FNeg.cs" />
     <Compile Include="Values\Instructions\Binary\FRem.cs" />
     <Compile Include="Values\Instructions\Binary\FSub.cs" />
     <Compile Include="Values\Instructions\Binary\LShr.cs" />
     <Compile Include="Values\Instructions\Binary\Mul.cs" />
+    <Compile Include="Values\Instructions\Binary\Neg.cs" />
+    <Compile Include="Values\Instructions\Binary\Not.cs" />
     <Compile Include="Values\Instructions\Binary\Or.cs" />
     <Compile Include="Values\Instructions\Binary\SDiv.cs" />
     <Compile Include="Values\Instructions\Binary\Shl.cs" />

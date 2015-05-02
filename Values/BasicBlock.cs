@@ -34,7 +34,7 @@
 
         public static BasicBlock Create(LLVMContext context, string name, Function parent, BasicBlock insertBefore = null)
         {
-            var bb = new BasicBlock(Type.GetLabelType(context), name, parent);
+            var bb = new BasicBlock(Type.LabelType(context), name, parent);
 
             if (parent != null)
             {

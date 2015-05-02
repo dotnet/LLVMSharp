@@ -9,7 +9,7 @@
         {
             var length = source.Length;
             var target = new Value[length];
-            for (var i = 0; i < length; i++)
+            for (var i = 0; i < length; ++i)
                 target[i] = source[i];
             return target;
         }
@@ -46,7 +46,7 @@
             }
         }
 
-        public LLVMContext Context
+        public LLVMContextRef Context
         {
             get { return this.Type.Context; }
         }
@@ -66,7 +66,7 @@
 
         public override int GetHashCode()
         {
-            return this.value.GetHashCode();
+            return (int)this.value.GetHashCode();
         }
 
         public override bool Equals(object obj)

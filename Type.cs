@@ -2,137 +2,178 @@
 {
     public class Type
     {
-        protected LLVMTypeRef typeRef;
+        protected readonly LLVMTypeRef instance;
 
         private readonly LLVMTypeKind kind;
 
         public Type(LLVMTypeRef typeRef)
         {
-            this.typeRef = typeRef;
+            this.instance = typeRef;
             this.kind = LLVM.GetTypeKind(typeRef);
         }
 
-        internal LLVMTypeRef TypeRef { get { return this.typeRef; } }
+        internal LLVMTypeRef TypeRef
+        {
+            get { return this.instance; }
+        }
+
+        public void Print()
+        {
+            LLVM.PrintTypeToString(this.instance);
+        }
 
         public void Dump()
         {
-            LLVM.DumpType(this.typeRef);
+            LLVM.DumpType(this.instance);
         }
 
-        public LLVMContext Context { get; private set; }
+        public LLVMContextRef Context
+        {
+            get { return LLVM.GetTypeContext(this.instance); }
+        }
 
-        /// <summary>
-        /// isVoidTy
-        /// </summary>
-        /// <returns>bool</returns>
         public bool IsVoidTy
         {
-            get { return kind == LLVMTypeKind.LLVMVoidTypeKind; }
+            get { return this.kind == LLVMTypeKind.LLVMVoidTypeKind; }
         }
 
-        /// <summary>
-        /// isHalfTy
-        /// </summary>
-        /// <returns>bool</returns>
         public bool IsHalfTy
         {
-            get { return kind == LLVMTypeKind.LLVMHalfTypeKind; }
+            get { return this.kind == LLVMTypeKind.LLVMHalfTypeKind; }
         }
 
-        /// <summary>
-        /// isFloatTy
-        /// </summary>
-        /// <returns>bool</returns>
         public bool IsFloatTy
         {
-            get { return kind == LLVMTypeKind.LLVMFloatTypeKind; }
+            get { return this.kind == LLVMTypeKind.LLVMFloatTypeKind; }
         }
 
-        /// <summary>
-        /// isDoubleTy
-        /// </summary>
-        /// <returns>bool</returns>
         public bool IsDoubleTy
         {
-            get { return kind == LLVMTypeKind.LLVMDoubleTypeKind; }
+            get { return this.kind == LLVMTypeKind.LLVMDoubleTypeKind; }
         }
 
-        /// <summary>
-        /// isX86_FP80Ty
-        /// </summary>
-        /// <returns>bool</returns>
         public bool IsX86_FP80Ty
         {
-            get { return kind == LLVMTypeKind.LLVMX86_FP80TypeKind; }
+            get { return this.kind == LLVMTypeKind.LLVMX86_FP80TypeKind; }
         }
 
-        /// <summary>
-        /// isFP128Ty
-        /// </summary>
-        /// <returns>bool</returns>
         public bool IsFP128Ty
         {
-            get { return kind == LLVMTypeKind.LLVMFP128TypeKind; }
+            get { return this.kind == LLVMTypeKind.LLVMFP128TypeKind; }
         }
 
-        /// <summary>
-        /// isPPC_FP128Ty
-        /// </summary>
-        /// <returns>bool</returns>
         public bool IsPPC_FP128Ty
         {
-            get { return kind == LLVMTypeKind.LLVMPPC_FP128TypeKind; }
+            get { return this.kind == LLVMTypeKind.LLVMPPC_FP128TypeKind; }
         }
 
-        /// <summary>
-        /// isFloatingPointTy
-        /// </summary>
-        /// <returns>bool</returns>
         public bool IsFloatingPointTy
         {
-            get { return kind == LLVMTypeKind.LLVMFloatTypeKind; }
+            get
+            {
+                return this.IsHalfTy || this.IsFloatTy || this.IsDoubleTy || this.IsX86_FP80Ty ||
+                       this.IsFP128Ty || this.IsPPC_FP128Ty;
+            }
         }
 
-        /// <summary>
-        /// isLabelTy
-        /// </summary>
-        /// <returns>bool</returns>
+        public bool IsX86_MMXTy
+        {
+            get { return this.kind == LLVMTypeKind.LLVMX86_MMXTypeKind; }
+        }
+
         public bool IsLabelTy
         {
-            get { return kind == LLVMTypeKind.LLVMLabelTypeKind; }
+            get { return this.kind == LLVMTypeKind.LLVMLabelTypeKind; }
         }
 
-        /// <summary>
-        /// isMetadataTy
-        /// </summary>
-        /// <returns>bool</returns>
         public bool IsMetadataTy
         {
-            get { return kind == LLVMTypeKind.LLVMMetadataTypeKind; }
+            get { return this.kind == LLVMTypeKind.LLVMMetadataTypeKind; }
         }
 
-        /// <summary>
-        /// isIntegerTy
-        /// </summary>
-        /// <returns>bool</returns>
         public bool IsIntegerTy
         {
-            get { return kind == LLVMTypeKind.LLVMIntegerTypeKind; }
+            get { return this.kind == LLVMTypeKind.LLVMIntegerTypeKind; }
         }
 
-        public Type GetLabelType()
+        public bool IsIntegerBitwidh(uint Bitwidth)
         {
-            return new Type(LLVM.LabelType());
+            return this.kind == LLVMTypeKind.LLVMIntegerTypeKind && LLVM.GetIntTypeWidth(this.instance) == Bitwidth;
         }
-
-        public static Type GetLabelType(LLVMContext c)
+        
+        public bool IsFunctionTy
         {
-            return new Type(LLVM.LabelTypeInContext(c.InternalValue));
+            get { return this.kind == LLVMTypeKind.LLVMFunctionTypeKind; }
         }
 
+        public bool IsStructTy
+        {
+            get { return this.kind == LLVMTypeKind.LLVMStructTypeKind; }
+        }
+
+        public bool IsArrayTy
+        {
+            get { return this.kind == LLVMTypeKind.LLVMArrayTypeKind; }
+        }
+
+        public bool IsPointerTy
+        {
+            get { return this.kind == LLVMTypeKind.LLVMPointerTypeKind; }
+        }
+
+        public bool IsVectorTy
+        {
+            get { return this.kind == LLVMTypeKind.LLVMVectorTypeKind; }
+        }
+
+        public uint IntegerBitWidth
+        {
+            get { return LLVM.GetIntTypeWidth(this.instance); }
+        }
+
+        public Type GetFunctionParamType(uint i)
+        {
+            return new Type(LLVM.GetParamTypes(this.instance)[i]);
+        }
+
+        public uint FunctionNumParams
+        {
+            get { return LLVM.CountParamTypes(this.instance); }
+        }
+
+        public bool IsFunctionVarArg
+        {
+            get { return LLVM.IsFunctionVarArg(this.instance); }
+        }
+
+        public string StructName
+        {
+            get { return LLVM.GetStructName(this.instance); }
+        }
+
+        public uint StructNumElements
+        {
+            get { return LLVM.CountStructElementTypes(this.instance); }
+        }
+
+        public Type GetStructElementType(uint i)
+        {
+            return new Type(LLVM.GetStructElementTypes(this.instance)[i]);
+        }
+        
         public static implicit operator Type(LLVMTypeRef typeRef)
         {
             return new Type(typeRef);
+        }
+
+        public static LLVMTypeRef LabelType()
+        {
+            return LLVM.LabelType();
+        }
+
+        public static Type LabelType(LLVMContext c)
+        {
+            return new Type(LLVM.LabelTypeInContext(c.InternalValue));
         }
     }
 }

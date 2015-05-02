@@ -28,22 +28,22 @@
             this.Dispose(false);
         }
 
-        public LLVMBool RunPassManager(LLVMModuleRef @M)
+        public bool RunPassManager(LLVMModuleRef @M)
         {
             return LLVM.RunPassManager(this.instance, @M);
         }
 
-        public LLVMBool InitializeFunctionPassManager()
+        public bool InitializeFunctionPassManager()
         {
             return LLVM.InitializeFunctionPassManager(this.instance);
         }
 
-        public LLVMBool RunFunctionPassManager(LLVMValueRef @F)
+        public bool RunFunctionPassManager(LLVMValueRef @F)
         {
             return LLVM.RunFunctionPassManager(this.instance, @F);
         }
 
-        public LLVMBool FinalizeFunctionPassManager()
+        public bool FinalizeFunctionPassManager()
         {
             return LLVM.FinalizeFunctionPassManager(this.instance);
         }
