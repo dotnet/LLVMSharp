@@ -129,5 +129,10 @@
         {
             return new Type(LLVM.LabelTypeInContext(c.InternalValue));
         }
+
+        public static implicit operator Type(LLVMTypeRef typeRef)
+        {
+            return new Type(typeRef);
+        }
     }
 }

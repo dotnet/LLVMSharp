@@ -4,6 +4,23 @@
 
     public sealed class Module
     {
+        public string DataLayout
+        {
+            get { return LLVM.GetDataLayout(this.instance); }
+            set { LLVM.SetDataLayout(this.instance, value); }
+        }
+
+        public string Target
+        {
+            get { return LLVM.GetTarget(this.instance); }
+            set { LLVM.SetTarget(this.instance, value); }
+        }
+
+        public LLVMContextRef ModuleContext
+        {
+            get { return LLVM.GetModuleContext(this.instance); }
+        }
+
         internal readonly LLVMModuleRef instance;
 
         public Module(string moduleId)
@@ -30,33 +47,13 @@
         {
             LLVM.DisposeModule(this.instance);
         }
-        
-        public string GetDataLayout()
-        {
-            return LLVM.GetDataLayout(this.instance);
-        }
-
-        public void SetDataLayout(string @Triple)
-        {
-            LLVM.SetDataLayout(this.instance, @Triple);
-        }
-
-        public string GetTarget()
-        {
-            return LLVM.GetTarget(this.instance);
-        }
-
-        public void SetTarget(string @Triple)
-        {
-            LLVM.SetTarget(this.instance, @Triple);
-        }
 
         public void DumpModule()
         {
             LLVM.DumpModule(this.instance);
         }
 
-        public LLVMBool PrintModuleToFile(string @Filename, out IntPtr @ErrorMessage)
+        public bool PrintModuleToFile(string @Filename, out IntPtr @ErrorMessage)
         {
             return LLVM.PrintModuleToFile(this.instance, @Filename, out @ErrorMessage);
         }
@@ -71,12 +68,7 @@
             LLVM.SetModuleInlineAsm(this.instance, @Asm);
         }
 
-        public LLVMContextRef GetModuleContext()
-        {
-            return LLVM.GetModuleContext(this.instance);
-        }
-
-        public LLVMTypeRef GetTypeByName(string @Name)
+        public Type GetTypeByName(string @Name)
         {
             return LLVM.GetTypeByName(this.instance, @Name);
         }
@@ -86,62 +78,62 @@
             return LLVM.GetNamedMetadataNumOperands(this.instance, @name);
         }
 
-        public LLVMValueRef[] GetNamedMetadataOperands(string @name)
+        public Value[] GetNamedMetadataOperands(string @name)
         {
-            return LLVM.GetNamedMetadataOperands(this.instance, @name);
+            return Value.FromArray(LLVM.GetNamedMetadataOperands(this.instance, @name));
         }
 
-        public void AddNamedMetadataOperand(string @name, LLVMValueRef @Val)
+        public void AddNamedMetadataOperand(string @name, Value @Val)
         {
             LLVM.AddNamedMetadataOperand(this.instance, @name, @Val);
         }
 
-        public LLVMValueRef AddFunction(string @Name, LLVMTypeRef @FunctionTy)
+        public Value AddFunction(string @Name, Type @FunctionTy)
         {
             return LLVM.AddFunction(this.instance, @Name, @FunctionTy);
         }
 
-        public LLVMValueRef GetNamedFunction(string @Name)
+        public Value GetNamedFunction(string @Name)
         {
             return LLVM.GetNamedFunction(this.instance, @Name);
         }
 
-        public LLVMValueRef GetFirstFunction()
+        public Value GetFirstFunction()
         {
             return LLVM.GetFirstFunction(this.instance);
         }
 
-        public LLVMValueRef GetLastFunction()
+        public Value GetLastFunction()
         {
             return LLVM.GetLastFunction(this.instance);
         }
 
-        public LLVMValueRef AddGlobal(LLVMTypeRef @Ty, string @Name)
+        public Value AddGlobal(Type @Ty, string @Name)
         {
             return LLVM.AddGlobal(this.instance, @Ty, @Name);
         }
 
-        public LLVMValueRef AddGlobalInAddressSpace(LLVMTypeRef @Ty, string @Name, uint @AddressSpace)
+        public Value AddGlobalInAddressSpace(Type @Ty, string @Name, uint @AddressSpace)
         {
             return LLVM.AddGlobalInAddressSpace(this.instance, @Ty, @Name, @AddressSpace);
         }
 
-        public LLVMValueRef GetNamedGlobal(string @Name)
+        public Value GetNamedGlobal(string @Name)
         {
             return LLVM.GetNamedGlobal(this.instance, @Name);
         }
 
-        public LLVMValueRef GetFirstGlobal()
+        public Value GetFirstGlobal()
         {
             return LLVM.GetFirstGlobal(this.instance);
         }
 
-        public LLVMValueRef GetLastGlobal()
+        public Value GetLastGlobal()
         {
             return LLVM.GetLastGlobal(this.instance);
         }
 
-        public LLVMValueRef AddAlias(LLVMTypeRef @Ty, LLVMValueRef @Aliasee, string @Name)
+        public Value AddAlias(Type @Ty, Value @Aliasee, string @Name)
         {
             return LLVM.AddAlias(this.instance, @Ty, @Aliasee, @Name);
         }
@@ -156,7 +148,7 @@
             return LLVM.CreateFunctionPassManagerForModule(this.instance);
         }
 
-        public LLVMBool VerifyModule(LLVMVerifierFailureAction @Action, out IntPtr @OutMessage)
+        public bool VerifyModule(LLVMVerifierFailureAction @Action, out IntPtr @OutMessage)
         {
             return LLVM.VerifyModule(this.instance, @Action, out @OutMessage);
         }
@@ -181,7 +173,7 @@
             return LLVM.WriteBitcodeToMemoryBuffer(this.instance);
         }
 
-        public LLVMBool LinkModules(LLVMModuleRef @Src, uint @Unused, out IntPtr @OutMessage)
+        public bool LinkModules(Module @Src, uint @Unused, out IntPtr @OutMessage)
         {
             return LLVM.LinkModules(this.instance, @Src, @Unused, out @OutMessage);
         }

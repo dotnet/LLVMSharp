@@ -5,6 +5,15 @@
 
     public abstract class Value
     {
+        internal static Value[] FromArray(LLVMValueRef[] source)
+        {
+            var length = source.Length;
+            var target = new Value[length];
+            for (var i = 0; i < length; i++)
+                target[i] = source[i];
+            return target;
+        }
+
         protected readonly LLVMValueRef value;
 
         private string name;

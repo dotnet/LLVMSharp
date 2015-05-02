@@ -2,6 +2,15 @@
 {
     using System;
 
+    partial struct LLVMModuleRef
+    {
+        public static implicit operator LLVMModuleRef(Module module)
+        {
+            return module.instance;
+        }
+    }
+
+
     partial struct LLVMBool
     {
         private static readonly LLVMBool False = new LLVMBool(0);
