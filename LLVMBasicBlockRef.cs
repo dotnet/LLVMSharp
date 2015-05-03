@@ -1,6 +1,8 @@
 ﻿namespace LLVMSharp
 {
-    partial struct LLVMBasicBlockRef
+    using System;
+
+    partial struct LLVMBasicBlockRef : IEquatable<LLVMBasicBlockRef>
     {
         public LLVMValueRef BasicBlockAsValue()
         {
@@ -60,6 +62,38 @@
         public LLVMValueRef GetLastInstruction()
         {
             return LLVM.GetLastInstruction(this);
+        }
+
+        public bool Equals(LLVMBasicBlockRef other)
+        {
+            return this.Pointer == other.Pointer;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is LLVMBasicBlockRef)
+            {
+                return this.Equals((LLVMBasicBlockRef)obj);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool operator ==(LLVMBasicBlockRef op1, LLVMBasicBlockRef op2)
+        {
+            return op1.Equals(op2);
+        }
+
+        public static bool operator !=(LLVMBasicBlockRef op1, LLVMBasicBlockRef op2)
+        {
+            return !(op1 == op2);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Pointer.GetHashCode();
         }
     }
 }

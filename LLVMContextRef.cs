@@ -2,7 +2,7 @@
 {
     using System;
 
-    partial struct LLVMContextRef
+    partial struct LLVMContextRef : IEquatable<LLVMContextRef>
     {
         public void ContextDispose()
         {
@@ -162,6 +162,38 @@
         public LLVMBool ParseIRInContext(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage)
         {
             return LLVM.ParseIRInContext(this, @MemBuf, out @OutM, out @OutMessage);
+        }
+
+        public bool Equals(LLVMContextRef other)
+        {
+            return this.Pointer == other.Pointer;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is LLVMContextRef) 
+            {
+                return this.Equals((LLVMContextRef)obj);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool operator ==(LLVMContextRef op1, LLVMContextRef op2)
+        {
+            return op1.Equals(op2);
+        }
+
+        public static bool operator !=(LLVMContextRef op1, LLVMContextRef op2)
+        {
+            return !(op1 == op2);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Pointer.GetHashCode();
         }
     }
 }
