@@ -5,14 +5,14 @@
 
     partial struct LLVMTypeRef
     {
-        public LLVMTypeKind GetTypeKind()
+        public LLVMTypeKind TypeKind
         {
-            return LLVM.GetTypeKind(this);
+            get { return LLVM.GetTypeKind(this); }
         }
 
-        public bool TypeIsSized()
+        public bool TypeIsSized
         {
-            return LLVM.TypeIsSized(this);
+            get { return LLVM.TypeIsSized(this); }
         }
 
         public LLVMContextRef GetTypeContext()
@@ -38,9 +38,9 @@
             return LLVM.GetIntTypeWidth(this);
         }
 
-        public bool IsFunctionVarArg()
+        public bool IsFunctionVarArg
         {
-            return LLVM.IsFunctionVarArg(this);
+            get { return LLVM.IsFunctionVarArg(this); }
         }
 
         public LLVMTypeRef GetReturnType()
@@ -78,14 +78,14 @@
             return LLVM.GetStructElementTypes(this);
         }
 
-        public bool IsPackedStruct()
+        public bool IsPackedStruct
         {
-            return LLVM.IsPackedStruct(this);
+            get { return LLVM.IsPackedStruct(this); }
         }
 
-        public bool IsOpaqueStruct()
+        public bool IsOpaqueStruct
         {
-            return LLVM.IsOpaqueStruct(this);
+            get { return LLVM.IsOpaqueStruct(this); }
         }
 
         public LLVMTypeRef GetElementType()
