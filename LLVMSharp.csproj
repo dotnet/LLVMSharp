@@ -38,6 +38,8 @@
     <Compile Include="IRBuilder.cs" />
     <Compile Include="LLVMBasicBlockRef.cs" />
     <Compile Include="LLVMContextRef.cs" />
+    <Compile Include="LLVMTypeRef.Static.cs" />
+    <Compile Include="LLVMValueRef.Static.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="PassManager.cs" />
     <Compile Include="LLVMTypeRef.cs" />

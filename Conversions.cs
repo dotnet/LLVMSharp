@@ -1,7 +1,5 @@
 ﻿namespace LLVMSharp
 {
-    using System;
-
     partial struct LLVMBool
     {
         public static implicit operator bool(LLVMBool b)
@@ -17,11 +15,6 @@
 
     partial struct LLVMValueRef
     {
-        public static implicit operator bool (LLVMValueRef v)
-        {
-            return v.Pointer != IntPtr.Zero;
-        }
-
         public static implicit operator LLVMValueRef(LLVMBasicBlockRef b)
         {
             return LLVM.BasicBlockAsValue(b);

@@ -1,5 +1,8 @@
 ﻿namespace LLVMSharp
 {
+    using System;
+    using System.Runtime.InteropServices;
+
     partial struct LLVMBasicBlockRef
     {
         public LLVMValueRef BasicBlockAsValue()
@@ -60,6 +63,19 @@
         public LLVMValueRef GetLastInstruction()
         {
             return LLVM.GetLastInstruction(this);
+        }
+
+        public void Dump()
+        {
+            LLVM.DumpValue(this);
+        }
+
+        public override string ToString()
+        {
+            IntPtr ptr = LLVM.PrintValueToString(this);
+            string retval = Marshal.PtrToStringAnsi(ptr) ?? string.Empty;
+            LLVM.DisposeMessage(ptr);
+            return retval;
         }
     }
 }

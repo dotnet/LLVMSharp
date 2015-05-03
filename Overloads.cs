@@ -17,7 +17,7 @@
             return buffer;
         }
 
-        public static LLVMTypeRef FunctionType(LLVMTypeRef ReturnType, LLVMTypeRef[] ParamTypes, LLVMBool IsVarArg)
+        public static LLVMTypeRef FunctionType(LLVMTypeRef ReturnType, LLVMTypeRef[] ParamTypes, bool IsVarArg)
         {
             if (ParamTypes.Length == 0)
             {
@@ -41,7 +41,7 @@
             return buffer;
         }
         
-        public static LLVMTypeRef StructTypeInContext(LLVMContextRef C, LLVMTypeRef[] ElementTypes, LLVMBool Packed)
+        public static LLVMTypeRef StructTypeInContext(LLVMContextRef C, LLVMTypeRef[] ElementTypes, bool Packed)
         {
             if (ElementTypes.Length == 0)
             {
@@ -52,7 +52,7 @@
             return StructTypeInContext(C, out ElementTypes[0], (uint)ElementTypes.Length, Packed);
         }
 
-        public static LLVMTypeRef StructType(LLVMTypeRef[] ElementTypes, LLVMBool Packed)
+        public static LLVMTypeRef StructType(LLVMTypeRef[] ElementTypes, bool Packed)
         {
             if (ElementTypes.Length == 0)
             {
@@ -63,7 +63,7 @@
             return StructType(out ElementTypes[0], (uint)ElementTypes.Length, Packed);
         }
 
-        public static void StructSetBody(LLVMTypeRef StructTy, LLVMTypeRef[] ElementTypes, LLVMBool Packed)
+        public static void StructSetBody(LLVMTypeRef StructTy, LLVMTypeRef[] ElementTypes, bool Packed)
         {
             if (ElementTypes.Length == 0)
             {
@@ -88,7 +88,7 @@
             return buffer;
         }
 
-        public static LLVMValueRef ConstStructInContext(LLVMContextRef C, LLVMValueRef[] ConstantVals, LLVMBool Packed)
+        public static LLVMValueRef ConstStructInContext(LLVMContextRef C, LLVMValueRef[] ConstantVals, bool Packed)
         {
             if (ConstantVals.Length == 0)
             {
@@ -99,7 +99,7 @@
             return ConstStructInContext(C, out ConstantVals[0], (uint)ConstantVals.Length, Packed);
         }
 
-        public static LLVMValueRef ConstStruct(LLVMValueRef[] ConstantVals, LLVMBool Packed)
+        public static LLVMValueRef ConstStruct(LLVMValueRef[] ConstantVals, bool Packed)
         {
             if (ConstantVals.Length == 0)
             {
@@ -319,7 +319,7 @@
             InitializeMCJITCompilerOptions(out Options[0], Options.Length);
         }
 
-        public static LLVMBool CreateMCJITCompilerForModule(out LLVMExecutionEngineRef OutJIT, LLVMModuleRef M, LLVMMCJITCompilerOptions[] Options, out IntPtr OutError)
+        public static bool CreateMCJITCompilerForModule(out LLVMExecutionEngineRef OutJIT, LLVMModuleRef M, LLVMMCJITCompilerOptions[] Options, out IntPtr OutError)
         {
             if (Options.Length == 0)
             {

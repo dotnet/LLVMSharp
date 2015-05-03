@@ -74,7 +74,7 @@
             return LLVM.PPCFP128TypeInContext(this);
         }
 
-        public LLVMTypeRef StructTypeInContext(LLVMTypeRef[] @ElementTypes, LLVMBool @Packed)
+        public LLVMTypeRef StructTypeInContext(LLVMTypeRef[] @ElementTypes, bool @Packed)
         {
             return LLVM.StructTypeInContext(this, @ElementTypes, @Packed);
         }
@@ -99,12 +99,12 @@
             return LLVM.X86MMXTypeInContext(this);
         }
 
-        public LLVMValueRef ConstStringInContext(string @Str, uint @Length, LLVMBool @DontNullTerminate)
+        public LLVMValueRef ConstStringInContext(string @Str, uint @Length, bool @DontNullTerminate)
         {
             return LLVM.ConstStringInContext(this, @Str, @Length, @DontNullTerminate);
         }
 
-        public LLVMValueRef ConstStructInContext(LLVMValueRef[] @ConstantVals, LLVMBool @Packed)
+        public LLVMValueRef ConstStructInContext(LLVMValueRef[] @ConstantVals, bool @Packed)
         {
             return LLVM.ConstStructInContext(this, @ConstantVals, @Packed);
         }
@@ -134,17 +134,17 @@
             return LLVM.CreateBuilderInContext(this);
         }
 
-        public LLVMBool ParseBitcodeInContext(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutModule, out IntPtr @OutMessage)
+        public bool ParseBitcodeInContext(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutModule, out IntPtr @OutMessage)
         {
             return LLVM.ParseBitcodeInContext(this, @MemBuf, out @OutModule, out @OutMessage);
         }
 
-        public LLVMBool GetBitcodeModuleInContext(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage)
+        public bool GetBitcodeModuleInContext(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage)
         {
             return LLVM.GetBitcodeModuleInContext(this, @MemBuf, out @OutM, out @OutMessage);
         }
 
-        public LLVMBool GetBitcodeModuleProviderInContext(LLVMMemoryBufferRef @MemBuf, out LLVMModuleProviderRef @OutMP, out IntPtr @OutMessage)
+        public bool GetBitcodeModuleProviderInContext(LLVMMemoryBufferRef @MemBuf, out LLVMModuleProviderRef @OutMP, out IntPtr @OutMessage)
         {
             return LLVM.GetBitcodeModuleProviderInContext(this, @MemBuf, out @OutMP, out @OutMessage);
         }
@@ -159,7 +159,7 @@
             return LLVM.IntPtrTypeForASInContext(this, @TD, @AS);
         }
 
-        public LLVMBool ParseIRInContext(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage)
+        public bool ParseIRInContext(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage)
         {
             return LLVM.ParseIRInContext(this, @MemBuf, out @OutM, out @OutMessage);
         }

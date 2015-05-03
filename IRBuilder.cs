@@ -530,12 +530,12 @@
             return LLVM.BuildPtrDiff(this.instance, @LHS, @RHS, @Name);
         }
 
-        public LLVMValueRef CreateFence(LLVMAtomicOrdering @ordering, LLVMBool @singleThread, string @Name)
+        public LLVMValueRef CreateFence(LLVMAtomicOrdering @ordering, bool @singleThread, string @Name)
         {
             return LLVM.BuildFence(this.instance, @ordering, @singleThread, @Name);
         }
 
-        public LLVMValueRef CreateAtomicRMW(LLVMAtomicRMWBinOp @op, LLVMValueRef @PTR, LLVMValueRef @Val, LLVMAtomicOrdering @ordering, LLVMBool @singleThread)
+        public LLVMValueRef CreateAtomicRMW(LLVMAtomicRMWBinOp @op, LLVMValueRef @PTR, LLVMValueRef @Val, LLVMAtomicOrdering @ordering, bool @singleThread)
         {
             return LLVM.BuildAtomicRMW(this.instance, @op, @PTR, @Val, @ordering, @singleThread);
         }

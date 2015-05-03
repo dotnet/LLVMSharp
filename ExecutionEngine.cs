@@ -92,17 +92,17 @@
             LLVM.AddModuleProvider(this.instance, @MP);
         }
 
-        public LLVMBool RemoveModule(LLVMModuleRef @M, out LLVMModuleRef @OutMod, out IntPtr @OutError)
+        public bool RemoveModule(LLVMModuleRef @M, out LLVMModuleRef @OutMod, out IntPtr @OutError)
         {
             return LLVM.RemoveModule(this.instance, @M, out @OutMod, out @OutError);
         }
 
-        public LLVMBool RemoveModuleProvider(LLVMModuleProviderRef @MP, out LLVMModuleRef @OutMod, out IntPtr @OutError)
+        public bool RemoveModuleProvider(LLVMModuleProviderRef @MP, out LLVMModuleRef @OutMod, out IntPtr @OutError)
         {
             return LLVM.RemoveModuleProvider(this.instance, @MP, out @OutMod, out @OutError);
         }
 
-        public LLVMBool FindFunction(string @Name, out LLVMValueRef @OutFn)
+        public bool FindFunction(string @Name, out LLVMValueRef @OutFn)
         {
             return LLVM.FindFunction(this.instance, @Name, out @OutFn);
         }

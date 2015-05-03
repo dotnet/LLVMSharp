@@ -1,6 +1,7 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using System.Runtime.InteropServices;
 
     public sealed class Module
     {
@@ -51,19 +52,22 @@
             LLVM.SetTarget(this.instance, @Triple);
         }
 
-        public void DumpModule()
+        public void Dump()
         {
             LLVM.DumpModule(this.instance);
         }
 
-        public LLVMBool PrintModuleToFile(string @Filename, out IntPtr @ErrorMessage)
+        public bool PrintModuleToFile(string @Filename, out IntPtr @ErrorMessage)
         {
             return LLVM.PrintModuleToFile(this.instance, @Filename, out @ErrorMessage);
         }
 
-        public IntPtr PrintModuleToString()
+        public string PrintModuleToString()
         {
-            return LLVM.PrintModuleToString(this.instance);
+            IntPtr ptr = LLVM.PrintModuleToString(this.instance);
+            string retval = Marshal.PtrToStringAnsi(ptr) ?? string.Empty;
+            LLVM.DisposeMessage(ptr);
+            return retval;
         }
 
         public void SetModuleInlineAsm(string @Asm)
@@ -156,7 +160,7 @@
             return LLVM.CreateFunctionPassManagerForModule(this.instance);
         }
 
-        public LLVMBool VerifyModule(LLVMVerifierFailureAction @Action, out IntPtr @OutMessage)
+        public bool VerifyModule(LLVMVerifierFailureAction @Action, out IntPtr @OutMessage)
         {
             return LLVM.VerifyModule(this.instance, @Action, out @OutMessage);
         }
@@ -181,9 +185,14 @@
             return LLVM.WriteBitcodeToMemoryBuffer(this.instance);
         }
 
-        public LLVMBool LinkModules(LLVMModuleRef @Src, uint @Unused, out IntPtr @OutMessage)
+        public bool LinkModules(LLVMModuleRef @Src, uint @Unused, out IntPtr @OutMessage)
         {
             return LLVM.LinkModules(this.instance, @Src, @Unused, out @OutMessage);
+        }
+
+        public override string ToString()
+        {
+            return this.PrintModuleToString();
         }
     }
 }
