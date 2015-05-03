@@ -2,7 +2,7 @@
 {
     using System;
 
-    partial struct LLVMTypeRef
+    partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
     {
         public static LLVMTypeRef FunctionType(LLVMTypeRef returnType, LLVMTypeRef[] @ParamTypes, LLVMBool @IsVarArg)
         {
@@ -397,6 +397,38 @@
         public double GenericValueToFloat(LLVMGenericValueRef @GenVal)
         {
             return LLVM.GenericValueToFloat(this, @GenVal);
+        }
+
+        public bool Equals(LLVMTypeRef other)
+        {
+            return this.Pointer == other.Pointer;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is LLVMTypeRef)
+            {
+                return this.Equals((LLVMTypeRef)obj);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool operator ==(LLVMTypeRef op1, LLVMTypeRef op2)
+        {
+            return op1.Equals(op2);
+        }
+
+        public static bool operator !=(LLVMTypeRef op1, LLVMTypeRef op2)
+        {
+            return !(op1 == op2);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Pointer.GetHashCode();
         }
     }
 }

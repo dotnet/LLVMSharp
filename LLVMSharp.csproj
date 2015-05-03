@@ -32,7 +32,32 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LLVMBuilderRef.cs" />
+    <Compile Include="LLVMDiagnosticInfoRef.cs" />
+    <Compile Include="LLVMDisasmContextRef.cs" />
+    <Compile Include="LLVMExecutionEngineRef.cs" />
+    <Compile Include="LLVMGenericValueRef.cs" />
+    <Compile Include="LLVMMCJITMemoryManagerRef.cs" />
+    <Compile Include="LLVMMemoryBufferRef.cs" />
     <Compile Include="Conversions.cs" />
+    <Compile Include="LLVMModuleProviderRef.cs" />
+    <Compile Include="LLVMModuleRef.cs" />
+    <Compile Include="LLVMObjectFileRef.cs" />
+    <Compile Include="LLVMPassManagerBuilderRef.cs" />
+    <Compile Include="LLVMPassManagerRef.cs" />
+    <Compile Include="LLVMPassRegistryRef.cs" />
+    <Compile Include="LLVMRelocationIteratorRef.cs" />
+    <Compile Include="LLVMSectionIteratorRef.cs" />
+    <Compile Include="LLVMSymbolIteratorRef.cs" />
+    <Compile Include="LLVMTargetDataRef.cs" />
+    <Compile Include="LLVMTargetLibraryInfoRef.cs" />
+    <Compile Include="LLVMTargetMachineRef.cs" />
+    <Compile Include="LLVMTargetRef.cs" />
+    <Compile Include="LLVMUseRef.cs" />
+    <Compile Include="llvm_lto_t.cs" />
+    <Compile Include="lto_bool_t.cs" />
+    <Compile Include="lto_code_gen_t.cs" />
+    <Compile Include="lto_module_t.cs" />
     <Compile Include="Values\Instructions\AtomicCmpXchgInst.cs" />
     <Compile Include="Values\Instructions\AtomicRMWInst.cs" />
     <Compile Include="Values\Instructions\BinaryOperator.cs" />
