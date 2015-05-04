@@ -2,7 +2,7 @@ namespace LLVMSharp
 {
     using System;
 
-    public sealed class IRBuilder : IDisposable
+    public sealed class IRBuilder : IDisposable, IEquatable<IRBuilder>
     {
         private readonly LLVMBuilderRef instance;
 
@@ -543,6 +543,45 @@ namespace LLVMSharp
         public AtomicRMWInst CreateAtomicRMW(LLVMAtomicRMWBinOp @op, Value @PTR, Value @Val, LLVMAtomicOrdering @ordering, LLVMBool @singleThread)
         {
             return new AtomicRMWInst(LLVM.BuildAtomicRMW(this.instance, @op, @PTR, @Val, @ordering, @singleThread));
+        }
+
+        public bool Equals(IRBuilder other)
+        {
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            else
+            {
+                return this.instance == other.instance;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as IRBuilder);
+        }
+
+        public static bool operator ==(IRBuilder op1, IRBuilder op2)
+        {
+            if (ReferenceEquals(op1, null))
+            {
+                return ReferenceEquals(op2, null);
+            }
+            else
+            {
+                return op1.Equals(op2);
+            }
+        }
+
+        public static bool operator !=(IRBuilder op1, IRBuilder op2)
+        {
+            return !(op1 == op2);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.instance.GetHashCode();
         }
     }
 }

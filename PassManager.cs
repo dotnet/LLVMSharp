@@ -2,7 +2,7 @@
 {
     using System;
 
-    public sealed class PassManager : IDisposable
+    public sealed class PassManager : IDisposable, IEquatable<PassManager>
     {
         private readonly LLVMPassManagerRef instance;
 
@@ -333,6 +333,45 @@
         public void AddSLPVectorizePass()
         {
             LLVM.AddSLPVectorizePass(this.instance);
+        }
+
+        public bool Equals(PassManager other)
+        {
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            else
+            {
+                return this.instance == other.instance;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as PassManager);
+        }
+
+        public static bool operator ==(PassManager op1, PassManager op2)
+        {
+            if (ReferenceEquals(op1, null))
+            {
+                return ReferenceEquals(op2, null);
+            }
+            else
+            {
+                return op1.Equals(op2);
+            }
+        }
+
+        public static bool operator !=(PassManager op1, PassManager op2)
+        {
+            return !(op1 == op2);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.instance.GetHashCode();
         }
     }
 }

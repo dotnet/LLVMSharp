@@ -3,7 +3,7 @@
     using System;
     using System.Runtime.InteropServices;
 
-    public abstract class Value
+    public abstract class Value : IEquatable<Value>
     {
         internal static Value[] FromArray(LLVMValueRef[] source)
         {
@@ -64,40 +64,45 @@
             return retVal ?? string.Empty;
         }
 
-        public override int GetHashCode()
+        
+        public bool Equals(Value other)
         {
-            return (int)this.value.GetHashCode();
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            else
+            {
+                return this.value == other.value;
+            }
         }
 
         public override bool Equals(object obj)
         {
-            Value other = obj as Value;
-            if (other == null)
-            {
-                return false;
-            }
-
-            return other == this;
+            return this.Equals(obj as Value);
         }
 
-        public static bool operator ==(Value l, Value r)
+        public static bool operator ==(Value op1, Value op2)
         {
-            if (l == null || r == null)
+            if (ReferenceEquals(op1, null))
             {
-                return false;
+                return ReferenceEquals(op2, null);
             }
-
-            return l.value.Pointer == r.value.Pointer;
+            else
+            {
+                return op1.Equals(op2);
+            }
         }
 
-        public static bool operator !=(Value l, Value r)
+        public static bool operator !=(Value op1, Value op2)
         {
-            if (l == null || r == null)
-            {
-                return false;
-            }
-
-            return l.value.Pointer != r.value.Pointer;
+            return !(op1 == op2);
         }
+
+        public override int GetHashCode()
+        {
+            return this.value.GetHashCode();
+        }
+
     }
 }

@@ -1,6 +1,8 @@
 ﻿namespace LLVMSharp
 {
-    public class Type
+    using System;
+
+    public class Type : IEquatable<Type>
     {
         protected readonly LLVMTypeRef instance;
 
@@ -174,6 +176,45 @@
         public static Type LabelType(LLVMContext c)
         {
             return new Type(LLVM.LabelTypeInContext(c.InternalValue));
+        }
+
+        public bool Equals(Type other)
+        {
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            else
+            {
+                return this.instance == other.instance;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as Type);
+        }
+
+        public static bool operator ==(Type op1, Type op2)
+        {
+            if (ReferenceEquals(op1, null))
+            {
+                return ReferenceEquals(op2, null);
+            }
+            else
+            {
+                return op1.Equals(op2);
+            }
+        }
+
+        public static bool operator !=(Type op1, Type op2)
+        {
+            return !(op1 == op2);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.instance.GetHashCode();
         }
     }
 }
