@@ -3,7 +3,7 @@
     using System;
     using System.Runtime.InteropServices;
 
-    public sealed class ExecutionEngine : IDisposable
+    public sealed class ExecutionEngine : IDisposable, IEquatable<ExecutionEngine>
     {
         private readonly LLVMExecutionEngineRef instance;
         
@@ -165,6 +165,45 @@
             string errormessage = Marshal.PtrToStringAnsi(error);
             LLVM.DisposeMessage(error);
             throw new Exception(errormessage);
+        }
+
+        public bool Equals(ExecutionEngine other)
+        {
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            else
+            {
+                return this.instance == other.instance;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as ExecutionEngine);
+        }
+
+        public static bool operator ==(ExecutionEngine op1, ExecutionEngine op2)
+        {
+            if (ReferenceEquals(op1, null))
+            {
+                return ReferenceEquals(op2, null);
+            }
+            else
+            {
+                return op1.Equals(op2);
+            }
+        }
+
+        public static bool operator !=(ExecutionEngine op1, ExecutionEngine op2)
+        {
+            return !(op1 == op2);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.instance.GetHashCode();
         }
     }
 }
