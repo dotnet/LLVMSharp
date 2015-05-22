@@ -68,6 +68,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assembly.cs" />
     <Compile Include="LLVMBuilderRef.cs" />
     <Compile Include="LLVMDiagnosticInfoRef.cs" />
     <Compile Include="LLVMDisasmContextRef.cs" />

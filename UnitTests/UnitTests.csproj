@@ -50,6 +50,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ConversionTests.cs" />
+    <Compile Include="OOPAPITests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="libLLVM.dll">
