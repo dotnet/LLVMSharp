@@ -4,7 +4,7 @@ namespace LLVMSharp
 
     public sealed class IRBuilder : IDisposable, IEquatable<IRBuilder>
     {
-        private readonly LLVMBuilderRef instance;
+        internal readonly LLVMBuilderRef instance;
 
         private bool disposed;
 

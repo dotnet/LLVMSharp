@@ -31,6 +31,12 @@
             return !(op1 == op2);
         }
 
+        public static implicit operator LLVMBuilderRef(IRBuilder builder)
+        {
+            return builder.instance;
+        }
+
+
         public override int GetHashCode()
         {
             return this.Pointer.GetHashCode();
