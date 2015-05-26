@@ -1,6 +1,7 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Values;
 
     partial struct LLVMModuleRef
     {
@@ -78,6 +79,11 @@
             if (LLVM.IsConstant(v))
             {
                 return Constant(v);
+            }
+
+            if (LLVM.IsAArgument(v))
+            {
+                return new Argument(v);
             }
 
             throw new Exception("Unreachable");

@@ -95,6 +95,7 @@
     <Compile Include="lto_bool_t.cs" />
     <Compile Include="lto_code_gen_t.cs" />
     <Compile Include="lto_module_t.cs" />
+    <Compile Include="Values\Argument.cs" />
     <Compile Include="Values\Instructions\AtomicCmpXchgInst.cs" />
     <Compile Include="Values\Instructions\AtomicRMWInst.cs" />
     <Compile Include="Values\Instructions\BinaryOperator.cs" />
