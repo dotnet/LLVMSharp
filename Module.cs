@@ -84,17 +84,17 @@
 
         public Value[] GetNamedMetadataOperands(string @name)
         {
-            return Value.FromArray(LLVM.GetNamedMetadataOperands(this.instance, @name));
+            return Common.ToValues(LLVM.GetNamedMetadataOperands(this.instance, @name));
         }
 
         public void AddNamedMetadataOperand(string @name, Value @Val)
         {
-            LLVM.AddNamedMetadataOperand(this.instance, @name, @Val);
+            LLVM.AddNamedMetadataOperand(this.instance, @name, @Val.ToValueRef());
         }
 
         public Function AddFunction(string @Name, Type @FunctionTy)
         {
-            return new Function(LLVM.AddFunction(this.instance, @Name, @FunctionTy));
+            return new Function(LLVM.AddFunction(this.instance, @Name, @FunctionTy.ToTypeRef()));
         }
 
         public Function GetNamedFunction(string @Name)
@@ -114,12 +114,12 @@
 
         public Value AddGlobal(Type @Ty, string @Name)
         {
-            return new GlobalValue(LLVM.AddGlobal(this.instance, @Ty, @Name));
+            return new GlobalValue(LLVM.AddGlobal(this.instance, @Ty.ToTypeRef(), @Name));
         }
 
         public Value AddGlobalInAddressSpace(Type @Ty, string @Name, uint @AddressSpace)
         {
-            return new GlobalValue(LLVM.AddGlobalInAddressSpace(this.instance, @Ty, @Name, @AddressSpace));
+            return new GlobalValue(LLVM.AddGlobalInAddressSpace(this.instance, @Ty.ToTypeRef(), @Name, @AddressSpace));
         }
 
         public Value GetNamedGlobal(string @Name)
@@ -139,7 +139,21 @@
 
         public Value AddAlias(Type @Ty, Value @Aliasee, string @Name)
         {
-            return new GlobalValue(LLVM.AddAlias(this.instance, @Ty, @Aliasee, @Name));
+            return new GlobalValue(LLVM.AddAlias(this.instance, @Ty.ToTypeRef(), @Aliasee.ToValueRef(), @Name));
+        }
+
+        public bool CreateMCJITCompilerForModule(out ExecutionEngine executionEngine,
+                                                 out LLVMMCJITCompilerOptions options,
+                                                 out string message)
+        {
+            LLVMExecutionEngineRef executionEngineRef;
+            IntPtr messagePtr;
+            var optionsSize = Marshal.SizeOf(typeof (LLVMMCJITCompilerOptions));
+            var result = LLVM.CreateMCJITCompilerForModule(out executionEngineRef, this.ToModuleRef(), out options, optionsSize,
+                                              out messagePtr);
+            executionEngine = new ExecutionEngine(executionEngineRef);
+            message = Marshal.PtrToStringAnsi(messagePtr);
+            return result;
         }
 
         public LLVMModuleProviderRef CreateModuleProviderForExistingModule()
@@ -155,6 +169,14 @@
         public bool VerifyModule(LLVMVerifierFailureAction @Action, out IntPtr @OutMessage)
         {
             return LLVM.VerifyModule(this.instance, @Action, out @OutMessage);
+        }
+
+        public bool VerifyModule(LLVMVerifierFailureAction action, out string message)
+        {
+            IntPtr messagePointer;
+            var result = VerifyModule(action, out messagePointer);
+            message = Marshal.PtrToStringAnsi(messagePointer);
+            return result;
         }
 
         public int WriteBitcodeToFile(string @Path)
@@ -179,7 +201,7 @@
 
         public bool LinkModules(Module @Src, uint @Unused, out IntPtr @OutMessage)
         {
-            return LLVM.LinkModules(this.instance, @Src, @Unused, out @OutMessage);
+            return LLVM.LinkModules(this.instance, @Src.ToModuleRef(), @Unused, out @OutMessage);
         }
 
         public bool Equals(Module other)
@@ -219,6 +241,11 @@
         public override int GetHashCode()
         {
             return this.instance.GetHashCode();
+        }
+
+        public void SetTarget(string target)
+        {
+            LLVM.SetTarget(this.instance, target);
         }
     }
 }

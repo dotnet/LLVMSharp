@@ -69,14 +69,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assembly.cs" />
+    <Compile Include="Common.cs" />
     <Compile Include="LLVMBuilderRef.cs" />
     <Compile Include="LLVMDiagnosticInfoRef.cs" />
     <Compile Include="LLVMDisasmContextRef.cs" />
     <Compile Include="LLVMExecutionEngineRef.cs" />
     <Compile Include="LLVMGenericValueRef.cs" />
+    <Compile Include="LLVMMCJITCompilerOptions.cs" />
     <Compile Include="LLVMMCJITMemoryManagerRef.cs" />
     <Compile Include="LLVMMemoryBufferRef.cs" />
-    <Compile Include="Conversions.cs" />
+    <Compile Include="LLVMBool.cs" />
     <Compile Include="LLVMModuleProviderRef.cs" />
     <Compile Include="LLVMModuleRef.cs" />
     <Compile Include="LLVMObjectFileRef.cs" />

@@ -5,65 +5,53 @@
 
     public abstract class Value : IEquatable<Value>
     {
-        internal static Value[] FromArray(LLVMValueRef[] source)
-        {
-            var length = source.Length;
-            var target = new Value[length];
-            for (var i = 0; i < length; ++i)
-                target[i] = source[i];
-            return target;
-        }
-
-        protected readonly LLVMValueRef value;
-
-        private string name;
-
-        private Type type;
+        private readonly LLVMValueRef _value;
+        private string _name;
+        private Type _type;
 
         protected Value(LLVMValueRef value)
         {
-            this.value = value;
+            this._value = value;
         }
 
         public LLVMValueRef InnerValue
         {
-            get { return this.value; }
+            get { return this._value; }
         }
 
         public Type Type
         {
-            get { return this.type ?? (this.type = new Type(LLVM.TypeOf(this.value))); }
-            set { this.type = value; }
+            get { return this._type ?? (this._type = new Type(LLVM.TypeOf(this._value))); }
+            set { this._type = value; }
         }
 
         public string Name
         {
-            get { return this.name; }
+            get { return this._name; }
             set
             {
-                this.name = value;
-                LLVM.SetValueName(this.value, this.name);
+                this._name = value;
+                LLVM.SetValueName(this._value, this._name);
             }
         }
 
-        public LLVMContextRef Context
+        public LLVMContextRef ContextRef
         {
             get { return this.Type.Context; }
         }
 
         public void Dump()
         {
-            LLVM.DumpValue(this.value);
+            LLVM.DumpValue(this._value);
         }
 
         public override string ToString()
         {
-            IntPtr ptr = LLVM.PrintValueToString(this.value);
+            IntPtr ptr = LLVM.PrintValueToString(this._value);
             string retVal = Marshal.PtrToStringAnsi(ptr);
             LLVM.DisposeMessage(ptr);
             return retVal ?? string.Empty;
         }
-
         
         public bool Equals(Value other)
         {
@@ -73,7 +61,7 @@
             }
             else
             {
-                return this.value == other.value;
+                return this._value == other._value;
             }
         }
 
@@ -101,8 +89,7 @@
 
         public override int GetHashCode()
         {
-            return this.value.GetHashCode();
+            return this._value.GetHashCode();
         }
-
     }
 }

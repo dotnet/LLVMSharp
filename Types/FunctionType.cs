@@ -4,7 +4,7 @@
 
     public sealed class FunctionType : Type
     {
-        private readonly Type[] @params;
+        private readonly Type[] _params;
 
         /// <summary>
         /// get
@@ -38,9 +38,20 @@
                     isVarArg ? new LLVMBool(1) : new LLVMBool(0)));
         }
 
-        internal FunctionType(LLVMTypeRef typeRef) : base(typeRef)
+        internal FunctionType(LLVMTypeRef typeRef) 
+            : base(typeRef)
         {
-            this.@params = new Type[LLVM.CountParamTypes(this.instance)];
+            this._params = new Type[LLVM.CountParamTypes(this.instance)];
+        }
+
+        public FunctionType(Type returnType, Type[] parameterTypes)
+            : this(returnType, parameterTypes, false)
+        {            
+        }
+
+        public FunctionType(Type returnType, Type[] parameterTypes, bool isVarArgs)
+            : base(LLVM.FunctionType(returnType.ToTypeRef(), parameterTypes.ToTypeRefs(), isVarArgs))
+        {
         }
 
         /// <summary>
@@ -49,7 +60,7 @@
         /// <returns>uint</returns>
         public uint NumParams
         {
-            get { return (uint)this.@params.Length; }
+            get { return (uint)this._params.Length; }
         }
 
         /// <summary>
@@ -71,7 +82,7 @@
         /// <returns>Type *</returns>
         public Type GetParamType(uint i)
         {
-            return this.@params[i];
+            return this._params[i];
         }
     }
 }

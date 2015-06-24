@@ -4,8 +4,25 @@
 
     public class Type : IEquatable<Type>
     {
-        protected readonly LLVMTypeRef instance;
+        public static readonly Type Int1 = new Type(LLVM.Int1Type());
+        public static readonly Type Int8 = new Type(LLVM.Int8Type());
+        public static readonly Type Int16 = new Type(LLVM.Int16Type());
+        public static readonly Type Int32 = new Type(LLVM.Int32Type());
+        public static readonly Type Int64 = new Type(LLVM.Int64Type());
 
+        public static readonly Type Half = new Type(LLVM.HalfType());
+        public static readonly Type Float = new Type(LLVM.FloatType());
+        public static readonly Type Double = new Type(LLVM.DoubleType());
+        public static readonly Type X86FP80 = new Type(LLVM.X86FP80Type());
+        public static readonly Type FP128 = new Type(LLVM.FP128Type());
+        public static readonly Type PPCFP128 = new Type(LLVM.PPCFP128Type());
+
+        public static Type Int(int bitLength)
+        {
+            return LLVM.IntType((uint) bitLength);
+        }
+
+        protected readonly LLVMTypeRef instance;
         private readonly LLVMTypeKind kind;
 
         public Type(LLVMTypeRef typeRef)

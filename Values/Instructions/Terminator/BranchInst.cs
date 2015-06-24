@@ -9,7 +9,7 @@
 
         public bool IsConditional
         {
-            get { return LLVM.IsConditional(this.value); }
+            get { return LLVM.IsConditional(this.InnerValue); }
         }
 
         public bool IsUnconditional
@@ -21,17 +21,17 @@
         {
             get
             {
-                return LLVM.GetCondition(this.value);
+                return LLVM.GetCondition(this.InnerValue).ToValue();
             }
             set
             {
-                LLVM.SetCondition(this.value, value.InnerValue);
+                LLVM.SetCondition(this.InnerValue, value.InnerValue);
             }
         }
 
         public void SetCondition(Value condition)
         {
-            LLVM.SetCondition(this.value, condition.InnerValue);
+            LLVM.SetCondition(this.InnerValue, condition.InnerValue);
         }
     }
 }

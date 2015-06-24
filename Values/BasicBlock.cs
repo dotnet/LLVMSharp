@@ -4,7 +4,7 @@
 
     public sealed class BasicBlock : Value
     {
-        internal BasicBlock(Type type, string name, Function parent)
+        public BasicBlock(Type type, string name, Function parent)
             : base(LLVM.BasicBlockAsValue(LLVM.AppendBasicBlock(parent.InnerValue, name)))
         {
             this.Type = type;
@@ -53,11 +53,6 @@
             }
 
             return bb;
-        }
-
-        public static implicit operator LLVMBasicBlockRef(BasicBlock basicBlock)
-        {
-            return LLVM.ValueAsBasicBlock(basicBlock.value);
         }
     }
 }
