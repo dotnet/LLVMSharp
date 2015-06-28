@@ -127,9 +127,9 @@
             LLVM.AddGlobalMapping(this.instance, @Global, @Addr);
         }
 
-        public IntPtr GetPointerToGlobal(LLVMValueRef @Global)
+        public IntPtr GetPointerToGlobal(Value @Global)
         {
-            return LLVM.GetPointerToGlobal(this.instance, @Global);
+            return LLVM.GetPointerToGlobal(this.instance, @Global.ToValueRef());
         }
 
         public int GetGlobalValueAddress(string @Name)

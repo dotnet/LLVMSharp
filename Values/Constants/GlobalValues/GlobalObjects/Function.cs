@@ -69,8 +69,8 @@
         /// </summary>
         public string GC
         {
-            get { return LLVM.GetGC(this.value); }
-            set { LLVM.SetGC(this.value, value); }
+            get { return LLVM.GetGC(this.InnerValue); }
+            set { LLVM.SetGC(this.InnerValue, value); }
         }
 
         /// <summary>
@@ -78,7 +78,12 @@
         /// </summary>
         public void ClearGC()
         {
-            LLVM.SetGC(this.value, string.Empty);
+            LLVM.SetGC(this.InnerValue, string.Empty);
+        }
+
+        public Value GetParameter(int index)
+        {
+            return LLVM.GetParam(this.ToValueRef(), (uint) index).ToValue();
         }
     }
 }
