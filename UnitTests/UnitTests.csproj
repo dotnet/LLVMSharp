@@ -49,6 +49,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Common.cs" />
     <Compile Include="OOPAPITests.cs" />
   </ItemGroup>
   <ItemGroup>

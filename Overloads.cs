@@ -319,17 +319,6 @@
             InitializeMCJITCompilerOptions(out Options[0], Options.Length);
         }
 
-        public static LLVMBool CreateMCJITCompilerForModule(out LLVMExecutionEngineRef OutJIT, LLVMModuleRef M, LLVMMCJITCompilerOptions[] Options, out IntPtr OutError)
-        {
-            if (Options.Length == 0)
-            {
-                LLVMMCJITCompilerOptions dummy;
-                return CreateMCJITCompilerForModule(out OutJIT, M, out dummy, 0, out OutError);
-            }
-
-            return CreateMCJITCompilerForModule(out OutJIT, M, out Options[0], Options.Length, out OutError);
-        }
-
         public static LLVMGenericValueRef RunFunction(LLVMExecutionEngineRef EE, LLVMValueRef F, LLVMGenericValueRef[] Args)
         {
             if (Args.Length == 0)
