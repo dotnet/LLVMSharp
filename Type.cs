@@ -115,9 +115,9 @@
             get { return this.kind == LLVMTypeKind.LLVMIntegerTypeKind; }
         }
 
-        public bool IsIntegerBitwidh(uint Bitwidth)
+        public bool IsIntegerBitwidh(uint bitwidth)
         {
-            return this.kind == LLVMTypeKind.LLVMIntegerTypeKind && LLVM.GetIntTypeWidth(this.instance) == Bitwidth;
+            return this.kind == LLVMTypeKind.LLVMIntegerTypeKind && LLVM.GetIntTypeWidth(this.instance) == bitwidth;
         }
         
         public bool IsFunctionTy
