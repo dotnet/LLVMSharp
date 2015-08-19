@@ -262,7 +262,7 @@ namespace LLVMSharp
     }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void LLVMFatalErrorHandler([MarshalAs(UnmanagedType.LPStr)] string @Reason);
+    public delegate void LLVMFatalErrorHandler([MarshalAs(UnmanagedType.LPStr)] string reason);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void LLVMDiagnosticHandler(out LLVMOpaqueDiagnosticInfo @param0, IntPtr @param1);
@@ -281,10 +281,10 @@ namespace LLVMSharp
     }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int LLVMOpInfoCallback(IntPtr @DisInfo, int @PC, int @Offset, int @Size, int @TagType, IntPtr @TagBuf);
+    public delegate int LLVMOpInfoCallback(IntPtr disInfo, int pc, int offset, int size, int tagType, IntPtr tagBuf);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate string LLVMSymbolLookupCallback(IntPtr @DisInfo, int @ReferenceValue, out int @ReferenceType, int @ReferencePC, out IntPtr @ReferenceName);
+    public delegate string LLVMSymbolLookupCallback(IntPtr disInfo, int referenceValue, out int referenceType, int referencePc, out IntPtr referenceName);
 
     public partial struct LLVMTargetDataRef
     {
@@ -357,16 +357,16 @@ namespace LLVMSharp
     }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate IntPtr LLVMMemoryManagerAllocateCodeSectionCallback(IntPtr @Opaque, int @Size, uint @Alignment, uint @SectionID, [MarshalAs(UnmanagedType.LPStr)] string @SectionName);
+    public delegate IntPtr LLVMMemoryManagerAllocateCodeSectionCallback(IntPtr opaque, int size, uint alignment, uint sectionID, [MarshalAs(UnmanagedType.LPStr)] string sectionName);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate IntPtr LLVMMemoryManagerAllocateDataSectionCallback(IntPtr @Opaque, int @Size, uint @Alignment, uint @SectionID, [MarshalAs(UnmanagedType.LPStr)] string @SectionName, int @IsReadOnly);
+    public delegate IntPtr LLVMMemoryManagerAllocateDataSectionCallback(IntPtr opaque, int size, uint alignment, uint sectionID, [MarshalAs(UnmanagedType.LPStr)] string sectionName, int isReadOnly);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int LLVMMemoryManagerFinalizeMemoryCallback(IntPtr @Opaque, out IntPtr @ErrMsg);
+    public delegate int LLVMMemoryManagerFinalizeMemoryCallback(IntPtr opaque, out IntPtr errMsg);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void LLVMMemoryManagerDestroyCallback(IntPtr @Opaque);
+    public delegate void LLVMMemoryManagerDestroyCallback(IntPtr opaque);
 
     public partial struct llvm_lto_t
     {
@@ -807,2551 +807,2551 @@ namespace LLVMSharp
 
     public static partial class LLVM
     {
-        private const string libraryPath = "libLLVM";
+        private const string LibraryPath = "libLLVM";
 
-        [DllImport(libraryPath, EntryPoint = "LLVMLoadLibraryPermanently", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool LoadLibraryPermanently([MarshalAs(UnmanagedType.LPStr)] string @Filename);
+        [DllImport(LibraryPath, EntryPoint = "LLVMLoadLibraryPermanently", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool LoadLibraryPermanently([MarshalAs(UnmanagedType.LPStr)] string filename);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMParseCommandLineOptions", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ParseCommandLineOptions(int @argc, string[] @argv, [MarshalAs(UnmanagedType.LPStr)] string @Overview);
+        [DllImport(LibraryPath, EntryPoint = "LLVMParseCommandLineOptions", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ParseCommandLineOptions(int @argc, string[] @argv, [MarshalAs(UnmanagedType.LPStr)] string overview);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeCore", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeCore(LLVMPassRegistryRef @R);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeCore", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeCore(LLVMPassRegistryRef r);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMShutdown", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMShutdown", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Shutdown();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateMessage", CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr CreateMessage([MarshalAs(UnmanagedType.LPStr)] string @Message);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateMessage", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr CreateMessage([MarshalAs(UnmanagedType.LPStr)] string message);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposeMessage", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisposeMessage(IntPtr @Message);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposeMessage", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeMessage(IntPtr message);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInstallFatalErrorHandler", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InstallFatalErrorHandler(LLVMFatalErrorHandler @Handler);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInstallFatalErrorHandler", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InstallFatalErrorHandler(LLVMFatalErrorHandler handler);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMResetFatalErrorHandler", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMResetFatalErrorHandler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void ResetFatalErrorHandler();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMEnablePrettyStackTrace", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMEnablePrettyStackTrace", CallingConvention = CallingConvention.Cdecl)]
         public static extern void EnablePrettyStackTrace();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMContextCreate", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMContextCreate", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMContextRef ContextCreate();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetGlobalContext", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetGlobalContext", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMContextRef GetGlobalContext();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMContextSetDiagnosticHandler", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ContextSetDiagnosticHandler(LLVMContextRef @C, LLVMDiagnosticHandler @Handler, IntPtr @DiagnosticContext);
+        [DllImport(LibraryPath, EntryPoint = "LLVMContextSetDiagnosticHandler", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ContextSetDiagnosticHandler(LLVMContextRef c, LLVMDiagnosticHandler handler, IntPtr diagnosticContext);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMContextSetYieldCallback", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ContextSetYieldCallback(LLVMContextRef @C, LLVMYieldCallback @Callback, IntPtr @OpaqueHandle);
+        [DllImport(LibraryPath, EntryPoint = "LLVMContextSetYieldCallback", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ContextSetYieldCallback(LLVMContextRef c, LLVMYieldCallback callback, IntPtr opaqueHandle);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMContextDispose", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ContextDispose(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMContextDispose", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ContextDispose(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetDiagInfoDescription", CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetDiagInfoDescription(LLVMDiagnosticInfoRef @DI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetDiagInfoDescription", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetDiagInfoDescription(LLVMDiagnosticInfoRef di);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetDiagInfoSeverity", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMDiagnosticSeverity GetDiagInfoSeverity(LLVMDiagnosticInfoRef @DI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetDiagInfoSeverity", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMDiagnosticSeverity GetDiagInfoSeverity(LLVMDiagnosticInfoRef di);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetMDKindIDInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetMDKindIDInContext(LLVMContextRef @C, [MarshalAs(UnmanagedType.LPStr)] string @Name, uint @SLen);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetMDKindIDInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetMDKindIDInContext(LLVMContextRef c, [MarshalAs(UnmanagedType.LPStr)] string name, uint sLen);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetMDKindID", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetMDKindID([MarshalAs(UnmanagedType.LPStr)] string @Name, uint @SLen);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetMDKindID", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetMDKindID([MarshalAs(UnmanagedType.LPStr)] string name, uint sLen);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMModuleCreateWithName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMModuleRef ModuleCreateWithName([MarshalAs(UnmanagedType.LPStr)] string @ModuleID);
+        [DllImport(LibraryPath, EntryPoint = "LLVMModuleCreateWithName", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMModuleRef ModuleCreateWithName([MarshalAs(UnmanagedType.LPStr)] string moduleID);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMModuleCreateWithNameInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMModuleRef ModuleCreateWithNameInContext([MarshalAs(UnmanagedType.LPStr)] string @ModuleID, LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMModuleCreateWithNameInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMModuleRef ModuleCreateWithNameInContext([MarshalAs(UnmanagedType.LPStr)] string moduleID, LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCloneModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMModuleRef CloneModule(LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCloneModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMModuleRef CloneModule(LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposeModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisposeModule(LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposeModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeModule(LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetDataLayout", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetDataLayout(LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetDataLayout", CallingConvention = CallingConvention.Cdecl)]
+        public static extern string GetDataLayout(LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetDataLayout", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetDataLayout(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @Triple);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetDataLayout", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetDataLayout(LLVMModuleRef m, [MarshalAs(UnmanagedType.LPStr)] string triple);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTarget", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetTarget(LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetTarget", CallingConvention = CallingConvention.Cdecl)]
+        public static extern string GetTarget(LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetTarget", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetTarget(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @Triple);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetTarget", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetTarget(LLVMModuleRef m, [MarshalAs(UnmanagedType.LPStr)] string triple);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDumpModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DumpModule(LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDumpModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DumpModule(LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPrintModuleToFile", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool PrintModuleToFile(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @Filename, out IntPtr @ErrorMessage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPrintModuleToFile", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool PrintModuleToFile(LLVMModuleRef m, [MarshalAs(UnmanagedType.LPStr)] string filename, out IntPtr errorMessage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPrintModuleToString", CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr PrintModuleToString(LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPrintModuleToString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr PrintModuleToString(LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetModuleInlineAsm", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetModuleInlineAsm(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @Asm);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetModuleInlineAsm", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetModuleInlineAsm(LLVMModuleRef m, [MarshalAs(UnmanagedType.LPStr)] string asm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetModuleContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMContextRef GetModuleContext(LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetModuleContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMContextRef GetModuleContext(LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTypeByName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef GetTypeByName(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetTypeByName", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef GetTypeByName(LLVMModuleRef m, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetNamedMetadataNumOperands", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetNamedMetadataNumOperands(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetNamedMetadataNumOperands", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetNamedMetadataNumOperands(LLVMModuleRef m, [MarshalAs(UnmanagedType.LPStr)] string @name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetNamedMetadataOperands", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void GetNamedMetadataOperands(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @name, out LLVMValueRef @Dest);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetNamedMetadataOperands", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void GetNamedMetadataOperands(LLVMModuleRef m, [MarshalAs(UnmanagedType.LPStr)] string @name, out LLVMValueRef dest);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddNamedMetadataOperand", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddNamedMetadataOperand(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @name, LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddNamedMetadataOperand", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddNamedMetadataOperand(LLVMModuleRef m, [MarshalAs(UnmanagedType.LPStr)] string @name, LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddFunction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef AddFunction(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @Name, LLVMTypeRef @FunctionTy);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddFunction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef AddFunction(LLVMModuleRef m, [MarshalAs(UnmanagedType.LPStr)] string name, LLVMTypeRef functionTy);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetNamedFunction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetNamedFunction(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetNamedFunction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetNamedFunction(LLVMModuleRef m, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetFirstFunction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetFirstFunction(LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetFirstFunction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetFirstFunction(LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetLastFunction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetLastFunction(LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetLastFunction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetLastFunction(LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetNextFunction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetNextFunction(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetNextFunction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetNextFunction(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetPreviousFunction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetPreviousFunction(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetPreviousFunction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetPreviousFunction(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTypeKind", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeKind GetTypeKind(LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetTypeKind", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeKind GetTypeKind(LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMTypeIsSized", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool TypeIsSized(LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMTypeIsSized", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool TypeIsSized(LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTypeContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMContextRef GetTypeContext(LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetTypeContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMContextRef GetTypeContext(LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDumpType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DumpType(LLVMTypeRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDumpType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DumpType(LLVMTypeRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPrintTypeToString", CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr PrintTypeToString(LLVMTypeRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPrintTypeToString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr PrintTypeToString(LLVMTypeRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInt1TypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef Int1TypeInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInt1TypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef Int1TypeInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInt8TypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef Int8TypeInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInt8TypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef Int8TypeInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInt16TypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef Int16TypeInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInt16TypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef Int16TypeInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInt32TypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef Int32TypeInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInt32TypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef Int32TypeInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInt64TypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef Int64TypeInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInt64TypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef Int64TypeInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIntTypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef IntTypeInContext(LLVMContextRef @C, uint @NumBits);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIntTypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef IntTypeInContext(LLVMContextRef c, uint numBits);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInt1Type", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInt1Type", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef Int1Type();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInt8Type", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInt8Type", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef Int8Type();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInt16Type", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInt16Type", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef Int16Type();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInt32Type", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInt32Type", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef Int32Type();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInt64Type", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInt64Type", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef Int64Type();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIntType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef IntType(uint @NumBits);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIntType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef IntType(uint numBits);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetIntTypeWidth", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetIntTypeWidth(LLVMTypeRef @IntegerTy);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetIntTypeWidth", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetIntTypeWidth(LLVMTypeRef integerTy);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMHalfTypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef HalfTypeInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMHalfTypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef HalfTypeInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMFloatTypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef FloatTypeInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMFloatTypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef FloatTypeInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDoubleTypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef DoubleTypeInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDoubleTypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef DoubleTypeInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMX86FP80TypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef X86FP80TypeInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMX86FP80TypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef X86FP80TypeInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMFP128TypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef FP128TypeInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMFP128TypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef FP128TypeInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPPCFP128TypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef PPCFP128TypeInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPPCFP128TypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef PPCFP128TypeInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMHalfType", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMHalfType", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef HalfType();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMFloatType", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMFloatType", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef FloatType();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDoubleType", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMDoubleType", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef DoubleType();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMX86FP80Type", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMX86FP80Type", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef X86FP80Type();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMFP128Type", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMFP128Type", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef FP128Type();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPPCFP128Type", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMPPCFP128Type", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef PPCFP128Type();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMFunctionType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef FunctionType(LLVMTypeRef @ReturnType, out LLVMTypeRef @ParamTypes, uint @ParamCount, LLVMBool @IsVarArg);
+        [DllImport(LibraryPath, EntryPoint = "LLVMFunctionType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef FunctionType(LLVMTypeRef returnType, out LLVMTypeRef paramTypes, uint paramCount, LLVMBool isVarArg);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsFunctionVarArg", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool IsFunctionVarArg(LLVMTypeRef @FunctionTy);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsFunctionVarArg", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsFunctionVarArg(LLVMTypeRef functionTy);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetReturnType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef GetReturnType(LLVMTypeRef @FunctionTy);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetReturnType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef GetReturnType(LLVMTypeRef functionTy);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCountParamTypes", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint CountParamTypes(LLVMTypeRef @FunctionTy);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCountParamTypes", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint CountParamTypes(LLVMTypeRef functionTy);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetParamTypes", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void GetParamTypes(LLVMTypeRef @FunctionTy, out LLVMTypeRef @Dest);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetParamTypes", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void GetParamTypes(LLVMTypeRef functionTy, out LLVMTypeRef dest);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMStructTypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef StructTypeInContext(LLVMContextRef @C, out LLVMTypeRef @ElementTypes, uint @ElementCount, LLVMBool @Packed);
+        [DllImport(LibraryPath, EntryPoint = "LLVMStructTypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef StructTypeInContext(LLVMContextRef c, out LLVMTypeRef elementTypes, uint elementCount, LLVMBool packed);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMStructType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef StructType(out LLVMTypeRef @ElementTypes, uint @ElementCount, LLVMBool @Packed);
+        [DllImport(LibraryPath, EntryPoint = "LLVMStructType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef StructType(out LLVMTypeRef elementTypes, uint elementCount, LLVMBool packed);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMStructCreateNamed", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef StructCreateNamed(LLVMContextRef @C, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMStructCreateNamed", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef StructCreateNamed(LLVMContextRef c, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetStructName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetStructName(LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetStructName", CallingConvention = CallingConvention.Cdecl)]
+        public static extern string GetStructName(LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMStructSetBody", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void StructSetBody(LLVMTypeRef @StructTy, out LLVMTypeRef @ElementTypes, uint @ElementCount, LLVMBool @Packed);
+        [DllImport(LibraryPath, EntryPoint = "LLVMStructSetBody", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void StructSetBody(LLVMTypeRef structTy, out LLVMTypeRef elementTypes, uint elementCount, LLVMBool packed);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCountStructElementTypes", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint CountStructElementTypes(LLVMTypeRef @StructTy);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCountStructElementTypes", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint CountStructElementTypes(LLVMTypeRef structTy);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetStructElementTypes", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void GetStructElementTypes(LLVMTypeRef @StructTy, out LLVMTypeRef @Dest);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetStructElementTypes", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void GetStructElementTypes(LLVMTypeRef structTy, out LLVMTypeRef dest);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsPackedStruct", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool IsPackedStruct(LLVMTypeRef @StructTy);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsPackedStruct", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsPackedStruct(LLVMTypeRef structTy);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsOpaqueStruct", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool IsOpaqueStruct(LLVMTypeRef @StructTy);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsOpaqueStruct", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsOpaqueStruct(LLVMTypeRef structTy);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetElementType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef GetElementType(LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetElementType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef GetElementType(LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMArrayType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef ArrayType(LLVMTypeRef @ElementType, uint @ElementCount);
+        [DllImport(LibraryPath, EntryPoint = "LLVMArrayType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef ArrayType(LLVMTypeRef elementType, uint elementCount);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetArrayLength", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetArrayLength(LLVMTypeRef @ArrayTy);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetArrayLength", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetArrayLength(LLVMTypeRef arrayTy);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPointerType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef PointerType(LLVMTypeRef @ElementType, uint @AddressSpace);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPointerType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef PointerType(LLVMTypeRef elementType, uint addressSpace);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetPointerAddressSpace", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetPointerAddressSpace(LLVMTypeRef @PointerTy);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetPointerAddressSpace", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetPointerAddressSpace(LLVMTypeRef pointerTy);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMVectorType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef VectorType(LLVMTypeRef @ElementType, uint @ElementCount);
+        [DllImport(LibraryPath, EntryPoint = "LLVMVectorType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef VectorType(LLVMTypeRef elementType, uint elementCount);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetVectorSize", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetVectorSize(LLVMTypeRef @VectorTy);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetVectorSize", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetVectorSize(LLVMTypeRef vectorTy);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMVoidTypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef VoidTypeInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMVoidTypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef VoidTypeInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMLabelTypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef LabelTypeInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMLabelTypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef LabelTypeInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMX86MMXTypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef X86MMXTypeInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMX86MMXTypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef X86MMXTypeInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMVoidType", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMVoidType", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef VoidType();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMLabelType", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMLabelType", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef LabelType();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMX86MMXType", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMX86MMXType", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef X86MMXType();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMTypeOf", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef TypeOf(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMTypeOf", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef TypeOf(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetValueName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetValueName(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetValueName", CallingConvention = CallingConvention.Cdecl)]
+        public static extern string GetValueName(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetValueName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetValueName(LLVMValueRef @Val, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetValueName", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetValueName(LLVMValueRef val, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDumpValue", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DumpValue(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDumpValue", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DumpValue(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPrintValueToString", CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr PrintValueToString(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPrintValueToString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr PrintValueToString(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMReplaceAllUsesWith", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ReplaceAllUsesWith(LLVMValueRef @OldVal, LLVMValueRef @NewVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMReplaceAllUsesWith", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ReplaceAllUsesWith(LLVMValueRef oldVal, LLVMValueRef newVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsConstant", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool IsConstant(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsConstant", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsConstant(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsUndef", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool IsUndef(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsUndef", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsUndef(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAArgument", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAArgument(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAArgument", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAArgument(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsABasicBlock", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsABasicBlock(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsABasicBlock", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsABasicBlock(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAInlineAsm", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAInlineAsm(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAInlineAsm", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAInlineAsm(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAUser", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAUser(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAUser", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAUser(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAConstant", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAConstant(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAConstant", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAConstant(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsABlockAddress", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsABlockAddress(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsABlockAddress", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsABlockAddress(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAConstantAggregateZero", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAConstantAggregateZero(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAConstantAggregateZero", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAConstantAggregateZero(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAConstantArray", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAConstantArray(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAConstantArray", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAConstantArray(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAConstantDataSequential", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAConstantDataSequential(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAConstantDataSequential", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAConstantDataSequential(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAConstantDataArray", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAConstantDataArray(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAConstantDataArray", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAConstantDataArray(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAConstantDataVector", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAConstantDataVector(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAConstantDataVector", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAConstantDataVector(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAConstantExpr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAConstantExpr(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAConstantExpr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAConstantExpr(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAConstantFP", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAConstantFP(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAConstantFP", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAConstantFP(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAConstantInt", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAConstantInt(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAConstantInt", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAConstantInt(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAConstantPointerNull", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAConstantPointerNull(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAConstantPointerNull", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAConstantPointerNull(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAConstantStruct", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAConstantStruct(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAConstantStruct", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAConstantStruct(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAConstantVector", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAConstantVector(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAConstantVector", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAConstantVector(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAGlobalValue", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAGlobalValue(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAGlobalValue", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAGlobalValue(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAGlobalAlias", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAGlobalAlias(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAGlobalAlias", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAGlobalAlias(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAGlobalObject", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAGlobalObject(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAGlobalObject", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAGlobalObject(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAFunction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAFunction(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAFunction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAFunction(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAGlobalVariable", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAGlobalVariable(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAGlobalVariable", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAGlobalVariable(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAUndefValue", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAUndefValue(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAUndefValue", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAUndefValue(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAInstruction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAInstruction(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAInstruction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAInstruction(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsABinaryOperator", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsABinaryOperator(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsABinaryOperator", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsABinaryOperator(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsACallInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsACallInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsACallInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsACallInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAIntrinsicInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAIntrinsicInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAIntrinsicInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAIntrinsicInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsADbgInfoIntrinsic", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsADbgInfoIntrinsic(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsADbgInfoIntrinsic", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsADbgInfoIntrinsic(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsADbgDeclareInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsADbgDeclareInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsADbgDeclareInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsADbgDeclareInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAMemIntrinsic", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAMemIntrinsic(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAMemIntrinsic", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAMemIntrinsic(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAMemCpyInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAMemCpyInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAMemCpyInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAMemCpyInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAMemMoveInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAMemMoveInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAMemMoveInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAMemMoveInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAMemSetInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAMemSetInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAMemSetInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAMemSetInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsACmpInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsACmpInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsACmpInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsACmpInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAFCmpInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAFCmpInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAFCmpInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAFCmpInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAICmpInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAICmpInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAICmpInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAICmpInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAExtractElementInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAExtractElementInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAExtractElementInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAExtractElementInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAGetElementPtrInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAGetElementPtrInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAGetElementPtrInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAGetElementPtrInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAInsertElementInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAInsertElementInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAInsertElementInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAInsertElementInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAInsertValueInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAInsertValueInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAInsertValueInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAInsertValueInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsALandingPadInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsALandingPadInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsALandingPadInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsALandingPadInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAPHINode", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAPHINode(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAPHINode", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAPHINode(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsASelectInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsASelectInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsASelectInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsASelectInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAShuffleVectorInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAShuffleVectorInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAShuffleVectorInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAShuffleVectorInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAStoreInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAStoreInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAStoreInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAStoreInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsATerminatorInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsATerminatorInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsATerminatorInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsATerminatorInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsABranchInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsABranchInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsABranchInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsABranchInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAIndirectBrInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAIndirectBrInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAIndirectBrInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAIndirectBrInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAInvokeInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAInvokeInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAInvokeInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAInvokeInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAReturnInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAReturnInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAReturnInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAReturnInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsASwitchInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsASwitchInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsASwitchInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsASwitchInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAUnreachableInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAUnreachableInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAUnreachableInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAUnreachableInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAResumeInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAResumeInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAResumeInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAResumeInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAUnaryInstruction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAUnaryInstruction(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAUnaryInstruction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAUnaryInstruction(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAAllocaInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAAllocaInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAAllocaInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAAllocaInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsACastInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsACastInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsACastInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsACastInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAAddrSpaceCastInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAAddrSpaceCastInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAAddrSpaceCastInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAAddrSpaceCastInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsABitCastInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsABitCastInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsABitCastInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsABitCastInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAFPExtInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAFPExtInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAFPExtInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAFPExtInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAFPToSIInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAFPToSIInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAFPToSIInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAFPToSIInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAFPToUIInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAFPToUIInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAFPToUIInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAFPToUIInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAFPTruncInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAFPTruncInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAFPTruncInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAFPTruncInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAIntToPtrInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAIntToPtrInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAIntToPtrInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAIntToPtrInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAPtrToIntInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAPtrToIntInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAPtrToIntInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAPtrToIntInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsASExtInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsASExtInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsASExtInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsASExtInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsASIToFPInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsASIToFPInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsASIToFPInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsASIToFPInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsATruncInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsATruncInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsATruncInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsATruncInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAUIToFPInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAUIToFPInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAUIToFPInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAUIToFPInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAZExtInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAZExtInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAZExtInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAZExtInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAExtractValueInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAExtractValueInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAExtractValueInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAExtractValueInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsALoadInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsALoadInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsALoadInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsALoadInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAVAArgInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAVAArgInst(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAVAArgInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAVAArgInst(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAMDNode", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAMDNode(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAMDNode", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAMDNode(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsAMDString", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsAMDString(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsAMDString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAMDString(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetFirstUse", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMUseRef GetFirstUse(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetFirstUse", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMUseRef GetFirstUse(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetNextUse", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMUseRef GetNextUse(LLVMUseRef @U);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetNextUse", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMUseRef GetNextUse(LLVMUseRef u);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetUser", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetUser(LLVMUseRef @U);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetUser", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetUser(LLVMUseRef u);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetUsedValue", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetUsedValue(LLVMUseRef @U);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetUsedValue", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetUsedValue(LLVMUseRef u);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetOperand", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetOperand(LLVMValueRef @Val, uint @Index);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetOperand", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetOperand(LLVMValueRef val, uint index);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetOperandUse", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMUseRef GetOperandUse(LLVMValueRef @Val, uint @Index);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetOperandUse", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMUseRef GetOperandUse(LLVMValueRef val, uint index);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetOperand", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetOperand(LLVMValueRef @User, uint @Index, LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetOperand", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetOperand(LLVMValueRef user, uint index, LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetNumOperands", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetNumOperands(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetNumOperands", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int GetNumOperands(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstNull", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstNull(LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstNull", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstNull(LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstAllOnes", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstAllOnes(LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstAllOnes", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstAllOnes(LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetUndef", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetUndef(LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetUndef", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetUndef(LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsNull", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool IsNull(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsNull", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsNull(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstPointerNull", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstPointerNull(LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstPointerNull", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstPointerNull(LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstInt", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstInt(LLVMTypeRef @IntTy, ulong @N, LLVMBool @SignExtend);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstInt", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstInt(LLVMTypeRef intTy, ulong n, LLVMBool signExtend);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstIntOfArbitraryPrecision", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstIntOfArbitraryPrecision(LLVMTypeRef @IntTy, uint @NumWords, int[] @Words);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstIntOfArbitraryPrecision", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstIntOfArbitraryPrecision(LLVMTypeRef intTy, uint numWords, int[] words);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstIntOfString", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstIntOfString(LLVMTypeRef @IntTy, [MarshalAs(UnmanagedType.LPStr)] string @Text, char @Radix);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstIntOfString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstIntOfString(LLVMTypeRef intTy, [MarshalAs(UnmanagedType.LPStr)] string text, char radix);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstIntOfStringAndSize", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstIntOfStringAndSize(LLVMTypeRef @IntTy, [MarshalAs(UnmanagedType.LPStr)] string @Text, uint @SLen, char @Radix);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstIntOfStringAndSize", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstIntOfStringAndSize(LLVMTypeRef intTy, [MarshalAs(UnmanagedType.LPStr)] string text, uint sLen, char radix);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstReal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstReal(LLVMTypeRef @RealTy, double @N);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstReal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstReal(LLVMTypeRef realTy, double n);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstRealOfString", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstRealOfString(LLVMTypeRef @RealTy, [MarshalAs(UnmanagedType.LPStr)] string @Text);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstRealOfString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstRealOfString(LLVMTypeRef realTy, [MarshalAs(UnmanagedType.LPStr)] string text);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstRealOfStringAndSize", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstRealOfStringAndSize(LLVMTypeRef @RealTy, [MarshalAs(UnmanagedType.LPStr)] string @Text, uint @SLen);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstRealOfStringAndSize", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstRealOfStringAndSize(LLVMTypeRef realTy, [MarshalAs(UnmanagedType.LPStr)] string text, uint sLen);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstIntGetZExtValue", CallingConvention = CallingConvention.Cdecl)]
-        public static extern ulong ConstIntGetZExtValue(LLVMValueRef @ConstantVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstIntGetZExtValue", CallingConvention = CallingConvention.Cdecl)]
+        public static extern ulong ConstIntGetZExtValue(LLVMValueRef constantVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstIntGetSExtValue", CallingConvention = CallingConvention.Cdecl)]
-        public static extern long ConstIntGetSExtValue(LLVMValueRef @ConstantVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstIntGetSExtValue", CallingConvention = CallingConvention.Cdecl)]
+        public static extern long ConstIntGetSExtValue(LLVMValueRef constantVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstRealGetDouble", CallingConvention = CallingConvention.Cdecl)]
-        public static extern double ConstRealGetDouble(LLVMValueRef @ConstantVal, out LLVMBool @losesInfo);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstRealGetDouble", CallingConvention = CallingConvention.Cdecl)]
+        public static extern double ConstRealGetDouble(LLVMValueRef constantVal, out LLVMBool @losesInfo);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstStringInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstStringInContext(LLVMContextRef @C, [MarshalAs(UnmanagedType.LPStr)] string @Str, uint @Length, LLVMBool @DontNullTerminate);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstStringInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstStringInContext(LLVMContextRef c, [MarshalAs(UnmanagedType.LPStr)] string str, uint length, LLVMBool dontNullTerminate);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstString", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstString([MarshalAs(UnmanagedType.LPStr)] string @Str, uint @Length, LLVMBool @DontNullTerminate);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstString([MarshalAs(UnmanagedType.LPStr)] string str, uint length, LLVMBool dontNullTerminate);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsConstantString", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsConstantString", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool IsConstantString(LLVMValueRef @c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetAsString", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetAsString", CallingConvention = CallingConvention.Cdecl)]
         public static extern string GetAsString(LLVMValueRef @c, out int @out);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstStructInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstStructInContext(LLVMContextRef @C, out LLVMValueRef @ConstantVals, uint @Count, LLVMBool @Packed);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstStructInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstStructInContext(LLVMContextRef c, out LLVMValueRef constantVals, uint count, LLVMBool packed);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstStruct", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstStruct(out LLVMValueRef @ConstantVals, uint @Count, LLVMBool @Packed);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstStruct", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstStruct(out LLVMValueRef constantVals, uint count, LLVMBool packed);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstArray", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstArray(LLVMTypeRef @ElementTy, out LLVMValueRef @ConstantVals, uint @Length);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstArray", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstArray(LLVMTypeRef elementTy, out LLVMValueRef constantVals, uint length);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstNamedStruct", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstNamedStruct(LLVMTypeRef @StructTy, out LLVMValueRef @ConstantVals, uint @Count);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstNamedStruct", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstNamedStruct(LLVMTypeRef structTy, out LLVMValueRef constantVals, uint count);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetElementAsConstant", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetElementAsConstant", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef GetElementAsConstant(LLVMValueRef @c, uint @idx);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstVector", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstVector(out LLVMValueRef @ScalarConstantVals, uint @Size);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstVector", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstVector(out LLVMValueRef scalarConstantVals, uint size);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetConstOpcode", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMOpcode GetConstOpcode(LLVMValueRef @ConstantVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetConstOpcode", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMOpcode GetConstOpcode(LLVMValueRef constantVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAlignOf", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef AlignOf(LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAlignOf", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef AlignOf(LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSizeOf", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef SizeOf(LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSizeOf", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef SizeOf(LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstNeg", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstNeg(LLVMValueRef @ConstantVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstNeg", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstNeg(LLVMValueRef constantVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstNSWNeg", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstNSWNeg(LLVMValueRef @ConstantVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstNSWNeg", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstNSWNeg(LLVMValueRef constantVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstNUWNeg", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstNUWNeg(LLVMValueRef @ConstantVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstNUWNeg", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstNUWNeg(LLVMValueRef constantVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstFNeg", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstFNeg(LLVMValueRef @ConstantVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstFNeg", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstFNeg(LLVMValueRef constantVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstNot", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstNot(LLVMValueRef @ConstantVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstNot", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstNot(LLVMValueRef constantVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstAdd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstAdd(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstAdd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstAdd(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstNSWAdd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstNSWAdd(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstNSWAdd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstNSWAdd(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstNUWAdd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstNUWAdd(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstNUWAdd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstNUWAdd(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstFAdd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstFAdd(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstFAdd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstFAdd(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstSub", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstSub(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstSub", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstSub(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstNSWSub", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstNSWSub(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstNSWSub", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstNSWSub(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstNUWSub", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstNUWSub(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstNUWSub", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstNUWSub(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstFSub", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstFSub(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstFSub", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstFSub(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstMul", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstMul(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstMul", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstMul(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstNSWMul", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstNSWMul(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstNSWMul", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstNSWMul(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstNUWMul", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstNUWMul(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstNUWMul", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstNUWMul(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstFMul", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstFMul(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstFMul", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstFMul(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstUDiv", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstUDiv(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstUDiv", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstUDiv(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstSDiv", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstSDiv(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstSDiv", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstSDiv(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstExactSDiv", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstExactSDiv(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstExactSDiv", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstExactSDiv(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstFDiv", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstFDiv(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstFDiv", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstFDiv(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstURem", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstURem(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstURem", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstURem(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstSRem", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstSRem(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstSRem", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstSRem(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstFRem", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstFRem(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstFRem", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstFRem(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstAnd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstAnd(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstAnd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstAnd(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstOr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstOr(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstOr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstOr(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstXor", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstXor(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstXor", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstXor(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstICmp", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstICmp(LLVMIntPredicate @Predicate, LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstICmp", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstICmp(LLVMIntPredicate predicate, LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstFCmp", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstFCmp(LLVMRealPredicate @Predicate, LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstFCmp", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstFCmp(LLVMRealPredicate predicate, LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstShl", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstShl(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstShl", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstShl(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstLShr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstLShr(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstLShr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstLShr(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstAShr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstAShr(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstAShr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstAShr(LLVMValueRef lhsConstant, LLVMValueRef rhsConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstGEP", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstGEP(LLVMValueRef @ConstantVal, out LLVMValueRef @ConstantIndices, uint @NumIndices);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstGEP", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstGEP(LLVMValueRef constantVal, out LLVMValueRef constantIndices, uint numIndices);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstInBoundsGEP", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstInBoundsGEP(LLVMValueRef @ConstantVal, out LLVMValueRef @ConstantIndices, uint @NumIndices);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstInBoundsGEP", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstInBoundsGEP(LLVMValueRef constantVal, out LLVMValueRef constantIndices, uint numIndices);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstTrunc", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstTrunc(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstTrunc", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstTrunc(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstSExt", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstSExt(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstSExt", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstSExt(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstZExt", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstZExt(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstZExt", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstZExt(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstFPTrunc", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstFPTrunc(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstFPTrunc", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstFPTrunc(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstFPExt", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstFPExt(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstFPExt", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstFPExt(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstUIToFP", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstUIToFP(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstUIToFP", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstUIToFP(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstSIToFP", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstSIToFP(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstSIToFP", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstSIToFP(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstFPToUI", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstFPToUI(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstFPToUI", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstFPToUI(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstFPToSI", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstFPToSI(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstFPToSI", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstFPToSI(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstPtrToInt", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstPtrToInt(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstPtrToInt", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstPtrToInt(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstIntToPtr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstIntToPtr(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstIntToPtr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstIntToPtr(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstBitCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstBitCast(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstBitCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstBitCast(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstAddrSpaceCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstAddrSpaceCast(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstAddrSpaceCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstAddrSpaceCast(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstZExtOrBitCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstZExtOrBitCast(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstZExtOrBitCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstZExtOrBitCast(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstSExtOrBitCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstSExtOrBitCast(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstSExtOrBitCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstSExtOrBitCast(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstTruncOrBitCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstTruncOrBitCast(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstTruncOrBitCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstTruncOrBitCast(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstPointerCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstPointerCast(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstPointerCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstPointerCast(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstIntCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstIntCast(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType, LLVMBool @isSigned);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstIntCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstIntCast(LLVMValueRef constantVal, LLVMTypeRef toType, LLVMBool @isSigned);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstFPCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstFPCast(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstFPCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstFPCast(LLVMValueRef constantVal, LLVMTypeRef toType);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstSelect", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstSelect(LLVMValueRef @ConstantCondition, LLVMValueRef @ConstantIfTrue, LLVMValueRef @ConstantIfFalse);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstSelect", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstSelect(LLVMValueRef constantCondition, LLVMValueRef constantIfTrue, LLVMValueRef constantIfFalse);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstExtractElement", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstExtractElement(LLVMValueRef @VectorConstant, LLVMValueRef @IndexConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstExtractElement", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstExtractElement(LLVMValueRef vectorConstant, LLVMValueRef indexConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstInsertElement", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstInsertElement(LLVMValueRef @VectorConstant, LLVMValueRef @ElementValueConstant, LLVMValueRef @IndexConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstInsertElement", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstInsertElement(LLVMValueRef vectorConstant, LLVMValueRef elementValueConstant, LLVMValueRef indexConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstShuffleVector", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstShuffleVector(LLVMValueRef @VectorAConstant, LLVMValueRef @VectorBConstant, LLVMValueRef @MaskConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstShuffleVector", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstShuffleVector(LLVMValueRef vectorAConstant, LLVMValueRef vectorBConstant, LLVMValueRef maskConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstExtractValue", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstExtractValue(LLVMValueRef @AggConstant, out uint @IdxList, uint @NumIdx);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstExtractValue", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstExtractValue(LLVMValueRef aggConstant, out uint idxList, uint numIdx);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstInsertValue", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstInsertValue(LLVMValueRef @AggConstant, LLVMValueRef @ElementValueConstant, out uint @IdxList, uint @NumIdx);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstInsertValue", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstInsertValue(LLVMValueRef aggConstant, LLVMValueRef elementValueConstant, out uint idxList, uint numIdx);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstInlineAsm", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstInlineAsm(LLVMTypeRef @Ty, [MarshalAs(UnmanagedType.LPStr)] string @AsmString, [MarshalAs(UnmanagedType.LPStr)] string @Constraints, LLVMBool @HasSideEffects, LLVMBool @IsAlignStack);
+        [DllImport(LibraryPath, EntryPoint = "LLVMConstInlineAsm", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstInlineAsm(LLVMTypeRef ty, [MarshalAs(UnmanagedType.LPStr)] string asmString, [MarshalAs(UnmanagedType.LPStr)] string constraints, LLVMBool hasSideEffects, LLVMBool isAlignStack);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBlockAddress", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BlockAddress(LLVMValueRef @F, LLVMBasicBlockRef @BB);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBlockAddress", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BlockAddress(LLVMValueRef f, LLVMBasicBlockRef bb);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetGlobalParent", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetGlobalParent", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMModuleRef GetGlobalParent(LLVMValueRef @Global);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsDeclaration", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsDeclaration", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool IsDeclaration(LLVMValueRef @Global);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetLinkage", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetLinkage", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMLinkage GetLinkage(LLVMValueRef @Global);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetLinkage", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetLinkage(LLVMValueRef @Global, LLVMLinkage @Linkage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetLinkage", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetLinkage(LLVMValueRef @Global, LLVMLinkage linkage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetSection", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetSection", CallingConvention = CallingConvention.Cdecl)]
         public static extern string GetSection(LLVMValueRef @Global);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetSection", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetSection(LLVMValueRef @Global, [MarshalAs(UnmanagedType.LPStr)] string @Section);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetSection", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetSection(LLVMValueRef @Global, [MarshalAs(UnmanagedType.LPStr)] string section);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetVisibility", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetVisibility", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMVisibility GetVisibility(LLVMValueRef @Global);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetVisibility", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetVisibility(LLVMValueRef @Global, LLVMVisibility @Viz);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetVisibility", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetVisibility(LLVMValueRef @Global, LLVMVisibility viz);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetDLLStorageClass", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetDLLStorageClass", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMDLLStorageClass GetDLLStorageClass(LLVMValueRef @Global);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetDLLStorageClass", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetDLLStorageClass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetDLLStorageClass(LLVMValueRef @Global, LLVMDLLStorageClass @Class);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMHasUnnamedAddr", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMHasUnnamedAddr", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool HasUnnamedAddr(LLVMValueRef @Global);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetUnnamedAddr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetUnnamedAddr(LLVMValueRef @Global, LLVMBool @HasUnnamedAddr);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetUnnamedAddr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetUnnamedAddr(LLVMValueRef @Global, LLVMBool hasUnnamedAddr);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetAlignment", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetAlignment(LLVMValueRef @V);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetAlignment", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetAlignment(LLVMValueRef v);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetAlignment", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetAlignment(LLVMValueRef @V, uint @Bytes);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetAlignment", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetAlignment(LLVMValueRef v, uint bytes);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddGlobal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef AddGlobal(LLVMModuleRef @M, LLVMTypeRef @Ty, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddGlobal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef AddGlobal(LLVMModuleRef m, LLVMTypeRef ty, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddGlobalInAddressSpace", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef AddGlobalInAddressSpace(LLVMModuleRef @M, LLVMTypeRef @Ty, [MarshalAs(UnmanagedType.LPStr)] string @Name, uint @AddressSpace);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddGlobalInAddressSpace", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef AddGlobalInAddressSpace(LLVMModuleRef m, LLVMTypeRef ty, [MarshalAs(UnmanagedType.LPStr)] string name, uint addressSpace);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetNamedGlobal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetNamedGlobal(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetNamedGlobal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetNamedGlobal(LLVMModuleRef m, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetFirstGlobal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetFirstGlobal(LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetFirstGlobal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetFirstGlobal(LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetLastGlobal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetLastGlobal(LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetLastGlobal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetLastGlobal(LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetNextGlobal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetNextGlobal(LLVMValueRef @GlobalVar);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetNextGlobal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetNextGlobal(LLVMValueRef globalVar);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetPreviousGlobal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetPreviousGlobal(LLVMValueRef @GlobalVar);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetPreviousGlobal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetPreviousGlobal(LLVMValueRef globalVar);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDeleteGlobal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DeleteGlobal(LLVMValueRef @GlobalVar);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDeleteGlobal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DeleteGlobal(LLVMValueRef globalVar);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetInitializer", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetInitializer(LLVMValueRef @GlobalVar);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetInitializer", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetInitializer(LLVMValueRef globalVar);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetInitializer", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetInitializer(LLVMValueRef @GlobalVar, LLVMValueRef @ConstantVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetInitializer", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetInitializer(LLVMValueRef globalVar, LLVMValueRef constantVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsThreadLocal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool IsThreadLocal(LLVMValueRef @GlobalVar);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsThreadLocal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsThreadLocal(LLVMValueRef globalVar);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetThreadLocal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetThreadLocal(LLVMValueRef @GlobalVar, LLVMBool @IsThreadLocal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetThreadLocal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetThreadLocal(LLVMValueRef globalVar, LLVMBool isThreadLocal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsGlobalConstant", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool IsGlobalConstant(LLVMValueRef @GlobalVar);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsGlobalConstant", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsGlobalConstant(LLVMValueRef globalVar);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetGlobalConstant", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetGlobalConstant(LLVMValueRef @GlobalVar, LLVMBool @IsConstant);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetGlobalConstant", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetGlobalConstant(LLVMValueRef globalVar, LLVMBool isConstant);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetThreadLocalMode", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMThreadLocalMode GetThreadLocalMode(LLVMValueRef @GlobalVar);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetThreadLocalMode", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMThreadLocalMode GetThreadLocalMode(LLVMValueRef globalVar);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetThreadLocalMode", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetThreadLocalMode(LLVMValueRef @GlobalVar, LLVMThreadLocalMode @Mode);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetThreadLocalMode", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetThreadLocalMode(LLVMValueRef globalVar, LLVMThreadLocalMode mode);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsExternallyInitialized", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool IsExternallyInitialized(LLVMValueRef @GlobalVar);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsExternallyInitialized", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsExternallyInitialized(LLVMValueRef globalVar);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetExternallyInitialized", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetExternallyInitialized(LLVMValueRef @GlobalVar, LLVMBool @IsExtInit);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetExternallyInitialized", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetExternallyInitialized(LLVMValueRef globalVar, LLVMBool isExtInit);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddAlias", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef AddAlias(LLVMModuleRef @M, LLVMTypeRef @Ty, LLVMValueRef @Aliasee, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddAlias", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef AddAlias(LLVMModuleRef m, LLVMTypeRef ty, LLVMValueRef aliasee, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDeleteFunction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DeleteFunction(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDeleteFunction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DeleteFunction(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetIntrinsicID", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetIntrinsicID(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetIntrinsicID", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetIntrinsicID(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetFunctionCallConv", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetFunctionCallConv(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetFunctionCallConv", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetFunctionCallConv(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetFunctionCallConv", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetFunctionCallConv(LLVMValueRef @Fn, uint @CC);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetFunctionCallConv", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetFunctionCallConv(LLVMValueRef fn, uint cc);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetGC", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetGC(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetGC", CallingConvention = CallingConvention.Cdecl)]
+        public static extern string GetGC(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetGC", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetGC(LLVMValueRef @Fn, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetGC", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetGC(LLVMValueRef fn, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddFunctionAttr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddFunctionAttr(LLVMValueRef @Fn, LLVMAttribute @PA);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddFunctionAttr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddFunctionAttr(LLVMValueRef fn, LLVMAttribute pa);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddTargetDependentFunctionAttr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddTargetDependentFunctionAttr(LLVMValueRef @Fn, [MarshalAs(UnmanagedType.LPStr)] string @A, [MarshalAs(UnmanagedType.LPStr)] string @V);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddTargetDependentFunctionAttr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddTargetDependentFunctionAttr(LLVMValueRef fn, [MarshalAs(UnmanagedType.LPStr)] string a, [MarshalAs(UnmanagedType.LPStr)] string v);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetFunctionAttr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMAttribute GetFunctionAttr(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetFunctionAttr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMAttribute GetFunctionAttr(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMRemoveFunctionAttr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void RemoveFunctionAttr(LLVMValueRef @Fn, LLVMAttribute @PA);
+        [DllImport(LibraryPath, EntryPoint = "LLVMRemoveFunctionAttr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void RemoveFunctionAttr(LLVMValueRef fn, LLVMAttribute pa);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCountParams", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint CountParams(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCountParams", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint CountParams(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetParams", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void GetParams(LLVMValueRef @Fn, out LLVMValueRef @Params);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetParams", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void GetParams(LLVMValueRef fn, out LLVMValueRef @Params);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetParam", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetParam(LLVMValueRef @Fn, uint @Index);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetParam", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetParam(LLVMValueRef fn, uint index);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetParamParent", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetParamParent(LLVMValueRef @Inst);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetParamParent", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetParamParent(LLVMValueRef inst);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetFirstParam", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetFirstParam(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetFirstParam", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetFirstParam(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetLastParam", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetLastParam(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetLastParam", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetLastParam(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetNextParam", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetNextParam(LLVMValueRef @Arg);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetNextParam", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetNextParam(LLVMValueRef arg);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetPreviousParam", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetPreviousParam(LLVMValueRef @Arg);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetPreviousParam", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetPreviousParam(LLVMValueRef arg);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddAttribute", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddAttribute(LLVMValueRef @Arg, LLVMAttribute @PA);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddAttribute", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddAttribute(LLVMValueRef arg, LLVMAttribute pa);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMRemoveAttribute", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void RemoveAttribute(LLVMValueRef @Arg, LLVMAttribute @PA);
+        [DllImport(LibraryPath, EntryPoint = "LLVMRemoveAttribute", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void RemoveAttribute(LLVMValueRef arg, LLVMAttribute pa);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetAttribute", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMAttribute GetAttribute(LLVMValueRef @Arg);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetAttribute", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMAttribute GetAttribute(LLVMValueRef arg);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetParamAlignment", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetParamAlignment(LLVMValueRef @Arg, uint @align);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetParamAlignment", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetParamAlignment(LLVMValueRef arg, uint @align);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMMDStringInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef MDStringInContext(LLVMContextRef @C, [MarshalAs(UnmanagedType.LPStr)] string @Str, uint @SLen);
+        [DllImport(LibraryPath, EntryPoint = "LLVMMDStringInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef MDStringInContext(LLVMContextRef c, [MarshalAs(UnmanagedType.LPStr)] string str, uint sLen);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMMDString", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef MDString([MarshalAs(UnmanagedType.LPStr)] string @Str, uint @SLen);
+        [DllImport(LibraryPath, EntryPoint = "LLVMMDString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef MDString([MarshalAs(UnmanagedType.LPStr)] string str, uint sLen);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMMDNodeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef MDNodeInContext(LLVMContextRef @C, out LLVMValueRef @Vals, uint @Count);
+        [DllImport(LibraryPath, EntryPoint = "LLVMMDNodeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef MDNodeInContext(LLVMContextRef c, out LLVMValueRef vals, uint count);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMMDNode", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef MDNode(out LLVMValueRef @Vals, uint @Count);
+        [DllImport(LibraryPath, EntryPoint = "LLVMMDNode", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef MDNode(out LLVMValueRef vals, uint count);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetMDString", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetMDString(LLVMValueRef @V, out uint @Len);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetMDString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern string GetMDString(LLVMValueRef v, out uint len);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetMDNodeNumOperands", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetMDNodeNumOperands(LLVMValueRef @V);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetMDNodeNumOperands", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetMDNodeNumOperands(LLVMValueRef v);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetMDNodeOperands", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void GetMDNodeOperands(LLVMValueRef @V, out LLVMValueRef @Dest);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetMDNodeOperands", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void GetMDNodeOperands(LLVMValueRef v, out LLVMValueRef dest);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBasicBlockAsValue", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BasicBlockAsValue(LLVMBasicBlockRef @BB);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBasicBlockAsValue", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BasicBlockAsValue(LLVMBasicBlockRef bb);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMValueIsBasicBlock", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool ValueIsBasicBlock(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMValueIsBasicBlock", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool ValueIsBasicBlock(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMValueAsBasicBlock", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef ValueAsBasicBlock(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMValueAsBasicBlock", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef ValueAsBasicBlock(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetBasicBlockParent", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetBasicBlockParent(LLVMBasicBlockRef @BB);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetBasicBlockParent", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetBasicBlockParent(LLVMBasicBlockRef bb);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetBasicBlockTerminator", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetBasicBlockTerminator(LLVMBasicBlockRef @BB);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetBasicBlockTerminator", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetBasicBlockTerminator(LLVMBasicBlockRef bb);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCountBasicBlocks", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint CountBasicBlocks(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCountBasicBlocks", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint CountBasicBlocks(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetBasicBlocks", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void GetBasicBlocks(LLVMValueRef @Fn, out LLVMBasicBlockRef @BasicBlocks);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetBasicBlocks", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void GetBasicBlocks(LLVMValueRef fn, out LLVMBasicBlockRef basicBlocks);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetFirstBasicBlock", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef GetFirstBasicBlock(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetFirstBasicBlock", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef GetFirstBasicBlock(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetLastBasicBlock", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef GetLastBasicBlock(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetLastBasicBlock", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef GetLastBasicBlock(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetNextBasicBlock", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef GetNextBasicBlock(LLVMBasicBlockRef @BB);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetNextBasicBlock", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef GetNextBasicBlock(LLVMBasicBlockRef bb);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetPreviousBasicBlock", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef GetPreviousBasicBlock(LLVMBasicBlockRef @BB);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetPreviousBasicBlock", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef GetPreviousBasicBlock(LLVMBasicBlockRef bb);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetEntryBasicBlock", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef GetEntryBasicBlock(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetEntryBasicBlock", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef GetEntryBasicBlock(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAppendBasicBlockInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef AppendBasicBlockInContext(LLVMContextRef @C, LLVMValueRef @Fn, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAppendBasicBlockInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef AppendBasicBlockInContext(LLVMContextRef c, LLVMValueRef fn, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAppendBasicBlock", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef AppendBasicBlock(LLVMValueRef @Fn, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAppendBasicBlock", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef AppendBasicBlock(LLVMValueRef fn, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInsertBasicBlockInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef InsertBasicBlockInContext(LLVMContextRef @C, LLVMBasicBlockRef @BB, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInsertBasicBlockInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef InsertBasicBlockInContext(LLVMContextRef c, LLVMBasicBlockRef bb, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInsertBasicBlock", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef InsertBasicBlock(LLVMBasicBlockRef @InsertBeforeBB, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInsertBasicBlock", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef InsertBasicBlock(LLVMBasicBlockRef insertBeforeBb, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDeleteBasicBlock", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DeleteBasicBlock(LLVMBasicBlockRef @BB);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDeleteBasicBlock", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DeleteBasicBlock(LLVMBasicBlockRef bb);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMRemoveBasicBlockFromParent", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void RemoveBasicBlockFromParent(LLVMBasicBlockRef @BB);
+        [DllImport(LibraryPath, EntryPoint = "LLVMRemoveBasicBlockFromParent", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void RemoveBasicBlockFromParent(LLVMBasicBlockRef bb);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMMoveBasicBlockBefore", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MoveBasicBlockBefore(LLVMBasicBlockRef @BB, LLVMBasicBlockRef @MovePos);
+        [DllImport(LibraryPath, EntryPoint = "LLVMMoveBasicBlockBefore", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MoveBasicBlockBefore(LLVMBasicBlockRef bb, LLVMBasicBlockRef movePos);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMMoveBasicBlockAfter", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MoveBasicBlockAfter(LLVMBasicBlockRef @BB, LLVMBasicBlockRef @MovePos);
+        [DllImport(LibraryPath, EntryPoint = "LLVMMoveBasicBlockAfter", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MoveBasicBlockAfter(LLVMBasicBlockRef bb, LLVMBasicBlockRef movePos);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetFirstInstruction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetFirstInstruction(LLVMBasicBlockRef @BB);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetFirstInstruction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetFirstInstruction(LLVMBasicBlockRef bb);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetLastInstruction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetLastInstruction(LLVMBasicBlockRef @BB);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetLastInstruction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetLastInstruction(LLVMBasicBlockRef bb);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMHasMetadata", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int HasMetadata(LLVMValueRef @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMHasMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int HasMetadata(LLVMValueRef val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetMetadata", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetMetadata(LLVMValueRef @Val, uint @KindID);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetMetadata(LLVMValueRef val, uint kindID);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetMetadata", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetMetadata(LLVMValueRef @Val, uint @KindID, LLVMValueRef @Node);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetMetadata(LLVMValueRef val, uint kindID, LLVMValueRef node);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetInstructionParent", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef GetInstructionParent(LLVMValueRef @Inst);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetInstructionParent", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef GetInstructionParent(LLVMValueRef inst);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetNextInstruction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetNextInstruction(LLVMValueRef @Inst);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetNextInstruction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetNextInstruction(LLVMValueRef inst);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetPreviousInstruction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetPreviousInstruction(LLVMValueRef @Inst);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetPreviousInstruction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetPreviousInstruction(LLVMValueRef inst);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInstructionEraseFromParent", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InstructionEraseFromParent(LLVMValueRef @Inst);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInstructionEraseFromParent", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InstructionEraseFromParent(LLVMValueRef inst);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetInstructionOpcode", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMOpcode GetInstructionOpcode(LLVMValueRef @Inst);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetInstructionOpcode", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMOpcode GetInstructionOpcode(LLVMValueRef inst);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetICmpPredicate", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMIntPredicate GetICmpPredicate(LLVMValueRef @Inst);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetICmpPredicate", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMIntPredicate GetICmpPredicate(LLVMValueRef inst);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetFCmpPredicate", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMRealPredicate GetFCmpPredicate(LLVMValueRef @Inst);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetFCmpPredicate", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMRealPredicate GetFCmpPredicate(LLVMValueRef inst);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInstructionClone", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef InstructionClone(LLVMValueRef @Inst);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInstructionClone", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef InstructionClone(LLVMValueRef inst);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetInstructionCallConv", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetInstructionCallConv(LLVMValueRef @Instr, uint @CC);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetInstructionCallConv", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetInstructionCallConv(LLVMValueRef instr, uint cc);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetInstructionCallConv", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetInstructionCallConv(LLVMValueRef @Instr);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetInstructionCallConv", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetInstructionCallConv(LLVMValueRef instr);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddInstrAttribute", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddInstrAttribute(LLVMValueRef @Instr, uint @index, LLVMAttribute @param2);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddInstrAttribute", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddInstrAttribute(LLVMValueRef instr, uint @index, LLVMAttribute @param2);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMRemoveInstrAttribute", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void RemoveInstrAttribute(LLVMValueRef @Instr, uint @index, LLVMAttribute @param2);
+        [DllImport(LibraryPath, EntryPoint = "LLVMRemoveInstrAttribute", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void RemoveInstrAttribute(LLVMValueRef instr, uint @index, LLVMAttribute @param2);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetInstrParamAlignment", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetInstrParamAlignment(LLVMValueRef @Instr, uint @index, uint @align);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetInstrParamAlignment", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetInstrParamAlignment(LLVMValueRef instr, uint @index, uint @align);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsTailCall", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool IsTailCall(LLVMValueRef @CallInst);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsTailCall", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsTailCall(LLVMValueRef callInst);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetTailCall", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetTailCall(LLVMValueRef @CallInst, LLVMBool @IsTailCall);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetTailCall", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetTailCall(LLVMValueRef callInst, LLVMBool isTailCall);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetNumSuccessors", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetNumSuccessors(LLVMValueRef @Term);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetNumSuccessors", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetNumSuccessors(LLVMValueRef term);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetSuccessor", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef GetSuccessor(LLVMValueRef @Term, uint @i);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetSuccessor", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef GetSuccessor(LLVMValueRef term, uint @i);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetSuccessor", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetSuccessor(LLVMValueRef @Term, uint @i, LLVMBasicBlockRef @block);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetSuccessor", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetSuccessor(LLVMValueRef term, uint @i, LLVMBasicBlockRef @block);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsConditional", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool IsConditional(LLVMValueRef @Branch);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsConditional", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsConditional(LLVMValueRef branch);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetCondition", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetCondition(LLVMValueRef @Branch);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetCondition", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetCondition(LLVMValueRef branch);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetCondition", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetCondition(LLVMValueRef @Branch, LLVMValueRef @Cond);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetCondition", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetCondition(LLVMValueRef branch, LLVMValueRef cond);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetSwitchDefaultDest", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef GetSwitchDefaultDest(LLVMValueRef @SwitchInstr);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetSwitchDefaultDest", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef GetSwitchDefaultDest(LLVMValueRef switchInstr);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddIncoming", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddIncoming(LLVMValueRef @PhiNode, out LLVMValueRef @IncomingValues, out LLVMBasicBlockRef @IncomingBlocks, uint @Count);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddIncoming", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddIncoming(LLVMValueRef phiNode, out LLVMValueRef incomingValues, out LLVMBasicBlockRef incomingBlocks, uint count);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCountIncoming", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint CountIncoming(LLVMValueRef @PhiNode);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCountIncoming", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint CountIncoming(LLVMValueRef phiNode);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetIncomingValue", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetIncomingValue(LLVMValueRef @PhiNode, uint @Index);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetIncomingValue", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetIncomingValue(LLVMValueRef phiNode, uint index);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetIncomingBlock", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef GetIncomingBlock(LLVMValueRef @PhiNode, uint @Index);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetIncomingBlock", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef GetIncomingBlock(LLVMValueRef phiNode, uint index);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateBuilderInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBuilderRef CreateBuilderInContext(LLVMContextRef @C);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateBuilderInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBuilderRef CreateBuilderInContext(LLVMContextRef c);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateBuilder", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateBuilder", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBuilderRef CreateBuilder();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPositionBuilder", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void PositionBuilder(LLVMBuilderRef @Builder, LLVMBasicBlockRef @Block, LLVMValueRef @Instr);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPositionBuilder", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void PositionBuilder(LLVMBuilderRef builder, LLVMBasicBlockRef block, LLVMValueRef instr);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPositionBuilderBefore", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void PositionBuilderBefore(LLVMBuilderRef @Builder, LLVMValueRef @Instr);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPositionBuilderBefore", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void PositionBuilderBefore(LLVMBuilderRef builder, LLVMValueRef instr);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPositionBuilderAtEnd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void PositionBuilderAtEnd(LLVMBuilderRef @Builder, LLVMBasicBlockRef @Block);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPositionBuilderAtEnd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void PositionBuilderAtEnd(LLVMBuilderRef builder, LLVMBasicBlockRef block);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetInsertBlock", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBasicBlockRef GetInsertBlock(LLVMBuilderRef @Builder);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetInsertBlock", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef GetInsertBlock(LLVMBuilderRef builder);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMClearInsertionPosition", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ClearInsertionPosition(LLVMBuilderRef @Builder);
+        [DllImport(LibraryPath, EntryPoint = "LLVMClearInsertionPosition", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ClearInsertionPosition(LLVMBuilderRef builder);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInsertIntoBuilder", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InsertIntoBuilder(LLVMBuilderRef @Builder, LLVMValueRef @Instr);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInsertIntoBuilder", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InsertIntoBuilder(LLVMBuilderRef builder, LLVMValueRef instr);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInsertIntoBuilderWithName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InsertIntoBuilderWithName(LLVMBuilderRef @Builder, LLVMValueRef @Instr, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInsertIntoBuilderWithName", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InsertIntoBuilderWithName(LLVMBuilderRef builder, LLVMValueRef instr, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposeBuilder", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisposeBuilder(LLVMBuilderRef @Builder);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposeBuilder", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeBuilder(LLVMBuilderRef builder);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetCurrentDebugLocation", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetCurrentDebugLocation(LLVMBuilderRef @Builder, LLVMValueRef @L);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetCurrentDebugLocation", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetCurrentDebugLocation(LLVMBuilderRef builder, LLVMValueRef l);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetCurrentDebugLocation", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef GetCurrentDebugLocation(LLVMBuilderRef @Builder);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetCurrentDebugLocation", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetCurrentDebugLocation(LLVMBuilderRef builder);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetInstDebugLocation", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetInstDebugLocation(LLVMBuilderRef @Builder, LLVMValueRef @Inst);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetInstDebugLocation", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetInstDebugLocation(LLVMBuilderRef builder, LLVMValueRef inst);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildRetVoid", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildRetVoid", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildRetVoid(LLVMBuilderRef @param0);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildRet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildRet(LLVMBuilderRef @param0, LLVMValueRef @V);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildRet", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildRet(LLVMBuilderRef @param0, LLVMValueRef v);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildAggregateRet", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildAggregateRet(LLVMBuilderRef @param0, out LLVMValueRef @RetVals, uint @N);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildAggregateRet", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildAggregateRet(LLVMBuilderRef @param0, out LLVMValueRef retVals, uint n);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildBr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildBr(LLVMBuilderRef @param0, LLVMBasicBlockRef @Dest);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildBr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildBr(LLVMBuilderRef @param0, LLVMBasicBlockRef dest);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildCondBr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildCondBr(LLVMBuilderRef @param0, LLVMValueRef @If, LLVMBasicBlockRef @Then, LLVMBasicBlockRef @Else);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildCondBr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildCondBr(LLVMBuilderRef @param0, LLVMValueRef @If, LLVMBasicBlockRef then, LLVMBasicBlockRef @Else);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildSwitch", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildSwitch(LLVMBuilderRef @param0, LLVMValueRef @V, LLVMBasicBlockRef @Else, uint @NumCases);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildSwitch", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildSwitch(LLVMBuilderRef @param0, LLVMValueRef v, LLVMBasicBlockRef @Else, uint numCases);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildIndirectBr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildIndirectBr(LLVMBuilderRef @B, LLVMValueRef @Addr, uint @NumDests);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildIndirectBr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildIndirectBr(LLVMBuilderRef b, LLVMValueRef addr, uint numDests);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildInvoke", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildInvoke(LLVMBuilderRef @param0, LLVMValueRef @Fn, out LLVMValueRef @Args, uint @NumArgs, LLVMBasicBlockRef @Then, LLVMBasicBlockRef @Catch, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildInvoke", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildInvoke(LLVMBuilderRef @param0, LLVMValueRef fn, out LLVMValueRef args, uint numArgs, LLVMBasicBlockRef then, LLVMBasicBlockRef @Catch, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildLandingPad", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildLandingPad(LLVMBuilderRef @B, LLVMTypeRef @Ty, LLVMValueRef @PersFn, uint @NumClauses, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildLandingPad", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildLandingPad(LLVMBuilderRef b, LLVMTypeRef ty, LLVMValueRef persFn, uint numClauses, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildResume", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildResume(LLVMBuilderRef @B, LLVMValueRef @Exn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildResume", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildResume(LLVMBuilderRef b, LLVMValueRef exn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildUnreachable", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildUnreachable", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildUnreachable(LLVMBuilderRef @param0);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddCase", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddCase(LLVMValueRef @Switch, LLVMValueRef @OnVal, LLVMBasicBlockRef @Dest);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddCase", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddCase(LLVMValueRef @Switch, LLVMValueRef onVal, LLVMBasicBlockRef dest);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddDestination", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddDestination(LLVMValueRef @IndirectBr, LLVMBasicBlockRef @Dest);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddDestination", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddDestination(LLVMValueRef indirectBr, LLVMBasicBlockRef dest);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddClause", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddClause(LLVMValueRef @LandingPad, LLVMValueRef @ClauseVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddClause", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddClause(LLVMValueRef landingPad, LLVMValueRef clauseVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetCleanup", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetCleanup(LLVMValueRef @LandingPad, LLVMBool @Val);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetCleanup", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetCleanup(LLVMValueRef landingPad, LLVMBool val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildAdd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildAdd(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildAdd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildAdd(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildNSWAdd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildNSWAdd(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildNSWAdd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildNSWAdd(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildNUWAdd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildNUWAdd(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildNUWAdd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildNUWAdd(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildFAdd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildFAdd(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildFAdd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildFAdd(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildSub", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildSub(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildSub", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildSub(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildNSWSub", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildNSWSub(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildNSWSub", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildNSWSub(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildNUWSub", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildNUWSub(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildNUWSub", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildNUWSub(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildFSub", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildFSub(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildFSub", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildFSub(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildMul", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildMul(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildMul", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildMul(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildNSWMul", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildNSWMul(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildNSWMul", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildNSWMul(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildNUWMul", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildNUWMul(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildNUWMul", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildNUWMul(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildFMul", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildFMul(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildFMul", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildFMul(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildUDiv", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildUDiv(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildUDiv", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildUDiv(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildSDiv", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildSDiv(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildSDiv", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildSDiv(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildExactSDiv", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildExactSDiv(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildExactSDiv", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildExactSDiv(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildFDiv", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildFDiv(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildFDiv", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildFDiv(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildURem", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildURem(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildURem", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildURem(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildSRem", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildSRem(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildSRem", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildSRem(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildFRem", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildFRem(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildFRem", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildFRem(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildShl", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildShl(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildShl", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildShl(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildLShr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildLShr(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildLShr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildLShr(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildAShr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildAShr(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildAShr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildAShr(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildAnd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildAnd(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildAnd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildAnd(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildOr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildOr(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildOr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildOr(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildXor", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildXor(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildXor", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildXor(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildBinOp", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildBinOp(LLVMBuilderRef @B, LLVMOpcode @Op, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildBinOp", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildBinOp(LLVMBuilderRef b, LLVMOpcode op, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildNeg", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildNeg(LLVMBuilderRef @param0, LLVMValueRef @V, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildNeg", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildNeg(LLVMBuilderRef @param0, LLVMValueRef v, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildNSWNeg", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildNSWNeg(LLVMBuilderRef @B, LLVMValueRef @V, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildNSWNeg", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildNSWNeg(LLVMBuilderRef b, LLVMValueRef v, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildNUWNeg", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildNUWNeg(LLVMBuilderRef @B, LLVMValueRef @V, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildNUWNeg", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildNUWNeg(LLVMBuilderRef b, LLVMValueRef v, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildFNeg", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildFNeg(LLVMBuilderRef @param0, LLVMValueRef @V, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildFNeg", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildFNeg(LLVMBuilderRef @param0, LLVMValueRef v, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildNot", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildNot(LLVMBuilderRef @param0, LLVMValueRef @V, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildNot", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildNot(LLVMBuilderRef @param0, LLVMValueRef v, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildMalloc", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildMalloc(LLVMBuilderRef @param0, LLVMTypeRef @Ty, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildMalloc", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildMalloc(LLVMBuilderRef @param0, LLVMTypeRef ty, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildArrayMalloc", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildArrayMalloc(LLVMBuilderRef @param0, LLVMTypeRef @Ty, LLVMValueRef @Val, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildArrayMalloc", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildArrayMalloc(LLVMBuilderRef @param0, LLVMTypeRef ty, LLVMValueRef val, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildAlloca", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildAlloca(LLVMBuilderRef @param0, LLVMTypeRef @Ty, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildAlloca", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildAlloca(LLVMBuilderRef @param0, LLVMTypeRef ty, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildArrayAlloca", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildArrayAlloca(LLVMBuilderRef @param0, LLVMTypeRef @Ty, LLVMValueRef @Val, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildArrayAlloca", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildArrayAlloca(LLVMBuilderRef @param0, LLVMTypeRef ty, LLVMValueRef val, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildFree", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildFree(LLVMBuilderRef @param0, LLVMValueRef @PointerVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildFree", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildFree(LLVMBuilderRef @param0, LLVMValueRef pointerVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildLoad", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildLoad(LLVMBuilderRef @param0, LLVMValueRef @PointerVal, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildLoad", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildLoad(LLVMBuilderRef @param0, LLVMValueRef pointerVal, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildStore", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildStore(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMValueRef @Ptr);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildStore", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildStore(LLVMBuilderRef @param0, LLVMValueRef val, LLVMValueRef ptr);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildGEP", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildGEP(LLVMBuilderRef @B, LLVMValueRef @Pointer, out LLVMValueRef @Indices, uint @NumIndices, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildGEP", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildGEP(LLVMBuilderRef b, LLVMValueRef pointer, out LLVMValueRef indices, uint numIndices, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildInBoundsGEP", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildInBoundsGEP(LLVMBuilderRef @B, LLVMValueRef @Pointer, out LLVMValueRef @Indices, uint @NumIndices, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildInBoundsGEP", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildInBoundsGEP(LLVMBuilderRef b, LLVMValueRef pointer, out LLVMValueRef indices, uint numIndices, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildStructGEP", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildStructGEP(LLVMBuilderRef @B, LLVMValueRef @Pointer, uint @Idx, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildStructGEP", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildStructGEP(LLVMBuilderRef b, LLVMValueRef pointer, uint idx, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildGlobalString", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildGlobalString(LLVMBuilderRef @B, [MarshalAs(UnmanagedType.LPStr)] string @Str, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildGlobalString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildGlobalString(LLVMBuilderRef b, [MarshalAs(UnmanagedType.LPStr)] string str, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildGlobalStringPtr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildGlobalStringPtr(LLVMBuilderRef @B, [MarshalAs(UnmanagedType.LPStr)] string @Str, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildGlobalStringPtr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildGlobalStringPtr(LLVMBuilderRef b, [MarshalAs(UnmanagedType.LPStr)] string str, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetVolatile", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool GetVolatile(LLVMValueRef @MemoryAccessInst);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetVolatile", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool GetVolatile(LLVMValueRef memoryAccessInst);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetVolatile", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetVolatile(LLVMValueRef @MemoryAccessInst, LLVMBool @IsVolatile);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetVolatile", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetVolatile(LLVMValueRef memoryAccessInst, LLVMBool isVolatile);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildTrunc", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildTrunc(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildTrunc", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildTrunc(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildZExt", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildZExt(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildZExt", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildZExt(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildSExt", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildSExt(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildSExt", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildSExt(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildFPToUI", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildFPToUI(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildFPToUI", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildFPToUI(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildFPToSI", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildFPToSI(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildFPToSI", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildFPToSI(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildUIToFP", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildUIToFP(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildUIToFP", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildUIToFP(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildSIToFP", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildSIToFP(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildSIToFP", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildSIToFP(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildFPTrunc", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildFPTrunc(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildFPTrunc", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildFPTrunc(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildFPExt", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildFPExt(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildFPExt", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildFPExt(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildPtrToInt", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildPtrToInt(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildPtrToInt", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildPtrToInt(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildIntToPtr", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildIntToPtr(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildIntToPtr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildIntToPtr(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildBitCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildBitCast(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildBitCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildBitCast(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildAddrSpaceCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildAddrSpaceCast(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildAddrSpaceCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildAddrSpaceCast(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildZExtOrBitCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildZExtOrBitCast(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildZExtOrBitCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildZExtOrBitCast(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildSExtOrBitCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildSExtOrBitCast(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildSExtOrBitCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildSExtOrBitCast(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildTruncOrBitCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildTruncOrBitCast(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildTruncOrBitCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildTruncOrBitCast(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildCast(LLVMBuilderRef @B, LLVMOpcode @Op, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildCast(LLVMBuilderRef b, LLVMOpcode op, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildPointerCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildPointerCast(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildPointerCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildPointerCast(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildIntCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildIntCast(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildIntCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildIntCast(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildFPCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildFPCast(LLVMBuilderRef @param0, LLVMValueRef @Val, LLVMTypeRef @DestTy, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildFPCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildFPCast(LLVMBuilderRef @param0, LLVMValueRef val, LLVMTypeRef destTy, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildICmp", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildICmp(LLVMBuilderRef @param0, LLVMIntPredicate @Op, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildICmp", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildICmp(LLVMBuilderRef @param0, LLVMIntPredicate op, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildFCmp", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildFCmp(LLVMBuilderRef @param0, LLVMRealPredicate @Op, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildFCmp", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildFCmp(LLVMBuilderRef @param0, LLVMRealPredicate op, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildPhi", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildPhi(LLVMBuilderRef @param0, LLVMTypeRef @Ty, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildPhi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildPhi(LLVMBuilderRef @param0, LLVMTypeRef ty, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildCall", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildCall(LLVMBuilderRef @param0, LLVMValueRef @Fn, out LLVMValueRef @Args, uint @NumArgs, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildCall", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildCall(LLVMBuilderRef @param0, LLVMValueRef fn, out LLVMValueRef args, uint numArgs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildSelect", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildSelect(LLVMBuilderRef @param0, LLVMValueRef @If, LLVMValueRef @Then, LLVMValueRef @Else, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildSelect", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildSelect(LLVMBuilderRef @param0, LLVMValueRef @If, LLVMValueRef then, LLVMValueRef @Else, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildVAArg", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildVAArg(LLVMBuilderRef @param0, LLVMValueRef @List, LLVMTypeRef @Ty, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildVAArg", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildVAArg(LLVMBuilderRef @param0, LLVMValueRef list, LLVMTypeRef ty, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildExtractElement", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildExtractElement(LLVMBuilderRef @param0, LLVMValueRef @VecVal, LLVMValueRef @Index, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildExtractElement", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildExtractElement(LLVMBuilderRef @param0, LLVMValueRef vecVal, LLVMValueRef index, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildInsertElement", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildInsertElement(LLVMBuilderRef @param0, LLVMValueRef @VecVal, LLVMValueRef @EltVal, LLVMValueRef @Index, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildInsertElement", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildInsertElement(LLVMBuilderRef @param0, LLVMValueRef vecVal, LLVMValueRef eltVal, LLVMValueRef index, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildShuffleVector", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildShuffleVector(LLVMBuilderRef @param0, LLVMValueRef @V1, LLVMValueRef @V2, LLVMValueRef @Mask, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildShuffleVector", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildShuffleVector(LLVMBuilderRef @param0, LLVMValueRef v1, LLVMValueRef v2, LLVMValueRef mask, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildExtractValue", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildExtractValue(LLVMBuilderRef @param0, LLVMValueRef @AggVal, uint @Index, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildExtractValue", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildExtractValue(LLVMBuilderRef @param0, LLVMValueRef aggVal, uint index, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildInsertValue", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildInsertValue(LLVMBuilderRef @param0, LLVMValueRef @AggVal, LLVMValueRef @EltVal, uint @Index, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildInsertValue", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildInsertValue(LLVMBuilderRef @param0, LLVMValueRef aggVal, LLVMValueRef eltVal, uint index, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildIsNull", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildIsNull(LLVMBuilderRef @param0, LLVMValueRef @Val, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildIsNull", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildIsNull(LLVMBuilderRef @param0, LLVMValueRef val, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildIsNotNull", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildIsNotNull(LLVMBuilderRef @param0, LLVMValueRef @Val, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildIsNotNull", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildIsNotNull(LLVMBuilderRef @param0, LLVMValueRef val, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildPtrDiff", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildPtrDiff(LLVMBuilderRef @param0, LLVMValueRef @LHS, LLVMValueRef @RHS, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildPtrDiff", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildPtrDiff(LLVMBuilderRef @param0, LLVMValueRef lhs, LLVMValueRef rhs, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildFence", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildFence(LLVMBuilderRef @B, LLVMAtomicOrdering @ordering, LLVMBool @singleThread, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildFence", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildFence(LLVMBuilderRef b, LLVMAtomicOrdering @ordering, LLVMBool @singleThread, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildAtomicRMW", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildAtomicRMW(LLVMBuilderRef @B, LLVMAtomicRMWBinOp @op, LLVMValueRef @PTR, LLVMValueRef @Val, LLVMAtomicOrdering @ordering, LLVMBool @singleThread);
+        [DllImport(LibraryPath, EntryPoint = "LLVMBuildAtomicRMW", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildAtomicRMW(LLVMBuilderRef b, LLVMAtomicRMWBinOp @op, LLVMValueRef ptr, LLVMValueRef val, LLVMAtomicOrdering @ordering, LLVMBool @singleThread);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateModuleProviderForExistingModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMModuleProviderRef CreateModuleProviderForExistingModule(LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateModuleProviderForExistingModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMModuleProviderRef CreateModuleProviderForExistingModule(LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposeModuleProvider", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisposeModuleProvider(LLVMModuleProviderRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposeModuleProvider", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeModuleProvider(LLVMModuleProviderRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateMemoryBufferWithContentsOfFile", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateMemoryBufferWithContentsOfFile([MarshalAs(UnmanagedType.LPStr)] string @Path, out LLVMMemoryBufferRef @OutMemBuf, out IntPtr @OutMessage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateMemoryBufferWithContentsOfFile", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool CreateMemoryBufferWithContentsOfFile([MarshalAs(UnmanagedType.LPStr)] string path, out LLVMMemoryBufferRef outMemBuf, out IntPtr outMessage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateMemoryBufferWithSTDIN", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateMemoryBufferWithSTDIN(out LLVMMemoryBufferRef @OutMemBuf, out IntPtr @OutMessage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateMemoryBufferWithSTDIN", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool CreateMemoryBufferWithSTDIN(out LLVMMemoryBufferRef outMemBuf, out IntPtr outMessage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateMemoryBufferWithMemoryRange", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMMemoryBufferRef CreateMemoryBufferWithMemoryRange([MarshalAs(UnmanagedType.LPStr)] string @InputData, int @InputDataLength, [MarshalAs(UnmanagedType.LPStr)] string @BufferName, LLVMBool @RequiresNullTerminator);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateMemoryBufferWithMemoryRange", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMemoryBufferRef CreateMemoryBufferWithMemoryRange([MarshalAs(UnmanagedType.LPStr)] string inputData, int inputDataLength, [MarshalAs(UnmanagedType.LPStr)] string bufferName, LLVMBool requiresNullTerminator);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateMemoryBufferWithMemoryRangeCopy", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMMemoryBufferRef CreateMemoryBufferWithMemoryRangeCopy([MarshalAs(UnmanagedType.LPStr)] string @InputData, int @InputDataLength, [MarshalAs(UnmanagedType.LPStr)] string @BufferName);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateMemoryBufferWithMemoryRangeCopy", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMemoryBufferRef CreateMemoryBufferWithMemoryRangeCopy([MarshalAs(UnmanagedType.LPStr)] string inputData, int inputDataLength, [MarshalAs(UnmanagedType.LPStr)] string bufferName);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetBufferStart", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetBufferStart(LLVMMemoryBufferRef @MemBuf);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetBufferStart", CallingConvention = CallingConvention.Cdecl)]
+        public static extern string GetBufferStart(LLVMMemoryBufferRef memBuf);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetBufferSize", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetBufferSize(LLVMMemoryBufferRef @MemBuf);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetBufferSize", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int GetBufferSize(LLVMMemoryBufferRef memBuf);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposeMemoryBuffer", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisposeMemoryBuffer(LLVMMemoryBufferRef @MemBuf);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposeMemoryBuffer", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeMemoryBuffer(LLVMMemoryBufferRef memBuf);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetGlobalPassRegistry", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetGlobalPassRegistry", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMPassRegistryRef GetGlobalPassRegistry();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreatePassManager", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreatePassManager", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMPassManagerRef CreatePassManager();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateFunctionPassManagerForModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMPassManagerRef CreateFunctionPassManagerForModule(LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateFunctionPassManagerForModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMPassManagerRef CreateFunctionPassManagerForModule(LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateFunctionPassManager", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMPassManagerRef CreateFunctionPassManager(LLVMModuleProviderRef @MP);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateFunctionPassManager", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMPassManagerRef CreateFunctionPassManager(LLVMModuleProviderRef mp);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMRunPassManager", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool RunPassManager(LLVMPassManagerRef @PM, LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMRunPassManager", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool RunPassManager(LLVMPassManagerRef pm, LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeFunctionPassManager", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool InitializeFunctionPassManager(LLVMPassManagerRef @FPM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeFunctionPassManager", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool InitializeFunctionPassManager(LLVMPassManagerRef fpm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMRunFunctionPassManager", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool RunFunctionPassManager(LLVMPassManagerRef @FPM, LLVMValueRef @F);
+        [DllImport(LibraryPath, EntryPoint = "LLVMRunFunctionPassManager", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool RunFunctionPassManager(LLVMPassManagerRef fpm, LLVMValueRef f);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMFinalizeFunctionPassManager", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool FinalizeFunctionPassManager(LLVMPassManagerRef @FPM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMFinalizeFunctionPassManager", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool FinalizeFunctionPassManager(LLVMPassManagerRef fpm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposePassManager", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisposePassManager(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposePassManager", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposePassManager(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMStartMultithreaded", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMStartMultithreaded", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool StartMultithreaded();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMStopMultithreaded", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMStopMultithreaded", CallingConvention = CallingConvention.Cdecl)]
         public static extern void StopMultithreaded();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsMultithreaded", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsMultithreaded", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool IsMultithreaded();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMVerifyModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool VerifyModule(LLVMModuleRef @M, LLVMVerifierFailureAction @Action, out IntPtr @OutMessage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMVerifyModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool VerifyModule(LLVMModuleRef m, LLVMVerifierFailureAction action, out IntPtr outMessage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMVerifyFunction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool VerifyFunction(LLVMValueRef @Fn, LLVMVerifierFailureAction @Action);
+        [DllImport(LibraryPath, EntryPoint = "LLVMVerifyFunction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool VerifyFunction(LLVMValueRef fn, LLVMVerifierFailureAction action);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMViewFunctionCFG", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ViewFunctionCFG(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMViewFunctionCFG", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ViewFunctionCFG(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMViewFunctionCFGOnly", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ViewFunctionCFGOnly(LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMViewFunctionCFGOnly", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ViewFunctionCFGOnly(LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMParseBitcode", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool ParseBitcode(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutModule, out IntPtr @OutMessage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMParseBitcode", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool ParseBitcode(LLVMMemoryBufferRef memBuf, out LLVMModuleRef outModule, out IntPtr outMessage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMParseBitcodeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool ParseBitcodeInContext(LLVMContextRef @ContextRef, LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutModule, out IntPtr @OutMessage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMParseBitcodeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool ParseBitcodeInContext(LLVMContextRef contextRef, LLVMMemoryBufferRef memBuf, out LLVMModuleRef outModule, out IntPtr outMessage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetBitcodeModuleInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool GetBitcodeModuleInContext(LLVMContextRef @ContextRef, LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetBitcodeModuleInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool GetBitcodeModuleInContext(LLVMContextRef contextRef, LLVMMemoryBufferRef memBuf, out LLVMModuleRef outM, out IntPtr outMessage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetBitcodeModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool GetBitcodeModule(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetBitcodeModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool GetBitcodeModule(LLVMMemoryBufferRef memBuf, out LLVMModuleRef outM, out IntPtr outMessage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetBitcodeModuleProviderInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool GetBitcodeModuleProviderInContext(LLVMContextRef @ContextRef, LLVMMemoryBufferRef @MemBuf, out LLVMModuleProviderRef @OutMP, out IntPtr @OutMessage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetBitcodeModuleProviderInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool GetBitcodeModuleProviderInContext(LLVMContextRef contextRef, LLVMMemoryBufferRef memBuf, out LLVMModuleProviderRef outMp, out IntPtr outMessage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetBitcodeModuleProvider", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool GetBitcodeModuleProvider(LLVMMemoryBufferRef @MemBuf, out LLVMModuleProviderRef @OutMP, out IntPtr @OutMessage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetBitcodeModuleProvider", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool GetBitcodeModuleProvider(LLVMMemoryBufferRef memBuf, out LLVMModuleProviderRef outMp, out IntPtr outMessage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMWriteBitcodeToFile", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int WriteBitcodeToFile(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @Path);
+        [DllImport(LibraryPath, EntryPoint = "LLVMWriteBitcodeToFile", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int WriteBitcodeToFile(LLVMModuleRef m, [MarshalAs(UnmanagedType.LPStr)] string path);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMWriteBitcodeToFD", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int WriteBitcodeToFD(LLVMModuleRef @M, int @FD, int @ShouldClose, int @Unbuffered);
+        [DllImport(LibraryPath, EntryPoint = "LLVMWriteBitcodeToFD", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int WriteBitcodeToFD(LLVMModuleRef m, int fd, int shouldClose, int unbuffered);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMWriteBitcodeToFileHandle", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int WriteBitcodeToFileHandle(LLVMModuleRef @M, int @Handle);
+        [DllImport(LibraryPath, EntryPoint = "LLVMWriteBitcodeToFileHandle", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int WriteBitcodeToFileHandle(LLVMModuleRef m, int handle);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMWriteBitcodeToMemoryBuffer", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMMemoryBufferRef WriteBitcodeToMemoryBuffer(LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMWriteBitcodeToMemoryBuffer", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMemoryBufferRef WriteBitcodeToMemoryBuffer(LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateDisasm", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMDisasmContextRef CreateDisasm([MarshalAs(UnmanagedType.LPStr)] string @TripleName, IntPtr @DisInfo, int @TagType, LLVMOpInfoCallback @GetOpInfo, LLVMSymbolLookupCallback @SymbolLookUp);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateDisasm", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMDisasmContextRef CreateDisasm([MarshalAs(UnmanagedType.LPStr)] string tripleName, IntPtr disInfo, int tagType, LLVMOpInfoCallback getOpInfo, LLVMSymbolLookupCallback symbolLookUp);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateDisasmCPU", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMDisasmContextRef CreateDisasmCPU([MarshalAs(UnmanagedType.LPStr)] string @Triple, [MarshalAs(UnmanagedType.LPStr)] string @CPU, IntPtr @DisInfo, int @TagType, LLVMOpInfoCallback @GetOpInfo, LLVMSymbolLookupCallback @SymbolLookUp);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateDisasmCPU", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMDisasmContextRef CreateDisasmCPU([MarshalAs(UnmanagedType.LPStr)] string triple, [MarshalAs(UnmanagedType.LPStr)] string cpu, IntPtr disInfo, int tagType, LLVMOpInfoCallback getOpInfo, LLVMSymbolLookupCallback symbolLookUp);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateDisasmCPUFeatures", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMDisasmContextRef CreateDisasmCPUFeatures([MarshalAs(UnmanagedType.LPStr)] string @Triple, [MarshalAs(UnmanagedType.LPStr)] string @CPU, [MarshalAs(UnmanagedType.LPStr)] string @Features, IntPtr @DisInfo, int @TagType, LLVMOpInfoCallback @GetOpInfo, LLVMSymbolLookupCallback @SymbolLookUp);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateDisasmCPUFeatures", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMDisasmContextRef CreateDisasmCPUFeatures([MarshalAs(UnmanagedType.LPStr)] string triple, [MarshalAs(UnmanagedType.LPStr)] string cpu, [MarshalAs(UnmanagedType.LPStr)] string features, IntPtr disInfo, int tagType, LLVMOpInfoCallback getOpInfo, LLVMSymbolLookupCallback symbolLookUp);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetDisasmOptions", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int SetDisasmOptions(LLVMDisasmContextRef @DC, int @Options);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetDisasmOptions", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int SetDisasmOptions(LLVMDisasmContextRef dc, int options);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisasmDispose", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisasmDispose(LLVMDisasmContextRef @DC);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisasmDispose", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisasmDispose(LLVMDisasmContextRef dc);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisasmInstruction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int DisasmInstruction(LLVMDisasmContextRef @DC, out char @Bytes, int @BytesSize, int @PC, IntPtr @OutString, int @OutStringSize);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisasmInstruction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int DisasmInstruction(LLVMDisasmContextRef dc, out char bytes, int bytesSize, int pc, IntPtr outString, int outStringSize);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeR600TargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeR600TargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeR600TargetInfo();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZTargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeSystemZTargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZTargetInfo();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeHexagonTargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeHexagonTargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeHexagonTargetInfo();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeNVPTXTargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeNVPTXTargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeNVPTXTargetInfo();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeCppBackendTargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeCppBackendTargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeCppBackendTargetInfo();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeMSP430TargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeMSP430TargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeMSP430TargetInfo();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeXCoreTargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeXCoreTargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeXCoreTargetInfo();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeMipsTargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeMipsTargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeMipsTargetInfo();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAArch64TargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeAArch64TargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAArch64TargetInfo();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeARMTargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeARMTargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeARMTargetInfo();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializePowerPCTargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializePowerPCTargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializePowerPCTargetInfo();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeSparcTargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeSparcTargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSparcTargetInfo();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86TargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeX86TargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86TargetInfo();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeR600Target", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeR600Target", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeR600Target();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZTarget", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeSystemZTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZTarget();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeHexagonTarget", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeHexagonTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeHexagonTarget();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeNVPTXTarget", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeNVPTXTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeNVPTXTarget();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeCppBackendTarget", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeCppBackendTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeCppBackendTarget();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeMSP430Target", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeMSP430Target", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeMSP430Target();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeXCoreTarget", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeXCoreTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeXCoreTarget();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeMipsTarget", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeMipsTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeMipsTarget();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAArch64Target", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeAArch64Target", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAArch64Target();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeARMTarget", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeARMTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeARMTarget();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializePowerPCTarget", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializePowerPCTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializePowerPCTarget();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeSparcTarget", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeSparcTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSparcTarget();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86Target", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeX86Target", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86Target();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeR600TargetMC", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeR600TargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeR600TargetMC();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZTargetMC", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeSystemZTargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZTargetMC();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeHexagonTargetMC", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeHexagonTargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeHexagonTargetMC();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeNVPTXTargetMC", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeNVPTXTargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeNVPTXTargetMC();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeCppBackendTargetMC", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeCppBackendTargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeCppBackendTargetMC();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeMSP430TargetMC", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeMSP430TargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeMSP430TargetMC();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeXCoreTargetMC", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeXCoreTargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeXCoreTargetMC();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeMipsTargetMC", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeMipsTargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeMipsTargetMC();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAArch64TargetMC", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeAArch64TargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAArch64TargetMC();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeARMTargetMC", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeARMTargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeARMTargetMC();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializePowerPCTargetMC", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializePowerPCTargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializePowerPCTargetMC();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeSparcTargetMC", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeSparcTargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSparcTargetMC();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86TargetMC", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeX86TargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86TargetMC();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeR600AsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeR600AsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeR600AsmPrinter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeSystemZAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZAsmPrinter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeHexagonAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeHexagonAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeHexagonAsmPrinter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeNVPTXAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeNVPTXAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeNVPTXAsmPrinter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeMSP430AsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeMSP430AsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeMSP430AsmPrinter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeXCoreAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeXCoreAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeXCoreAsmPrinter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeMipsAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeMipsAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeMipsAsmPrinter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAArch64AsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeAArch64AsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAArch64AsmPrinter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeARMAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeARMAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeARMAsmPrinter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializePowerPCAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializePowerPCAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializePowerPCAsmPrinter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeSparcAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeSparcAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSparcAsmPrinter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86AsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeX86AsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86AsmPrinter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeR600AsmParser", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeR600AsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeR600AsmParser();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZAsmParser", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeSystemZAsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZAsmParser();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeMipsAsmParser", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeMipsAsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeMipsAsmParser();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAArch64AsmParser", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeAArch64AsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAArch64AsmParser();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeARMAsmParser", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeARMAsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeARMAsmParser();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializePowerPCAsmParser", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializePowerPCAsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializePowerPCAsmParser();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeSparcAsmParser", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeSparcAsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSparcAsmParser();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86AsmParser", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeX86AsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86AsmParser();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZDisassembler", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeSystemZDisassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZDisassembler();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeHexagonDisassembler", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeHexagonDisassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeHexagonDisassembler();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeXCoreDisassembler", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeXCoreDisassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeXCoreDisassembler();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeMipsDisassembler", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeMipsDisassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeMipsDisassembler();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAArch64Disassembler", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeAArch64Disassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAArch64Disassembler();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeARMDisassembler", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeARMDisassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeARMDisassembler();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializePowerPCDisassembler", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializePowerPCDisassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializePowerPCDisassembler();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeSparcDisassembler", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeSparcDisassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSparcDisassembler();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86Disassembler", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeX86Disassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86Disassembler();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAllTargetInfos", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeAllTargetInfos", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAllTargetInfos();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAllTargets", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeAllTargets", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAllTargets();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAllTargetMCs", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeAllTargetMCs", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAllTargetMCs();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAllAsmPrinters", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeAllAsmPrinters", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAllAsmPrinters();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAllAsmParsers", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeAllAsmParsers", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAllAsmParsers();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAllDisassemblers", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeAllDisassemblers", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAllDisassemblers();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeNativeTarget", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeNativeTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool InitializeNativeTarget();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeNativeAsmParser", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeNativeAsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool InitializeNativeAsmParser();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeNativeAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeNativeAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool InitializeNativeAsmPrinter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeNativeDisassembler", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeNativeDisassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool InitializeNativeDisassembler();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateTargetData", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTargetDataRef CreateTargetData([MarshalAs(UnmanagedType.LPStr)] string @StringRep);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateTargetData", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTargetDataRef CreateTargetData([MarshalAs(UnmanagedType.LPStr)] string stringRep);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddTargetData", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddTargetData(LLVMTargetDataRef @TD, LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddTargetData", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddTargetData(LLVMTargetDataRef td, LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddTargetLibraryInfo", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddTargetLibraryInfo(LLVMTargetLibraryInfoRef @TLI, LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddTargetLibraryInfo", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddTargetLibraryInfo(LLVMTargetLibraryInfoRef tli, LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCopyStringRepOfTargetData", CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr CopyStringRepOfTargetData(LLVMTargetDataRef @TD);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCopyStringRepOfTargetData", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr CopyStringRepOfTargetData(LLVMTargetDataRef td);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMByteOrder", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMByteOrdering ByteOrder(LLVMTargetDataRef @TD);
+        [DllImport(LibraryPath, EntryPoint = "LLVMByteOrder", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMByteOrdering ByteOrder(LLVMTargetDataRef td);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPointerSize", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint PointerSize(LLVMTargetDataRef @TD);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPointerSize", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint PointerSize(LLVMTargetDataRef td);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPointerSizeForAS", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint PointerSizeForAS(LLVMTargetDataRef @TD, uint @AS);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPointerSizeForAS", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint PointerSizeForAS(LLVMTargetDataRef td, uint @AS);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIntPtrType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef IntPtrType(LLVMTargetDataRef @TD);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIntPtrType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef IntPtrType(LLVMTargetDataRef td);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIntPtrTypeForAS", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef IntPtrTypeForAS(LLVMTargetDataRef @TD, uint @AS);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIntPtrTypeForAS", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef IntPtrTypeForAS(LLVMTargetDataRef td, uint @AS);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIntPtrTypeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef IntPtrTypeInContext(LLVMContextRef @C, LLVMTargetDataRef @TD);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIntPtrTypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef IntPtrTypeInContext(LLVMContextRef c, LLVMTargetDataRef td);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIntPtrTypeForASInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTypeRef IntPtrTypeForASInContext(LLVMContextRef @C, LLVMTargetDataRef @TD, uint @AS);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIntPtrTypeForASInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef IntPtrTypeForASInContext(LLVMContextRef c, LLVMTargetDataRef td, uint @AS);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSizeOfTypeInBits", CallingConvention = CallingConvention.Cdecl)]
-        public static extern ulong SizeOfTypeInBits(LLVMTargetDataRef @TD, LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSizeOfTypeInBits", CallingConvention = CallingConvention.Cdecl)]
+        public static extern ulong SizeOfTypeInBits(LLVMTargetDataRef td, LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMStoreSizeOfType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern ulong StoreSizeOfType(LLVMTargetDataRef @TD, LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMStoreSizeOfType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern ulong StoreSizeOfType(LLVMTargetDataRef td, LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMABISizeOfType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern ulong ABISizeOfType(LLVMTargetDataRef @TD, LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMABISizeOfType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern ulong ABISizeOfType(LLVMTargetDataRef td, LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMABIAlignmentOfType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint ABIAlignmentOfType(LLVMTargetDataRef @TD, LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMABIAlignmentOfType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint ABIAlignmentOfType(LLVMTargetDataRef td, LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCallFrameAlignmentOfType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint CallFrameAlignmentOfType(LLVMTargetDataRef @TD, LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCallFrameAlignmentOfType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint CallFrameAlignmentOfType(LLVMTargetDataRef td, LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPreferredAlignmentOfType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint PreferredAlignmentOfType(LLVMTargetDataRef @TD, LLVMTypeRef @Ty);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPreferredAlignmentOfType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint PreferredAlignmentOfType(LLVMTargetDataRef td, LLVMTypeRef ty);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPreferredAlignmentOfGlobal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint PreferredAlignmentOfGlobal(LLVMTargetDataRef @TD, LLVMValueRef @GlobalVar);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPreferredAlignmentOfGlobal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint PreferredAlignmentOfGlobal(LLVMTargetDataRef td, LLVMValueRef globalVar);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMElementAtOffset", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint ElementAtOffset(LLVMTargetDataRef @TD, LLVMTypeRef @StructTy, ulong @Offset);
+        [DllImport(LibraryPath, EntryPoint = "LLVMElementAtOffset", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint ElementAtOffset(LLVMTargetDataRef td, LLVMTypeRef structTy, ulong offset);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMOffsetOfElement", CallingConvention = CallingConvention.Cdecl)]
-        public static extern ulong OffsetOfElement(LLVMTargetDataRef @TD, LLVMTypeRef @StructTy, uint @Element);
+        [DllImport(LibraryPath, EntryPoint = "LLVMOffsetOfElement", CallingConvention = CallingConvention.Cdecl)]
+        public static extern ulong OffsetOfElement(LLVMTargetDataRef td, LLVMTypeRef structTy, uint element);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposeTargetData", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisposeTargetData(LLVMTargetDataRef @TD);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposeTargetData", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeTargetData(LLVMTargetDataRef td);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetFirstTarget", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetFirstTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTargetRef GetFirstTarget();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetNextTarget", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetNextTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTargetRef GetNextTarget(LLVMTargetRef @T);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTargetFromName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTargetRef GetTargetFromName([MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetTargetFromName", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTargetRef GetTargetFromName([MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTargetFromTriple", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool GetTargetFromTriple([MarshalAs(UnmanagedType.LPStr)] string @Triple, out LLVMTargetRef @T, out IntPtr @ErrorMessage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetTargetFromTriple", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool GetTargetFromTriple([MarshalAs(UnmanagedType.LPStr)] string triple, out LLVMTargetRef @T, out IntPtr errorMessage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTargetName", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetTargetName", CallingConvention = CallingConvention.Cdecl)]
         public static extern string GetTargetName(LLVMTargetRef @T);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTargetDescription", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetTargetDescription", CallingConvention = CallingConvention.Cdecl)]
         public static extern string GetTargetDescription(LLVMTargetRef @T);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMTargetHasJIT", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMTargetHasJIT", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool TargetHasJIT(LLVMTargetRef @T);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMTargetHasTargetMachine", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMTargetHasTargetMachine", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool TargetHasTargetMachine(LLVMTargetRef @T);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMTargetHasAsmBackend", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMTargetHasAsmBackend", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool TargetHasAsmBackend(LLVMTargetRef @T);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateTargetMachine", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTargetMachineRef CreateTargetMachine(LLVMTargetRef @T, [MarshalAs(UnmanagedType.LPStr)] string @Triple, [MarshalAs(UnmanagedType.LPStr)] string @CPU, [MarshalAs(UnmanagedType.LPStr)] string @Features, LLVMCodeGenOptLevel @Level, LLVMRelocMode @Reloc, LLVMCodeModel @CodeModel);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateTargetMachine", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTargetMachineRef CreateTargetMachine(LLVMTargetRef @T, [MarshalAs(UnmanagedType.LPStr)] string triple, [MarshalAs(UnmanagedType.LPStr)] string cpu, [MarshalAs(UnmanagedType.LPStr)] string features, LLVMCodeGenOptLevel level, LLVMRelocMode reloc, LLVMCodeModel codeModel);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposeTargetMachine", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposeTargetMachine", CallingConvention = CallingConvention.Cdecl)]
         public static extern void DisposeTargetMachine(LLVMTargetMachineRef @T);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTargetMachineTarget", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetTargetMachineTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTargetRef GetTargetMachineTarget(LLVMTargetMachineRef @T);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTargetMachineTriple", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetTargetMachineTriple", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetTargetMachineTriple(LLVMTargetMachineRef @T);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTargetMachineCPU", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetTargetMachineCPU", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetTargetMachineCPU(LLVMTargetMachineRef @T);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTargetMachineFeatureString", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetTargetMachineFeatureString", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetTargetMachineFeatureString(LLVMTargetMachineRef @T);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTargetMachineData", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetTargetMachineData", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTargetDataRef GetTargetMachineData(LLVMTargetMachineRef @T);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetTargetMachineAsmVerbosity", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetTargetMachineAsmVerbosity(LLVMTargetMachineRef @T, LLVMBool @VerboseAsm);
+        [DllImport(LibraryPath, EntryPoint = "LLVMSetTargetMachineAsmVerbosity", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetTargetMachineAsmVerbosity(LLVMTargetMachineRef @T, LLVMBool verboseAsm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMTargetMachineEmitToFile", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool TargetMachineEmitToFile(LLVMTargetMachineRef @T, LLVMModuleRef @M, IntPtr @Filename, LLVMCodeGenFileType @codegen, out IntPtr @ErrorMessage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMTargetMachineEmitToFile", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool TargetMachineEmitToFile(LLVMTargetMachineRef @T, LLVMModuleRef m, IntPtr filename, LLVMCodeGenFileType @codegen, out IntPtr errorMessage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMTargetMachineEmitToMemoryBuffer", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool TargetMachineEmitToMemoryBuffer(LLVMTargetMachineRef @T, LLVMModuleRef @M, LLVMCodeGenFileType @codegen, out IntPtr @ErrorMessage, out LLVMMemoryBufferRef @OutMemBuf);
+        [DllImport(LibraryPath, EntryPoint = "LLVMTargetMachineEmitToMemoryBuffer", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool TargetMachineEmitToMemoryBuffer(LLVMTargetMachineRef @T, LLVMModuleRef m, LLVMCodeGenFileType @codegen, out IntPtr errorMessage, out LLVMMemoryBufferRef outMemBuf);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetDefaultTargetTriple", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetDefaultTargetTriple", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetDefaultTargetTriple();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddAnalysisPasses", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddAnalysisPasses(LLVMTargetMachineRef @T, LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddAnalysisPasses", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddAnalysisPasses(LLVMTargetMachineRef @T, LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMLinkInMCJIT", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMLinkInMCJIT", CallingConvention = CallingConvention.Cdecl)]
         public static extern void LinkInMCJIT();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMLinkInInterpreter", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMLinkInInterpreter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void LinkInInterpreter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateGenericValueOfInt", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMGenericValueRef CreateGenericValueOfInt(LLVMTypeRef @Ty, ulong @N, LLVMBool @IsSigned);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateGenericValueOfInt", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMGenericValueRef CreateGenericValueOfInt(LLVMTypeRef ty, ulong n, LLVMBool isSigned);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateGenericValueOfPointer", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMGenericValueRef CreateGenericValueOfPointer(IntPtr @P);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateGenericValueOfPointer", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMGenericValueRef CreateGenericValueOfPointer(IntPtr p);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateGenericValueOfFloat", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMGenericValueRef CreateGenericValueOfFloat(LLVMTypeRef @Ty, double @N);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateGenericValueOfFloat", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMGenericValueRef CreateGenericValueOfFloat(LLVMTypeRef ty, double n);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGenericValueIntWidth", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GenericValueIntWidth(LLVMGenericValueRef @GenValRef);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGenericValueIntWidth", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GenericValueIntWidth(LLVMGenericValueRef genValRef);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGenericValueToInt", CallingConvention = CallingConvention.Cdecl)]
-        public static extern ulong GenericValueToInt(LLVMGenericValueRef @GenVal, LLVMBool @IsSigned);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGenericValueToInt", CallingConvention = CallingConvention.Cdecl)]
+        public static extern ulong GenericValueToInt(LLVMGenericValueRef genVal, LLVMBool isSigned);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGenericValueToPointer", CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GenericValueToPointer(LLVMGenericValueRef @GenVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGenericValueToPointer", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GenericValueToPointer(LLVMGenericValueRef genVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGenericValueToFloat", CallingConvention = CallingConvention.Cdecl)]
-        public static extern double GenericValueToFloat(LLVMTypeRef @TyRef, LLVMGenericValueRef @GenVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGenericValueToFloat", CallingConvention = CallingConvention.Cdecl)]
+        public static extern double GenericValueToFloat(LLVMTypeRef tyRef, LLVMGenericValueRef genVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposeGenericValue", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisposeGenericValue(LLVMGenericValueRef @GenVal);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposeGenericValue", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeGenericValue(LLVMGenericValueRef genVal);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateExecutionEngineForModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateExecutionEngineForModule(out LLVMExecutionEngineRef @OutEE, LLVMModuleRef @M, out IntPtr @OutError);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateExecutionEngineForModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool CreateExecutionEngineForModule(out LLVMExecutionEngineRef outEe, LLVMModuleRef m, out IntPtr outError);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateInterpreterForModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateInterpreterForModule(out LLVMExecutionEngineRef @OutInterp, LLVMModuleRef @M, out IntPtr @OutError);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateInterpreterForModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool CreateInterpreterForModule(out LLVMExecutionEngineRef outInterp, LLVMModuleRef m, out IntPtr outError);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateJITCompilerForModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateJITCompilerForModule(out LLVMExecutionEngineRef @OutJIT, LLVMModuleRef @M, uint @OptLevel, out IntPtr @OutError);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateJITCompilerForModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool CreateJITCompilerForModule(out LLVMExecutionEngineRef outJit, LLVMModuleRef m, uint optLevel, out IntPtr outError);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeMCJITCompilerOptions", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeMCJITCompilerOptions(out LLVMMCJITCompilerOptions @Options, int @SizeOfOptions);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeMCJITCompilerOptions", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeMCJITCompilerOptions(out LLVMMCJITCompilerOptions options, int sizeOfOptions);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateMCJITCompilerForModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateMCJITCompilerForModule(out LLVMExecutionEngineRef @OutJIT, LLVMModuleRef @M, out LLVMMCJITCompilerOptions @Options, int @SizeOfOptions, out IntPtr @OutError);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateMCJITCompilerForModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool CreateMCJITCompilerForModule(out LLVMExecutionEngineRef outJit, LLVMModuleRef m, out LLVMMCJITCompilerOptions options, int sizeOfOptions, out IntPtr outError);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateExecutionEngine", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateExecutionEngine(out LLVMExecutionEngineRef @OutEE, LLVMModuleProviderRef @MP, out IntPtr @OutError);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateExecutionEngine", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool CreateExecutionEngine(out LLVMExecutionEngineRef outEe, LLVMModuleProviderRef mp, out IntPtr outError);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateInterpreter", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateInterpreter(out LLVMExecutionEngineRef @OutInterp, LLVMModuleProviderRef @MP, out IntPtr @OutError);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateInterpreter", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool CreateInterpreter(out LLVMExecutionEngineRef outInterp, LLVMModuleProviderRef mp, out IntPtr outError);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateJITCompiler", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateJITCompiler(out LLVMExecutionEngineRef @OutJIT, LLVMModuleProviderRef @MP, uint @OptLevel, out IntPtr @OutError);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateJITCompiler", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool CreateJITCompiler(out LLVMExecutionEngineRef outJit, LLVMModuleProviderRef mp, uint optLevel, out IntPtr outError);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposeExecutionEngine", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisposeExecutionEngine(LLVMExecutionEngineRef @EE);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposeExecutionEngine", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeExecutionEngine(LLVMExecutionEngineRef ee);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMRunStaticConstructors", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void RunStaticConstructors(LLVMExecutionEngineRef @EE);
+        [DllImport(LibraryPath, EntryPoint = "LLVMRunStaticConstructors", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void RunStaticConstructors(LLVMExecutionEngineRef ee);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMRunStaticDestructors", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void RunStaticDestructors(LLVMExecutionEngineRef @EE);
+        [DllImport(LibraryPath, EntryPoint = "LLVMRunStaticDestructors", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void RunStaticDestructors(LLVMExecutionEngineRef ee);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMRunFunctionAsMain", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int RunFunctionAsMain(LLVMExecutionEngineRef @EE, LLVMValueRef @F, uint @ArgC, string[] @ArgV, string[] @EnvP);
+        [DllImport(LibraryPath, EntryPoint = "LLVMRunFunctionAsMain", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int RunFunctionAsMain(LLVMExecutionEngineRef ee, LLVMValueRef f, uint argC, string[] argV, string[] envP);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMRunFunction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMGenericValueRef RunFunction(LLVMExecutionEngineRef @EE, LLVMValueRef @F, uint @NumArgs, out LLVMGenericValueRef @Args);
+        [DllImport(LibraryPath, EntryPoint = "LLVMRunFunction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMGenericValueRef RunFunction(LLVMExecutionEngineRef ee, LLVMValueRef f, uint numArgs, out LLVMGenericValueRef args);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMFreeMachineCodeForFunction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void FreeMachineCodeForFunction(LLVMExecutionEngineRef @EE, LLVMValueRef @F);
+        [DllImport(LibraryPath, EntryPoint = "LLVMFreeMachineCodeForFunction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void FreeMachineCodeForFunction(LLVMExecutionEngineRef ee, LLVMValueRef f);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddModule(LLVMExecutionEngineRef @EE, LLVMModuleRef @M);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddModule(LLVMExecutionEngineRef ee, LLVMModuleRef m);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddModuleProvider", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddModuleProvider(LLVMExecutionEngineRef @EE, LLVMModuleProviderRef @MP);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddModuleProvider", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddModuleProvider(LLVMExecutionEngineRef ee, LLVMModuleProviderRef mp);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMRemoveModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool RemoveModule(LLVMExecutionEngineRef @EE, LLVMModuleRef @M, out LLVMModuleRef @OutMod, out IntPtr @OutError);
+        [DllImport(LibraryPath, EntryPoint = "LLVMRemoveModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool RemoveModule(LLVMExecutionEngineRef ee, LLVMModuleRef m, out LLVMModuleRef outMod, out IntPtr outError);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMRemoveModuleProvider", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool RemoveModuleProvider(LLVMExecutionEngineRef @EE, LLVMModuleProviderRef @MP, out LLVMModuleRef @OutMod, out IntPtr @OutError);
+        [DllImport(LibraryPath, EntryPoint = "LLVMRemoveModuleProvider", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool RemoveModuleProvider(LLVMExecutionEngineRef ee, LLVMModuleProviderRef mp, out LLVMModuleRef outMod, out IntPtr outError);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMFindFunction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool FindFunction(LLVMExecutionEngineRef @EE, [MarshalAs(UnmanagedType.LPStr)] string @Name, out LLVMValueRef @OutFn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMFindFunction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool FindFunction(LLVMExecutionEngineRef ee, [MarshalAs(UnmanagedType.LPStr)] string name, out LLVMValueRef outFn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMRecompileAndRelinkFunction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr RecompileAndRelinkFunction(LLVMExecutionEngineRef @EE, LLVMValueRef @Fn);
+        [DllImport(LibraryPath, EntryPoint = "LLVMRecompileAndRelinkFunction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr RecompileAndRelinkFunction(LLVMExecutionEngineRef ee, LLVMValueRef fn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetExecutionEngineTargetData", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTargetDataRef GetExecutionEngineTargetData(LLVMExecutionEngineRef @EE);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetExecutionEngineTargetData", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTargetDataRef GetExecutionEngineTargetData(LLVMExecutionEngineRef ee);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetExecutionEngineTargetMachine", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMTargetMachineRef GetExecutionEngineTargetMachine(LLVMExecutionEngineRef @EE);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetExecutionEngineTargetMachine", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTargetMachineRef GetExecutionEngineTargetMachine(LLVMExecutionEngineRef ee);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddGlobalMapping", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddGlobalMapping(LLVMExecutionEngineRef @EE, LLVMValueRef @Global, IntPtr @Addr);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddGlobalMapping", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddGlobalMapping(LLVMExecutionEngineRef ee, LLVMValueRef @Global, IntPtr addr);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetPointerToGlobal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GetPointerToGlobal(LLVMExecutionEngineRef @EE, LLVMValueRef @Global);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetPointerToGlobal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetPointerToGlobal(LLVMExecutionEngineRef ee, LLVMValueRef @Global);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetGlobalValueAddress", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetGlobalValueAddress(LLVMExecutionEngineRef @EE, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetGlobalValueAddress", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int GetGlobalValueAddress(LLVMExecutionEngineRef ee, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetFunctionAddress", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetFunctionAddress(LLVMExecutionEngineRef @EE, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetFunctionAddress", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int GetFunctionAddress(LLVMExecutionEngineRef ee, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateSimpleMCJITMemoryManager", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMMCJITMemoryManagerRef CreateSimpleMCJITMemoryManager(IntPtr @Opaque, LLVMMemoryManagerAllocateCodeSectionCallback @AllocateCodeSection, LLVMMemoryManagerAllocateDataSectionCallback @AllocateDataSection, LLVMMemoryManagerFinalizeMemoryCallback @FinalizeMemory, LLVMMemoryManagerDestroyCallback @Destroy);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateSimpleMCJITMemoryManager", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMCJITMemoryManagerRef CreateSimpleMCJITMemoryManager(IntPtr opaque, LLVMMemoryManagerAllocateCodeSectionCallback allocateCodeSection, LLVMMemoryManagerAllocateDataSectionCallback allocateDataSection, LLVMMemoryManagerFinalizeMemoryCallback finalizeMemory, LLVMMemoryManagerDestroyCallback destroy);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposeMCJITMemoryManager", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisposeMCJITMemoryManager(LLVMMCJITMemoryManagerRef @MM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposeMCJITMemoryManager", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeMCJITMemoryManager(LLVMMCJITMemoryManagerRef mm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeTransformUtils", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeTransformUtils(LLVMPassRegistryRef @R);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeTransformUtils", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeTransformUtils(LLVMPassRegistryRef r);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeScalarOpts", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeScalarOpts(LLVMPassRegistryRef @R);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeScalarOpts", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeScalarOpts(LLVMPassRegistryRef r);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeObjCARCOpts", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeObjCARCOpts(LLVMPassRegistryRef @R);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeObjCARCOpts", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeObjCARCOpts(LLVMPassRegistryRef r);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeVectorization", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeVectorization(LLVMPassRegistryRef @R);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeVectorization", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeVectorization(LLVMPassRegistryRef r);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeInstCombine", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeInstCombine(LLVMPassRegistryRef @R);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeInstCombine", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeInstCombine(LLVMPassRegistryRef r);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeIPO", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeIPO(LLVMPassRegistryRef @R);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeIPO", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeIPO(LLVMPassRegistryRef r);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeInstrumentation", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeInstrumentation(LLVMPassRegistryRef @R);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeInstrumentation", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeInstrumentation(LLVMPassRegistryRef r);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAnalysis", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeAnalysis(LLVMPassRegistryRef @R);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeAnalysis", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeAnalysis(LLVMPassRegistryRef r);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeIPA", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeIPA(LLVMPassRegistryRef @R);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeIPA", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeIPA(LLVMPassRegistryRef r);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeCodeGen", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeCodeGen(LLVMPassRegistryRef @R);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeCodeGen", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeCodeGen(LLVMPassRegistryRef r);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeTarget", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeTarget(LLVMPassRegistryRef @R);
+        [DllImport(LibraryPath, EntryPoint = "LLVMInitializeTarget", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeTarget(LLVMPassRegistryRef r);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMParseIRInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool ParseIRInContext(LLVMContextRef @ContextRef, LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMParseIRInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool ParseIRInContext(LLVMContextRef contextRef, LLVMMemoryBufferRef memBuf, out LLVMModuleRef outM, out IntPtr outMessage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMLinkModules", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool LinkModules(LLVMModuleRef @Dest, LLVMModuleRef @Src, uint @Unused, out IntPtr @OutMessage);
+        [DllImport(LibraryPath, EntryPoint = "LLVMLinkModules", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool LinkModules(LLVMModuleRef dest, LLVMModuleRef src, uint unused, out IntPtr outMessage);
 
-        [DllImport(libraryPath, EntryPoint = "llvm_create_optimizer", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "llvm_create_optimizer", CallingConvention = CallingConvention.Cdecl)]
         public static extern llvm_lto_t llvm_create_optimizer();
 
-        [DllImport(libraryPath, EntryPoint = "llvm_destroy_optimizer", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "llvm_destroy_optimizer", CallingConvention = CallingConvention.Cdecl)]
         public static extern void llvm_destroy_optimizer(llvm_lto_t @lto);
 
-        [DllImport(libraryPath, EntryPoint = "llvm_read_object_file", CallingConvention = CallingConvention.Cdecl)]
-        public static extern llvm_lto_status llvm_read_object_file(llvm_lto_t @lto, [MarshalAs(UnmanagedType.LPStr)] string @input_filename);
+        [DllImport(LibraryPath, EntryPoint = "llvm_read_object_file", CallingConvention = CallingConvention.Cdecl)]
+        public static extern llvm_lto_status llvm_read_object_file(llvm_lto_t @lto, [MarshalAs(UnmanagedType.LPStr)] string inputFilename);
 
-        [DllImport(libraryPath, EntryPoint = "llvm_optimize_modules", CallingConvention = CallingConvention.Cdecl)]
-        public static extern llvm_lto_status llvm_optimize_modules(llvm_lto_t @lto, [MarshalAs(UnmanagedType.LPStr)] string @output_filename);
+        [DllImport(LibraryPath, EntryPoint = "llvm_optimize_modules", CallingConvention = CallingConvention.Cdecl)]
+        public static extern llvm_lto_status llvm_optimize_modules(llvm_lto_t @lto, [MarshalAs(UnmanagedType.LPStr)] string outputFilename);
 
-        [DllImport(libraryPath, EntryPoint = "lto_get_version", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_get_version", CallingConvention = CallingConvention.Cdecl)]
         public static extern string lto_get_version();
 
-        [DllImport(libraryPath, EntryPoint = "lto_get_error_message", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_get_error_message", CallingConvention = CallingConvention.Cdecl)]
         public static extern string lto_get_error_message();
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_is_object_file", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_is_object_file", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_bool_t lto_module_is_object_file([MarshalAs(UnmanagedType.LPStr)] string @path);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_is_object_file_for_target", CallingConvention = CallingConvention.Cdecl)]
-        public static extern lto_bool_t lto_module_is_object_file_for_target([MarshalAs(UnmanagedType.LPStr)] string @path, [MarshalAs(UnmanagedType.LPStr)] string @target_triple_prefix);
+        [DllImport(LibraryPath, EntryPoint = "lto_module_is_object_file_for_target", CallingConvention = CallingConvention.Cdecl)]
+        public static extern lto_bool_t lto_module_is_object_file_for_target([MarshalAs(UnmanagedType.LPStr)] string @path, [MarshalAs(UnmanagedType.LPStr)] string targetTriplePrefix);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_is_object_file_in_memory", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_is_object_file_in_memory", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_bool_t lto_module_is_object_file_in_memory(IntPtr @mem, int @length);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_is_object_file_in_memory_for_target", CallingConvention = CallingConvention.Cdecl)]
-        public static extern lto_bool_t lto_module_is_object_file_in_memory_for_target(IntPtr @mem, int @length, [MarshalAs(UnmanagedType.LPStr)] string @target_triple_prefix);
+        [DllImport(LibraryPath, EntryPoint = "lto_module_is_object_file_in_memory_for_target", CallingConvention = CallingConvention.Cdecl)]
+        public static extern lto_bool_t lto_module_is_object_file_in_memory_for_target(IntPtr @mem, int @length, [MarshalAs(UnmanagedType.LPStr)] string targetTriplePrefix);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_create", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_create", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_module_t lto_module_create([MarshalAs(UnmanagedType.LPStr)] string @path);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_create_from_memory", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_create_from_memory", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_module_t lto_module_create_from_memory(IntPtr @mem, int @length);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_create_from_memory_with_path", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_create_from_memory_with_path", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_module_t lto_module_create_from_memory_with_path(IntPtr @mem, int @length, [MarshalAs(UnmanagedType.LPStr)] string @path);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_create_in_local_context", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_create_in_local_context", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_module_t lto_module_create_in_local_context(IntPtr @mem, int @length, [MarshalAs(UnmanagedType.LPStr)] string @path);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_create_in_codegen_context", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_create_in_codegen_context", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_module_t lto_module_create_in_codegen_context(IntPtr @mem, int @length, [MarshalAs(UnmanagedType.LPStr)] string @path, lto_code_gen_t @cg);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_create_from_fd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern lto_module_t lto_module_create_from_fd(int @fd, [MarshalAs(UnmanagedType.LPStr)] string @path, int @file_size);
+        [DllImport(LibraryPath, EntryPoint = "lto_module_create_from_fd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern lto_module_t lto_module_create_from_fd(int @fd, [MarshalAs(UnmanagedType.LPStr)] string @path, int fileSize);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_create_from_fd_at_offset", CallingConvention = CallingConvention.Cdecl)]
-        public static extern lto_module_t lto_module_create_from_fd_at_offset(int @fd, [MarshalAs(UnmanagedType.LPStr)] string @path, int @file_size, int @map_size, int @offset);
+        [DllImport(LibraryPath, EntryPoint = "lto_module_create_from_fd_at_offset", CallingConvention = CallingConvention.Cdecl)]
+        public static extern lto_module_t lto_module_create_from_fd_at_offset(int @fd, [MarshalAs(UnmanagedType.LPStr)] string @path, int fileSize, int mapSize, int @offset);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_dispose", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_dispose", CallingConvention = CallingConvention.Cdecl)]
         public static extern void lto_module_dispose(lto_module_t @mod);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_get_target_triple", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_get_target_triple", CallingConvention = CallingConvention.Cdecl)]
         public static extern string lto_module_get_target_triple(lto_module_t @mod);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_set_target_triple", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_set_target_triple", CallingConvention = CallingConvention.Cdecl)]
         public static extern void lto_module_set_target_triple(lto_module_t @mod, [MarshalAs(UnmanagedType.LPStr)] string @triple);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_get_num_symbols", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_get_num_symbols", CallingConvention = CallingConvention.Cdecl)]
         public static extern uint lto_module_get_num_symbols(lto_module_t @mod);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_get_symbol_name", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_get_symbol_name", CallingConvention = CallingConvention.Cdecl)]
         public static extern string lto_module_get_symbol_name(lto_module_t @mod, uint @index);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_get_symbol_attribute", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_get_symbol_attribute", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_symbol_attributes lto_module_get_symbol_attribute(lto_module_t @mod, uint @index);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_get_num_deplibs", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_get_num_deplibs", CallingConvention = CallingConvention.Cdecl)]
         public static extern uint lto_module_get_num_deplibs(lto_module_t @mod);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_get_deplib", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_get_deplib", CallingConvention = CallingConvention.Cdecl)]
         public static extern string lto_module_get_deplib(lto_module_t @mod, uint @index);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_get_num_linkeropts", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_get_num_linkeropts", CallingConvention = CallingConvention.Cdecl)]
         public static extern uint lto_module_get_num_linkeropts(lto_module_t @mod);
 
-        [DllImport(libraryPath, EntryPoint = "lto_module_get_linkeropt", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_module_get_linkeropt", CallingConvention = CallingConvention.Cdecl)]
         public static extern string lto_module_get_linkeropt(lto_module_t @mod, uint @index);
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_set_diagnostic_handler", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_set_diagnostic_handler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void lto_codegen_set_diagnostic_handler(lto_code_gen_t @param0, lto_diagnostic_handler_t @param1, IntPtr @param2);
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_create", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_create", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_code_gen_t lto_codegen_create();
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_create_in_local_context", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_create_in_local_context", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_code_gen_t lto_codegen_create_in_local_context();
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_dispose", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_dispose", CallingConvention = CallingConvention.Cdecl)]
         public static extern void lto_codegen_dispose(lto_code_gen_t @param0);
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_add_module", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_add_module", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_bool_t lto_codegen_add_module(lto_code_gen_t @cg, lto_module_t @mod);
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_set_debug_model", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_set_debug_model", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_bool_t lto_codegen_set_debug_model(lto_code_gen_t @cg, lto_debug_model @param1);
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_set_pic_model", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_set_pic_model", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_bool_t lto_codegen_set_pic_model(lto_code_gen_t @cg, lto_codegen_model @param1);
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_set_cpu", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_set_cpu", CallingConvention = CallingConvention.Cdecl)]
         public static extern void lto_codegen_set_cpu(lto_code_gen_t @cg, [MarshalAs(UnmanagedType.LPStr)] string @cpu);
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_set_assembler_path", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_set_assembler_path", CallingConvention = CallingConvention.Cdecl)]
         public static extern void lto_codegen_set_assembler_path(lto_code_gen_t @cg, [MarshalAs(UnmanagedType.LPStr)] string @path);
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_set_assembler_args", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_set_assembler_args", CallingConvention = CallingConvention.Cdecl)]
         public static extern void lto_codegen_set_assembler_args(lto_code_gen_t @cg, out IntPtr @args, int @nargs);
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_add_must_preserve_symbol", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_add_must_preserve_symbol", CallingConvention = CallingConvention.Cdecl)]
         public static extern void lto_codegen_add_must_preserve_symbol(lto_code_gen_t @cg, [MarshalAs(UnmanagedType.LPStr)] string @symbol);
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_write_merged_modules", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_write_merged_modules", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_bool_t lto_codegen_write_merged_modules(lto_code_gen_t @cg, [MarshalAs(UnmanagedType.LPStr)] string @path);
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_compile", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_compile", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr lto_codegen_compile(lto_code_gen_t @cg, out int @length);
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_compile_to_file", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_compile_to_file", CallingConvention = CallingConvention.Cdecl)]
         public static extern lto_bool_t lto_codegen_compile_to_file(lto_code_gen_t @cg, out IntPtr @name);
 
-        [DllImport(libraryPath, EntryPoint = "lto_codegen_debug_options", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_codegen_debug_options", CallingConvention = CallingConvention.Cdecl)]
         public static extern void lto_codegen_debug_options(lto_code_gen_t @cg, [MarshalAs(UnmanagedType.LPStr)] string @param1);
 
-        [DllImport(libraryPath, EntryPoint = "lto_initialize_disassembler", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "lto_initialize_disassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void lto_initialize_disassembler();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMCreateObjectFile", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMObjectFileRef CreateObjectFile(LLVMMemoryBufferRef @MemBuf);
+        [DllImport(LibraryPath, EntryPoint = "LLVMCreateObjectFile", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMObjectFileRef CreateObjectFile(LLVMMemoryBufferRef memBuf);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposeObjectFile", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisposeObjectFile(LLVMObjectFileRef @ObjectFile);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposeObjectFile", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeObjectFile(LLVMObjectFileRef objectFile);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetSections", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMSectionIteratorRef GetSections(LLVMObjectFileRef @ObjectFile);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetSections", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMSectionIteratorRef GetSections(LLVMObjectFileRef objectFile);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposeSectionIterator", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisposeSectionIterator(LLVMSectionIteratorRef @SI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposeSectionIterator", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeSectionIterator(LLVMSectionIteratorRef si);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsSectionIteratorAtEnd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool IsSectionIteratorAtEnd(LLVMObjectFileRef @ObjectFile, LLVMSectionIteratorRef @SI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsSectionIteratorAtEnd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsSectionIteratorAtEnd(LLVMObjectFileRef objectFile, LLVMSectionIteratorRef si);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMMoveToNextSection", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MoveToNextSection(LLVMSectionIteratorRef @SI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMMoveToNextSection", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MoveToNextSection(LLVMSectionIteratorRef si);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMMoveToContainingSection", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MoveToContainingSection(LLVMSectionIteratorRef @Sect, LLVMSymbolIteratorRef @Sym);
+        [DllImport(LibraryPath, EntryPoint = "LLVMMoveToContainingSection", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MoveToContainingSection(LLVMSectionIteratorRef sect, LLVMSymbolIteratorRef sym);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetSymbols", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMSymbolIteratorRef GetSymbols(LLVMObjectFileRef @ObjectFile);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetSymbols", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMSymbolIteratorRef GetSymbols(LLVMObjectFileRef objectFile);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposeSymbolIterator", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisposeSymbolIterator(LLVMSymbolIteratorRef @SI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposeSymbolIterator", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeSymbolIterator(LLVMSymbolIteratorRef si);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsSymbolIteratorAtEnd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool IsSymbolIteratorAtEnd(LLVMObjectFileRef @ObjectFile, LLVMSymbolIteratorRef @SI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsSymbolIteratorAtEnd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsSymbolIteratorAtEnd(LLVMObjectFileRef objectFile, LLVMSymbolIteratorRef si);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMMoveToNextSymbol", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MoveToNextSymbol(LLVMSymbolIteratorRef @SI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMMoveToNextSymbol", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MoveToNextSymbol(LLVMSymbolIteratorRef si);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetSectionName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetSectionName(LLVMSectionIteratorRef @SI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetSectionName", CallingConvention = CallingConvention.Cdecl)]
+        public static extern string GetSectionName(LLVMSectionIteratorRef si);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetSectionSize", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetSectionSize(LLVMSectionIteratorRef @SI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetSectionSize", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int GetSectionSize(LLVMSectionIteratorRef si);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetSectionContents", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetSectionContents(LLVMSectionIteratorRef @SI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetSectionContents", CallingConvention = CallingConvention.Cdecl)]
+        public static extern string GetSectionContents(LLVMSectionIteratorRef si);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetSectionAddress", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetSectionAddress(LLVMSectionIteratorRef @SI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetSectionAddress", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int GetSectionAddress(LLVMSectionIteratorRef si);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetSectionContainsSymbol", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool GetSectionContainsSymbol(LLVMSectionIteratorRef @SI, LLVMSymbolIteratorRef @Sym);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetSectionContainsSymbol", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool GetSectionContainsSymbol(LLVMSectionIteratorRef si, LLVMSymbolIteratorRef sym);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetRelocations", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMRelocationIteratorRef GetRelocations(LLVMSectionIteratorRef @Section);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetRelocations", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMRelocationIteratorRef GetRelocations(LLVMSectionIteratorRef section);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMDisposeRelocationIterator", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DisposeRelocationIterator(LLVMRelocationIteratorRef @RI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMDisposeRelocationIterator", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeRelocationIterator(LLVMRelocationIteratorRef ri);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMIsRelocationIteratorAtEnd", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool IsRelocationIteratorAtEnd(LLVMSectionIteratorRef @Section, LLVMRelocationIteratorRef @RI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMIsRelocationIteratorAtEnd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsRelocationIteratorAtEnd(LLVMSectionIteratorRef section, LLVMRelocationIteratorRef ri);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMMoveToNextRelocation", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void MoveToNextRelocation(LLVMRelocationIteratorRef @RI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMMoveToNextRelocation", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MoveToNextRelocation(LLVMRelocationIteratorRef ri);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetSymbolName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetSymbolName(LLVMSymbolIteratorRef @SI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetSymbolName", CallingConvention = CallingConvention.Cdecl)]
+        public static extern string GetSymbolName(LLVMSymbolIteratorRef si);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetSymbolAddress", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetSymbolAddress(LLVMSymbolIteratorRef @SI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetSymbolAddress", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int GetSymbolAddress(LLVMSymbolIteratorRef si);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetSymbolSize", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetSymbolSize(LLVMSymbolIteratorRef @SI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetSymbolSize", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int GetSymbolSize(LLVMSymbolIteratorRef si);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetRelocationAddress", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetRelocationAddress(LLVMRelocationIteratorRef @RI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetRelocationAddress", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int GetRelocationAddress(LLVMRelocationIteratorRef ri);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetRelocationOffset", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetRelocationOffset(LLVMRelocationIteratorRef @RI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetRelocationOffset", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int GetRelocationOffset(LLVMRelocationIteratorRef ri);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetRelocationSymbol", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMSymbolIteratorRef GetRelocationSymbol(LLVMRelocationIteratorRef @RI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetRelocationSymbol", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMSymbolIteratorRef GetRelocationSymbol(LLVMRelocationIteratorRef ri);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetRelocationType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetRelocationType(LLVMRelocationIteratorRef @RI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetRelocationType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int GetRelocationType(LLVMRelocationIteratorRef ri);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetRelocationTypeName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetRelocationTypeName(LLVMRelocationIteratorRef @RI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetRelocationTypeName", CallingConvention = CallingConvention.Cdecl)]
+        public static extern string GetRelocationTypeName(LLVMRelocationIteratorRef ri);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetRelocationValueString", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetRelocationValueString(LLVMRelocationIteratorRef @RI);
+        [DllImport(LibraryPath, EntryPoint = "LLVMGetRelocationValueString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern string GetRelocationValueString(LLVMRelocationIteratorRef ri);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddArgumentPromotionPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddArgumentPromotionPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddArgumentPromotionPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddArgumentPromotionPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddConstantMergePass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddConstantMergePass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddConstantMergePass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddConstantMergePass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddDeadArgEliminationPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddDeadArgEliminationPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddDeadArgEliminationPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddDeadArgEliminationPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddFunctionAttrsPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddFunctionAttrsPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddFunctionAttrsPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddFunctionAttrsPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddFunctionInliningPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddFunctionInliningPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddFunctionInliningPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddFunctionInliningPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddAlwaysInlinerPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddAlwaysInlinerPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddAlwaysInlinerPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddAlwaysInlinerPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddGlobalDCEPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddGlobalDCEPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddGlobalDCEPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddGlobalDCEPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddGlobalOptimizerPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddGlobalOptimizerPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddGlobalOptimizerPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddGlobalOptimizerPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddIPConstantPropagationPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddIPConstantPropagationPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddIPConstantPropagationPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddIPConstantPropagationPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddPruneEHPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddPruneEHPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddPruneEHPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddPruneEHPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddIPSCCPPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddIPSCCPPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddIPSCCPPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddIPSCCPPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddInternalizePass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddInternalizePass(LLVMPassManagerRef @param0, uint @AllButMain);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddInternalizePass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddInternalizePass(LLVMPassManagerRef @param0, uint allButMain);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddStripDeadPrototypesPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddStripDeadPrototypesPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddStripDeadPrototypesPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddStripDeadPrototypesPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddStripSymbolsPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddStripSymbolsPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddStripSymbolsPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddStripSymbolsPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPassManagerBuilderCreate", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryPath, EntryPoint = "LLVMPassManagerBuilderCreate", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMPassManagerBuilderRef PassManagerBuilderCreate();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPassManagerBuilderDispose", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void PassManagerBuilderDispose(LLVMPassManagerBuilderRef @PMB);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPassManagerBuilderDispose", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void PassManagerBuilderDispose(LLVMPassManagerBuilderRef pmb);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPassManagerBuilderSetOptLevel", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void PassManagerBuilderSetOptLevel(LLVMPassManagerBuilderRef @PMB, uint @OptLevel);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPassManagerBuilderSetOptLevel", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void PassManagerBuilderSetOptLevel(LLVMPassManagerBuilderRef pmb, uint optLevel);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPassManagerBuilderSetSizeLevel", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void PassManagerBuilderSetSizeLevel(LLVMPassManagerBuilderRef @PMB, uint @SizeLevel);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPassManagerBuilderSetSizeLevel", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void PassManagerBuilderSetSizeLevel(LLVMPassManagerBuilderRef pmb, uint sizeLevel);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPassManagerBuilderSetDisableUnitAtATime", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void PassManagerBuilderSetDisableUnitAtATime(LLVMPassManagerBuilderRef @PMB, LLVMBool @Value);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPassManagerBuilderSetDisableUnitAtATime", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void PassManagerBuilderSetDisableUnitAtATime(LLVMPassManagerBuilderRef pmb, LLVMBool value);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPassManagerBuilderSetDisableUnrollLoops", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void PassManagerBuilderSetDisableUnrollLoops(LLVMPassManagerBuilderRef @PMB, LLVMBool @Value);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPassManagerBuilderSetDisableUnrollLoops", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void PassManagerBuilderSetDisableUnrollLoops(LLVMPassManagerBuilderRef pmb, LLVMBool value);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPassManagerBuilderSetDisableSimplifyLibCalls", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void PassManagerBuilderSetDisableSimplifyLibCalls(LLVMPassManagerBuilderRef @PMB, LLVMBool @Value);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPassManagerBuilderSetDisableSimplifyLibCalls", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void PassManagerBuilderSetDisableSimplifyLibCalls(LLVMPassManagerBuilderRef pmb, LLVMBool value);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPassManagerBuilderUseInlinerWithThreshold", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void PassManagerBuilderUseInlinerWithThreshold(LLVMPassManagerBuilderRef @PMB, uint @Threshold);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPassManagerBuilderUseInlinerWithThreshold", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void PassManagerBuilderUseInlinerWithThreshold(LLVMPassManagerBuilderRef pmb, uint threshold);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPassManagerBuilderPopulateFunctionPassManager", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void PassManagerBuilderPopulateFunctionPassManager(LLVMPassManagerBuilderRef @PMB, LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPassManagerBuilderPopulateFunctionPassManager", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void PassManagerBuilderPopulateFunctionPassManager(LLVMPassManagerBuilderRef pmb, LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPassManagerBuilderPopulateModulePassManager", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void PassManagerBuilderPopulateModulePassManager(LLVMPassManagerBuilderRef @PMB, LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPassManagerBuilderPopulateModulePassManager", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void PassManagerBuilderPopulateModulePassManager(LLVMPassManagerBuilderRef pmb, LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMPassManagerBuilderPopulateLTOPassManager", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void PassManagerBuilderPopulateLTOPassManager(LLVMPassManagerBuilderRef @PMB, LLVMPassManagerRef @PM, LLVMBool @Internalize, LLVMBool @RunInliner);
+        [DllImport(LibraryPath, EntryPoint = "LLVMPassManagerBuilderPopulateLTOPassManager", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void PassManagerBuilderPopulateLTOPassManager(LLVMPassManagerBuilderRef pmb, LLVMPassManagerRef pm, LLVMBool internalize, LLVMBool runInliner);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddAggressiveDCEPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddAggressiveDCEPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddAggressiveDCEPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddAggressiveDCEPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddAlignmentFromAssumptionsPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddAlignmentFromAssumptionsPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddAlignmentFromAssumptionsPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddAlignmentFromAssumptionsPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddCFGSimplificationPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddCFGSimplificationPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddCFGSimplificationPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddCFGSimplificationPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddDeadStoreEliminationPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddDeadStoreEliminationPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddDeadStoreEliminationPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddDeadStoreEliminationPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddScalarizerPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddScalarizerPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddScalarizerPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddScalarizerPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddMergedLoadStoreMotionPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddMergedLoadStoreMotionPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddMergedLoadStoreMotionPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddMergedLoadStoreMotionPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddGVNPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddGVNPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddGVNPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddGVNPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddIndVarSimplifyPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddIndVarSimplifyPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddIndVarSimplifyPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddIndVarSimplifyPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddInstructionCombiningPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddInstructionCombiningPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddInstructionCombiningPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddInstructionCombiningPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddJumpThreadingPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddJumpThreadingPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddJumpThreadingPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddJumpThreadingPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddLICMPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddLICMPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddLICMPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddLICMPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddLoopDeletionPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddLoopDeletionPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddLoopDeletionPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddLoopDeletionPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddLoopIdiomPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddLoopIdiomPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddLoopIdiomPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddLoopIdiomPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddLoopRotatePass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddLoopRotatePass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddLoopRotatePass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddLoopRotatePass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddLoopRerollPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddLoopRerollPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddLoopRerollPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddLoopRerollPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddLoopUnrollPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddLoopUnrollPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddLoopUnrollPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddLoopUnrollPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddLoopUnswitchPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddLoopUnswitchPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddLoopUnswitchPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddLoopUnswitchPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddMemCpyOptPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddMemCpyOptPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddMemCpyOptPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddMemCpyOptPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddPartiallyInlineLibCallsPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddPartiallyInlineLibCallsPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddPartiallyInlineLibCallsPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddPartiallyInlineLibCallsPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddLowerSwitchPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddLowerSwitchPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddLowerSwitchPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddLowerSwitchPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddPromoteMemoryToRegisterPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddPromoteMemoryToRegisterPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddPromoteMemoryToRegisterPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddPromoteMemoryToRegisterPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddReassociatePass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddReassociatePass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddReassociatePass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddReassociatePass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddSCCPPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddSCCPPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddSCCPPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddSCCPPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddScalarReplAggregatesPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddScalarReplAggregatesPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddScalarReplAggregatesPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddScalarReplAggregatesPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddScalarReplAggregatesPassSSA", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddScalarReplAggregatesPassSSA(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddScalarReplAggregatesPassSSA", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddScalarReplAggregatesPassSSA(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddScalarReplAggregatesPassWithThreshold", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddScalarReplAggregatesPassWithThreshold(LLVMPassManagerRef @PM, int @Threshold);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddScalarReplAggregatesPassWithThreshold", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddScalarReplAggregatesPassWithThreshold(LLVMPassManagerRef pm, int threshold);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddSimplifyLibCallsPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddSimplifyLibCallsPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddSimplifyLibCallsPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddSimplifyLibCallsPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddTailCallEliminationPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddTailCallEliminationPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddTailCallEliminationPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddTailCallEliminationPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddConstantPropagationPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddConstantPropagationPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddConstantPropagationPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddConstantPropagationPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddDemoteMemoryToRegisterPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddDemoteMemoryToRegisterPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddDemoteMemoryToRegisterPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddDemoteMemoryToRegisterPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddVerifierPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddVerifierPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddVerifierPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddVerifierPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddCorrelatedValuePropagationPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddCorrelatedValuePropagationPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddCorrelatedValuePropagationPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddCorrelatedValuePropagationPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddEarlyCSEPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddEarlyCSEPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddEarlyCSEPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddEarlyCSEPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddLowerExpectIntrinsicPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddLowerExpectIntrinsicPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddLowerExpectIntrinsicPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddLowerExpectIntrinsicPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddTypeBasedAliasAnalysisPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddTypeBasedAliasAnalysisPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddTypeBasedAliasAnalysisPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddTypeBasedAliasAnalysisPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddScopedNoAliasAAPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddScopedNoAliasAAPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddScopedNoAliasAAPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddScopedNoAliasAAPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddBasicAliasAnalysisPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddBasicAliasAnalysisPass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddBasicAliasAnalysisPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddBasicAliasAnalysisPass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddBBVectorizePass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddBBVectorizePass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddBBVectorizePass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddBBVectorizePass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddLoopVectorizePass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddLoopVectorizePass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddLoopVectorizePass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddLoopVectorizePass(LLVMPassManagerRef pm);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddSLPVectorizePass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddSLPVectorizePass(LLVMPassManagerRef @PM);
+        [DllImport(LibraryPath, EntryPoint = "LLVMAddSLPVectorizePass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddSLPVectorizePass(LLVMPassManagerRef pm);
 
     }
 }

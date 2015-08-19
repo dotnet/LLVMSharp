@@ -13,19 +13,19 @@
             return retVal ?? string.Empty;
         }
 
-        public static LLVMValueRef ConstVector(LLVMValueRef[] @ScalarConstantVars)
+        public static LLVMValueRef ConstVector(LLVMValueRef[] scalarConstantVars)
         {
-            return LLVM.ConstVector(@ScalarConstantVars);
+            return LLVM.ConstVector(scalarConstantVars);
         }
 
-        public static LLVMValueRef ConstStruct(LLVMValueRef[] @ConstantVals, LLVMBool @Packed)
+        public static LLVMValueRef ConstStruct(LLVMValueRef[] constantVals, LLVMBool packed)
         {
-            return LLVM.ConstStruct(@ConstantVals, @Packed);
+            return LLVM.ConstStruct(constantVals, packed);
         }
 
-        public static LLVMValueRef MDNode(LLVMValueRef[] Vals)
+        public static LLVMValueRef MDNode(LLVMValueRef[] vals)
         {
-            return LLVM.MDNode(Vals);
+            return LLVM.MDNode(vals);
         }
         
         public LLVMValueRef GetNextFunction()
@@ -48,9 +48,9 @@
             return this.ToString();
         }
 
-        public void SetValueName(string @Name)
+        public void SetValueName(string name)
         {
-            LLVM.SetValueName(this, @Name);
+            LLVM.SetValueName(this, name);
         }
 
         public void DumpValue()
@@ -63,9 +63,9 @@
             return this.ToString();
         }
 
-        public void ReplaceAllUsesWith(LLVMValueRef @NewVal)
+        public void ReplaceAllUsesWith(LLVMValueRef newVal)
         {
-            LLVM.ReplaceAllUsesWith(this, @NewVal);
+            LLVM.ReplaceAllUsesWith(this, newVal);
         }
 
         public LLVMBool IsConstant()
@@ -453,19 +453,19 @@
             return LLVM.GetFirstUse(this);
         }
 
-        public LLVMValueRef GetOperand(uint @Index)
+        public LLVMValueRef GetOperand(uint index)
         {
-            return LLVM.GetOperand(this, @Index);
+            return LLVM.GetOperand(this, index);
         }
 
-        public LLVMUseRef GetOperandUse(uint @Index)
+        public LLVMUseRef GetOperandUse(uint index)
         {
-            return LLVM.GetOperandUse(this, @Index);
+            return LLVM.GetOperandUse(this, index);
         }
 
-        public void SetOperand(uint @Index, LLVMValueRef @Val)
+        public void SetOperand(uint index, LLVMValueRef val)
         {
-            LLVM.SetOperand(this, @Index, @Val);
+            LLVM.SetOperand(this, index, val);
         }
 
         public int GetNumOperands()
@@ -538,269 +538,269 @@
             return LLVM.ConstNot(this);
         }
 
-        public LLVMValueRef ConstAdd(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstAdd(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstAdd(this, @RHSConstant);
+            return LLVM.ConstAdd(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstNSWAdd(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstNSWAdd(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstNSWAdd(this, @RHSConstant);
+            return LLVM.ConstNSWAdd(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstNUWAdd(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstNUWAdd(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstNUWAdd(this, @RHSConstant);
+            return LLVM.ConstNUWAdd(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstFAdd(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstFAdd(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstFAdd(this, @RHSConstant);
+            return LLVM.ConstFAdd(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstSub(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstSub(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstSub(this, @RHSConstant);
+            return LLVM.ConstSub(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstNSWSub(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstNSWSub(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstNSWSub(this, @RHSConstant);
+            return LLVM.ConstNSWSub(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstNUWSub(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstNUWSub(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstNUWSub(this, @RHSConstant);
+            return LLVM.ConstNUWSub(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstFSub(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstFSub(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstFSub(this, @RHSConstant);
+            return LLVM.ConstFSub(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstMul(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstMul(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstMul(this, @RHSConstant);
+            return LLVM.ConstMul(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstNSWMul(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstNSWMul(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstNSWMul(this, @RHSConstant);
+            return LLVM.ConstNSWMul(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstNUWMul(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstNUWMul(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstNUWMul(this, @RHSConstant);
+            return LLVM.ConstNUWMul(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstFMul(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstFMul(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstFMul(this, @RHSConstant);
+            return LLVM.ConstFMul(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstUDiv(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstUDiv(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstUDiv(this, @RHSConstant);
+            return LLVM.ConstUDiv(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstSDiv(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstSDiv(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstSDiv(this, @RHSConstant);
+            return LLVM.ConstSDiv(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstExactSDiv(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstExactSDiv(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstExactSDiv(this, @RHSConstant);
+            return LLVM.ConstExactSDiv(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstFDiv(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstFDiv(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstFDiv(this, @RHSConstant);
+            return LLVM.ConstFDiv(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstURem(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstURem(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstURem(this, @RHSConstant);
+            return LLVM.ConstURem(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstSRem(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstSRem(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstSRem(this, @RHSConstant);
+            return LLVM.ConstSRem(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstFRem(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstFRem(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstFRem(this, @RHSConstant);
+            return LLVM.ConstFRem(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstAnd(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstAnd(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstAnd(this, @RHSConstant);
+            return LLVM.ConstAnd(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstOr(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstOr(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstOr(this, @RHSConstant);
+            return LLVM.ConstOr(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstXor(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstXor(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstXor(this, @RHSConstant);
+            return LLVM.ConstXor(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstShl(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstShl(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstShl(this, @RHSConstant);
+            return LLVM.ConstShl(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstLShr(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstLShr(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstLShr(this, @RHSConstant);
+            return LLVM.ConstLShr(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstAShr(LLVMValueRef @RHSConstant)
+        public LLVMValueRef ConstAShr(LLVMValueRef rhsConstant)
         {
-            return LLVM.ConstAShr(this, @RHSConstant);
+            return LLVM.ConstAShr(this, rhsConstant);
         }
 
-        public LLVMValueRef ConstGEP(LLVMValueRef[] @ConstantIndices)
+        public LLVMValueRef ConstGEP(LLVMValueRef[] constantIndices)
         {
-            return LLVM.ConstGEP(this, @ConstantIndices);
+            return LLVM.ConstGEP(this, constantIndices);
         }
 
-        public LLVMValueRef ConstInBoundsGEP(LLVMValueRef[] @ConstantIndices)
+        public LLVMValueRef ConstInBoundsGEP(LLVMValueRef[] constantIndices)
         {
-            return LLVM.ConstInBoundsGEP(this, @ConstantIndices);
+            return LLVM.ConstInBoundsGEP(this, constantIndices);
         }
 
-        public LLVMValueRef ConstTrunc(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstTrunc(LLVMTypeRef toType)
         {
-            return LLVM.ConstTrunc(this, @ToType);
+            return LLVM.ConstTrunc(this, toType);
         }
 
-        public LLVMValueRef ConstSExt(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstSExt(LLVMTypeRef toType)
         {
-            return LLVM.ConstSExt(this, @ToType);
+            return LLVM.ConstSExt(this, toType);
         }
 
-        public LLVMValueRef ConstZExt(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstZExt(LLVMTypeRef toType)
         {
-            return LLVM.ConstZExt(this, @ToType);
+            return LLVM.ConstZExt(this, toType);
         }
 
-        public LLVMValueRef ConstFPTrunc(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstFPTrunc(LLVMTypeRef toType)
         {
-            return LLVM.ConstFPTrunc(this, @ToType);
+            return LLVM.ConstFPTrunc(this, toType);
         }
 
-        public LLVMValueRef ConstFPExt(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstFPExt(LLVMTypeRef toType)
         {
-            return LLVM.ConstFPExt(this, @ToType);
+            return LLVM.ConstFPExt(this, toType);
         }
 
-        public LLVMValueRef ConstUIToFP(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstUIToFP(LLVMTypeRef toType)
         {
-            return LLVM.ConstUIToFP(this, @ToType);
+            return LLVM.ConstUIToFP(this, toType);
         }
 
-        public LLVMValueRef ConstSIToFP(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstSIToFP(LLVMTypeRef toType)
         {
-            return LLVM.ConstSIToFP(this, @ToType);
+            return LLVM.ConstSIToFP(this, toType);
         }
 
-        public LLVMValueRef ConstFPToUI(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstFPToUI(LLVMTypeRef toType)
         {
-            return LLVM.ConstFPToUI(this, @ToType);
+            return LLVM.ConstFPToUI(this, toType);
         }
 
-        public LLVMValueRef ConstFPToSI(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstFPToSI(LLVMTypeRef toType)
         {
-            return LLVM.ConstFPToSI(this, @ToType);
+            return LLVM.ConstFPToSI(this, toType);
         }
 
-        public LLVMValueRef ConstPtrToInt(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstPtrToInt(LLVMTypeRef toType)
         {
-            return LLVM.ConstPtrToInt(this, @ToType);
+            return LLVM.ConstPtrToInt(this, toType);
         }
 
-        public LLVMValueRef ConstIntToPtr(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstIntToPtr(LLVMTypeRef toType)
         {
-            return LLVM.ConstIntToPtr(this, @ToType);
+            return LLVM.ConstIntToPtr(this, toType);
         }
 
-        public LLVMValueRef ConstBitCast(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstBitCast(LLVMTypeRef toType)
         {
-            return LLVM.ConstBitCast(this, @ToType);
+            return LLVM.ConstBitCast(this, toType);
         }
 
-        public LLVMValueRef ConstAddrSpaceCast(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstAddrSpaceCast(LLVMTypeRef toType)
         {
-            return LLVM.ConstAddrSpaceCast(this, @ToType);
+            return LLVM.ConstAddrSpaceCast(this, toType);
         }
 
-        public LLVMValueRef ConstZExtOrBitCast(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstZExtOrBitCast(LLVMTypeRef toType)
         {
-            return LLVM.ConstZExtOrBitCast(this, @ToType);
+            return LLVM.ConstZExtOrBitCast(this, toType);
         }
 
-        public LLVMValueRef ConstSExtOrBitCast(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstSExtOrBitCast(LLVMTypeRef toType)
         {
-            return LLVM.ConstSExtOrBitCast(this, @ToType);
+            return LLVM.ConstSExtOrBitCast(this, toType);
         }
 
-        public LLVMValueRef ConstTruncOrBitCast(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstTruncOrBitCast(LLVMTypeRef toType)
         {
-            return LLVM.ConstTruncOrBitCast(this, @ToType);
+            return LLVM.ConstTruncOrBitCast(this, toType);
         }
 
-        public LLVMValueRef ConstPointerCast(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstPointerCast(LLVMTypeRef toType)
         {
-            return LLVM.ConstPointerCast(this, @ToType);
+            return LLVM.ConstPointerCast(this, toType);
         }
 
-        public LLVMValueRef ConstIntCast(LLVMTypeRef @ToType, LLVMBool @isSigned)
+        public LLVMValueRef ConstIntCast(LLVMTypeRef toType, LLVMBool @isSigned)
         {
-            return LLVM.ConstIntCast(this, @ToType, @isSigned);
+            return LLVM.ConstIntCast(this, toType, @isSigned);
         }
 
-        public LLVMValueRef ConstFPCast(LLVMTypeRef @ToType)
+        public LLVMValueRef ConstFPCast(LLVMTypeRef toType)
         {
-            return LLVM.ConstFPCast(this, @ToType);
+            return LLVM.ConstFPCast(this, toType);
         }
 
-        public LLVMValueRef ConstSelect(LLVMValueRef @ConstantIfTrue, LLVMValueRef @ConstantIfFalse)
+        public LLVMValueRef ConstSelect(LLVMValueRef constantIfTrue, LLVMValueRef constantIfFalse)
         {
-            return LLVM.ConstSelect(this, @ConstantIfTrue, @ConstantIfFalse);
+            return LLVM.ConstSelect(this, constantIfTrue, constantIfFalse);
         }
 
-        public LLVMValueRef ConstExtractElement(LLVMValueRef @IndexConstant)
+        public LLVMValueRef ConstExtractElement(LLVMValueRef indexConstant)
         {
-            return LLVM.ConstExtractElement(this, @IndexConstant);
+            return LLVM.ConstExtractElement(this, indexConstant);
         }
 
-        public LLVMValueRef ConstInsertElement(LLVMValueRef @ElementValueConstant, LLVMValueRef @IndexConstant)
+        public LLVMValueRef ConstInsertElement(LLVMValueRef elementValueConstant, LLVMValueRef indexConstant)
         {
-            return LLVM.ConstInsertElement(this, @ElementValueConstant, @IndexConstant);
+            return LLVM.ConstInsertElement(this, elementValueConstant, indexConstant);
         }
 
-        public LLVMValueRef ConstShuffleVector(LLVMValueRef @VectorBConstant, LLVMValueRef @MaskConstant)
+        public LLVMValueRef ConstShuffleVector(LLVMValueRef vectorBConstant, LLVMValueRef maskConstant)
         {
-            return LLVM.ConstShuffleVector(this, @VectorBConstant, @MaskConstant);
+            return LLVM.ConstShuffleVector(this, vectorBConstant, maskConstant);
         }
 
-        public LLVMValueRef ConstExtractValue(uint[] @IdxList)
+        public LLVMValueRef ConstExtractValue(uint[] idxList)
         {
-            return LLVM.ConstExtractValue(this, @IdxList);
+            return LLVM.ConstExtractValue(this, idxList);
         }
 
-        public LLVMValueRef ConstInsertValue(LLVMValueRef @ElementValueConstant, uint[] @IdxList)
+        public LLVMValueRef ConstInsertValue(LLVMValueRef elementValueConstant, uint[] idxList)
         {
-            return LLVM.ConstInsertValue(this, @ElementValueConstant, @IdxList);
+            return LLVM.ConstInsertValue(this, elementValueConstant, idxList);
         }
 
-        public LLVMValueRef BlockAddress(LLVMBasicBlockRef @BB)
+        public LLVMValueRef BlockAddress(LLVMBasicBlockRef bb)
         {
-            return LLVM.BlockAddress(this, @BB);
+            return LLVM.BlockAddress(this, bb);
         }
 
         public LLVMModuleRef GetGlobalParent()
@@ -818,9 +818,9 @@
             return LLVM.GetLinkage(this);
         }
 
-        public void SetLinkage(LLVMLinkage @Linkage)
+        public void SetLinkage(LLVMLinkage linkage)
         {
-            LLVM.SetLinkage(this, @Linkage);
+            LLVM.SetLinkage(this, linkage);
         }
 
         public string GetSection()
@@ -828,9 +828,9 @@
             return LLVM.GetSection(this);
         }
 
-        public void SetSection(string @Section)
+        public void SetSection(string section)
         {
-            LLVM.SetSection(this, @Section);
+            LLVM.SetSection(this, section);
         }
 
         public LLVMVisibility GetVisibility()
@@ -838,9 +838,9 @@
             return LLVM.GetVisibility(this);
         }
 
-        public void SetVisibility(LLVMVisibility @Viz)
+        public void SetVisibility(LLVMVisibility viz)
         {
-            LLVM.SetVisibility(this, @Viz);
+            LLVM.SetVisibility(this, viz);
         }
 
         public LLVMDLLStorageClass GetDLLStorageClass()
@@ -858,9 +858,9 @@
             return LLVM.HasUnnamedAddr(this);
         }
 
-        public void SetUnnamedAddr(LLVMBool @HasUnnamedAddr)
+        public void SetUnnamedAddr(LLVMBool hasUnnamedAddr)
         {
-            LLVM.SetUnnamedAddr(this, @HasUnnamedAddr);
+            LLVM.SetUnnamedAddr(this, hasUnnamedAddr);
         }
 
         public uint GetAlignment()
@@ -868,9 +868,9 @@
             return LLVM.GetAlignment(this);
         }
 
-        public void SetAlignment(uint @Bytes)
+        public void SetAlignment(uint bytes)
         {
-            LLVM.SetAlignment(this, @Bytes);
+            LLVM.SetAlignment(this, bytes);
         }
 
         public LLVMValueRef GetNextGlobal()
@@ -893,9 +893,9 @@
             return LLVM.GetInitializer(this);
         }
 
-        public void SetInitializer(LLVMValueRef @ConstantVal)
+        public void SetInitializer(LLVMValueRef constantVal)
         {
-            LLVM.SetInitializer(this, @ConstantVal);
+            LLVM.SetInitializer(this, constantVal);
         }
 
         public LLVMBool IsThreadLocal()
@@ -903,9 +903,9 @@
             return LLVM.IsThreadLocal(this);
         }
 
-        public void SetThreadLocal(LLVMBool @IsThreadLocal)
+        public void SetThreadLocal(LLVMBool isThreadLocal)
         {
-            LLVM.SetThreadLocal(this, @IsThreadLocal);
+            LLVM.SetThreadLocal(this, isThreadLocal);
         }
 
         public LLVMBool IsGlobalConstant()
@@ -913,9 +913,9 @@
             return LLVM.IsGlobalConstant(this);
         }
 
-        public void SetGlobalConstant(LLVMBool @IsConstant)
+        public void SetGlobalConstant(LLVMBool isConstant)
         {
-            LLVM.SetGlobalConstant(this, @IsConstant);
+            LLVM.SetGlobalConstant(this, isConstant);
         }
 
         public LLVMThreadLocalMode GetThreadLocalMode()
@@ -923,9 +923,9 @@
             return LLVM.GetThreadLocalMode(this);
         }
 
-        public void SetThreadLocalMode(LLVMThreadLocalMode @Mode)
+        public void SetThreadLocalMode(LLVMThreadLocalMode mode)
         {
-            LLVM.SetThreadLocalMode(this, @Mode);
+            LLVM.SetThreadLocalMode(this, mode);
         }
 
         public LLVMBool IsExternallyInitialized()
@@ -933,9 +933,9 @@
             return LLVM.IsExternallyInitialized(this);
         }
 
-        public void SetExternallyInitialized(LLVMBool @IsExtInit)
+        public void SetExternallyInitialized(LLVMBool isExtInit)
         {
-            LLVM.SetExternallyInitialized(this, @IsExtInit);
+            LLVM.SetExternallyInitialized(this, isExtInit);
         }
 
         public void DeleteFunction()
@@ -953,9 +953,9 @@
             return LLVM.GetFunctionCallConv(this);
         }
 
-        public void SetFunctionCallConv(uint @CC)
+        public void SetFunctionCallConv(uint cc)
         {
-            LLVM.SetFunctionCallConv(this, @CC);
+            LLVM.SetFunctionCallConv(this, cc);
         }
 
         public string GetGC()
@@ -963,19 +963,19 @@
             return LLVM.GetGC(this);
         }
 
-        public void SetGC(string @Name)
+        public void SetGC(string name)
         {
-            LLVM.SetGC(this, @Name);
+            LLVM.SetGC(this, name);
         }
 
-        public void AddFunctionAttr(LLVMAttribute @PA)
+        public void AddFunctionAttr(LLVMAttribute pa)
         {
-            LLVM.AddFunctionAttr(this, @PA);
+            LLVM.AddFunctionAttr(this, pa);
         }
 
-        public void AddTargetDependentFunctionAttr(string @A, string @V)
+        public void AddTargetDependentFunctionAttr(string a, string v)
         {
-            LLVM.AddTargetDependentFunctionAttr(this, @A, @V);
+            LLVM.AddTargetDependentFunctionAttr(this, a, v);
         }
 
         public LLVMAttribute GetFunctionAttr()
@@ -983,9 +983,9 @@
             return LLVM.GetFunctionAttr(this);
         }
 
-        public void RemoveFunctionAttr(LLVMAttribute @PA)
+        public void RemoveFunctionAttr(LLVMAttribute pa)
         {
-            LLVM.RemoveFunctionAttr(this, @PA);
+            LLVM.RemoveFunctionAttr(this, pa);
         }
 
         public uint CountParams()
@@ -998,9 +998,9 @@
             return LLVM.GetParams(this);
         }
 
-        public LLVMValueRef GetParam(uint @Index)
+        public LLVMValueRef GetParam(uint index)
         {
-            return LLVM.GetParam(this, @Index);
+            return LLVM.GetParam(this, index);
         }
 
         public LLVMValueRef GetParamParent()
@@ -1028,14 +1028,14 @@
             return LLVM.GetPreviousParam(this);
         }
 
-        public void AddAttribute(LLVMAttribute @PA)
+        public void AddAttribute(LLVMAttribute pa)
         {
-            LLVM.AddAttribute(this, @PA);
+            LLVM.AddAttribute(this, pa);
         }
 
-        public void RemoveAttribute(LLVMAttribute @PA)
+        public void RemoveAttribute(LLVMAttribute pa)
         {
-            LLVM.RemoveAttribute(this, @PA);
+            LLVM.RemoveAttribute(this, pa);
         }
 
         public LLVMAttribute GetAttribute()
@@ -1048,9 +1048,9 @@
             LLVM.SetParamAlignment(this, @align);
         }
 
-        public string GetMDString(out uint @Len)
+        public string GetMDString(out uint len)
         {
-            return LLVM.GetMDString(this, out @Len);
+            return LLVM.GetMDString(this, out len);
         }
 
         public uint GetMDNodeNumOperands()
@@ -1098,9 +1098,9 @@
             return LLVM.GetEntryBasicBlock(this);
         }
 
-        public LLVMBasicBlockRef AppendBasicBlock(string @Name)
+        public LLVMBasicBlockRef AppendBasicBlock(string name)
         {
-            return LLVM.AppendBasicBlock(this, @Name);
+            return LLVM.AppendBasicBlock(this, name);
         }
 
         public int HasMetadata()
@@ -1108,14 +1108,14 @@
             return LLVM.HasMetadata(this);
         }
 
-        public LLVMValueRef GetMetadata(uint @KindID)
+        public LLVMValueRef GetMetadata(uint kindID)
         {
-            return LLVM.GetMetadata(this, @KindID);
+            return LLVM.GetMetadata(this, kindID);
         }
 
-        public void SetMetadata(uint @KindID, LLVMValueRef @Node)
+        public void SetMetadata(uint kindID, LLVMValueRef node)
         {
-            LLVM.SetMetadata(this, @KindID, @Node);
+            LLVM.SetMetadata(this, kindID, node);
         }
 
         public LLVMBasicBlockRef GetInstructionParent()
@@ -1158,9 +1158,9 @@
             return LLVM.InstructionClone(this);
         }
 
-        public void SetInstructionCallConv(uint @CC)
+        public void SetInstructionCallConv(uint cc)
         {
-            LLVM.SetInstructionCallConv(this, @CC);
+            LLVM.SetInstructionCallConv(this, cc);
         }
 
         public uint GetInstructionCallConv()
@@ -1188,9 +1188,9 @@
             return LLVM.IsTailCall(this);
         }
 
-        public void SetTailCall(LLVMBool @IsTailCall)
+        public void SetTailCall(LLVMBool isTailCall)
         {
-            LLVM.SetTailCall(this, @IsTailCall);
+            LLVM.SetTailCall(this, isTailCall);
         }
 
         public uint GetNumSuccessors()
@@ -1218,9 +1218,9 @@
             return LLVM.GetCondition(this);
         }
 
-        public void SetCondition(LLVMValueRef @Cond)
+        public void SetCondition(LLVMValueRef cond)
         {
-            LLVM.SetCondition(this, @Cond);
+            LLVM.SetCondition(this, cond);
         }
 
         public LLVMBasicBlockRef GetSwitchDefaultDest()
@@ -1228,9 +1228,9 @@
             return LLVM.GetSwitchDefaultDest(this);
         }
 
-        public void AddIncoming(LLVMValueRef[] @IncomingValues, LLVMBasicBlockRef[] @IncomingBlocks, uint @Count)
+        public void AddIncoming(LLVMValueRef[] incomingValues, LLVMBasicBlockRef[] incomingBlocks, uint count)
         {
-            LLVM.AddIncoming(this, @IncomingValues, @IncomingBlocks, @Count);
+            LLVM.AddIncoming(this, incomingValues, incomingBlocks, count);
         }
 
         public uint CountIncoming()
@@ -1238,34 +1238,34 @@
             return LLVM.CountIncoming(this);
         }
 
-        public LLVMValueRef GetIncomingValue(uint @Index)
+        public LLVMValueRef GetIncomingValue(uint index)
         {
-            return LLVM.GetIncomingValue(this, @Index);
+            return LLVM.GetIncomingValue(this, index);
         }
 
-        public LLVMBasicBlockRef GetIncomingBlock(uint @Index)
+        public LLVMBasicBlockRef GetIncomingBlock(uint index)
         {
-            return LLVM.GetIncomingBlock(this, @Index);
+            return LLVM.GetIncomingBlock(this, index);
         }
 
-        public void AddCase(LLVMValueRef @OnVal, LLVMBasicBlockRef @Dest)
+        public void AddCase(LLVMValueRef onVal, LLVMBasicBlockRef dest)
         {
-            LLVM.AddCase(this, @OnVal, @Dest);
+            LLVM.AddCase(this, onVal, dest);
         }
 
-        public void AddDestination(LLVMBasicBlockRef @Dest)
+        public void AddDestination(LLVMBasicBlockRef dest)
         {
-            LLVM.AddDestination(this, @Dest);
+            LLVM.AddDestination(this, dest);
         }
 
-        public void AddClause(LLVMValueRef @ClauseVal)
+        public void AddClause(LLVMValueRef clauseVal)
         {
-            LLVM.AddClause(this, @ClauseVal);
+            LLVM.AddClause(this, clauseVal);
         }
 
-        public void SetCleanup(LLVMBool @Val)
+        public void SetCleanup(LLVMBool val)
         {
-            LLVM.SetCleanup(this, @Val);
+            LLVM.SetCleanup(this, val);
         }
 
         public LLVMBool GetVolatile()
@@ -1273,14 +1273,14 @@
             return LLVM.GetVolatile(this);
         }
 
-        public void SetVolatile(LLVMBool @IsVolatile)
+        public void SetVolatile(LLVMBool isVolatile)
         {
-            LLVM.SetVolatile(this, @IsVolatile);
+            LLVM.SetVolatile(this, isVolatile);
         }
 
-        public LLVMBool VerifyFunction(LLVMVerifierFailureAction @Action)
+        public LLVMBool VerifyFunction(LLVMVerifierFailureAction action)
         {
-            return LLVM.VerifyFunction(this, @Action);
+            return LLVM.VerifyFunction(this, action);
         }
 
         public void ViewFunctionCFG()

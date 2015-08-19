@@ -28,9 +28,9 @@
             this.Dispose(false);
         }
 
-        public bool RunPassManager(LLVMModuleRef @M)
+        public bool RunPassManager(LLVMModuleRef m)
         {
-            return LLVM.RunPassManager(this.instance, @M);
+            return LLVM.RunPassManager(this.instance, m);
         }
 
         public bool InitializeFunctionPassManager()
@@ -38,9 +38,9 @@
             return LLVM.InitializeFunctionPassManager(this.instance);
         }
 
-        public bool RunFunctionPassManager(LLVMValueRef @F)
+        public bool RunFunctionPassManager(LLVMValueRef f)
         {
-            return LLVM.RunFunctionPassManager(this.instance, @F);
+            return LLVM.RunFunctionPassManager(this.instance, f);
         }
 
         public bool FinalizeFunctionPassManager()
@@ -120,9 +120,9 @@
             LLVM.AddIPSCCPPass(this.instance);
         }
 
-        public void AddInternalizePass(uint @AllButMain)
+        public void AddInternalizePass(uint allButMain)
         {
-            LLVM.AddInternalizePass(this.instance, @AllButMain);
+            LLVM.AddInternalizePass(this.instance, allButMain);
         }
 
         public void AddStripDeadPrototypesPass()
@@ -260,9 +260,9 @@
             LLVM.AddScalarReplAggregatesPassSSA(this.instance);
         }
 
-        public void AddScalarReplAggregatesPassWithThreshold(int @Threshold)
+        public void AddScalarReplAggregatesPassWithThreshold(int threshold)
         {
-            LLVM.AddScalarReplAggregatesPassWithThreshold(this.instance, @Threshold);
+            LLVM.AddScalarReplAggregatesPassWithThreshold(this.instance, threshold);
         }
 
         public void AddSimplifyLibCallsPass()

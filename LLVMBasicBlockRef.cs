@@ -29,9 +29,9 @@
             return LLVM.GetPreviousBasicBlock(this);
         }
 
-        public LLVMBasicBlockRef InsertBasicBlock(string @Name)
+        public LLVMBasicBlockRef InsertBasicBlock(string name)
         {
-            return LLVM.InsertBasicBlock(this, @Name);
+            return LLVM.InsertBasicBlock(this, name);
         }
 
         public void DeleteBasicBlock()
@@ -44,14 +44,14 @@
             LLVM.RemoveBasicBlockFromParent(this);
         }
 
-        public void MoveBasicBlockBefore(LLVMBasicBlockRef @MovePos)
+        public void MoveBasicBlockBefore(LLVMBasicBlockRef movePos)
         {
-            LLVM.MoveBasicBlockBefore(this, @MovePos);
+            LLVM.MoveBasicBlockBefore(this, movePos);
         }
 
-        public void MoveBasicBlockAfter(LLVMBasicBlockRef @MovePos)
+        public void MoveBasicBlockAfter(LLVMBasicBlockRef movePos)
         {
-            LLVM.MoveBasicBlockAfter(this, @MovePos);
+            LLVM.MoveBasicBlockAfter(this, movePos);
         }
 
         public LLVMValueRef GetFirstInstruction()

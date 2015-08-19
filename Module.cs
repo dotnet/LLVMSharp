@@ -54,9 +54,9 @@
             LLVM.DumpModule(this.instance);
         }
 
-        public bool PrintModuleToFile(string @Filename, out IntPtr @ErrorMessage)
+        public bool PrintModuleToFile(string filename, out IntPtr errorMessage)
         {
-            return LLVM.PrintModuleToFile(this.instance, @Filename, out @ErrorMessage);
+            return LLVM.PrintModuleToFile(this.instance, filename, out errorMessage);
         }
 
         public string PrintModuleToString()
@@ -67,14 +67,14 @@
             return retVal;
         }
 
-        public void SetModuleInlineAsm(string @Asm)
+        public void SetModuleInlineAsm(string asm)
         {
-            LLVM.SetModuleInlineAsm(this.instance, @Asm);
+            LLVM.SetModuleInlineAsm(this.instance, asm);
         }
 
-        public Type GetTypeByName(string @Name)
+        public Type GetTypeByName(string name)
         {
-            return new Type(LLVM.GetTypeByName(this.instance, @Name));
+            return new Type(LLVM.GetTypeByName(this.instance, name));
         }
 
         public uint GetNamedMetadataNumOperands(string @name)
@@ -87,19 +87,19 @@
             return Common.ToValues(LLVM.GetNamedMetadataOperands(this.instance, @name));
         }
 
-        public void AddNamedMetadataOperand(string @name, Value @Val)
+        public void AddNamedMetadataOperand(string @name, Value val)
         {
-            LLVM.AddNamedMetadataOperand(this.instance, @name, @Val.ToValueRef());
+            LLVM.AddNamedMetadataOperand(this.instance, @name, val.ToValueRef());
         }
 
-        public Function AddFunction(string @Name, Type @FunctionTy)
+        public Function AddFunction(string name, Type functionTy)
         {
-            return new Function(LLVM.AddFunction(this.instance, @Name, @FunctionTy.ToTypeRef()));
+            return new Function(LLVM.AddFunction(this.instance, name, functionTy.ToTypeRef()));
         }
 
-        public Function GetNamedFunction(string @Name)
+        public Function GetNamedFunction(string name)
         {
-            return new Function(LLVM.GetNamedFunction(this.instance, @Name));
+            return new Function(LLVM.GetNamedFunction(this.instance, name));
         }
 
         public Function GetFirstFunction()
@@ -112,19 +112,19 @@
             return new Function(LLVM.GetLastFunction(this.instance));
         }
 
-        public Value AddGlobal(Type @Ty, string @Name)
+        public Value AddGlobal(Type ty, string name)
         {
-            return new GlobalValue(LLVM.AddGlobal(this.instance, @Ty.ToTypeRef(), @Name));
+            return new GlobalValue(LLVM.AddGlobal(this.instance, ty.ToTypeRef(), name));
         }
 
-        public Value AddGlobalInAddressSpace(Type @Ty, string @Name, uint @AddressSpace)
+        public Value AddGlobalInAddressSpace(Type ty, string name, uint addressSpace)
         {
-            return new GlobalValue(LLVM.AddGlobalInAddressSpace(this.instance, @Ty.ToTypeRef(), @Name, @AddressSpace));
+            return new GlobalValue(LLVM.AddGlobalInAddressSpace(this.instance, ty.ToTypeRef(), name, addressSpace));
         }
 
-        public Value GetNamedGlobal(string @Name)
+        public Value GetNamedGlobal(string name)
         {
-            return new GlobalValue(LLVM.GetNamedGlobal(this.instance, @Name));
+            return new GlobalValue(LLVM.GetNamedGlobal(this.instance, name));
         }
 
         public Value GetFirstGlobal()
@@ -137,9 +137,9 @@
             return new GlobalValue(LLVM.GetLastGlobal(this.instance));
         }
 
-        public Value AddAlias(Type @Ty, Value @Aliasee, string @Name)
+        public Value AddAlias(Type ty, Value aliasee, string name)
         {
-            return new GlobalValue(LLVM.AddAlias(this.instance, @Ty.ToTypeRef(), @Aliasee.ToValueRef(), @Name));
+            return new GlobalValue(LLVM.AddAlias(this.instance, ty.ToTypeRef(), aliasee.ToValueRef(), name));
         }
 
         public bool CreateMCJITCompilerForModule(out ExecutionEngine executionEngine,
@@ -166,9 +166,9 @@
             return LLVM.CreateFunctionPassManagerForModule(this.instance);
         }
 
-        public bool VerifyModule(LLVMVerifierFailureAction @Action, out IntPtr @OutMessage)
+        public bool VerifyModule(LLVMVerifierFailureAction action, out IntPtr outMessage)
         {
-            return LLVM.VerifyModule(this.instance, @Action, out @OutMessage);
+            return LLVM.VerifyModule(this.instance, action, out outMessage);
         }
 
         public bool VerifyModule(LLVMVerifierFailureAction action, out string message)
@@ -179,19 +179,19 @@
             return result;
         }
 
-        public int WriteBitcodeToFile(string @Path)
+        public int WriteBitcodeToFile(string path)
         {
-            return LLVM.WriteBitcodeToFile(this.instance, @Path);
+            return LLVM.WriteBitcodeToFile(this.instance, path);
         }
 
-        public int WriteBitcodeToFD(int @FD, int @ShouldClose, int @Unbuffered)
+        public int WriteBitcodeToFD(int fd, int shouldClose, int unbuffered)
         {
-            return LLVM.WriteBitcodeToFD(this.instance, @FD, @ShouldClose, @Unbuffered);
+            return LLVM.WriteBitcodeToFD(this.instance, fd, shouldClose, unbuffered);
         }
 
-        public int WriteBitcodeToFileHandle(int @Handle)
+        public int WriteBitcodeToFileHandle(int handle)
         {
-            return LLVM.WriteBitcodeToFileHandle(this.instance, @Handle);
+            return LLVM.WriteBitcodeToFileHandle(this.instance, handle);
         }
 
         public LLVMMemoryBufferRef WriteBitcodeToMemoryBuffer()
@@ -199,9 +199,9 @@
             return LLVM.WriteBitcodeToMemoryBuffer(this.instance);
         }
 
-        public bool LinkModules(Module @Src, uint @Unused, out IntPtr @OutMessage)
+        public bool LinkModules(Module src, uint unused, out IntPtr outMessage)
         {
-            return LLVM.LinkModules(this.instance, @Src.ToModuleRef(), @Unused, out @OutMessage);
+            return LLVM.LinkModules(this.instance, src.ToModuleRef(), unused, out outMessage);
         }
 
         public bool Equals(Module other)

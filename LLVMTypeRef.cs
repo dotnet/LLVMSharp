@@ -4,44 +4,44 @@
 
     partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
     {
-        public static LLVMTypeRef FunctionType(LLVMTypeRef returnType, LLVMTypeRef[] @ParamTypes, LLVMBool @IsVarArg)
+        public static LLVMTypeRef FunctionType(LLVMTypeRef returnType, LLVMTypeRef[] paramTypes, LLVMBool isVarArg)
         {
-            return LLVM.FunctionType(returnType, @ParamTypes, @IsVarArg);
+            return LLVM.FunctionType(returnType, paramTypes, isVarArg);
         }
 
-        public static LLVMTypeRef StructType(LLVMTypeRef[] @ElementTypes, LLVMBool @Packed)
+        public static LLVMTypeRef StructType(LLVMTypeRef[] elementTypes, LLVMBool packed)
         {
-            return LLVM.StructType(@ElementTypes, @Packed);
+            return LLVM.StructType(elementTypes, packed);
         }
 
-        public static LLVMTypeRef Int1TypeInContext(LLVMContextRef @C)
+        public static LLVMTypeRef Int1TypeInContext(LLVMContextRef c)
         {
-            return LLVM.Int1TypeInContext(@C);
+            return LLVM.Int1TypeInContext(c);
         }
 
-        public static LLVMTypeRef Int8TypeInContext(LLVMContextRef @C)
+        public static LLVMTypeRef Int8TypeInContext(LLVMContextRef c)
         {
-            return LLVM.Int8TypeInContext(@C);
+            return LLVM.Int8TypeInContext(c);
         }
 
-        public static LLVMTypeRef Int16TypeInContext(LLVMContextRef @C)
+        public static LLVMTypeRef Int16TypeInContext(LLVMContextRef c)
         {
-            return LLVM.Int16TypeInContext(@C);
+            return LLVM.Int16TypeInContext(c);
         }
 
-        public static LLVMTypeRef Int32TypeInContext(LLVMContextRef @C)
+        public static LLVMTypeRef Int32TypeInContext(LLVMContextRef c)
         {
-            return LLVM.Int32TypeInContext(@C);
+            return LLVM.Int32TypeInContext(c);
         }
 
-        public static LLVMTypeRef Int64TypeInContext(LLVMContextRef @C)
+        public static LLVMTypeRef Int64TypeInContext(LLVMContextRef c)
         {
-            return LLVM.Int64TypeInContext(@C);
+            return LLVM.Int64TypeInContext(c);
         }
 
-        public static LLVMTypeRef IntTypeInContext(LLVMContextRef @C, uint @NumBits)
+        public static LLVMTypeRef IntTypeInContext(LLVMContextRef c, uint numBits)
         {
-            return LLVM.IntTypeInContext(@C, @NumBits);
+            return LLVM.IntTypeInContext(c, numBits);
         }
 
         public static LLVMTypeRef Int1Type()
@@ -69,39 +69,39 @@
             return LLVM.Int64Type();
         }
 
-        public static LLVMTypeRef IntType(uint @NumBits)
+        public static LLVMTypeRef IntType(uint numBits)
         {
-            return LLVM.IntType(@NumBits);
+            return LLVM.IntType(numBits);
         }
 
-        public static LLVMTypeRef HalfTypeInContext(LLVMContextRef @C)
+        public static LLVMTypeRef HalfTypeInContext(LLVMContextRef c)
         {
-            return LLVM.HalfTypeInContext(@C);
+            return LLVM.HalfTypeInContext(c);
         }
 
-        public static LLVMTypeRef FloatTypeInContext(LLVMContextRef @C)
+        public static LLVMTypeRef FloatTypeInContext(LLVMContextRef c)
         {
-            return LLVM.FloatTypeInContext(@C);
+            return LLVM.FloatTypeInContext(c);
         }
 
-        public static LLVMTypeRef DoubleTypeInContext(LLVMContextRef @C)
+        public static LLVMTypeRef DoubleTypeInContext(LLVMContextRef c)
         {
-            return LLVM.DoubleTypeInContext(@C);
+            return LLVM.DoubleTypeInContext(c);
         }
 
-        public static LLVMTypeRef X86FP80TypeInContext(LLVMContextRef @C)
+        public static LLVMTypeRef X86FP80TypeInContext(LLVMContextRef c)
         {
-            return LLVM.X86FP80TypeInContext(@C);
+            return LLVM.X86FP80TypeInContext(c);
         }
 
-        public static LLVMTypeRef FP128TypeInContext(LLVMContextRef @C)
+        public static LLVMTypeRef FP128TypeInContext(LLVMContextRef c)
         {
-            return LLVM.FP128TypeInContext(@C);
+            return LLVM.FP128TypeInContext(c);
         }
 
-        public static LLVMTypeRef PPCFP128TypeInContext(LLVMContextRef @C)
+        public static LLVMTypeRef PPCFP128TypeInContext(LLVMContextRef c)
         {
-            return LLVM.PPCFP128TypeInContext(@C);
+            return LLVM.PPCFP128TypeInContext(c);
         }
 
         public static LLVMTypeRef HalfType()
@@ -134,24 +134,24 @@
             return LLVM.PPCFP128Type();
         }
 
-        public static LLVMTypeRef StructCreateNamed(LLVMContextRef @C, string @Name)
+        public static LLVMTypeRef StructCreateNamed(LLVMContextRef c, string name)
         {
-            return LLVM.StructCreateNamed(@C, @Name);
+            return LLVM.StructCreateNamed(c, name);
         }
 
-        public static LLVMTypeRef VoidTypeInContext(LLVMContextRef @C)
+        public static LLVMTypeRef VoidTypeInContext(LLVMContextRef c)
         {
-            return LLVM.VoidTypeInContext(@C);
+            return LLVM.VoidTypeInContext(c);
         }
 
-        public static LLVMTypeRef LabelTypeInContext(LLVMContextRef @C)
+        public static LLVMTypeRef LabelTypeInContext(LLVMContextRef c)
         {
-            return LLVM.LabelTypeInContext(@C);
+            return LLVM.LabelTypeInContext(c);
         }
 
-        public static LLVMTypeRef X86MMXTypeInContext(LLVMContextRef @C)
+        public static LLVMTypeRef X86MMXTypeInContext(LLVMContextRef c)
         {
-            return LLVM.X86MMXTypeInContext(@C);
+            return LLVM.X86MMXTypeInContext(c);
         }
 
         public static LLVMTypeRef VoidType()
@@ -169,39 +169,39 @@
             return LLVM.X86MMXType();
         }
 
-        public static LLVMTypeRef IntPtrType(LLVMTargetDataRef @TD)
+        public static LLVMTypeRef IntPtrType(LLVMTargetDataRef td)
         {
-            return LLVM.IntPtrType(@TD);
+            return LLVM.IntPtrType(td);
         }
 
-        public static LLVMTypeRef IntPtrTypeForAS(LLVMTargetDataRef @TD, uint @AS)
+        public static LLVMTypeRef IntPtrTypeForAS(LLVMTargetDataRef td, uint @AS)
         {
-            return LLVM.IntPtrTypeForAS(@TD, @AS);
+            return LLVM.IntPtrTypeForAS(td, @AS);
         }
 
-        public static LLVMTypeRef IntPtrTypeInContext(LLVMContextRef @C, LLVMTargetDataRef @TD)
+        public static LLVMTypeRef IntPtrTypeInContext(LLVMContextRef c, LLVMTargetDataRef td)
         {
-            return LLVM.IntPtrTypeInContext(@C, @TD);
+            return LLVM.IntPtrTypeInContext(c, td);
         }
 
-        public static LLVMTypeRef IntPtrTypeForASInContext(LLVMContextRef @C, LLVMTargetDataRef @TD, uint @AS)
+        public static LLVMTypeRef IntPtrTypeForASInContext(LLVMContextRef c, LLVMTargetDataRef td, uint @AS)
         {
-            return LLVM.IntPtrTypeForASInContext(@C, @TD, @AS);
+            return LLVM.IntPtrTypeForASInContext(c, td, @AS);
         }
 
-        public static LLVMValueRef ConstInlineAsm(LLVMTypeRef @Ty, string @AsmString, string @Constraints, LLVMBool @HasSideEffects, LLVMBool @IsAlignStack)
+        public static LLVMValueRef ConstInlineAsm(LLVMTypeRef ty, string asmString, string constraints, LLVMBool hasSideEffects, LLVMBool isAlignStack)
         {
-            return LLVM.ConstInlineAsm(@Ty, @AsmString, @Constraints, @HasSideEffects, @IsAlignStack);
+            return LLVM.ConstInlineAsm(ty, asmString, constraints, hasSideEffects, isAlignStack);
         }
 
-        public static LLVMGenericValueRef CreateGenericValueOfInt(LLVMTypeRef @Ty, ulong @N, LLVMBool @IsSigned)
+        public static LLVMGenericValueRef CreateGenericValueOfInt(LLVMTypeRef ty, ulong n, LLVMBool isSigned)
         {
-            return LLVM.CreateGenericValueOfInt(@Ty, @N, @IsSigned);
+            return LLVM.CreateGenericValueOfInt(ty, n, isSigned);
         }
 
-        public static LLVMGenericValueRef CreateGenericValueOfFloat(LLVMTypeRef @Ty, double @N)
+        public static LLVMGenericValueRef CreateGenericValueOfFloat(LLVMTypeRef ty, double n)
         {
-            return LLVM.CreateGenericValueOfFloat(@Ty, @N);
+            return LLVM.CreateGenericValueOfFloat(ty, n);
         }
 
         public LLVMTypeKind GetTypeKind()
@@ -259,9 +259,9 @@
             return LLVM.GetStructName(this);
         }
 
-        public void StructSetBody(LLVMTypeRef[] @ElementTypes, LLVMBool @Packed)
+        public void StructSetBody(LLVMTypeRef[] elementTypes, LLVMBool packed)
         {
-            LLVM.StructSetBody(this, @ElementTypes, @Packed);
+            LLVM.StructSetBody(this, elementTypes, packed);
         }
 
         public uint CountStructElementTypes()
@@ -289,9 +289,9 @@
             return LLVM.GetElementType(this);
         }
 
-        public LLVMTypeRef ArrayType(uint @ElementCount)
+        public LLVMTypeRef ArrayType(uint elementCount)
         {
-            return LLVM.ArrayType(this, @ElementCount);
+            return LLVM.ArrayType(this, elementCount);
         }
 
         public uint GetArrayLength()
@@ -299,9 +299,9 @@
             return LLVM.GetArrayLength(this);
         }
 
-        public LLVMTypeRef PointerType(uint @AddressSpace)
+        public LLVMTypeRef PointerType(uint addressSpace)
         {
-            return LLVM.PointerType(this, @AddressSpace);
+            return LLVM.PointerType(this, addressSpace);
         }
 
         public uint GetPointerAddressSpace()
@@ -309,9 +309,9 @@
             return LLVM.GetPointerAddressSpace(this);
         }
 
-        public LLVMTypeRef VectorType(uint @ElementCount)
+        public LLVMTypeRef VectorType(uint elementCount)
         {
-            return LLVM.VectorType(this, @ElementCount);
+            return LLVM.VectorType(this, elementCount);
         }
 
         public uint GetVectorSize()
@@ -339,49 +339,49 @@
             return LLVM.ConstPointerNull(this);
         }
 
-        public LLVMValueRef ConstInt(ulong @N, LLVMBool @SignExtend)
+        public LLVMValueRef ConstInt(ulong n, LLVMBool signExtend)
         {
-            return LLVM.ConstInt(this, @N, @SignExtend);
+            return LLVM.ConstInt(this, n, signExtend);
         }
 
-        public LLVMValueRef ConstIntOfArbitraryPrecision(uint @NumWords, int[] @Words)
+        public LLVMValueRef ConstIntOfArbitraryPrecision(uint numWords, int[] words)
         {
-            return LLVM.ConstIntOfArbitraryPrecision(this, @NumWords, @Words);
+            return LLVM.ConstIntOfArbitraryPrecision(this, numWords, words);
         }
 
-        public LLVMValueRef ConstIntOfString(string @Text, char @Radix)
+        public LLVMValueRef ConstIntOfString(string text, char radix)
         {
-            return LLVM.ConstIntOfString(this, @Text, @Radix);
+            return LLVM.ConstIntOfString(this, text, radix);
         }
 
-        public LLVMValueRef ConstIntOfStringAndSize(string @Text, uint @SLen, char @Radix)
+        public LLVMValueRef ConstIntOfStringAndSize(string text, uint sLen, char radix)
         {
-            return LLVM.ConstIntOfStringAndSize(this, @Text, @SLen, @Radix);
+            return LLVM.ConstIntOfStringAndSize(this, text, sLen, radix);
         }
 
-        public LLVMValueRef ConstReal(double @N)
+        public LLVMValueRef ConstReal(double n)
         {
-            return LLVM.ConstReal(this, @N);
+            return LLVM.ConstReal(this, n);
         }
 
-        public LLVMValueRef ConstRealOfString(string @Text)
+        public LLVMValueRef ConstRealOfString(string text)
         {
-            return LLVM.ConstRealOfString(this, @Text);
+            return LLVM.ConstRealOfString(this, text);
         }
 
-        public LLVMValueRef ConstRealOfStringAndSize(string @Text, uint @SLen)
+        public LLVMValueRef ConstRealOfStringAndSize(string text, uint sLen)
         {
-            return LLVM.ConstRealOfStringAndSize(this, @Text, @SLen);
+            return LLVM.ConstRealOfStringAndSize(this, text, sLen);
         }
 
-        public LLVMValueRef ConstArray(LLVMValueRef[] @ConstantVals)
+        public LLVMValueRef ConstArray(LLVMValueRef[] constantVals)
         {
-            return LLVM.ConstArray(this, @ConstantVals);
+            return LLVM.ConstArray(this, constantVals);
         }
 
-        public LLVMValueRef ConstNamedStruct(LLVMValueRef[] @ConstantVals)
+        public LLVMValueRef ConstNamedStruct(LLVMValueRef[] constantVals)
         {
-            return LLVM.ConstNamedStruct(this, @ConstantVals);
+            return LLVM.ConstNamedStruct(this, constantVals);
         }
 
         public LLVMValueRef AlignOf()
@@ -394,9 +394,9 @@
             return LLVM.SizeOf(this);
         }
 
-        public double GenericValueToFloat(LLVMGenericValueRef @GenVal)
+        public double GenericValueToFloat(LLVMGenericValueRef genVal)
         {
-            return LLVM.GenericValueToFloat(this, @GenVal);
+            return LLVM.GenericValueToFloat(this, genVal);
         }
 
         public bool Equals(LLVMTypeRef other)

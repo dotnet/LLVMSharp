@@ -67,49 +67,49 @@
             LLVM.RunStaticDestructors(this.instance);
         }
 
-        public int RunFunctionAsMain(LLVMValueRef @F, uint @ArgC, string[] @ArgV, string[] @EnvP)
+        public int RunFunctionAsMain(LLVMValueRef f, uint argC, string[] argV, string[] envP)
         {
-            return LLVM.RunFunctionAsMain(this.instance, @F, @ArgC, @ArgV, @EnvP);
+            return LLVM.RunFunctionAsMain(this.instance, f, argC, argV, envP);
         }
 
-        public LLVMGenericValueRef RunFunction(LLVMValueRef @F, LLVMGenericValueRef[] @Args)
+        public LLVMGenericValueRef RunFunction(LLVMValueRef f, LLVMGenericValueRef[] args)
         {
-            return LLVM.RunFunction(this.instance, @F, @Args);
+            return LLVM.RunFunction(this.instance, f, args);
         }
 
-        public void FreeMachineCodeForFunction(LLVMValueRef @F)
+        public void FreeMachineCodeForFunction(LLVMValueRef f)
         {
-            LLVM.FreeMachineCodeForFunction(this.instance, @F);
+            LLVM.FreeMachineCodeForFunction(this.instance, f);
         }
 
-        public void AddModule(LLVMModuleRef @M)
+        public void AddModule(LLVMModuleRef m)
         {
-            LLVM.AddModule(this.instance, @M);
+            LLVM.AddModule(this.instance, m);
         }
 
-        public void AddModuleProvider(LLVMModuleProviderRef @MP)
+        public void AddModuleProvider(LLVMModuleProviderRef mp)
         {
-            LLVM.AddModuleProvider(this.instance, @MP);
+            LLVM.AddModuleProvider(this.instance, mp);
         }
 
-        public LLVMBool RemoveModule(LLVMModuleRef @M, out LLVMModuleRef @OutMod, out IntPtr @OutError)
+        public LLVMBool RemoveModule(LLVMModuleRef m, out LLVMModuleRef outMod, out IntPtr outError)
         {
-            return LLVM.RemoveModule(this.instance, @M, out @OutMod, out @OutError);
+            return LLVM.RemoveModule(this.instance, m, out outMod, out outError);
         }
 
-        public LLVMBool RemoveModuleProvider(LLVMModuleProviderRef @MP, out LLVMModuleRef @OutMod, out IntPtr @OutError)
+        public LLVMBool RemoveModuleProvider(LLVMModuleProviderRef mp, out LLVMModuleRef outMod, out IntPtr outError)
         {
-            return LLVM.RemoveModuleProvider(this.instance, @MP, out @OutMod, out @OutError);
+            return LLVM.RemoveModuleProvider(this.instance, mp, out outMod, out outError);
         }
 
-        public LLVMBool FindFunction(string @Name, out LLVMValueRef @OutFn)
+        public LLVMBool FindFunction(string name, out LLVMValueRef outFn)
         {
-            return LLVM.FindFunction(this.instance, @Name, out @OutFn);
+            return LLVM.FindFunction(this.instance, name, out outFn);
         }
 
-        public IntPtr RecompileAndRelinkFunction(LLVMValueRef @Fn)
+        public IntPtr RecompileAndRelinkFunction(LLVMValueRef fn)
         {
-            return LLVM.RecompileAndRelinkFunction(this.instance, @Fn);
+            return LLVM.RecompileAndRelinkFunction(this.instance, fn);
         }
 
         public LLVMTargetDataRef GetExecutionEngineTargetData()
@@ -122,9 +122,9 @@
             return LLVM.GetExecutionEngineTargetMachine(this.instance);
         }
 
-        public void AddGlobalMapping(LLVMValueRef @Global, IntPtr @Addr)
+        public void AddGlobalMapping(LLVMValueRef @Global, IntPtr addr)
         {
-            LLVM.AddGlobalMapping(this.instance, @Global, @Addr);
+            LLVM.AddGlobalMapping(this.instance, @Global, addr);
         }
 
         public IntPtr GetPointerToGlobal(Value @Global)
@@ -132,14 +132,14 @@
             return LLVM.GetPointerToGlobal(this.instance, @Global.ToValueRef());
         }
 
-        public int GetGlobalValueAddress(string @Name)
+        public int GetGlobalValueAddress(string name)
         {
-            return LLVM.GetGlobalValueAddress(this.instance, @Name);
+            return LLVM.GetGlobalValueAddress(this.instance, name);
         }
 
-        public int GetFunctionAddress(string @Name)
+        public int GetFunctionAddress(string name)
         {
-            return LLVM.GetFunctionAddress(this.instance, @Name);
+            return LLVM.GetFunctionAddress(this.instance, name);
         }
 
         public void Dispose()

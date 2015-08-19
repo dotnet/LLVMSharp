@@ -4,330 +4,330 @@
 
     partial class LLVM
     {
-        public static LLVMValueRef[] GetNamedMetadataOperands(LLVMModuleRef M, string name)
+        public static LLVMValueRef[] GetNamedMetadataOperands(LLVMModuleRef m, string name)
         {
-            uint count = GetNamedMetadataNumOperands(M, name);
+            uint count = GetNamedMetadataNumOperands(m, name);
             var buffer = new LLVMValueRef[count];
 
             if (count > 0)
             {
-                GetNamedMetadataOperands(M, name, out buffer[0]);
+                GetNamedMetadataOperands(m, name, out buffer[0]);
             }
 
             return buffer;
         }
 
-        public static LLVMTypeRef FunctionType(LLVMTypeRef ReturnType, LLVMTypeRef[] ParamTypes, LLVMBool IsVarArg)
+        public static LLVMTypeRef FunctionType(LLVMTypeRef returnType, LLVMTypeRef[] paramTypes, LLVMBool isVarArg)
         {
-            if (ParamTypes.Length == 0)
+            if (paramTypes.Length == 0)
             {
                 LLVMTypeRef dummy;
-                return FunctionType(ReturnType, out dummy, 0, IsVarArg);
+                return FunctionType(returnType, out dummy, 0, isVarArg);
             }
 
-            return FunctionType(ReturnType, out ParamTypes[0], (uint)ParamTypes.Length, IsVarArg);
+            return FunctionType(returnType, out paramTypes[0], (uint)paramTypes.Length, isVarArg);
         }
 
-        public static LLVMTypeRef[] GetParamTypes(LLVMTypeRef FunctionTy)
+        public static LLVMTypeRef[] GetParamTypes(LLVMTypeRef functionTy)
         {
-            uint count = CountParamTypes(FunctionTy);
+            uint count = CountParamTypes(functionTy);
             var buffer = new LLVMTypeRef[count];
 
             if (count > 0)
             {
-                GetParamTypes(FunctionTy, out buffer[0]);
+                GetParamTypes(functionTy, out buffer[0]);
             }
 
             return buffer;
         }
 
-        public static LLVMTypeRef StructTypeInContext(LLVMContextRef C, LLVMTypeRef[] ElementTypes, LLVMBool Packed)
+        public static LLVMTypeRef StructTypeInContext(LLVMContextRef c, LLVMTypeRef[] elementTypes, LLVMBool packed)
         {
-            if (ElementTypes.Length == 0)
+            if (elementTypes.Length == 0)
             {
                 LLVMTypeRef dummy;
-                return StructTypeInContext(C, out dummy, 0, Packed);
+                return StructTypeInContext(c, out dummy, 0, packed);
             }
 
-            return StructTypeInContext(C, out ElementTypes[0], (uint)ElementTypes.Length, Packed);
+            return StructTypeInContext(c, out elementTypes[0], (uint)elementTypes.Length, packed);
         }
 
-        public static LLVMTypeRef StructType(LLVMTypeRef[] ElementTypes, LLVMBool Packed)
+        public static LLVMTypeRef StructType(LLVMTypeRef[] elementTypes, LLVMBool packed)
         {
-            if (ElementTypes.Length == 0)
+            if (elementTypes.Length == 0)
             {
                 LLVMTypeRef dummy;
-                return StructType(out dummy, 0, Packed);
+                return StructType(out dummy, 0, packed);
             }
 
-            return StructType(out ElementTypes[0], (uint)ElementTypes.Length, Packed);
+            return StructType(out elementTypes[0], (uint)elementTypes.Length, packed);
         }
 
-        public static void StructSetBody(LLVMTypeRef StructTy, LLVMTypeRef[] ElementTypes, LLVMBool Packed)
+        public static void StructSetBody(LLVMTypeRef structTy, LLVMTypeRef[] elementTypes, LLVMBool packed)
         {
-            if (ElementTypes.Length == 0)
+            if (elementTypes.Length == 0)
             {
                 LLVMTypeRef dummy;
-                StructSetBody(StructTy, out dummy, 0, Packed);
+                StructSetBody(structTy, out dummy, 0, packed);
                 return;
             }
 
-            StructSetBody(StructTy, out ElementTypes[0], (uint)ElementTypes.Length, Packed);
+            StructSetBody(structTy, out elementTypes[0], (uint)elementTypes.Length, packed);
         }
 
-        public static LLVMTypeRef[] GetStructElementTypes(LLVMTypeRef StructTy)
+        public static LLVMTypeRef[] GetStructElementTypes(LLVMTypeRef structTy)
         {
-            uint count = CountStructElementTypes(StructTy);
+            uint count = CountStructElementTypes(structTy);
             var buffer = new LLVMTypeRef[count];
 
             if (count > 0)
             {
-                GetStructElementTypes(StructTy, out buffer[0]);
+                GetStructElementTypes(structTy, out buffer[0]);
             }
 
             return buffer;
         }
 
-        public static LLVMValueRef ConstStructInContext(LLVMContextRef C, LLVMValueRef[] ConstantVals, LLVMBool Packed)
+        public static LLVMValueRef ConstStructInContext(LLVMContextRef c, LLVMValueRef[] constantVals, LLVMBool packed)
         {
-            if (ConstantVals.Length == 0)
+            if (constantVals.Length == 0)
             {
                 LLVMValueRef dummy;
-                return ConstStructInContext(C, out dummy, 0, Packed);
+                return ConstStructInContext(c, out dummy, 0, packed);
             }
 
-            return ConstStructInContext(C, out ConstantVals[0], (uint)ConstantVals.Length, Packed);
+            return ConstStructInContext(c, out constantVals[0], (uint)constantVals.Length, packed);
         }
 
-        public static LLVMValueRef ConstStruct(LLVMValueRef[] ConstantVals, LLVMBool Packed)
+        public static LLVMValueRef ConstStruct(LLVMValueRef[] constantVals, LLVMBool packed)
         {
-            if (ConstantVals.Length == 0)
+            if (constantVals.Length == 0)
             {
                 LLVMValueRef dummy;
-                return ConstStruct(out dummy, 0, Packed);
+                return ConstStruct(out dummy, 0, packed);
             }
 
-            return ConstStruct(out ConstantVals[0], (uint)ConstantVals.Length, Packed);
+            return ConstStruct(out constantVals[0], (uint)constantVals.Length, packed);
         }
 
-        public static LLVMValueRef ConstArray(LLVMTypeRef ElementTy, LLVMValueRef[] ConstantVals)
+        public static LLVMValueRef ConstArray(LLVMTypeRef elementTy, LLVMValueRef[] constantVals)
         {
-            if (ConstantVals.Length == 0)
+            if (constantVals.Length == 0)
             {
                 LLVMValueRef dummy;
-                return ConstArray(ElementTy, out dummy, 0);
+                return ConstArray(elementTy, out dummy, 0);
             }
 
-            return ConstArray(ElementTy, out ConstantVals[0], (uint)ConstantVals.Length);
+            return ConstArray(elementTy, out constantVals[0], (uint)constantVals.Length);
         }
 
-        public static LLVMValueRef ConstNamedStruct(LLVMTypeRef StructTy, LLVMValueRef[] ConstantVals)
+        public static LLVMValueRef ConstNamedStruct(LLVMTypeRef structTy, LLVMValueRef[] constantVals)
         {
-            if (ConstantVals.Length == 0)
+            if (constantVals.Length == 0)
             {
                 LLVMValueRef dummy;
-                return ConstNamedStruct(StructTy, out dummy, 0);
+                return ConstNamedStruct(structTy, out dummy, 0);
             }
 
-            return ConstNamedStruct(StructTy, out ConstantVals[0], (uint)ConstantVals.Length);
+            return ConstNamedStruct(structTy, out constantVals[0], (uint)constantVals.Length);
         }
 
-        public static LLVMValueRef ConstVector(LLVMValueRef[] ScalarConstantVars)
+        public static LLVMValueRef ConstVector(LLVMValueRef[] scalarConstantVars)
         {
-            if (ScalarConstantVars.Length == 0)
+            if (scalarConstantVars.Length == 0)
             {
                 LLVMValueRef dummy;
                 return ConstVector(out dummy, 0);
             }
 
-            return ConstVector(out ScalarConstantVars[0], (uint)ScalarConstantVars.Length);
+            return ConstVector(out scalarConstantVars[0], (uint)scalarConstantVars.Length);
         }
 
-        public static LLVMValueRef ConstGEP(LLVMValueRef ConstantVal, LLVMValueRef[] ConstantIndices)
+        public static LLVMValueRef ConstGEP(LLVMValueRef constantVal, LLVMValueRef[] constantIndices)
         {
-            if (ConstantIndices.Length == 0)
+            if (constantIndices.Length == 0)
             {
                 LLVMValueRef dummy;
-                return ConstGEP(ConstantVal, out dummy, 0);
+                return ConstGEP(constantVal, out dummy, 0);
             }
 
-            return ConstGEP(ConstantVal, out ConstantIndices[0], (uint)ConstantIndices.Length);
+            return ConstGEP(constantVal, out constantIndices[0], (uint)constantIndices.Length);
         }
 
-        public static LLVMValueRef ConstInBoundsGEP(LLVMValueRef ConstantVal, LLVMValueRef[] ConstantIndices)
+        public static LLVMValueRef ConstInBoundsGEP(LLVMValueRef constantVal, LLVMValueRef[] constantIndices)
         {
-            if (ConstantIndices.Length == 0)
+            if (constantIndices.Length == 0)
             {
                 LLVMValueRef dummy;
-                return ConstInBoundsGEP(ConstantVal, out dummy, 0);
+                return ConstInBoundsGEP(constantVal, out dummy, 0);
             }
 
-            return ConstInBoundsGEP(ConstantVal, out ConstantIndices[0], (uint)ConstantIndices.Length);
+            return ConstInBoundsGEP(constantVal, out constantIndices[0], (uint)constantIndices.Length);
         }
 
-        public static LLVMValueRef ConstExtractValue(LLVMValueRef AggConstant, uint[] IdxList)
+        public static LLVMValueRef ConstExtractValue(LLVMValueRef aggConstant, uint[] idxList)
         {
-            if (IdxList.Length == 0)
+            if (idxList.Length == 0)
             {
                 uint dummy;
-                return ConstExtractValue(AggConstant, out dummy, 0);
+                return ConstExtractValue(aggConstant, out dummy, 0);
             }
 
-            return ConstExtractValue(AggConstant, out IdxList[0], (uint)IdxList.Length);
+            return ConstExtractValue(aggConstant, out idxList[0], (uint)idxList.Length);
         }
 
-        public static LLVMValueRef ConstInsertValue(LLVMValueRef AggConstant, LLVMValueRef ElementValueConstant, uint[] IdxList)
+        public static LLVMValueRef ConstInsertValue(LLVMValueRef aggConstant, LLVMValueRef elementValueConstant, uint[] idxList)
         {
-            if (IdxList.Length == 0)
+            if (idxList.Length == 0)
             {
                 uint dummy;
-                return ConstInsertValue(AggConstant, ElementValueConstant, out dummy, 0);
+                return ConstInsertValue(aggConstant, elementValueConstant, out dummy, 0);
             }
 
-            return ConstInsertValue(AggConstant, ElementValueConstant, out IdxList[0], (uint)IdxList.Length);
+            return ConstInsertValue(aggConstant, elementValueConstant, out idxList[0], (uint)idxList.Length);
         }
 
-        public static LLVMValueRef[] GetParams(LLVMValueRef Fn)
+        public static LLVMValueRef[] GetParams(LLVMValueRef fn)
         {
-            uint count = CountParams(Fn);
+            uint count = CountParams(fn);
             var buffer = new LLVMValueRef[count];
 
             if (count > 0)
             {
-                GetParams(Fn, out buffer[0]);
+                GetParams(fn, out buffer[0]);
             }
 
             return buffer;
         }
 
-        public static LLVMValueRef MDNodeInContext(LLVMContextRef C, LLVMValueRef[] Vals)
+        public static LLVMValueRef MDNodeInContext(LLVMContextRef c, LLVMValueRef[] vals)
         {
-            if (Vals.Length == 0)
+            if (vals.Length == 0)
             {
                 LLVMValueRef dummy;
-                return MDNodeInContext(C, out dummy, 0);
+                return MDNodeInContext(c, out dummy, 0);
             }
 
-            return MDNodeInContext(C, out Vals[0], (uint)Vals.Length);
+            return MDNodeInContext(c, out vals[0], (uint)vals.Length);
         }
 
-        public static LLVMValueRef MDNode(LLVMValueRef[] Vals)
+        public static LLVMValueRef MDNode(LLVMValueRef[] vals)
         {
-            if (Vals.Length == 0)
+            if (vals.Length == 0)
             {
                 LLVMValueRef dummy;
                 return MDNode(out dummy, 0);
             }
 
-            return MDNode(out Vals[0], (uint)Vals.Length);
+            return MDNode(out vals[0], (uint)vals.Length);
         }
 
-        public static LLVMValueRef[] GetMDNodeOperands(LLVMValueRef V)
+        public static LLVMValueRef[] GetMDNodeOperands(LLVMValueRef v)
         {
-            uint count = GetMDNodeNumOperands(V);
+            uint count = GetMDNodeNumOperands(v);
             var buffer = new LLVMValueRef[count];
 
             if (count > 0)
             {
-                GetMDNodeOperands(V, out buffer[0]);
+                GetMDNodeOperands(v, out buffer[0]);
             }
 
             return buffer;
         }
 
-        public static LLVMBasicBlockRef[] GetBasicBlocks(LLVMValueRef Fn)
+        public static LLVMBasicBlockRef[] GetBasicBlocks(LLVMValueRef fn)
         {
-            uint count = CountBasicBlocks(Fn);
+            uint count = CountBasicBlocks(fn);
             var buffer = new LLVMBasicBlockRef[count];
 
             if (count > 0)
             {
-                GetBasicBlocks(Fn, out buffer[0]);
+                GetBasicBlocks(fn, out buffer[0]);
             }
 
             return buffer;
         }
 
-        public static void AddIncoming(LLVMValueRef PhiNode, LLVMValueRef[] IncomingValues, LLVMBasicBlockRef[] IncomingBlocks, uint Count)
+        public static void AddIncoming(LLVMValueRef phiNode, LLVMValueRef[] incomingValues, LLVMBasicBlockRef[] incomingBlocks, uint count)
         {
-            if (Count == 0)
+            if (count == 0)
             {
                 return;
             }
 
-            AddIncoming(PhiNode, out IncomingValues[0], out IncomingBlocks[0], Count);
+            AddIncoming(phiNode, out incomingValues[0], out incomingBlocks[0], count);
         }
 
-        public static LLVMValueRef BuildAggregateRet(LLVMBuilderRef param0, LLVMValueRef[] RetVals)
+        public static LLVMValueRef BuildAggregateRet(LLVMBuilderRef param0, LLVMValueRef[] retVals)
         {
-            return BuildAggregateRet(param0, out RetVals[0], (uint)RetVals.Length);
+            return BuildAggregateRet(param0, out retVals[0], (uint)retVals.Length);
         }
 
-        public static LLVMValueRef BuildInvoke(LLVMBuilderRef param0, LLVMValueRef Fn, LLVMValueRef[] Args, LLVMBasicBlockRef Then, LLVMBasicBlockRef Catch, string Name)
+        public static LLVMValueRef BuildInvoke(LLVMBuilderRef param0, LLVMValueRef fn, LLVMValueRef[] args, LLVMBasicBlockRef then, LLVMBasicBlockRef Catch, string name)
         {
-            if (Args.Length == 0)
+            if (args.Length == 0)
             {
                 LLVMValueRef dummy;
-                return BuildInvoke(param0, Fn, out dummy, 0, Then, Catch, Name);
+                return BuildInvoke(param0, fn, out dummy, 0, then, Catch, name);
             }
 
-            return BuildInvoke(param0, Fn, out Args[0], (uint)Args.Length, Then, Catch, Name);
+            return BuildInvoke(param0, fn, out args[0], (uint)args.Length, then, Catch, name);
         }
 
-        public static LLVMValueRef BuildGEP(LLVMBuilderRef B, LLVMValueRef Pointer, LLVMValueRef[] Indices, string Name)
+        public static LLVMValueRef BuildGEP(LLVMBuilderRef b, LLVMValueRef pointer, LLVMValueRef[] indices, string name)
         {
-            if (Indices.Length == 0)
+            if (indices.Length == 0)
             {
                 LLVMValueRef dummy;
-                return BuildGEP(B, Pointer, out dummy, 0, Name);
+                return BuildGEP(b, pointer, out dummy, 0, name);
             }
 
-            return BuildGEP(B, Pointer, out Indices[0], (uint)Indices.Length, Name);
+            return BuildGEP(b, pointer, out indices[0], (uint)indices.Length, name);
         }
 
-        public static LLVMValueRef BuildInBoundsGEP(LLVMBuilderRef B, LLVMValueRef Pointer, LLVMValueRef[] Indices, string Name)
+        public static LLVMValueRef BuildInBoundsGEP(LLVMBuilderRef b, LLVMValueRef pointer, LLVMValueRef[] indices, string name)
         {
-            if (Indices.Length == 0)
+            if (indices.Length == 0)
             {
                 LLVMValueRef dummy;
-                return BuildInBoundsGEP(B, Pointer, out dummy, 0, Name);
+                return BuildInBoundsGEP(b, pointer, out dummy, 0, name);
             }
 
-            return BuildInBoundsGEP(B, Pointer, out Indices[0], (uint)Indices.Length, Name);
+            return BuildInBoundsGEP(b, pointer, out indices[0], (uint)indices.Length, name);
         }
 
-        public static LLVMValueRef BuildCall(LLVMBuilderRef param0, LLVMValueRef Fn, LLVMValueRef[] Args, string Name)
+        public static LLVMValueRef BuildCall(LLVMBuilderRef param0, LLVMValueRef fn, LLVMValueRef[] args, string name)
         {
-            if (Args.Length == 0)
+            if (args.Length == 0)
             {
                 LLVMValueRef dummy;
-                return BuildCall(param0, Fn, out dummy, 0, Name);
+                return BuildCall(param0, fn, out dummy, 0, name);
             }
 
-            return BuildCall(param0, Fn, out Args[0], (uint)Args.Length, Name);
+            return BuildCall(param0, fn, out args[0], (uint)args.Length, name);
         }
 
-        public static void InitializeMCJITCompilerOptions(LLVMMCJITCompilerOptions[] Options)
+        public static void InitializeMCJITCompilerOptions(LLVMMCJITCompilerOptions[] options)
         {
-            if (Options.Length == 0)
+            if (options.Length == 0)
             {
                 LLVMMCJITCompilerOptions dummy;
                 InitializeMCJITCompilerOptions(out dummy, 0);
                 return;
             }
 
-            InitializeMCJITCompilerOptions(out Options[0], Options.Length);
+            InitializeMCJITCompilerOptions(out options[0], options.Length);
         }
 
-        public static LLVMGenericValueRef RunFunction(LLVMExecutionEngineRef EE, LLVMValueRef F, LLVMGenericValueRef[] Args)
+        public static LLVMGenericValueRef RunFunction(LLVMExecutionEngineRef ee, LLVMValueRef f, LLVMGenericValueRef[] args)
         {
-            if (Args.Length == 0)
+            if (args.Length == 0)
             {
                 LLVMGenericValueRef dummy;
-                return RunFunction(EE, F, 0, out dummy);
+                return RunFunction(ee, f, 0, out dummy);
             }
 
-            return RunFunction(EE, F, (uint)Args.Length, out Args[0]);
+            return RunFunction(ee, f, (uint)args.Length, out args[0]);
         }
     }
 }
