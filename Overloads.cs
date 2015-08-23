@@ -1,7 +1,5 @@
 ﻿namespace LLVMSharp
 {
-    using System;
-
     partial class LLVM
     {
         public static LLVMValueRef[] GetNamedMetadataOperands(LLVMModuleRef m, string name)
