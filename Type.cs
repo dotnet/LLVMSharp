@@ -233,5 +233,11 @@
         {
             return this.instance.GetHashCode();
         }
+
+        public Value ConstInt(ulong value, bool signExtend)
+        {
+            return LLVM.ConstInt(this.ToTypeRef(), value, signExtend).ToValue();
+        }
+
     }
 }

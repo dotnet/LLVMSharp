@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace LLVMSharp.Types.Composite.SequentialTypes
+﻿namespace LLVMSharp.Types.Composite.SequentialTypes
 {
-    class ArrayType
+    public class ArrayType
     {
     }
 }

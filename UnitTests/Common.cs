@@ -7,11 +7,37 @@
     using Type = LLVMSharp.Type;
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int Int32Delegate();
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int Int32Int32Int32Delegate(int a, int b);
 
     internal static class Common
     {
-        private static TDelegate InitializeAndReturnDelegate<TDelegate>(Module module, Function function)
+        public static Module CreateModule()
+        {
+            return CreateModule("module");
+        }
+
+        public static Module CreateModule(string module)
+        {
+            return new Module(module);
+        }
+
+        public static Function DefineFunction(this Module module, Type returnType, string name, Type[] arguments, Action<Function, IRBuilder> generator)
+        {
+            var signature = new FunctionType(returnType, arguments);
+            var function = module.AddFunction("add", signature);
+            var basicBlock = new BasicBlock(null, string.Empty, function);
+            using (var builder = new IRBuilder())
+            {
+                builder.PositionBuilderAtEnd(basicBlock);
+                generator.Invoke(function, builder);
+            }
+            return function;
+        }
+
+        public static ExecutionEngine CreateExecutionEngine(this Module module)
         {
             string verificationErrorMessage;
             module.VerifyModule(LLVMVerifierFailureAction.LLVMPrintMessageAction, out verificationErrorMessage);
@@ -42,26 +68,13 @@
                 Assert.Fail(compilerErrorMessage);
             }
 
-            var functionPtr = executionEngine.GetPointerToGlobal(function);
-            return (TDelegate)(object)Marshal.GetDelegateForFunctionPointer(functionPtr, typeof(TDelegate));
+            return executionEngine;
         }
 
-        public static TDelegate CreateDelegateInLLVM<TDelegate>(
-            string name,
-            Type returnType,
-            Type[] arguments,
-            Action<Function, IRBuilder> generator)
+        public static TDelegate GetDelegate<TDelegate>(this ExecutionEngine executionEngine, Function function)
         {
-            var module = new Module("module");
-            var signature = new FunctionType(returnType, arguments);
-            var function = module.AddFunction("add", signature);
-            var basicBlock = new BasicBlock(null, string.Empty, function);
-            using (var builder = new IRBuilder())
-            {
-                builder.PositionBuilderAtEnd(basicBlock);
-                generator.Invoke(function, builder);
-            }
-            return InitializeAndReturnDelegate<TDelegate>(module, function);
+            var functionPtr = executionEngine.GetPointerToGlobal(function);
+            return (TDelegate) (object) Marshal.GetDelegateForFunctionPointer(functionPtr, typeof (TDelegate));
         }
     }
 }
