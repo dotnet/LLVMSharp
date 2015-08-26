@@ -305,18 +305,6 @@
             return BuildCall(param0, fn, out args[0], (uint)args.Length, name);
         }
 
-        public static void InitializeMCJITCompilerOptions(LLVMMCJITCompilerOptions[] options)
-        {
-            if (options.Length == 0)
-            {
-                LLVMMCJITCompilerOptions dummy;
-                InitializeMCJITCompilerOptions(out dummy, 0);
-                return;
-            }
-
-            InitializeMCJITCompilerOptions(out options[0], options.Length);
-        }
-
         public static LLVMGenericValueRef RunFunction(LLVMExecutionEngineRef ee, LLVMValueRef f, LLVMGenericValueRef[] args)
         {
             if (args.Length == 0)
