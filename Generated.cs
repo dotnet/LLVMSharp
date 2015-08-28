@@ -2491,6 +2491,9 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86TargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86TargetInfo();
 
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeBPFTargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeBPFTargetInfo();
+
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeAMDGPUTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAMDGPUTarget();
 
@@ -2529,6 +2532,9 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86Target", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86Target();
+
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeBPFTarget", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeBPFTarget();
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeAMDGPUTargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAMDGPUTargetMC();
@@ -2569,6 +2575,9 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86TargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86TargetMC();
 
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeBPFTargetMC", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeBPFTargetMC();
+
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeAMDGPUAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAMDGPUAsmPrinter();
 
@@ -2604,6 +2613,9 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86AsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86AsmPrinter();
+
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeBPFAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeBPFAsmPrinter();
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeAMDGPUAsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAMDGPUAsmParser();
