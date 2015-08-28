@@ -140,6 +140,11 @@
             LLVM.AddAggressiveDCEPass(this.instance);
         }
 
+        public void AddBitTrackingDCEPass()
+        {
+            LLVM.AddBitTrackingDCEPass(this.instance);
+        }
+
         public void AddAlignmentFromAssumptionsPass()
         {
             LLVM.AddAlignmentFromAssumptionsPass(this.instance);

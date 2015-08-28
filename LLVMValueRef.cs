@@ -638,6 +638,16 @@
             LLVM.DeleteFunction(this);
         }
 
+        public LLVMValueRef GetPersonalityFn()
+        {
+            return LLVM.GetPersonalityFn(this);
+        }
+
+        public void SetPersonalityFn(LLVMValueRef @PersonalityFn)
+        {
+            LLVM.SetPersonalityFn(this, @PersonalityFn);
+        }
+
         public uint GetIntrinsicID()
         {
             return LLVM.GetIntrinsicID(this);

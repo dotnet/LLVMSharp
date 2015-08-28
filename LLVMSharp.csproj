@@ -35,6 +35,7 @@
     <Compile Include="Conversions.cs" />
     <Compile Include="ExecutionEngine.cs" />
     <Compile Include="Generated.cs" />
+    <Compile Include="Generated.Custom.cs" />
     <Compile Include="IRBuilder.cs" />
     <Compile Include="LLVMBasicBlockRef.cs" />
     <Compile Include="LLVMContextRef.cs" />

@@ -130,9 +130,9 @@
             return LLVM.BuildInvoke(this.instance, @Fn, Args, @Then, @Catch, @Name);
         }
 
-        public LLVMValueRef CreateLandingPad(LLVMTypeRef @Ty, LLVMValueRef @PersFn, uint @NumClauses, string @Name)
+        public LLVMValueRef CreateLandingPad(LLVMTypeRef @Ty, uint @NumClauses, string @Name)
         {
-            return LLVM.BuildLandingPad(this.instance, @Ty, @PersFn, @NumClauses, @Name);
+            return LLVM.BuildLandingPad(this.instance, @Ty, @NumClauses, @Name);
         }
 
         public LLVMValueRef CreateResume(LLVMValueRef @Exn)

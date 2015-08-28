@@ -78,6 +78,11 @@
             return LLVM.GetStructElementTypes(this);
         }
 
+        public LLVMTypeRef StructGetTypeAtIndex(uint @index)
+        {
+            return LLVM.StructGetTypeAtIndex(this, @index);
+        }
+
         public bool IsPackedStruct
         {
             get { return LLVM.IsPackedStruct(this); }
