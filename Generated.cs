@@ -2452,8 +2452,8 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMDisasmInstruction", CallingConvention = CallingConvention.Cdecl)]
         public static extern int DisasmInstruction(LLVMDisasmContextRef @DC, out char @Bytes, int @BytesSize, int @PC, IntPtr @OutString, int @OutStringSize);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeR600TargetInfo", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeR600TargetInfo();
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAMDGPUTargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeAMDGPUTargetInfo();
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZTargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZTargetInfo();
@@ -2491,8 +2491,8 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86TargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86TargetInfo();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeR600Target", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeR600Target();
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAMDGPUTarget", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeAMDGPUTarget();
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZTarget();
@@ -2530,8 +2530,8 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86Target", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86Target();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeR600TargetMC", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeR600TargetMC();
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAMDGPUTargetMC", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeAMDGPUTargetMC();
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZTargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZTargetMC();
@@ -2569,8 +2569,8 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86TargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86TargetMC();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeR600AsmPrinter", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeR600AsmPrinter();
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAMDGPUAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeAMDGPUAsmPrinter();
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZAsmPrinter();
@@ -2605,8 +2605,8 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86AsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86AsmPrinter();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeR600AsmParser", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeR600AsmParser();
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAMDGPUAsmParser", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeAMDGPUAsmParser();
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZAsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZAsmParser();
