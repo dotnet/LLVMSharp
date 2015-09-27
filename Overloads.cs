@@ -256,6 +256,12 @@
             AddIncoming(phiNode, out incomingValues[0], out incomingBlocks[0], count);
         }
 
+        public static void AddIncoming(LLVMValueRef phiNode, LLVMValueRef[] incomingValues,
+                                       LLVMBasicBlockRef[] incomingBlocks)
+        {
+            AddIncoming(phiNode, incomingValues, incomingBlocks, (uint) incomingValues.Length);
+        }
+
         public static LLVMValueRef BuildAggregateRet(LLVMBuilderRef param0, LLVMValueRef[] retVals)
         {
             return BuildAggregateRet(param0, out retVals[0], (uint)retVals.Length);

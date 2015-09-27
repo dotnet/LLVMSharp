@@ -41,7 +41,7 @@
         internal FunctionType(LLVMTypeRef typeRef) 
             : base(typeRef)
         {
-            this._params = new Type[LLVM.CountParamTypes(this.instance)];
+            this._params = new Type[LLVM.CountParamTypes(this.Instance)];
         }
 
         public FunctionType(Type returnType, Type[] parameterTypes)
@@ -67,13 +67,13 @@
         /// isVarArg
         /// </summary>
         /// <returns>bool</returns>
-        public bool IsVarArg { get { return LLVM.IsFunctionVarArg(this.instance).Value == 1; } }
+        public bool IsVarArg { get { return LLVM.IsFunctionVarArg(this.Instance).Value == 1; } }
 
         /// <summary>
         /// getReturnType
         /// </summary>
         /// <returns>Type *</returns>
-        public Type ReturnType { get { return new Type(LLVM.GetReturnType(this.instance)); } }
+        public Type ReturnType { get { return new Type(LLVM.GetReturnType(this.Instance)); } }
 
         /// <summary>
         /// getParamType

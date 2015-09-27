@@ -2,7 +2,7 @@
 {
     class Argument : Value
     {
-        public Argument(LLVMValueRef value) : base(value)
+        public Argument(LLVMValueRef pointer) : base(pointer)
         {
         }
     }

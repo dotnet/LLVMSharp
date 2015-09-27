@@ -7,61 +7,61 @@
     {
         public string DataLayout
         {
-            get { return LLVM.GetDataLayout(this.instance); }
-            set { LLVM.SetDataLayout(this.instance, value); }
+            get { return LLVM.GetDataLayout(this.ToModuleRef()); }
+            set { LLVM.SetDataLayout(this.ToModuleRef(), value); }
         }
 
         public string Target
         {
-            get { return LLVM.GetTarget(this.instance); }
-            set { LLVM.SetTarget(this.instance, value); }
+            get { return LLVM.GetTarget(this.ToModuleRef()); }
+            set { LLVM.SetTarget(this.ToModuleRef(), value); }
         }
 
         public LLVMContextRef ModuleContext
         {
-            get { return LLVM.GetModuleContext(this.instance); }
+            get { return LLVM.GetModuleContext(this.ToModuleRef()); }
         }
 
-        internal readonly LLVMModuleRef instance;
+        internal readonly LLVMModuleRef Instance;
 
         public Module(string moduleId)
         {
-            this.instance = LLVM.ModuleCreateWithName(moduleId);
+            this.Instance = LLVM.ModuleCreateWithName(moduleId);
         }
 
         public Module(string moduleId, LLVMContextRef context)
         {
-            this.instance = LLVM.ModuleCreateWithNameInContext(moduleId, context);
+            this.Instance = LLVM.ModuleCreateWithNameInContext(moduleId, context);
         }
 
         internal Module(LLVMModuleRef module)
         {
-            this.instance = LLVM.CloneModule(module);
+            this.Instance = LLVM.CloneModule(module);
         }
         
         public Module Clone()
         {
-            return new Module(this.instance);
+            return new Module(this.ToModuleRef());
         }
 
         public void DisposeModule()
         {
-            LLVM.DisposeModule(this.instance);
+            LLVM.DisposeModule(this.ToModuleRef());
         }
 
         public void DumpModule()
         {
-            LLVM.DumpModule(this.instance);
+            LLVM.DumpModule(this.ToModuleRef());
         }
 
         public bool PrintModuleToFile(string filename, out IntPtr errorMessage)
         {
-            return LLVM.PrintModuleToFile(this.instance, filename, out errorMessage);
+            return LLVM.PrintModuleToFile(this.ToModuleRef(), filename, out errorMessage);
         }
 
         public string PrintModuleToString()
         {
-            var ptr = LLVM.PrintModuleToString(this.instance);
+            var ptr = LLVM.PrintModuleToString(this.ToModuleRef());
             string retVal = Marshal.PtrToStringAnsi(ptr);
             LLVM.DisposeMessage(ptr);
             return retVal;
@@ -69,77 +69,77 @@
 
         public void SetModuleInlineAsm(string asm)
         {
-            LLVM.SetModuleInlineAsm(this.instance, asm);
+            LLVM.SetModuleInlineAsm(this.ToModuleRef(), asm);
         }
 
         public Type GetTypeByName(string name)
         {
-            return new Type(LLVM.GetTypeByName(this.instance, name));
+            return new Type(LLVM.GetTypeByName(this.ToModuleRef(), name));
         }
 
         public uint GetNamedMetadataNumOperands(string @name)
         {
-            return LLVM.GetNamedMetadataNumOperands(this.instance, @name);
+            return LLVM.GetNamedMetadataNumOperands(this.ToModuleRef(), @name);
         }
 
         public Value[] GetNamedMetadataOperands(string @name)
         {
-            return Common.ToValues(LLVM.GetNamedMetadataOperands(this.instance, @name));
+            return Conversions.ToValues(LLVM.GetNamedMetadataOperands(this.ToModuleRef(), @name));
         }
 
         public void AddNamedMetadataOperand(string @name, Value val)
         {
-            LLVM.AddNamedMetadataOperand(this.instance, @name, val.ToValueRef());
+            LLVM.AddNamedMetadataOperand(this.ToModuleRef(), @name, val.ToValueRef());
         }
 
         public Function AddFunction(string name, Type functionTy)
         {
-            return new Function(LLVM.AddFunction(this.instance, name, functionTy.ToTypeRef()));
+            return new Function(LLVM.AddFunction(this.ToModuleRef(), name, functionTy.ToTypeRef()));
         }
 
         public Function GetNamedFunction(string name)
         {
-            return new Function(LLVM.GetNamedFunction(this.instance, name));
+            return new Function(LLVM.GetNamedFunction(this.ToModuleRef(), name));
         }
 
         public Function GetFirstFunction()
         {
-            return new Function(LLVM.GetFirstFunction(this.instance));
+            return new Function(LLVM.GetFirstFunction(this.ToModuleRef()));
         }
 
         public Function GetLastFunction()
         {
-            return new Function(LLVM.GetLastFunction(this.instance));
+            return new Function(LLVM.GetLastFunction(this.ToModuleRef()));
         }
 
         public Value AddGlobal(Type ty, string name)
         {
-            return new GlobalValue(LLVM.AddGlobal(this.instance, ty.ToTypeRef(), name));
+            return new GlobalValue(LLVM.AddGlobal(this.ToModuleRef(), ty.ToTypeRef(), name));
         }
 
         public Value AddGlobalInAddressSpace(Type ty, string name, uint addressSpace)
         {
-            return new GlobalValue(LLVM.AddGlobalInAddressSpace(this.instance, ty.ToTypeRef(), name, addressSpace));
+            return new GlobalValue(LLVM.AddGlobalInAddressSpace(this.ToModuleRef(), ty.ToTypeRef(), name, addressSpace));
         }
 
         public Value GetNamedGlobal(string name)
         {
-            return new GlobalValue(LLVM.GetNamedGlobal(this.instance, name));
+            return new GlobalValue(LLVM.GetNamedGlobal(this.ToModuleRef(), name));
         }
 
         public Value GetFirstGlobal()
         {
-            return new GlobalValue(LLVM.GetFirstGlobal(this.instance));
+            return new GlobalValue(LLVM.GetFirstGlobal(this.ToModuleRef()));
         }
 
         public Value GetLastGlobal()
         {
-            return new GlobalValue(LLVM.GetLastGlobal(this.instance));
+            return new GlobalValue(LLVM.GetLastGlobal(this.ToModuleRef()));
         }
 
         public Value AddAlias(Type ty, Value aliasee, string name)
         {
-            return new GlobalValue(LLVM.AddAlias(this.instance, ty.ToTypeRef(), aliasee.ToValueRef(), name));
+            return new GlobalValue(LLVM.AddAlias(this.ToModuleRef(), ty.ToTypeRef(), aliasee.ToValueRef(), name));
         }
 
         public bool CreateMCJITCompilerForModule(out ExecutionEngine executionEngine,
@@ -158,17 +158,17 @@
 
         public LLVMModuleProviderRef CreateModuleProviderForExistingModule()
         {
-            return LLVM.CreateModuleProviderForExistingModule(this.instance);
+            return LLVM.CreateModuleProviderForExistingModule(this.ToModuleRef());
         }
 
         public LLVMPassManagerRef CreateFunctionPassManagerForModule()
         {
-            return LLVM.CreateFunctionPassManagerForModule(this.instance);
+            return LLVM.CreateFunctionPassManagerForModule(this.ToModuleRef());
         }
 
         public bool VerifyModule(LLVMVerifierFailureAction action, out IntPtr outMessage)
         {
-            return LLVM.VerifyModule(this.instance, action, out outMessage);
+            return LLVM.VerifyModule(this.ToModuleRef(), action, out outMessage);
         }
 
         public bool VerifyModule(LLVMVerifierFailureAction action, out string message)
@@ -181,27 +181,27 @@
 
         public int WriteBitcodeToFile(string path)
         {
-            return LLVM.WriteBitcodeToFile(this.instance, path);
+            return LLVM.WriteBitcodeToFile(this.ToModuleRef(), path);
         }
 
         public int WriteBitcodeToFD(int fd, int shouldClose, int unbuffered)
         {
-            return LLVM.WriteBitcodeToFD(this.instance, fd, shouldClose, unbuffered);
+            return LLVM.WriteBitcodeToFD(this.ToModuleRef(), fd, shouldClose, unbuffered);
         }
 
         public int WriteBitcodeToFileHandle(int handle)
         {
-            return LLVM.WriteBitcodeToFileHandle(this.instance, handle);
+            return LLVM.WriteBitcodeToFileHandle(this.ToModuleRef(), handle);
         }
 
         public LLVMMemoryBufferRef WriteBitcodeToMemoryBuffer()
         {
-            return LLVM.WriteBitcodeToMemoryBuffer(this.instance);
+            return LLVM.WriteBitcodeToMemoryBuffer(this.ToModuleRef());
         }
 
         public bool LinkModules(Module src, uint unused, out IntPtr outMessage)
         {
-            return LLVM.LinkModules(this.instance, src.ToModuleRef(), unused, out outMessage);
+            return LLVM.LinkModules(this.ToModuleRef(), src.ToModuleRef(), unused, out outMessage);
         }
 
         public bool Equals(Module other)
@@ -212,7 +212,7 @@
             }
             else
             {
-                return this.instance == other.instance;
+                return this.Instance == other.Instance;
             }
         }
 
@@ -240,12 +240,12 @@
 
         public override int GetHashCode()
         {
-            return this.instance.GetHashCode();
+            return this.Instance.GetHashCode();
         }
 
         public void SetTarget(string target)
         {
-            LLVM.SetTarget(this.instance, target);
+            LLVM.SetTarget(this.ToModuleRef(), target);
         }
     }
 }

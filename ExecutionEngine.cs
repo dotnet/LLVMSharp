@@ -5,7 +5,7 @@
 
     public sealed class ExecutionEngine : IDisposable, IEquatable<ExecutionEngine>
     {
-        private readonly LLVMExecutionEngineRef instance;
+        internal readonly LLVMExecutionEngineRef instance;
         
         private bool disposed;
 
@@ -13,7 +13,7 @@
         {
             IntPtr error;
             LLVMExecutionEngineRef instance;
-            if (!LLVM.CreateExecutionEngineForModule(out instance, module.instance, out error))
+            if (!LLVM.CreateExecutionEngineForModule(out instance, module.Instance, out error))
             {
                 ThrowError(error);
             }
@@ -25,7 +25,7 @@
         {
             IntPtr error;
             LLVMExecutionEngineRef instance;
-            if (LLVM.CreateInterpreterForModule(out instance, module.instance, out error))
+            if (LLVM.CreateInterpreterForModule(out instance, module.ToModuleRef(), out error))
             {
                 ThrowError(error);
             }
@@ -39,14 +39,14 @@
 
             IntPtr error;
             LLVMExecutionEngineRef instance;
-            if (LLVM.CreateMCJITCompilerForModule(out instance, module.instance, out options, optionsSize, out error))
+            if (LLVM.CreateMCJITCompilerForModule(out instance, module.ToModuleRef(), out options, optionsSize, out error))
             {
                 ThrowError(error);
             }
 
-            return new ExecutionEngine(instance);
+            return instance.ToExecutionEngine();
         }
-
+        
         internal ExecutionEngine(LLVMExecutionEngineRef ee)
         {
             this.instance = ee;
@@ -59,87 +59,96 @@
 
         public void RunStaticConstructors()
         {
-            LLVM.RunStaticConstructors(this.instance);
+            LLVM.RunStaticConstructors(this.ToExecutionEngineRef());
         }
 
         public void RunStaticDestructors()
         {
-            LLVM.RunStaticDestructors(this.instance);
+            LLVM.RunStaticDestructors(this.ToExecutionEngineRef());
         }
 
-        public int RunFunctionAsMain(LLVMValueRef f, uint argC, string[] argV, string[] envP)
+        public int RunFunctionAsMain(Value f, uint argC, string[] argV, string[] envP)
         {
-            return LLVM.RunFunctionAsMain(this.instance, f, argC, argV, envP);
+            return LLVM.RunFunctionAsMain(this.ToExecutionEngineRef(), f.ToValueRef(), argC, argV, envP);
         }
 
-        public LLVMGenericValueRef RunFunction(LLVMValueRef f, LLVMGenericValueRef[] args)
+        public LLVMGenericValueRef RunFunction(Value f, LLVMGenericValueRef[] args)
         {
-            return LLVM.RunFunction(this.instance, f, args);
+            return LLVM.RunFunction(this.ToExecutionEngineRef(), f.ToValueRef(), args);
         }
 
-        public void FreeMachineCodeForFunction(LLVMValueRef f)
+        public void FreeMachineCodeForFunction(Value f)
         {
-            LLVM.FreeMachineCodeForFunction(this.instance, f);
+            LLVM.FreeMachineCodeForFunction(this.ToExecutionEngineRef(), f.ToValueRef());
         }
 
-        public void AddModule(LLVMModuleRef m)
+        public void AddModule(Module m)
         {
-            LLVM.AddModule(this.instance, m);
+            LLVM.AddModule(this.ToExecutionEngineRef(), m.ToModuleRef());
         }
 
         public void AddModuleProvider(LLVMModuleProviderRef mp)
         {
-            LLVM.AddModuleProvider(this.instance, mp);
+            LLVM.AddModuleProvider(this.ToExecutionEngineRef(), mp);
         }
 
-        public LLVMBool RemoveModule(LLVMModuleRef m, out LLVMModuleRef outMod, out IntPtr outError)
+        public bool RemoveModule(Module m, out Module outMod, out IntPtr outError)
         {
-            return LLVM.RemoveModule(this.instance, m, out outMod, out outError);
+            LLVMModuleRef outModRef;
+            var result = LLVM.RemoveModule(this.ToExecutionEngineRef(), m.ToModuleRef(), out outModRef, out outError);
+            outMod = outModRef.ToModule();
+            return result;
         }
 
-        public LLVMBool RemoveModuleProvider(LLVMModuleProviderRef mp, out LLVMModuleRef outMod, out IntPtr outError)
+        public bool RemoveModuleProvider(LLVMModuleProviderRef mp, out Module outMod, out IntPtr outError)
         {
-            return LLVM.RemoveModuleProvider(this.instance, mp, out outMod, out outError);
+            LLVMModuleRef outModRef;
+            var result = LLVM.RemoveModuleProvider(this.ToExecutionEngineRef(), mp, out outModRef, out outError);
+            outMod = outModRef.ToModule();
+            return result;
         }
 
-        public LLVMBool FindFunction(string name, out LLVMValueRef outFn)
+        public bool FindFunction(string name, out Value outFn)
         {
-            return LLVM.FindFunction(this.instance, name, out outFn);
+            LLVMValueRef outFnValueRef;
+            var result = LLVM.FindFunction(this.ToExecutionEngineRef(), name, out outFnValueRef);
+            outFn = outFnValueRef.ToValue();
+            return result;
         }
 
-        public IntPtr RecompileAndRelinkFunction(LLVMValueRef fn)
+        public IntPtr RecompileAndRelinkFunction(Value fn)
         {
-            return LLVM.RecompileAndRelinkFunction(this.instance, fn);
+            return LLVM.RecompileAndRelinkFunction(this.ToExecutionEngineRef(), fn.ToValueRef());
         }
 
         public LLVMTargetDataRef GetExecutionEngineTargetData()
         {
-            return LLVM.GetExecutionEngineTargetData(this.instance);
+            return LLVM.GetExecutionEngineTargetData(this.ToExecutionEngineRef());
         }
 
         public LLVMTargetMachineRef GetExecutionEngineTargetMachine()
         {
-            return LLVM.GetExecutionEngineTargetMachine(this.instance);
+            return LLVM.GetExecutionEngineTargetMachine(this.ToExecutionEngineRef());
         }
 
-        public void AddGlobalMapping(LLVMValueRef @Global, IntPtr addr)
+        public void AddGlobalMapping(Value global, IntPtr addr)
         {
-            LLVM.AddGlobalMapping(this.instance, @Global, addr);
+            LLVM.AddGlobalMapping(this.ToExecutionEngineRef(), global.ToValueRef(), addr);
         }
 
-        public IntPtr GetPointerToGlobal(Value @Global)
+        public IntPtr GetPointerToGlobal(Value global)
         {
-            return LLVM.GetPointerToGlobal(this.instance, @Global.ToValueRef());
+            return LLVM.GetPointerToGlobal(this.ToExecutionEngineRef(), global.ToValueRef());
         }
 
         public int GetGlobalValueAddress(string name)
         {
-            return LLVM.GetGlobalValueAddress(this.instance, name);
+            return LLVM.GetGlobalValueAddress(this.ToExecutionEngineRef(), name);
         }
 
         public int GetFunctionAddress(string name)
         {
-            return LLVM.GetFunctionAddress(this.instance, name);
+            return LLVM.GetFunctionAddress(this.ToExecutionEngineRef(), name);
         }
 
         public void Dispose()
