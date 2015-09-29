@@ -4,7 +4,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class OOPAPITests
+    public class OOAPITests
     {
         [TestMethod]
         public void SimpleAdd()

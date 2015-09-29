@@ -9,17 +9,17 @@
 
         public uint NumSuccessors
         {
-            get { return LLVM.GetNumSuccessors(this.InnerValue); }
+            get { return LLVM.GetNumSuccessors(this.ToValueRef()); }
         }
 
         public BasicBlock GetSuccessor(uint idx)
         {
-            return new BasicBlock(LLVM.GetSuccessor(this.InnerValue, idx));
+            return new BasicBlock(LLVM.GetSuccessor(this.ToValueRef(), idx));
         }
 
         public void SetSuccessor(uint idx, BasicBlock b)
         {
-            LLVM.SetSuccessor(this.InnerValue, idx, LLVM.ValueAsBasicBlock(b.InnerValue));
+            LLVM.SetSuccessor(this.ToValueRef(), idx, LLVM.ValueAsBasicBlock(b.ToValueRef()));
         }
     }
 }

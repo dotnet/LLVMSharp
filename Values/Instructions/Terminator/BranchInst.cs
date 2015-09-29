@@ -16,22 +16,5 @@
         {
             get { return !this.IsConditional; }
         }
-
-        public Value Condition
-        {
-            get
-            {
-                return LLVM.GetCondition(this.InnerValue).ToValue();
-            }
-            set
-            {
-                LLVM.SetCondition(this.InnerValue, value.InnerValue);
-            }
-        }
-
-        public void SetCondition(Value condition)
-        {
-            LLVM.SetCondition(this.InnerValue, condition.InnerValue);
-        }
     }
 }

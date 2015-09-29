@@ -11,7 +11,7 @@
 
         public static Function Create(FunctionType type, LLVMLinkage linkage, string name, Module m)
         {
-            var value = LLVM.AddFunction(m.instance, name, type.TypeRef);
+            var value = LLVM.AddFunction(m.Instance, name, type.TypeRef);
             var f = new Function(value);
             LLVM.SetLinkage(value, linkage);
             return f;

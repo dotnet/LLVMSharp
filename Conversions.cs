@@ -6,7 +6,7 @@
     /// <summary>
     /// Helper class that handles the internal conversions between C API and C++ API types.
     /// </summary>
-    internal static class Common
+    internal static class Conversions
     {
         public static Type[] ToTypes(this LLVMTypeRef[] source)
         {
@@ -46,6 +46,46 @@
                 target[i] = source[i].ToValueRef();
             }
             return target;
+        }
+
+        public static BasicBlock[] ToBasicBlocks(this LLVMBasicBlockRef[] source)
+        {
+            var target = new BasicBlock[source.Length];
+            for (var i = 0; i < source.Length; i++)
+            {
+                target[i] = source[i].ToBasicBlock();
+            }
+            return target;
+        }
+
+        public static LLVMBasicBlockRef[] ToBasicBlockRefs(this BasicBlock[] source)
+        {
+            var target = new LLVMBasicBlockRef[source.Length];
+            for (var i = 0; i < source.Length; i++)
+            {
+                target[i] = source[i].ToBasicBlockRef();
+            }
+            return target;
+        }
+
+        public static LLVMPassManagerRef ToPassManagerRef(this PassManager p)
+        {
+            return p.Instance;
+        }
+
+        public static PassManager ToPassManager(this LLVMPassManagerRef p)
+        {
+            return new PassManager(p);
+        }
+
+        public static LLVMExecutionEngineRef ToExecutionEngineRef(this ExecutionEngine e)
+        {
+            return e.instance;
+        }
+
+        public static ExecutionEngine ToExecutionEngine(this LLVMExecutionEngineRef e)
+        {
+            return new ExecutionEngine(e);
         }
 
         public static Value ToValue(this LLVMValueRef v)
@@ -335,7 +375,7 @@
 
         public static LLVMModuleRef ToModuleRef(this Module m)
         {
-            return m.instance;
+            return m.Instance;
         }
 
         public static Module ToModule(this LLVMModuleRef m)
@@ -351,6 +391,21 @@
         public static LLVMBasicBlockRef ToBasicBlockRef(this BasicBlock b)
         {
             return b.ToValueRef().ToBasicBlockRef();
+        }
+
+        public static BasicBlock ToBasicBlock(this LLVMBasicBlockRef b)
+        {
+            return new BasicBlock(b);
+        }
+
+        public static LLVMBuilderRef ToBuilderRef(this IRBuilder b)
+        {
+            return b.instance;
+        }
+
+        public static IRBuilder ToIRBuilder(this LLVMBuilderRef b)
+        {
+            return new IRBuilder(b);
         }
 
         public static bool ToBool(this LLVMValueRef v)

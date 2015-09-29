@@ -22,33 +22,33 @@
             return LLVM.IntType((uint) bitLength);
         }
 
-        protected readonly LLVMTypeRef instance;
+        protected readonly LLVMTypeRef Instance;
         private readonly LLVMTypeKind kind;
 
         public Type(LLVMTypeRef typeRef)
         {
-            this.instance = typeRef;
+            this.Instance = typeRef;
             this.kind = LLVM.GetTypeKind(typeRef);
         }
 
         internal LLVMTypeRef TypeRef
         {
-            get { return this.instance; }
+            get { return this.Instance; }
         }
 
         public void Print()
         {
-            LLVM.PrintTypeToString(this.instance);
+            LLVM.PrintTypeToString(this.ToTypeRef());
         }
 
         public void Dump()
         {
-            LLVM.DumpType(this.instance);
+            LLVM.DumpType(this.ToTypeRef());
         }
 
         public LLVMContextRef Context
         {
-            get { return LLVM.GetTypeContext(this.instance); }
+            get { return LLVM.GetTypeContext(this.ToTypeRef()); }
         }
 
         public bool IsVoidTy
@@ -117,7 +117,7 @@
 
         public bool IsIntegerBitwidh(uint bitwidth)
         {
-            return this.kind == LLVMTypeKind.LLVMIntegerTypeKind && LLVM.GetIntTypeWidth(this.instance) == bitwidth;
+            return this.kind == LLVMTypeKind.LLVMIntegerTypeKind && LLVM.GetIntTypeWidth(this.Instance) == bitwidth;
         }
         
         public bool IsFunctionTy
@@ -147,37 +147,37 @@
 
         public uint IntegerBitWidth
         {
-            get { return LLVM.GetIntTypeWidth(this.instance); }
+            get { return LLVM.GetIntTypeWidth(this.ToTypeRef()); }
         }
 
         public Type GetFunctionParamType(uint i)
         {
-            return new Type(LLVM.GetParamTypes(this.instance)[i]);
+            return new Type(LLVM.GetParamTypes(this.ToTypeRef())[i]);
         }
 
         public uint FunctionNumParams
         {
-            get { return LLVM.CountParamTypes(this.instance); }
+            get { return LLVM.CountParamTypes(this.ToTypeRef()); }
         }
 
         public bool IsFunctionVarArg
         {
-            get { return LLVM.IsFunctionVarArg(this.instance); }
+            get { return LLVM.IsFunctionVarArg(this.ToTypeRef()); }
         }
 
         public string StructName
         {
-            get { return LLVM.GetStructName(this.instance); }
+            get { return LLVM.GetStructName(this.ToTypeRef()); }
         }
 
         public uint StructNumElements
         {
-            get { return LLVM.CountStructElementTypes(this.instance); }
+            get { return LLVM.CountStructElementTypes(this.ToTypeRef()); }
         }
 
         public Type GetStructElementType(uint i)
         {
-            return new Type(LLVM.GetStructElementTypes(this.instance)[i]);
+            return new Type(LLVM.GetStructElementTypes(this.ToTypeRef())[i]);
         }
         
         public static implicit operator Type(LLVMTypeRef typeRef)
@@ -203,7 +203,7 @@
             }
             else
             {
-                return this.instance == other.instance;
+                return this.Instance == other.Instance;
             }
         }
 
@@ -231,7 +231,7 @@
 
         public override int GetHashCode()
         {
-            return this.instance.GetHashCode();
+            return this.Instance.GetHashCode();
         }
 
         public Value ConstInt(ulong value, bool signExtend)

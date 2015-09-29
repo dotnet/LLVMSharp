@@ -4,23 +4,28 @@
 
     public sealed class PassManager : IDisposable, IEquatable<PassManager>
     {
-        private readonly LLVMPassManagerRef instance;
+        internal readonly LLVMPassManagerRef Instance;
 
         private bool disposed;
 
         public PassManager()
         {
-            this.instance = LLVM.CreatePassManager();
+            this.Instance = LLVM.CreatePassManager();
         }
 
         public PassManager(LLVMModuleRef module)
         {
-            this.instance = LLVM.CreateFunctionPassManagerForModule(module);
+            this.Instance = LLVM.CreateFunctionPassManagerForModule(module);
         }
 
         public PassManager(LLVMModuleProviderRef moduleProvider)
         {
-            this.instance = LLVM.CreateFunctionPassManager(moduleProvider);
+            this.Instance = LLVM.CreateFunctionPassManager(moduleProvider);
+        }
+
+        internal PassManager(LLVMPassManagerRef passManagerRef)
+        {
+            this.Instance = passManagerRef;
         }
 
         ~PassManager()
@@ -30,22 +35,22 @@
 
         public bool RunPassManager(LLVMModuleRef m)
         {
-            return LLVM.RunPassManager(this.instance, m);
+            return LLVM.RunPassManager(this.Instance, m);
         }
 
         public bool InitializeFunctionPassManager()
         {
-            return LLVM.InitializeFunctionPassManager(this.instance);
+            return LLVM.InitializeFunctionPassManager(this.Instance);
         }
 
         public bool RunFunctionPassManager(LLVMValueRef f)
         {
-            return LLVM.RunFunctionPassManager(this.instance, f);
+            return LLVM.RunFunctionPassManager(this.Instance, f);
         }
 
         public bool FinalizeFunctionPassManager()
         {
-            return LLVM.FinalizeFunctionPassManager(this.instance);
+            return LLVM.FinalizeFunctionPassManager(this.Instance);
         }
 
         public void Dispose()
@@ -61,278 +66,278 @@
                 return;
             }
 
-            LLVM.DisposePassManager(this.instance);
+            LLVM.DisposePassManager(this.Instance);
             this.disposed = true;
         }
 
         public void AddArgumentPromotionPass()
         {
-            LLVM.AddArgumentPromotionPass(this.instance);
+            LLVM.AddArgumentPromotionPass(this.Instance);
         }
 
         public void AddConstantMergePass()
         {
-            LLVM.AddConstantMergePass(this.instance);
+            LLVM.AddConstantMergePass(this.Instance);
         }
 
         public void AddDeadArgEliminationPass()
         {
-            LLVM.AddDeadArgEliminationPass(this.instance);
+            LLVM.AddDeadArgEliminationPass(this.Instance);
         }
 
         public void AddFunctionAttrsPass()
         {
-            LLVM.AddFunctionAttrsPass(this.instance);
+            LLVM.AddFunctionAttrsPass(this.Instance);
         }
 
         public void AddFunctionInliningPass()
         {
-            LLVM.AddFunctionInliningPass(this.instance);
+            LLVM.AddFunctionInliningPass(this.Instance);
         }
 
         public void AddAlwaysInlinerPass()
         {
-            LLVM.AddAlwaysInlinerPass(this.instance);
+            LLVM.AddAlwaysInlinerPass(this.Instance);
         }
 
         public void AddGlobalDCEPass()
         {
-            LLVM.AddGlobalDCEPass(this.instance);
+            LLVM.AddGlobalDCEPass(this.Instance);
         }
 
         public void AddGlobalOptimizerPass()
         {
-            LLVM.AddGlobalOptimizerPass(this.instance);
+            LLVM.AddGlobalOptimizerPass(this.Instance);
         }
 
         public void AddIPConstantPropagationPass()
         {
-            LLVM.AddIPConstantPropagationPass(this.instance);
+            LLVM.AddIPConstantPropagationPass(this.Instance);
         }
 
         public void AddPruneEHPass()
         {
-            LLVM.AddPruneEHPass(this.instance);
+            LLVM.AddPruneEHPass(this.Instance);
         }
 
         public void AddIPSCCPPass()
         {
-            LLVM.AddIPSCCPPass(this.instance);
+            LLVM.AddIPSCCPPass(this.Instance);
         }
 
         public void AddInternalizePass(uint allButMain)
         {
-            LLVM.AddInternalizePass(this.instance, allButMain);
+            LLVM.AddInternalizePass(this.Instance, allButMain);
         }
 
         public void AddStripDeadPrototypesPass()
         {
-            LLVM.AddStripDeadPrototypesPass(this.instance);
+            LLVM.AddStripDeadPrototypesPass(this.Instance);
         }
 
         public void AddStripSymbolsPass()
         {
-            LLVM.AddStripSymbolsPass(this.instance);
+            LLVM.AddStripSymbolsPass(this.Instance);
         }
 
         public void AddAggressiveDCEPass()
         {
-            LLVM.AddAggressiveDCEPass(this.instance);
+            LLVM.AddAggressiveDCEPass(this.Instance);
         }
 
         public void AddAlignmentFromAssumptionsPass()
         {
-            LLVM.AddAlignmentFromAssumptionsPass(this.instance);
+            LLVM.AddAlignmentFromAssumptionsPass(this.Instance);
         }
 
         public void AddCFGSimplificationPass()
         {
-            LLVM.AddCFGSimplificationPass(this.instance);
+            LLVM.AddCFGSimplificationPass(this.Instance);
         }
 
         public void AddDeadStoreEliminationPass()
         {
-            LLVM.AddDeadStoreEliminationPass(this.instance);
+            LLVM.AddDeadStoreEliminationPass(this.Instance);
         }
 
         public void AddScalarizerPass()
         {
-            LLVM.AddScalarizerPass(this.instance);
+            LLVM.AddScalarizerPass(this.Instance);
         }
 
         public void AddMergedLoadStoreMotionPass()
         {
-            LLVM.AddMergedLoadStoreMotionPass(this.instance);
+            LLVM.AddMergedLoadStoreMotionPass(this.Instance);
         }
 
         public void AddGVNPass()
         {
-            LLVM.AddGVNPass(this.instance);
+            LLVM.AddGVNPass(this.Instance);
         }
 
         public void AddIndVarSimplifyPass()
         {
-            LLVM.AddIndVarSimplifyPass(this.instance);
+            LLVM.AddIndVarSimplifyPass(this.Instance);
         }
 
         public void AddInstructionCombiningPass()
         {
-            LLVM.AddInstructionCombiningPass(this.instance);
+            LLVM.AddInstructionCombiningPass(this.Instance);
         }
 
         public void AddJumpThreadingPass()
         {
-            LLVM.AddJumpThreadingPass(this.instance);
+            LLVM.AddJumpThreadingPass(this.Instance);
         }
 
         public void AddLICMPass()
         {
-            LLVM.AddLICMPass(this.instance);
+            LLVM.AddLICMPass(this.Instance);
         }
 
         public void AddLoopDeletionPass()
         {
-            LLVM.AddLoopDeletionPass(this.instance);
+            LLVM.AddLoopDeletionPass(this.Instance);
         }
 
         public void AddLoopIdiomPass()
         {
-            LLVM.AddLoopIdiomPass(this.instance);
+            LLVM.AddLoopIdiomPass(this.Instance);
         }
 
         public void AddLoopRotatePass()
         {
-            LLVM.AddLoopRotatePass(this.instance);
+            LLVM.AddLoopRotatePass(this.Instance);
         }
 
         public void AddLoopRerollPass()
         {
-            LLVM.AddLoopRerollPass(this.instance);
+            LLVM.AddLoopRerollPass(this.Instance);
         }
 
         public void AddLoopUnrollPass()
         {
-            LLVM.AddLoopUnrollPass(this.instance);
+            LLVM.AddLoopUnrollPass(this.Instance);
         }
 
         public void AddLoopUnswitchPass()
         {
-            LLVM.AddLoopUnswitchPass(this.instance);
+            LLVM.AddLoopUnswitchPass(this.Instance);
         }
 
         public void AddMemCpyOptPass()
         {
-            LLVM.AddMemCpyOptPass(this.instance);
+            LLVM.AddMemCpyOptPass(this.Instance);
         }
 
         public void AddPartiallyInlineLibCallsPass()
         {
-            LLVM.AddPartiallyInlineLibCallsPass(this.instance);
+            LLVM.AddPartiallyInlineLibCallsPass(this.Instance);
         }
 
         public void AddLowerSwitchPass()
         {
-            LLVM.AddLowerSwitchPass(this.instance);
+            LLVM.AddLowerSwitchPass(this.Instance);
         }
 
         public void AddPromoteMemoryToRegisterPass()
         {
-            LLVM.AddPromoteMemoryToRegisterPass(this.instance);
+            LLVM.AddPromoteMemoryToRegisterPass(this.Instance);
         }
 
         public void AddReassociatePass()
         {
-            LLVM.AddReassociatePass(this.instance);
+            LLVM.AddReassociatePass(this.Instance);
         }
 
         public void AddSCCPPass()
         {
-            LLVM.AddSCCPPass(this.instance);
+            LLVM.AddSCCPPass(this.Instance);
         }
 
         public void AddScalarReplAggregatesPass()
         {
-            LLVM.AddScalarReplAggregatesPass(this.instance);
+            LLVM.AddScalarReplAggregatesPass(this.Instance);
         }
 
         public void AddScalarReplAggregatesPassSSA()
         {
-            LLVM.AddScalarReplAggregatesPassSSA(this.instance);
+            LLVM.AddScalarReplAggregatesPassSSA(this.Instance);
         }
 
         public void AddScalarReplAggregatesPassWithThreshold(int threshold)
         {
-            LLVM.AddScalarReplAggregatesPassWithThreshold(this.instance, threshold);
+            LLVM.AddScalarReplAggregatesPassWithThreshold(this.Instance, threshold);
         }
 
         public void AddSimplifyLibCallsPass()
         {
-            LLVM.AddSimplifyLibCallsPass(this.instance);
+            LLVM.AddSimplifyLibCallsPass(this.Instance);
         }
 
         public void AddTailCallEliminationPass()
         {
-            LLVM.AddTailCallEliminationPass(this.instance);
+            LLVM.AddTailCallEliminationPass(this.Instance);
         }
 
         public void AddConstantPropagationPass()
         {
-            LLVM.AddConstantPropagationPass(this.instance);
+            LLVM.AddConstantPropagationPass(this.Instance);
         }
 
         public void AddDemoteMemoryToRegisterPass()
         {
-            LLVM.AddDemoteMemoryToRegisterPass(this.instance);
+            LLVM.AddDemoteMemoryToRegisterPass(this.Instance);
         }
 
         public void AddVerifierPass()
         {
-            LLVM.AddVerifierPass(this.instance);
+            LLVM.AddVerifierPass(this.Instance);
         }
 
         public void AddCorrelatedValuePropagationPass()
         {
-            LLVM.AddCorrelatedValuePropagationPass(this.instance);
+            LLVM.AddCorrelatedValuePropagationPass(this.Instance);
         }
 
         public void AddEarlyCSEPass()
         {
-            LLVM.AddEarlyCSEPass(this.instance);
+            LLVM.AddEarlyCSEPass(this.Instance);
         }
 
         public void AddLowerExpectIntrinsicPass()
         {
-            LLVM.AddLowerExpectIntrinsicPass(this.instance);
+            LLVM.AddLowerExpectIntrinsicPass(this.Instance);
         }
 
         public void AddTypeBasedAliasAnalysisPass()
         {
-            LLVM.AddTypeBasedAliasAnalysisPass(this.instance);
+            LLVM.AddTypeBasedAliasAnalysisPass(this.Instance);
         }
 
         public void AddScopedNoAliasAAPass()
         {
-            LLVM.AddScopedNoAliasAAPass(this.instance);
+            LLVM.AddScopedNoAliasAAPass(this.Instance);
         }
 
         public void AddBasicAliasAnalysisPass()
         {
-            LLVM.AddBasicAliasAnalysisPass(this.instance);
+            LLVM.AddBasicAliasAnalysisPass(this.Instance);
         }
 
         public void AddBBVectorizePass()
         {
-            LLVM.AddBBVectorizePass(this.instance);
+            LLVM.AddBBVectorizePass(this.Instance);
         }
 
         public void AddLoopVectorizePass()
         {
-            LLVM.AddLoopVectorizePass(this.instance);
+            LLVM.AddLoopVectorizePass(this.Instance);
         }
 
         public void AddSLPVectorizePass()
         {
-            LLVM.AddSLPVectorizePass(this.instance);
+            LLVM.AddSLPVectorizePass(this.Instance);
         }
 
         public bool Equals(PassManager other)
@@ -343,7 +348,7 @@
             }
             else
             {
-                return this.instance == other.instance;
+                return this.Instance == other.Instance;
             }
         }
 
@@ -371,7 +376,7 @@
 
         public override int GetHashCode()
         {
-            return this.instance.GetHashCode();
+            return this.Instance.GetHashCode();
         }
     }
 }
