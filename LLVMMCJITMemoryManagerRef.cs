@@ -2,11 +2,16 @@
 {
     using System;
 
-    public partial struct LLVMMCJITMemoryManagerRef : IEquatable<LLVMMCJITMemoryManagerRef>
+    public partial struct LLVMMCJITMemoryManagerRef : IEquatable<LLVMMCJITMemoryManagerRef>, IHandle<MCJITMemoryManager>
     {
         public bool Equals(LLVMMCJITMemoryManagerRef other)
         {
             return this.Pointer == other.Pointer;
+        }
+
+        MCJITMemoryManager IHandle<MCJITMemoryManager>.ToWrapperType()
+        {
+            return new MCJITMemoryManager(this);
         }
 
         public override bool Equals(object obj)

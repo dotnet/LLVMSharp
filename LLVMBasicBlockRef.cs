@@ -2,8 +2,14 @@
 {
     using System;
 
-    partial struct LLVMBasicBlockRef : IEquatable<LLVMBasicBlockRef>
+    partial struct LLVMBasicBlockRef : IEquatable<LLVMBasicBlockRef>, 
+        IHandle<BasicBlock>
     {
+        BasicBlock IHandle<BasicBlock>.ToWrapperType()
+        {
+            return (BasicBlock) Value.Create(new LLVMValueRef {Pointer = this.Pointer});
+        }
+    
         public LLVMValueRef BasicBlockAsValue()
         {
             return LLVM.BasicBlockAsValue(this);

@@ -2,8 +2,8 @@
 {
     public sealed class LoadInst : UnaryInstruction
     {
-        internal LoadInst(LLVMValueRef value)
-            : base(value)
+        internal LoadInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

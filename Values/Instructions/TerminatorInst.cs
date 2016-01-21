@@ -2,24 +2,24 @@
 {
     public abstract class TerminatorInst : Instruction
     {
-        protected TerminatorInst(LLVMValueRef value)
-            : base(value)
+        protected TerminatorInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
 
         public uint NumSuccessors
         {
-            get { return LLVM.GetNumSuccessors(this.ToValueRef()); }
+            get { return LLVM.GetNumSuccessors(this.Unwrap()); }
         }
 
         public BasicBlock GetSuccessor(uint idx)
         {
-            return new BasicBlock(LLVM.GetSuccessor(this.ToValueRef(), idx));
+            return LLVM.GetSuccessor(this.Unwrap(), idx).Wrap();
         }
 
         public void SetSuccessor(uint idx, BasicBlock b)
         {
-            LLVM.SetSuccessor(this.ToValueRef(), idx, LLVM.ValueAsBasicBlock(b.ToValueRef()));
+            LLVM.SetSuccessor(this.Unwrap(), idx, b.Unwrap<LLVMBasicBlockRef>());
         }
     }
 }

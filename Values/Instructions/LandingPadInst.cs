@@ -2,8 +2,8 @@ namespace LLVMSharp
 {
     public sealed class LandingPadInst : Instruction
     {
-        internal LandingPadInst(LLVMValueRef value)
-            : base(value)
+        internal LandingPadInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

@@ -2,8 +2,8 @@
 {
     public sealed class FCmpInst : CmpInst
     {
-        internal FCmpInst(LLVMValueRef value)
-            : base(value)
+        internal FCmpInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

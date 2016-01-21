@@ -2,8 +2,8 @@ namespace LLVMSharp
 {
     public sealed class TruncInst : CastInst
     {
-        internal TruncInst(LLVMValueRef value)
-            : base(value)
+        internal TruncInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

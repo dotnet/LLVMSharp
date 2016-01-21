@@ -69,7 +69,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assembly.cs" />
-    <Compile Include="Conversions.cs" />
+    <Compile Include="ConversionUtilities.cs" />
+    <Compile Include="DiagnosticInfo.cs" />
+    <Compile Include="DisasmContext.cs" />
+    <Compile Include="ErrorUtilities.cs" />
+    <Compile Include="GenericValue.cs" />
+    <Compile Include="IHandle.cs" />
+    <Compile Include="IWrapper.cs" />
+    <Compile Include="LinkageExtensions.cs" />
     <Compile Include="LLVMBuilderRef.cs" />
     <Compile Include="LLVMDiagnosticInfoRef.cs" />
     <Compile Include="LLVMDisasmContextRef.cs" />
@@ -97,6 +104,20 @@
     <Compile Include="lto_bool_t.cs" />
     <Compile Include="lto_code_gen_t.cs" />
     <Compile Include="lto_module_t.cs" />
+    <Compile Include="MCJITMemoryManager.cs" />
+    <Compile Include="MemoryBuffer.cs" />
+    <Compile Include="ModuleProvider.cs" />
+    <Compile Include="ObjectFile.cs" />
+    <Compile Include="PassManagerBuilder.cs" />
+    <Compile Include="PassRegistry.cs" />
+    <Compile Include="RelocationIterator.cs" />
+    <Compile Include="SectionIterator.cs" />
+    <Compile Include="SymbolIterator.cs" />
+    <Compile Include="Target.cs" />
+    <Compile Include="TargetData.cs" />
+    <Compile Include="TargetLibraryInfo.cs" />
+    <Compile Include="TargetMachine.cs" />
+    <Compile Include="Use.cs" />
     <Compile Include="Values\Argument.cs" />
     <Compile Include="Values\Instructions\AtomicCmpXchgInst.cs" />
     <Compile Include="Values\Instructions\AtomicRMWInst.cs" />
@@ -201,7 +222,7 @@
     <Compile Include="Values\Instructions\Unary\Casts\ZExtInst.cs" />
     <Compile Include="Values\Instructions\UnaryInstruction.cs" />
     <Compile Include="IRBuilder.cs" />
-    <Compile Include="LLVMContext.cs" />
+    <Compile Include="Context.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Values\Instructions\Terminator\ReturnInst.cs" />
     <Compile Include="Values\Instructions\Terminator\SwitchInst.cs" />
@@ -214,6 +235,5 @@
     <Compile Include="LLVMTypeRef.cs" />
     <Compile Include="LLVMValueRef.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

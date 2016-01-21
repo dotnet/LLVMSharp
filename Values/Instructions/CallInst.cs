@@ -2,9 +2,15 @@ namespace LLVMSharp
 {
     public class CallInst : Instruction
     {
-        internal CallInst(LLVMValueRef value)
-            : base(value)
+        internal CallInst(LLVMValueRef instance)
+            : base(instance)
         {
+        }
+
+        public bool TailCall
+        {
+            set { LLVM.SetTailCall(this.Unwrap(), new LLVMBool(value)); }
+            get { return LLVM.IsTailCall(this.Unwrap()); }
         }
     }
 }

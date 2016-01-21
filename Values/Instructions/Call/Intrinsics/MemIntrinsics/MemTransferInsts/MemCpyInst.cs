@@ -2,8 +2,8 @@
 {
     public sealed class MemCpyInst : MemTransferInst
     {
-        internal MemCpyInst(LLVMValueRef value)
-            : base(value)
+        internal MemCpyInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

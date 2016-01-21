@@ -2,8 +2,8 @@
 {
     public sealed class ConstantExpr : Constant
     {
-        internal ConstantExpr(LLVMValueRef value)
-            : base(value)
+        internal ConstantExpr(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

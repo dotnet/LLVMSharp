@@ -2,8 +2,8 @@ namespace LLVMSharp
 {
     public sealed class Shl : BinaryOperator
     {
-        internal Shl(LLVMValueRef value)
-            : base(value)
+        internal Shl(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

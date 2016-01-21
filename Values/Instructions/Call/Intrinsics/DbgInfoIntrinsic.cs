@@ -2,8 +2,8 @@
 {
     public class DbgInfoIntrinsic : IntrinsicInst
     {
-        internal DbgInfoIntrinsic(LLVMValueRef value)
-            : base(value)
+        internal DbgInfoIntrinsic(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

@@ -2,8 +2,8 @@
 {
     public sealed class DbgValueInst : DbgInfoIntrinsic
     {
-        internal DbgValueInst(LLVMValueRef value)
-            : base(value)
+        internal DbgValueInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

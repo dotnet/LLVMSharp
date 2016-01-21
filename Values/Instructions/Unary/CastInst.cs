@@ -2,8 +2,8 @@
 {
     public class CastInst : UnaryInstruction
     {
-        internal CastInst(LLVMValueRef value)
-            : base(value)
+        internal CastInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

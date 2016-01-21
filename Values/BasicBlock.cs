@@ -2,107 +2,86 @@
 {
     using System.Collections.Generic;
 
-    public sealed class BasicBlock : Value
+    public sealed class BasicBlock : Value, IWrapper<LLVMBasicBlockRef>
     {
-        public BasicBlock(Type type, string name, Function parent)
-            : base(LLVM.BasicBlockAsValue(LLVM.AppendBasicBlock(parent.ToValueRef(), name)))
+        public static BasicBlock Create(Context context, Function parent, string name)
         {
-            this.Type = type;
-            this.Name = name;
-            this.Parent = parent;
+            return LLVM.AppendBasicBlockInContext(context.Unwrap(), parent.Unwrap(), name).Wrap();
+        }
+        
+        public static BasicBlock Create(Function parent, string name)
+        {
+            return LLVM.AppendBasicBlock(parent.Unwrap(), name).Wrap();
+        }
+
+        LLVMBasicBlockRef IWrapper<LLVMBasicBlockRef>.ToHandleType()
+        {
+            return LLVM.ValueAsBasicBlock(this.Unwrap<LLVMValueRef>());
         }
 
         internal BasicBlock(LLVMBasicBlockRef blockRef)
             : base(LLVM.BasicBlockAsValue(blockRef))
         {
-            this.Parent = new Function(LLVM.GetBasicBlockParent(blockRef));
         }
 
-        internal BasicBlock(LLVMValueRef value)
-            : this(LLVM.ValueAsBasicBlock(value))
+        public Value Parent
         {
+            get { return LLVM.GetBasicBlockParent(this.Unwrap<LLVMBasicBlockRef>()).Wrap(); }
         }
-
-        public LinkedList<Instruction> Instructions { get; private set; }
-
-        public Function Parent { get; private set; }
 
         public Value BasicBlockTerminator
         {
-            get { return LLVM.GetBasicBlockTerminator(this.ToBasicBlockRef()).ToValue(); }
+            get { return LLVM.GetBasicBlockTerminator(this.Unwrap<LLVMBasicBlockRef>()).Wrap<Value>(); }
         }
 
-        public BasicBlock GetNextBasicBlock()
+        public BasicBlock NextBasicBlock
         {
-            return LLVM.GetNextBasicBlock(this.ToBasicBlockRef()).ToBasicBlock();
+            get { return LLVM.GetNextBasicBlock(this.Unwrap<LLVMBasicBlockRef>()).Wrap(); }
         }
 
-        public BasicBlock GetPreviousBasicBlock()
+        public BasicBlock PreviousBasicBlock
         {
-            return LLVM.GetPreviousBasicBlock(this.ToBasicBlockRef()).ToBasicBlock();
-        }
-
-        public BasicBlock InsertBasicBlock(string name)
-        {
-            return LLVM.InsertBasicBlock(this.ToBasicBlockRef(), name).ToBasicBlock();
+            get { return LLVM.GetPreviousBasicBlock(this.Unwrap<LLVMBasicBlockRef>()).Wrap(); }
         }
 
         public void DeleteBasicBlock()
         {
-            LLVM.DeleteBasicBlock(this.ToBasicBlockRef());
+            LLVM.DeleteBasicBlock(this.Unwrap<LLVMBasicBlockRef>());
         }
 
         public void RemoveBasicBlockFromParent()
         {
-            LLVM.RemoveBasicBlockFromParent(this.ToBasicBlockRef());
+            LLVM.RemoveBasicBlockFromParent(this.Unwrap<LLVMBasicBlockRef>());
         }
 
         public void MoveBasicBlockBefore(BasicBlock movePos)
         {
-            LLVM.MoveBasicBlockBefore(this.ToBasicBlockRef(), movePos.ToBasicBlockRef());
+            LLVM.MoveBasicBlockBefore(this.Unwrap<LLVMBasicBlockRef>(), movePos.Unwrap<LLVMBasicBlockRef>());
         }
 
         public void MoveBasicBlockAfter(BasicBlock movePos)
         {
-            LLVM.MoveBasicBlockAfter(this.ToBasicBlockRef(), movePos.ToBasicBlockRef());
+            LLVM.MoveBasicBlockAfter(this.Unwrap<LLVMBasicBlockRef>(), movePos.Unwrap<LLVMBasicBlockRef>());
         }
 
-        public Value GetFirstInstruction()
+        public Value FirstInstruction
         {
-            return LLVM.GetFirstInstruction(this.ToBasicBlockRef()).ToValue();
+            get { return LLVM.GetFirstInstruction(this.Unwrap<LLVMBasicBlockRef>()).Wrap(); }
         }
 
-        public Value GetLastInstruction()
+        public Value LastInstruction
         {
-            return LLVM.GetLastInstruction(this.ToBasicBlockRef()).ToValue();
+            get { return LLVM.GetLastInstruction(this.Unwrap<LLVMBasicBlockRef>()).Wrap(); }
         }
-        
-        public Module Module
+
+        public Value BasicBlockParent
         {
-            get { return this.Parent.Parent; }
+            get { return LLVM.GetBasicBlockParent(this.Unwrap<LLVMBasicBlockRef>()).Wrap(); }
         }
-        
-        public static BasicBlock Create(LLVMContext context, string name, Function parent, BasicBlock insertBefore = null)
+
+        public BasicBlock InsertBasicBlock(string name)
         {
-            var bb = new BasicBlock(Type.LabelType(context), name, parent);
-
-            if (parent != null)
-            {
-                if (insertBefore != null)
-                {
-                    LinkedListNode<BasicBlock> insertBeforeNode = parent.BasicBlocks.Find(insertBefore);
-                    if (insertBeforeNode != null)
-                    {
-                        parent.BasicBlocks.AddBefore(insertBeforeNode, bb);
-                    }
-                }
-                else
-                {
-                    parent.BasicBlocks.AddLast(bb);
-                }
-            }
-
-            return bb;
+            return LLVM.InsertBasicBlock(this.Unwrap<LLVMBasicBlockRef>(), name).Wrap();
         }
     }
 }

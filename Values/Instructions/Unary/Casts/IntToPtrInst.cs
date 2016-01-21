@@ -2,8 +2,8 @@ namespace LLVMSharp
 {
     public sealed class IntToPtrInst : CastInst
     {
-        internal IntToPtrInst(LLVMValueRef value)
-            : base(value)
+        internal IntToPtrInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

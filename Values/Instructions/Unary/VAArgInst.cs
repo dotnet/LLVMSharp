@@ -2,8 +2,8 @@
 {
     public sealed class VAArgInst : UnaryInstruction
     {
-        internal VAArgInst(LLVMValueRef value)
-            : base(value)
+        internal VAArgInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

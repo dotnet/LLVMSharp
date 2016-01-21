@@ -2,8 +2,8 @@ namespace LLVMSharp
 {
     public sealed class UnreachableInst : Instruction
     {
-        internal UnreachableInst(LLVMValueRef value)
-            : base(value)
+        internal UnreachableInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

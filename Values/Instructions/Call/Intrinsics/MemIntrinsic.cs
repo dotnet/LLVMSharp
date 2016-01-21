@@ -2,8 +2,8 @@
 {
     public class MemIntrinsic : IntrinsicInst
     {
-        internal MemIntrinsic(LLVMValueRef value)
-            : base(value)
+        internal MemIntrinsic(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

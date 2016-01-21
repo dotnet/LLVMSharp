@@ -2,8 +2,8 @@ namespace LLVMSharp
 {
     public sealed class InsertElementInst : Instruction
     {
-        internal InsertElementInst(LLVMValueRef value)
-            : base(value)
+        internal InsertElementInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

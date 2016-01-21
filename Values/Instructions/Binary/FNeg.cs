@@ -2,8 +2,8 @@
 {
     public sealed class FNeg : BinaryOperator
     {
-        internal FNeg(LLVMValueRef value)
-            : base(value)
+        internal FNeg(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

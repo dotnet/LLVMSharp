@@ -2,8 +2,8 @@
 {
     public sealed class BlockAddress : Constant
     {
-        internal BlockAddress(LLVMValueRef value)
-            : base(value)
+        internal BlockAddress(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

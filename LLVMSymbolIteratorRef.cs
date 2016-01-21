@@ -2,11 +2,16 @@
 {
     using System;
 
-    public partial struct LLVMSymbolIteratorRef : IEquatable<LLVMSymbolIteratorRef>
+    public partial struct LLVMSymbolIteratorRef : IEquatable<LLVMSymbolIteratorRef>, IHandle<SymbolIterator>
     {
         public bool Equals(LLVMSymbolIteratorRef other)
         {
             return this.Pointer == other.Pointer;
+        }
+
+        SymbolIterator IHandle<SymbolIterator>.ToWrapperType()
+        {
+            return new SymbolIterator(this);
         }
 
         public override bool Equals(object obj)

@@ -2,11 +2,16 @@
 {
     using System;
 
-    public partial struct LLVMGenericValueRef : IEquatable<LLVMGenericValueRef>
+    public partial struct LLVMGenericValueRef : IEquatable<LLVMGenericValueRef>, IHandle<GenericValue>
     {
         public bool Equals(LLVMGenericValueRef other)
         {
             return this.Equals(other);
+        }
+
+        GenericValue IHandle<GenericValue>.ToWrapperType()
+        {
+            return new GenericValue(this);
         }
 
         public override bool Equals(object obj)

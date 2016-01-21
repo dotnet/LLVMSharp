@@ -2,8 +2,8 @@
 {
     public sealed class ConstantAggregateZero : Constant
     {
-        internal ConstantAggregateZero(LLVMValueRef value)
-            : base(value)
+        internal ConstantAggregateZero(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

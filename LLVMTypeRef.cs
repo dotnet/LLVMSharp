@@ -2,8 +2,13 @@
 {
     using System;
 
-    partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
+    partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>, IHandle<Type>
     {
+        Type IHandle<Type>.ToWrapperType()
+        {
+            return Type.Create(this);
+        }
+
         public static LLVMTypeRef FunctionType(LLVMTypeRef returnType, LLVMTypeRef[] paramTypes, LLVMBool isVarArg)
         {
             return LLVM.FunctionType(returnType, paramTypes, isVarArg);
@@ -403,7 +408,7 @@
         {
             return this.Pointer == other.Pointer;
         }
-
+        
         public override bool Equals(object obj)
         {
             if (obj is LLVMTypeRef)

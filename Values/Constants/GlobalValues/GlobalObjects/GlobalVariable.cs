@@ -2,8 +2,8 @@
 {
     public sealed class GlobalVariable : GlobalObject
     {
-        internal GlobalVariable(LLVMValueRef value)
-            : base(value)
+        internal GlobalVariable(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

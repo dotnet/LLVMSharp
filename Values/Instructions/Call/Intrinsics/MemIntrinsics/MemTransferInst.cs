@@ -2,8 +2,8 @@
 {
     public class MemTransferInst : MemIntrinsic
     {
-        internal MemTransferInst(LLVMValueRef value)
-            : base(value)
+        internal MemTransferInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

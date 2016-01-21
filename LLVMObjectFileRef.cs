@@ -2,11 +2,16 @@
 {
     using System;
 
-    public partial struct LLVMObjectFileRef : IEquatable<LLVMObjectFileRef>
+    public partial struct LLVMObjectFileRef : IEquatable<LLVMObjectFileRef>, IHandle<ObjectFile>
     {
         public bool Equals(LLVMObjectFileRef other)
         {
             return this.Pointer == other.Pointer;
+        }
+
+        ObjectFile IHandle<ObjectFile>.ToWrapperType()
+        {
+            return new ObjectFile(this);
         }
 
         public override bool Equals(object obj)

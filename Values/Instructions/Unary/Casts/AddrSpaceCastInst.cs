@@ -2,8 +2,8 @@ namespace LLVMSharp
 {
     public sealed class AddrSpaceCastInst : CastInst
     {
-        internal AddrSpaceCastInst(LLVMValueRef value)
-            : base(value)
+        internal AddrSpaceCastInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

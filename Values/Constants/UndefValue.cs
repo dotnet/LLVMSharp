@@ -2,8 +2,8 @@
 {
     public sealed class UndefValue : Constant
     {
-        internal UndefValue(LLVMValueRef value)
-            : base(value)
+        internal UndefValue(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

@@ -2,8 +2,8 @@
 {
     public sealed class GlobalAlias : GlobalValue
     {
-        internal GlobalAlias(LLVMValueRef value)
-            : base(value)
+        internal GlobalAlias(LLVMValueRef instance)
+            : base(instance)
         {   
         }
     }

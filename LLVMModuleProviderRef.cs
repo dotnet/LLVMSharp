@@ -2,8 +2,13 @@
 {
     using System;
 
-    public partial struct LLVMModuleProviderRef : IEquatable<LLVMModuleProviderRef>
+    public partial struct LLVMModuleProviderRef : IEquatable<LLVMModuleProviderRef>, IHandle<ModuleProvider>
     {
+        ModuleProvider IHandle<ModuleProvider>.ToWrapperType()
+        {            
+            return new ModuleProvider(this);
+        }
+
         public bool Equals(LLVMModuleProviderRef other)
         {
             return this.Pointer == other.Pointer;

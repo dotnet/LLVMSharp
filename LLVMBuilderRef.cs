@@ -2,11 +2,16 @@
 {
     using System;
 
-    public partial struct LLVMBuilderRef : IEquatable<LLVMBuilderRef>
+    public partial struct LLVMBuilderRef : IEquatable<LLVMBuilderRef>, IHandle<IRBuilder>
     {
         public bool Equals(LLVMBuilderRef other)
         {
             return this.Pointer == other.Pointer;
+        }
+
+        IRBuilder IHandle<IRBuilder>.ToWrapperType()
+        {
+            return new IRBuilder(this);
         }
 
         public override bool Equals(object obj)
@@ -30,16 +35,12 @@
         {
             return !(op1 == op2);
         }
-
-        public static implicit operator LLVMBuilderRef(IRBuilder builder)
-        {
-            return builder.instance;
-        }
-
-
+        
         public override int GetHashCode()
         {
             return this.Pointer.GetHashCode();
         }
+
+
     }
 }

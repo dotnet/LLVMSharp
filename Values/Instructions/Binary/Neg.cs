@@ -2,8 +2,8 @@
 {
     public sealed class Neg : BinaryOperator
     {
-        internal Neg(LLVMValueRef value)
-            : base(value)
+        internal Neg(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

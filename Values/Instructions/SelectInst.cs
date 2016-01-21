@@ -2,8 +2,8 @@ namespace LLVMSharp
 {
     public sealed class SelectInst : Instruction
     {
-        internal SelectInst(LLVMValueRef value)
-            : base(value)
+        internal SelectInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }
