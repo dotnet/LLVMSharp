@@ -2,8 +2,8 @@
 {
     public sealed class ICmpInst : CmpInst
     {
-        internal ICmpInst(LLVMValueRef value)
-            : base(value)
+        internal ICmpInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

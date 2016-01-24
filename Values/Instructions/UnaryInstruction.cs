@@ -2,8 +2,8 @@
 {
     public class UnaryInstruction : Instruction
     {
-        internal UnaryInstruction(LLVMValueRef value)
-            : base(value)
+        internal UnaryInstruction(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

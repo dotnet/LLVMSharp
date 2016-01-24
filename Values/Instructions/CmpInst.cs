@@ -2,8 +2,8 @@
 {
     public class CmpInst : Instruction
     {
-        internal CmpInst(LLVMValueRef value)
-            : base(value)
+        internal CmpInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

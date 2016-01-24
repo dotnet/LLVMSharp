@@ -2,8 +2,8 @@
 {
     public sealed class ReturnInst : TerminatorInst
     {
-        internal ReturnInst(LLVMValueRef value)
-            : base(value)
+        internal ReturnInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

@@ -2,8 +2,8 @@
 {
     public sealed class ConstantStruct : Constant
     {
-        internal ConstantStruct(LLVMValueRef value)
-            : base(value)
+        internal ConstantStruct(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

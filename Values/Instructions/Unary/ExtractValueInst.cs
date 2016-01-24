@@ -2,8 +2,8 @@
 {
     public sealed class ExtractValueInst : UnaryInstruction
     {
-        internal ExtractValueInst(LLVMValueRef value)
-            : base(value)
+        internal ExtractValueInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

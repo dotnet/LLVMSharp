@@ -2,8 +2,13 @@
 {
     using System;
 
-    partial struct LLVMContextRef : IEquatable<LLVMContextRef>
+    partial struct LLVMContextRef : IEquatable<LLVMContextRef>, IHandle<Context>
     {
+        Context IHandle<Context>.ToWrapperType()
+        {
+            return new Context(this);
+        }
+
         public void ContextDispose()
         {
             LLVM.ContextDispose(this);
@@ -168,7 +173,7 @@
         {
             return this.Pointer == other.Pointer;
         }
-
+        
         public override bool Equals(object obj)
         {
             if (obj is LLVMContextRef) 
@@ -195,5 +200,6 @@
         {
             return this.Pointer.GetHashCode();
         }
+
     }
 }

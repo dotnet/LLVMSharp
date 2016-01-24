@@ -2,8 +2,8 @@
 {
     public sealed class ConstantVector : Constant
     {
-        internal ConstantVector(LLVMValueRef value)
-            : base(value)
+        internal ConstantVector(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

@@ -2,8 +2,8 @@ namespace LLVMSharp
 {
     public sealed class FDiv : BinaryOperator
     {
-        internal FDiv(LLVMValueRef value)
-            : base(value)
+        internal FDiv(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

@@ -2,11 +2,16 @@
 {
     using System;
 
-    public partial struct LLVMRelocationIteratorRef : IEquatable<LLVMRelocationIteratorRef>
+    public partial struct LLVMRelocationIteratorRef : IEquatable<LLVMRelocationIteratorRef>, IHandle<RelocationIterator>
     {
         public bool Equals(LLVMRelocationIteratorRef other)
         {
             return this.Pointer == other.Pointer;
+        }
+
+        RelocationIterator IHandle<RelocationIterator>.ToWrapperType()
+        {
+            return new RelocationIterator(this);
         }
 
         public override bool Equals(object obj)

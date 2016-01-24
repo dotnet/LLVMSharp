@@ -14,22 +14,12 @@
 
     internal static class Common
     {
-        public static Module CreateModule()
-        {
-            return CreateModule("module");
-        }
-
-        public static Module CreateModule(string module)
-        {
-            return new Module(module);
-        }
-
         public static Function DefineFunction(this Module module, Type returnType, string name, Type[] arguments, Action<Function, IRBuilder> generator)
         {
             var signature = new FunctionType(returnType, arguments);
             var function = module.AddFunction("add", signature);
-            var basicBlock = new BasicBlock(null, string.Empty, function);
-            using (var builder = new IRBuilder())
+            var basicBlock = function.AppendBasicBlock(string.Empty);
+            using (var builder = IRBuilder.Create())
             {
                 builder.PositionBuilderAtEnd(basicBlock);
                 generator.Invoke(function, builder);
@@ -59,16 +49,7 @@
                 module.SetTarget(defaultTarget + "-elf");
             }
 
-            ExecutionEngine executionEngine;
-            LLVMMCJITCompilerOptions options;
-            string compilerErrorMessage;
-            module.CreateMCJITCompilerForModule(out executionEngine, out options, out compilerErrorMessage);
-            if (!string.IsNullOrEmpty(compilerErrorMessage))
-            {
-                Assert.Fail(compilerErrorMessage);
-            }
-
-            return executionEngine;
+            return module.CreateMCJITCompilerForModule();
         }
 
         public static TDelegate GetDelegate<TDelegate>(this ExecutionEngine executionEngine, Function function)

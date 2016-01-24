@@ -2,8 +2,8 @@
 {
     public sealed class Not : BinaryOperator
     {
-        internal Not(LLVMValueRef value)
-            : base(value)
+        internal Not(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

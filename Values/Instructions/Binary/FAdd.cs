@@ -2,8 +2,8 @@ namespace LLVMSharp
 {
     public sealed class FAdd : BinaryOperator
     {
-        internal FAdd(LLVMValueRef value)
-            : base(value)
+        internal FAdd(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

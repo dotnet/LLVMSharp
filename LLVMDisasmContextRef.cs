@@ -2,11 +2,16 @@
 {
     using System;
 
-    public partial struct LLVMDisasmContextRef : IEquatable<LLVMDisasmContextRef>
+    public partial struct LLVMDisasmContextRef : IEquatable<LLVMDisasmContextRef>, IHandle<DisasmContext>
     {
         public bool Equals(LLVMDisasmContextRef other)
         {
             return this.Pointer == other.Pointer;
+        }
+
+        DisasmContext IHandle<DisasmContext>.ToWrapperType()
+        {
+            return new DisasmContext(this);
         }
 
         public override bool Equals(object obj)

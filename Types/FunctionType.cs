@@ -6,42 +6,29 @@
     {
         private readonly Type[] _params;
 
-        /// <summary>
-        /// get
-        /// </summary>
-        /// <param name="result">Type *</param>
-        /// <param name="isVarArg">bool</param>
-        /// <returns>Type *</returns>
         public static FunctionType Get(Type result, bool isVarArg)
         {
             return Get(result, new Type[1], isVarArg);
         }
 
-        /// <summary>
-        /// get
-        /// </summary>
-        /// <param name="result">Type *</param>
-        /// <param name="params">ArrayRef[Type *]</param>
-        /// <param name="isVarArg">bool</param>
-        /// <returns>Type *</returns>
         public static FunctionType Get(Type result, Type[] @params, bool isVarArg)
         {
-            uint count = (uint) @params.Length;
+            var count = (uint) @params.Length;
             var args = new LLVMTypeRef[Math.Max(count, 1)];
-            for (int i = 0; i < count; ++i)
+            for (var i = 0; i < count; ++i)
             {
-                args[i] = @params[i].TypeRef;
+                args[i] = @params[i].Unwrap();
             }
 
             return
-                new FunctionType(LLVM.FunctionType(result.TypeRef, out args[0], (uint) args.Length,
+                new FunctionType(LLVM.FunctionType(result.Unwrap(), out args[0], (uint) args.Length,
                     isVarArg ? new LLVMBool(1) : new LLVMBool(0)));
         }
 
         internal FunctionType(LLVMTypeRef typeRef) 
             : base(typeRef)
         {
-            this._params = new Type[LLVM.CountParamTypes(this.Instance)];
+            this._params = new Type[LLVM.CountParamTypes(this.Unwrap())];
         }
 
         public FunctionType(Type returnType, Type[] parameterTypes)
@@ -50,39 +37,33 @@
         }
 
         public FunctionType(Type returnType, Type[] parameterTypes, bool isVarArgs)
-            : base(LLVM.FunctionType(returnType.ToTypeRef(), parameterTypes.ToTypeRefs(), isVarArgs))
+            : base(LLVM.FunctionType(returnType.Unwrap(), parameterTypes.Unwrap(), isVarArgs))
         {
         }
-
-        /// <summary>
-        /// getNumParams
-        /// </summary>
-        /// <returns>uint</returns>
+        
         public uint NumParams
         {
-            get { return (uint)this._params.Length; }
+            get { return (uint) this._params.Length; }
         }
 
-        /// <summary>
-        /// isVarArg
-        /// </summary>
-        /// <returns>bool</returns>
-        public bool IsVarArg { get { return LLVM.IsFunctionVarArg(this.Instance).Value == 1; } }
+        public bool IsVarArg
+        {
+            get { return LLVM.IsFunctionVarArg(this.Unwrap()).Value == 1; }
+        }
 
-        /// <summary>
-        /// getReturnType
-        /// </summary>
-        /// <returns>Type *</returns>
-        public Type ReturnType { get { return new Type(LLVM.GetReturnType(this.Instance)); } }
+        public Type ReturnType
+        {
+            get { return Type.Create(LLVM.GetReturnType(this.Unwrap())); }
+        }
 
-        /// <summary>
-        /// getParamType
-        /// </summary>
-        /// <param name="i">unsigned</param>
-        /// <returns>Type *</returns>
         public Type GetParamType(uint i)
         {
             return this._params[i];
+        }
+
+        public Type[] GetParamTypes()
+        {
+            return LLVM.GetParamTypes(this.Unwrap()).Wrap<LLVMTypeRef, Type>();
         }
     }
 }

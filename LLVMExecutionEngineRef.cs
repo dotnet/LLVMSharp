@@ -2,8 +2,13 @@
 {
     using System;
 
-    public partial struct LLVMExecutionEngineRef : IEquatable<LLVMExecutionEngineRef>
+    public partial struct LLVMExecutionEngineRef : IEquatable<LLVMExecutionEngineRef>, IHandle<ExecutionEngine>
     {
+        ExecutionEngine IHandle<ExecutionEngine>.ToWrapperType()
+        {
+            return new ExecutionEngine(this);
+        }
+        
         public bool Equals(LLVMExecutionEngineRef other)
         {
             return this.Pointer == other.Pointer;

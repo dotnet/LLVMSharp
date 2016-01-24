@@ -2,11 +2,16 @@
 {
     using System;
 
-    public partial struct LLVMTargetMachineRef : IEquatable<LLVMTargetMachineRef>
+    public partial struct LLVMTargetMachineRef : IEquatable<LLVMTargetMachineRef>, IHandle<TargetMachine>
     {
         public bool Equals(LLVMTargetMachineRef other)
         {
             return this.Pointer == other.Pointer;
+        }
+
+        TargetMachine IHandle<TargetMachine>.ToWrapperType()
+        {
+            return new TargetMachine(this);
         }
 
         public override bool Equals(object obj)

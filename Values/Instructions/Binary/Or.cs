@@ -2,8 +2,8 @@ namespace LLVMSharp
 {
     public sealed class Or : BinaryOperator
     {
-        internal Or(LLVMValueRef value)
-            : base(value)
+        internal Or(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

@@ -2,8 +2,8 @@ namespace LLVMSharp
 {
     public sealed class FPExtInst : CastInst
     {
-        internal FPExtInst(LLVMValueRef value)
-            : base(value)
+        internal FPExtInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

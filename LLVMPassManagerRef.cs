@@ -2,8 +2,13 @@
 {
     using System;
 
-    public partial struct LLVMPassManagerRef : IEquatable<LLVMPassManagerRef>
+    public partial struct LLVMPassManagerRef : IEquatable<LLVMPassManagerRef>, IHandle<PassManager>
     {
+        PassManager IHandle<PassManager>.ToWrapperType()
+        {
+            return new PassManager(this);
+        }
+
         public bool Equals(LLVMPassManagerRef other)
         {
             return this.Pointer == other.Pointer;

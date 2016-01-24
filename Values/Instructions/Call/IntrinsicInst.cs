@@ -2,8 +2,8 @@
 {
     public class IntrinsicInst : CallInst
     {
-        internal IntrinsicInst(LLVMValueRef value)
-            : base(value)
+        internal IntrinsicInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

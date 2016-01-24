@@ -2,8 +2,8 @@
 {
     public class GlobalObject : GlobalValue
     {
-        internal GlobalObject(LLVMValueRef value)
-            : base(value)
+        internal GlobalObject(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

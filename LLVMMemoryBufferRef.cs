@@ -2,14 +2,18 @@
 {
     using System;
 
-    public partial struct LLVMMemoryBufferRef : IEquatable<LLVMMemoryBufferRef>
+    public partial struct LLVMMemoryBufferRef : IEquatable<LLVMMemoryBufferRef>, IHandle<MemoryBuffer>
     {
+        MemoryBuffer IHandle<MemoryBuffer>.ToWrapperType()
+        {
+            return new MemoryBuffer(this);
+        }
 
         public bool Equals(LLVMMemoryBufferRef other)
         {
             return this.Pointer == other.Pointer;
         }
-
+        
         public override bool Equals(object obj)
         {
             if (obj is LLVMMemoryBufferRef)

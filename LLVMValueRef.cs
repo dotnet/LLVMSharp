@@ -3,8 +3,13 @@
     using System;
     using System.Runtime.InteropServices;
 
-    partial struct LLVMValueRef : IEquatable<LLVMValueRef>
+    partial struct LLVMValueRef : IEquatable<LLVMValueRef>, IHandle<Value>
     {
+        Value IHandle<Value>.ToWrapperType()
+        {
+            return Value.Create(this);
+        }
+
         public override string ToString()
         {
             IntPtr ptr = LLVM.PrintValueToString(this);

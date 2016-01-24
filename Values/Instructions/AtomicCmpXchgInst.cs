@@ -2,8 +2,8 @@
 {
     public sealed class AtomicCmpXchgInst : Instruction
     {
-        internal AtomicCmpXchgInst(LLVMValueRef value)
-            : base(value)
+        internal AtomicCmpXchgInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

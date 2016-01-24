@@ -2,8 +2,13 @@
 {
     using System;
 
-    public partial struct LLVMDiagnosticInfoRef : IEquatable<LLVMDiagnosticInfoRef>
+    public partial struct LLVMDiagnosticInfoRef : IEquatable<LLVMDiagnosticInfoRef>, IHandle<DiagnosticInfo>
     {
+        DiagnosticInfo IHandle<DiagnosticInfo>.ToWrapperType()
+        {
+            return new DiagnosticInfo(this);
+        }
+
         public bool Equals(LLVMDiagnosticInfoRef other)
         {
             return this.Pointer == other.Pointer;

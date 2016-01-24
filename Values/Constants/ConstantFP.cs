@@ -2,8 +2,8 @@
 {
     public sealed class ConstantFP : Constant
     {
-        internal ConstantFP(LLVMValueRef value)
-            : base(value)
+        internal ConstantFP(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

@@ -2,8 +2,8 @@
 {
     public sealed class ZExtInst : CastInst
     {
-        internal ZExtInst(LLVMValueRef value)
-            : base(value)
+        internal ZExtInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

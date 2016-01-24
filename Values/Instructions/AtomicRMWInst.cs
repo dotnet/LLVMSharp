@@ -2,8 +2,8 @@
 {
     public class AtomicRMWInst : Instruction
     {
-        internal AtomicRMWInst(LLVMValueRef value)
-            : base(value)
+        internal AtomicRMWInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

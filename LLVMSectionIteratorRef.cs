@@ -2,11 +2,16 @@
 {
     using System;
 
-    public partial struct LLVMSectionIteratorRef : IEquatable<LLVMSectionIteratorRef>
+    public partial struct LLVMSectionIteratorRef : IEquatable<LLVMSectionIteratorRef>, IHandle<SectionIterator>
     {
         public bool Equals(LLVMSectionIteratorRef other)
         {
             return this.Pointer == other.Pointer;
+        }
+
+        SectionIterator IHandle<SectionIterator>.ToWrapperType()
+        {
+            return new SectionIterator(this);
         }
 
         public override bool Equals(object obj)

@@ -2,8 +2,8 @@ namespace LLVMSharp
 {
     public sealed class InvokeInst : Instruction
     {
-        internal InvokeInst(LLVMValueRef value)
-            : base(value)
+        internal InvokeInst(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

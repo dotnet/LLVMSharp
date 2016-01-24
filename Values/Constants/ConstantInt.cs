@@ -2,8 +2,8 @@
 {
     public sealed class ConstantInt : Constant
     {
-        internal ConstantInt(LLVMValueRef value)
-            : base(value)
+        internal ConstantInt(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

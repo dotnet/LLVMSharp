@@ -2,11 +2,16 @@
 {
     using System;
 
-    public partial struct LLVMUseRef : IEquatable<LLVMUseRef>
+    public partial struct LLVMUseRef : IEquatable<LLVMUseRef>, IHandle<Use>
     {
         public bool Equals(LLVMUseRef other)
         {
             return this.Pointer == other.Pointer;
+        }
+
+        Use IHandle<Use>.ToWrapperType()
+        {
+            return new Use(this);
         }
 
         public override bool Equals(object obj)

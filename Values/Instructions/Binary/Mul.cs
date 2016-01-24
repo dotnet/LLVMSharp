@@ -2,8 +2,8 @@ namespace LLVMSharp
 {
     public sealed class Mul : BinaryOperator
     {
-        internal Mul(LLVMValueRef value)
-            : base(value)
+        internal Mul(LLVMValueRef instance)
+            : base(instance)
         {
         }
     }

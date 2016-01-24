@@ -2,88 +2,157 @@
 {
     using System;
 
-    public class Type : IEquatable<Type>
+    public class Type : IEquatable<Type>, IWrapper<LLVMTypeRef>
     {
-        public static readonly Type Int1 = new Type(LLVM.Int1Type());
-        public static readonly Type Int8 = new Type(LLVM.Int8Type());
-        public static readonly Type Int16 = new Type(LLVM.Int16Type());
-        public static readonly Type Int32 = new Type(LLVM.Int32Type());
-        public static readonly Type Int64 = new Type(LLVM.Int64Type());
+        internal static Type Create(LLVMTypeRef t)
+        {
+            if (t.Pointer == IntPtr.Zero)
+            {
+                return null;
+            }
 
-        public static readonly Type Half = new Type(LLVM.HalfType());
-        public static readonly Type Float = new Type(LLVM.FloatType());
-        public static readonly Type Double = new Type(LLVM.DoubleType());
-        public static readonly Type X86FP80 = new Type(LLVM.X86FP80Type());
-        public static readonly Type FP128 = new Type(LLVM.FP128Type());
-        public static readonly Type PPCFP128 = new Type(LLVM.PPCFP128Type());
+            return new Type(t);
+        }
+
+        public static Type Int1
+        {
+            get { return Context.Global.Int1Type; }
+        }
+
+        public static Type Int8
+        {
+            get { return Context.Global.Int8Type; }
+        }
+
+        public static Type Int16
+        {
+            get { return Context.Global.Int16Type; }
+        }
+
+        public static Type Int32
+        {
+            get { return Context.Global.Int32Type; }
+        }
+
+        public static Type Int64
+        {
+            get { return Context.Global.Int64Type; }
+        }
 
         public static Type Int(int bitLength)
         {
-            return LLVM.IntType((uint) bitLength);
+            return LLVM.IntType((uint) bitLength).Wrap();
         }
 
-        protected readonly LLVMTypeRef Instance;
-        private readonly LLVMTypeKind kind;
-
-        public Type(LLVMTypeRef typeRef)
+        public static Type Half
         {
-            this.Instance = typeRef;
-            this.kind = LLVM.GetTypeKind(typeRef);
+            get { return Context.Global.HalfType; }
         }
 
-        internal LLVMTypeRef TypeRef
+        public static Type Float
         {
-            get { return this.Instance; }
+            get { return Context.Global.FloatType; }
         }
 
-        public void Print()
+        public static Type Double
         {
-            LLVM.PrintTypeToString(this.ToTypeRef());
+            get { return Context.Global.DoubleType; }
+        }
+
+        public static Type X86FP80
+        {
+            get { return Context.Global.X86FP80Type; }
+        }
+
+        public static Type FP128
+        {
+            get { return Context.Global.FP128Type; }
+        }
+
+        public static Type PPCFP128
+        {
+            get { return Context.Global.FP128Type; }
+        }
+
+        LLVMTypeRef IWrapper<LLVMTypeRef>.ToHandleType()
+        {
+            return this._instance;
+        }
+
+        void IWrapper<LLVMTypeRef>.MakeHandleOwner()
+        {
+        }
+
+        private readonly LLVMTypeRef _instance;
+
+        internal Type(LLVMTypeRef typeRef)
+        {
+            this._instance = typeRef;
+        }
+
+        public uint AddressSpace
+        {
+            get { return LLVM.GetPointerAddressSpace(this.Unwrap()); }
+        }
+
+        public Context Context
+        {
+            get { return LLVM.GetTypeContext(this.Unwrap()).Wrap(); }
+        }
+
+        public Type GetPointerType(uint addressSpace)
+        {
+            return LLVM.PointerType(this.Unwrap(), addressSpace).Wrap();
+        }
+
+        public string Print()
+        {
+            return LLVM.PrintTypeToString(this.Unwrap()).IntPtrToString();
         }
 
         public void Dump()
         {
-            LLVM.DumpType(this.ToTypeRef());
+            LLVM.DumpType(this.Unwrap());
         }
 
-        public LLVMContextRef Context
+        public Context TypeContext
         {
-            get { return LLVM.GetTypeContext(this.ToTypeRef()); }
+            get { return LLVM.GetTypeContext(this.Unwrap()).Wrap(); }
         }
 
         public bool IsVoidTy
         {
-            get { return this.kind == LLVMTypeKind.LLVMVoidTypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMVoidTypeKind; }
         }
 
         public bool IsHalfTy
         {
-            get { return this.kind == LLVMTypeKind.LLVMHalfTypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMHalfTypeKind; }
         }
 
         public bool IsFloatTy
         {
-            get { return this.kind == LLVMTypeKind.LLVMFloatTypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMFloatTypeKind; }
         }
 
         public bool IsDoubleTy
         {
-            get { return this.kind == LLVMTypeKind.LLVMDoubleTypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMDoubleTypeKind; }
         }
 
         public bool IsX86_FP80Ty
         {
-            get { return this.kind == LLVMTypeKind.LLVMX86_FP80TypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMX86_FP80TypeKind; }
         }
 
         public bool IsFP128Ty
         {
-            get { return this.kind == LLVMTypeKind.LLVMFP128TypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMFP128TypeKind; }
         }
 
         public bool IsPPC_FP128Ty
         {
-            get { return this.kind == LLVMTypeKind.LLVMPPC_FP128TypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMPPC_FP128TypeKind; }
         }
 
         public bool IsFloatingPointTy
@@ -97,102 +166,97 @@
 
         public bool IsX86_MMXTy
         {
-            get { return this.kind == LLVMTypeKind.LLVMX86_MMXTypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMX86_MMXTypeKind; }
         }
 
         public bool IsLabelTy
         {
-            get { return this.kind == LLVMTypeKind.LLVMLabelTypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMLabelTypeKind; }
         }
 
         public bool IsMetadataTy
         {
-            get { return this.kind == LLVMTypeKind.LLVMMetadataTypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMMetadataTypeKind; }
         }
 
         public bool IsIntegerTy
         {
-            get { return this.kind == LLVMTypeKind.LLVMIntegerTypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMIntegerTypeKind; }
         }
 
         public bool IsIntegerBitwidh(uint bitwidth)
         {
-            return this.kind == LLVMTypeKind.LLVMIntegerTypeKind && LLVM.GetIntTypeWidth(this.Instance) == bitwidth;
+            return this.TypeKind == LLVMTypeKind.LLVMIntegerTypeKind && LLVM.GetIntTypeWidth(this._instance) == bitwidth;
         }
         
         public bool IsFunctionTy
         {
-            get { return this.kind == LLVMTypeKind.LLVMFunctionTypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMFunctionTypeKind; }
         }
 
         public bool IsStructTy
         {
-            get { return this.kind == LLVMTypeKind.LLVMStructTypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMStructTypeKind; }
         }
 
         public bool IsArrayTy
         {
-            get { return this.kind == LLVMTypeKind.LLVMArrayTypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMArrayTypeKind; }
         }
 
         public bool IsPointerTy
         {
-            get { return this.kind == LLVMTypeKind.LLVMPointerTypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMPointerTypeKind; }
         }
 
         public bool IsVectorTy
         {
-            get { return this.kind == LLVMTypeKind.LLVMVectorTypeKind; }
+            get { return this.TypeKind == LLVMTypeKind.LLVMVectorTypeKind; }
         }
 
-        public uint IntegerBitWidth
+        public uint IntBitWidth
         {
-            get { return LLVM.GetIntTypeWidth(this.ToTypeRef()); }
+            get { return LLVM.GetIntTypeWidth(this.Unwrap()); }
         }
 
         public Type GetFunctionParamType(uint i)
         {
-            return new Type(LLVM.GetParamTypes(this.ToTypeRef())[i]);
+            return Type.Create(LLVM.GetParamTypes(this.Unwrap())[i]);
         }
 
         public uint FunctionNumParams
         {
-            get { return LLVM.CountParamTypes(this.ToTypeRef()); }
+            get { return LLVM.CountParamTypes(this.Unwrap()); }
         }
 
         public bool IsFunctionVarArg
         {
-            get { return LLVM.IsFunctionVarArg(this.ToTypeRef()); }
+            get { return LLVM.IsFunctionVarArg(this.Unwrap()); }
         }
 
         public string StructName
         {
-            get { return LLVM.GetStructName(this.ToTypeRef()); }
+            get { return LLVM.GetStructName(this.Unwrap()); }
         }
 
         public uint StructNumElements
         {
-            get { return LLVM.CountStructElementTypes(this.ToTypeRef()); }
+            get { return LLVM.CountStructElementTypes(this.Unwrap()); }
         }
 
         public Type GetStructElementType(uint i)
         {
-            return new Type(LLVM.GetStructElementTypes(this.ToTypeRef())[i]);
+            return Type.Create(LLVM.GetStructElementTypes(this.Unwrap())[i]);
         }
         
-        public static implicit operator Type(LLVMTypeRef typeRef)
-        {
-            return new Type(typeRef);
-        }
-
         public static LLVMTypeRef LabelType()
         {
             return LLVM.LabelType();
         }
 
-        public static Type LabelType(LLVMContext c)
+        public static Type LabelType(Context c)
         {
-            return new Type(LLVM.LabelTypeInContext(c.InternalValue));
+            return Type.Create(LLVM.LabelTypeInContext(c.Unwrap()));
         }
 
         public bool Equals(Type other)
@@ -203,7 +267,7 @@
             }
             else
             {
-                return this.Instance == other.Instance;
+                return this._instance == other._instance;
             }
         }
 
@@ -231,13 +295,147 @@
 
         public override int GetHashCode()
         {
-            return this.Instance.GetHashCode();
+            return this._instance.GetHashCode();
         }
 
-        public Value ConstInt(ulong value, bool signExtend)
+        public LLVMTypeKind TypeKind
         {
-            return LLVM.ConstInt(this.ToTypeRef(), value, signExtend).ToValue();
+            get { return LLVM.GetTypeKind(this.Unwrap()); }
         }
 
+        public bool IsSized
+        {
+            get { return LLVM.TypeIsSized(this.Unwrap()); }
+        }
+
+        public void StructSetBody(Type structTy, Type[] elementTypes, bool packed)
+        {
+            LLVM.StructSetBody(structTy.Unwrap(), elementTypes.Unwrap(), packed);
+        }
+
+        public Type[] StructElementTypes
+        {
+            get { return LLVM.GetStructElementTypes(this.Unwrap()).Wrap<LLVMTypeRef, Type>(); }
+        }
+
+        public bool IsPackedStruct
+        {
+            get { return LLVM.IsPackedStruct(this.Unwrap()); }
+        }
+
+        public bool IsOpaqueStruct
+        {
+            get { return LLVM.IsOpaqueStruct(this.Unwrap()); }
+        }
+
+        public Type ElementType
+        {
+            get { return LLVM.GetElementType(this.Unwrap()).Wrap(); }
+        }
+
+        public Type ArrayType(uint elementCount)
+        {
+            return LLVM.ArrayType(this.Unwrap(), elementCount).Wrap();
+        }
+
+        public uint ArrayLength
+        {
+            get { return LLVM.GetArrayLength(this.Unwrap()); }
+        }
+
+        public Type PointerType(uint addressSpace)
+        {
+            return LLVM.PointerType(this.Unwrap(), addressSpace).Wrap();
+        }
+
+        public uint PointerAddressSpace
+        {
+            get { return LLVM.GetPointerAddressSpace(this.Unwrap()); }
+        }
+
+        public Type VectorType(uint elementCount)
+        {
+            return LLVM.VectorType(this.Unwrap(), elementCount).Wrap();
+        }
+
+        public uint VectorSize
+        {
+            get { return LLVM.GetVectorSize(this.Unwrap()); }
+        }
+
+        public Value ConstNull
+        {
+            get { return LLVM.ConstNull(this.Unwrap()).Wrap(); }
+        }
+
+        public Value ConstAllOnes
+        {
+            get { return LLVM.ConstAllOnes(this.Unwrap()).Wrap(); }
+        }
+
+        public Value GetUndef
+        {
+            get { return LLVM.GetUndef(this.Unwrap()).Wrap(); }
+        }
+
+        public Value ConstPointerNull
+        {
+            get { return LLVM.ConstPointerNull(this.Unwrap()).Wrap(); }
+        }
+
+        public Value ConstInt(ulong n, bool signExtend)
+        {
+            return LLVM.ConstInt(this.Unwrap(), n, signExtend).Wrap();
+        }
+
+        public Value ConstIntOfArbitraryPrecision(uint numWords, int[] words)
+        {
+            return LLVM.ConstIntOfArbitraryPrecision(this.Unwrap(), numWords, words).Wrap();
+        }
+
+        public Value ConstIntOfString(string text, char radix)
+        {
+            return LLVM.ConstIntOfString(this.Unwrap(), text, radix).Wrap();
+        }
+
+        public Value ConstIntOfStringAndSize(string text, uint sLen, char radix)
+        {
+            return LLVM.ConstIntOfStringAndSize(this.Unwrap(), text, sLen, radix).Wrap();
+        }
+
+        public Value ConstReal(double n)
+        {
+            return LLVM.ConstReal(this.Unwrap(), n).Wrap();
+        }
+
+        public Value ConstRealOfString(string text)
+        {
+            return LLVM.ConstRealOfString(this.Unwrap(), text).Wrap();
+        }
+
+        public Value ConstRealOfStringAndSize(string text, uint sLen)
+        {
+            return LLVM.ConstRealOfStringAndSize(this.Unwrap(), text, sLen).Wrap();
+        }
+
+        public Value ConstArray(Value[] constantVals)
+        {
+            return LLVM.ConstArray(this.Unwrap(), constantVals.Unwrap()).Wrap();
+        }
+
+        public Value ConstNamedStruct(Value[] constantVals)
+        {
+            return LLVM.ConstNamedStruct(this.Unwrap(), constantVals.Unwrap()).Wrap();
+        }
+
+        public Value Align
+        {
+            get { return LLVM.AlignOf(this.Unwrap()).Wrap(); }
+        }
+
+        public Value Size
+        {
+            get { return LLVM.SizeOf(this.Unwrap()).Wrap(); }
+        }
     }
 }

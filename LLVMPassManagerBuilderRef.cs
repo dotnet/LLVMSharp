@@ -2,11 +2,16 @@
 {
     using System;
 
-    public partial struct LLVMPassManagerBuilderRef : IEquatable<LLVMPassManagerBuilderRef>
+    public partial struct LLVMPassManagerBuilderRef : IEquatable<LLVMPassManagerBuilderRef>, IHandle<PassManagerBuilder>
     {
         public bool Equals(LLVMPassManagerBuilderRef other)
         {
             return this.Pointer == other.Pointer;
+        }
+
+        PassManagerBuilder IHandle<PassManagerBuilder>.ToWrapperType()
+        {
+            return new PassManagerBuilder(this);
         }
 
         public override bool Equals(object obj)

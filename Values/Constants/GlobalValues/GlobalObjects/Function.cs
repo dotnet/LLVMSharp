@@ -4,86 +4,87 @@
 
     public sealed class Function : GlobalObject
     {
-        internal Function(LLVMValueRef value)
-            : base(value)
+        internal Function(LLVMValueRef instance)
+            : base(instance)
         {
         }
 
         public static Function Create(FunctionType type, LLVMLinkage linkage, string name, Module m)
         {
-            var value = LLVM.AddFunction(m.Instance, name, type.TypeRef);
+            var value = LLVM.AddFunction(m.Unwrap(), name, type.Unwrap());
             var f = new Function(value);
             LLVM.SetLinkage(value, linkage);
             return f;
         }
 
-        public Module Parent { get; private set; }
-
-        /// <summary>
-        /// getReturnType
-        /// </summary>
         public Type ReturnType
         {
-            get
-            {
-                return new FunctionType(LLVM.GetReturnType(this.Type.TypeRef));
-            }
+            get { return LLVM.GetReturnType(this.Type.Unwrap()).Wrap(); }
         }
 
-        public LinkedList<BasicBlock> BasicBlocks { get; private set; }
-
-        /// <summary>
-        /// getFunctionType
-        /// </summary>
-        public Type FunctionType { get; private set; }
-
-        /// <summary>
-        /// getContext
-        /// </summary>
-        public LLVMContext Context { get; private set; }
-
-        /// <summary>
-        /// isVarArg
-        /// </summary>
-        public bool IsVarArg { get; private set; }
-
-        /// <summary>
-        /// isIntrinsic
-        /// </summary>
-        public bool IsIntrinsic { get; private set; }
-
-        /// <summary>
-        /// getCallingConv
-        /// setCallingConv
-        /// </summary>
-        public LLVMCallConv CallingConvention { get; set; }
-
-        /// <summary>
-        /// hasGC
-        /// </summary>
-        public bool HasGC { get; private set; }
-
-        /// <summary>
-        /// getGC
-        /// setGC
-        /// </summary>
-        public string GC
+        public BasicBlock[] BasicBlocks
         {
-            get { return LLVM.GetGC(this.InnerValue); }
-            set { LLVM.SetGC(this.InnerValue, value); }
+            get { return LLVM.GetBasicBlocks(this.Unwrap()).Wrap<LLVMBasicBlockRef, BasicBlock>(); }
         }
 
-        /// <summary>
-        /// clearGC
-        /// </summary>
-        public void ClearGC()
+        public Type FunctionType
         {
-            LLVM.SetGC(this.InnerValue, string.Empty);
+            get { return LLVM.TypeOf(this.Unwrap()).Wrap(); }
+        }
+
+        public bool IsVarArg
+        {
+            get { return LLVM.IsFunctionVarArg(this.FunctionType.Unwrap()); }
         }
 
         public Value GetParameter(int index)
         {
-            return LLVM.GetParam(this.ToValueRef(), (uint) index).ToValue();
+            return LLVM.GetParam(this.Unwrap(), (uint) index).Wrap<Value>();
+        }
+
+        public BasicBlock AppendBasicBlock(string name)
+        {
+            return LLVM.AppendBasicBlock(this.Unwrap(), name).Wrap();
+        }
+
+        public uint CountBasicBlocks()
+        {
+            return LLVM.CountBasicBlocks(this.Unwrap());
+        }
+        
+        public BasicBlock GetFirstBasicBlock()
+        {
+            return LLVM.GetFirstBasicBlock(this.Unwrap()).Wrap();
+        }
+
+        public BasicBlock GetLastBasicBlock()
+        {
+            return LLVM.GetLastBasicBlock(this.Unwrap()).Wrap();
+        }
+
+        public BasicBlock GetEntryBasicBlock()
+        {
+            return LLVM.GetEntryBasicBlock(this.Unwrap()).Wrap();
+        }
+
+        public Function NextFunction
+        {
+            get { return LLVM.GetNextFunction(this.Unwrap()).WrapAs<Function>(); }
+        }
+
+        public Function PreviousFunction
+        {
+            get { return LLVM.GetPreviousFunction(this.Unwrap()).WrapAs<Function>(); }
+        }
+
+        public void ViewFunctionCFG()
+        {
+            LLVM.ViewFunctionCFG(this.Unwrap());
+        }
+
+        public void ViewFunctionCFGOnly()
+        {
+            LLVM.ViewFunctionCFGOnly(this.Unwrap());
         }
     }
 }
