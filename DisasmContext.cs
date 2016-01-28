@@ -2,7 +2,7 @@
 {
     using System;
 
-    public sealed class DisasmContext : IWrapper<LLVMDisasmContextRef>, IDisposable
+    public sealed class DisasmContext : IDisposableWrapper<LLVMDisasmContextRef>, IDisposable
     {
         public static DisasmContext CreateDisasm(string tripleName, IntPtr disInfo, int tagType, LLVMOpInfoCallback getOpInfo,
                                            LLVMSymbolLookupCallback symbolLookUp)
@@ -36,7 +36,7 @@
             return this._instance;
         }
 
-        void IWrapper<LLVMDisasmContextRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMDisasmContextRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

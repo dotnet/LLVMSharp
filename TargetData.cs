@@ -2,7 +2,7 @@
 {
     using System;
 
-    public sealed class TargetData : IWrapper<LLVMTargetDataRef>, IDisposable
+    public sealed class TargetData : IDisposableWrapper<LLVMTargetDataRef>, IDisposable
     {
         public static TargetData Create(string stringRep)
         {
@@ -14,7 +14,7 @@
             return this._instance;
         }
 
-        void IWrapper<LLVMTargetDataRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMTargetDataRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

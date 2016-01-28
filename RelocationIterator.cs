@@ -2,14 +2,14 @@
 {
     using System;
 
-    public sealed class RelocationIterator : IWrapper<LLVMRelocationIteratorRef>, IDisposable
+    public sealed class RelocationIterator : IDisposableWrapper<LLVMRelocationIteratorRef>, IDisposable
     {
         LLVMRelocationIteratorRef IWrapper<LLVMRelocationIteratorRef>.ToHandleType()
         {
             return this._instance;
         }
 
-        void IWrapper<LLVMRelocationIteratorRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMRelocationIteratorRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

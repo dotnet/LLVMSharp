@@ -78,11 +78,7 @@
         {
             return this._instance;
         }
-
-        void IWrapper<LLVMTypeRef>.MakeHandleOwner()
-        {
-        }
-
+        
         private readonly LLVMTypeRef _instance;
 
         internal Type(LLVMTypeRef typeRef)

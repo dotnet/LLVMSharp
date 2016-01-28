@@ -2,7 +2,7 @@
 {
     using System;
 
-    public sealed class PassManager : IDisposable, IEquatable<PassManager>, IWrapper<LLVMPassManagerRef>
+    public sealed class PassManager : IDisposable, IEquatable<PassManager>, IDisposableWrapper<LLVMPassManagerRef>
     {
         public static PassManager Create()
         {
@@ -30,7 +30,7 @@
             return this._instance;
         }
 
-        void IWrapper<LLVMPassManagerRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMPassManagerRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

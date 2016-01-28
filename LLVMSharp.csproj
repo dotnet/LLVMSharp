@@ -74,6 +74,7 @@
     <Compile Include="DisasmContext.cs" />
     <Compile Include="ErrorUtilities.cs" />
     <Compile Include="GenericValue.cs" />
+    <Compile Include="IDisposableWrapper.cs" />
     <Compile Include="IHandle.cs" />
     <Compile Include="IWrapper.cs" />
     <Compile Include="LinkageExtensions.cs" />

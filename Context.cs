@@ -2,7 +2,7 @@
 {
     using System;
 
-    public sealed class Context : IEquatable<Context>, IDisposable, IWrapper<LLVMContextRef>
+    public sealed class Context : IEquatable<Context>, IDisposable, IDisposableWrapper<LLVMContextRef>
     {
         public static Context Global
         {
@@ -94,7 +94,7 @@
             return this._instance;
         }
 
-        void IWrapper<LLVMContextRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMContextRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

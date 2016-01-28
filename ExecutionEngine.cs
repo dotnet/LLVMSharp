@@ -2,14 +2,14 @@
 {
     using System;
 
-    public sealed class ExecutionEngine : IDisposable, IEquatable<ExecutionEngine>, IWrapper<LLVMExecutionEngineRef>
+    public sealed class ExecutionEngine : IDisposable, IEquatable<ExecutionEngine>, IDisposableWrapper<LLVMExecutionEngineRef>
     {
         LLVMExecutionEngineRef IWrapper<LLVMExecutionEngineRef>.ToHandleType()
         {
             return this._instance;
         }
 
-        void IWrapper<LLVMExecutionEngineRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMExecutionEngineRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

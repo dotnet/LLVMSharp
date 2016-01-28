@@ -49,7 +49,7 @@
         }
 
         public static TWrapper MakeHandleOwner<TWrapper, THandle>(this TWrapper wrapper)
-            where TWrapper : class, IWrapper<THandle>
+            where TWrapper : class, IDisposableWrapper<THandle>
             where THandle : struct
         {
             wrapper.MakeHandleOwner();

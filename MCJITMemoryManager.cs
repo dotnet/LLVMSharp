@@ -2,7 +2,7 @@
 {
     using System;
 
-    public sealed class MCJITMemoryManager : IWrapper<LLVMMCJITMemoryManagerRef>, IDisposable
+    public sealed class MCJITMemoryManager : IDisposableWrapper<LLVMMCJITMemoryManagerRef>, IDisposable
     {
         public static MCJITMemoryManager Create(IntPtr opaque, LLVMMemoryManagerAllocateCodeSectionCallback allocateCodeSection, LLVMMemoryManagerAllocateDataSectionCallback allocateDataSection, LLVMMemoryManagerFinalizeMemoryCallback finalizeMemory, LLVMMemoryManagerDestroyCallback destroy)
         {
@@ -15,7 +15,7 @@
             return this._instance;
         }
 
-        void IWrapper<LLVMMCJITMemoryManagerRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMMCJITMemoryManagerRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

@@ -2,14 +2,14 @@
 {
     using System;
 
-    public sealed class ModuleProvider : IWrapper<LLVMModuleProviderRef>, IDisposable
+    public sealed class ModuleProvider : IDisposableWrapper<LLVMModuleProviderRef>, IDisposable
     {
         LLVMModuleProviderRef IWrapper<LLVMModuleProviderRef>.ToHandleType()
         {
             return this._instance;
         }
 
-        void IWrapper<LLVMModuleProviderRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMModuleProviderRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

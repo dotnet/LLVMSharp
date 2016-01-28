@@ -11,11 +11,7 @@
         {
             return this._instance;
         }
-
-        void IWrapper<LLVMPassRegistryRef>.MakeHandleOwner()
-        {
-        }
-
+        
         private readonly LLVMPassRegistryRef _instance;
 
         internal PassRegistry(LLVMPassRegistryRef instance)

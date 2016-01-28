@@ -6,11 +6,7 @@
         {
             return this._instance;
         }
-
-        void IWrapper<LLVMUseRef>.MakeHandleOwner()
-        {
-        }
-
+        
         private readonly LLVMUseRef _instance;
 
         internal Use(LLVMUseRef instance)
