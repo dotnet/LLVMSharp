@@ -2,14 +2,14 @@
 {
     using System;
 
-    public sealed class SectionIterator : IWrapper<LLVMSectionIteratorRef>, IDisposable
+    public sealed class SectionIterator : IDisposableWrapper<LLVMSectionIteratorRef>, IDisposable
     {
         LLVMSectionIteratorRef IWrapper<LLVMSectionIteratorRef>.ToHandleType()
         {
             return this._instance;
         }
 
-        void IWrapper<LLVMSectionIteratorRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMSectionIteratorRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

@@ -2,14 +2,14 @@
 {
     using System;
 
-    public sealed class TargetMachine : IWrapper<LLVMTargetMachineRef>, IDisposable
+    public sealed class TargetMachine : IDisposableWrapper<LLVMTargetMachineRef>, IDisposable
     {
         LLVMTargetMachineRef IWrapper<LLVMTargetMachineRef>.ToHandleType()
         {
             return this._instance;
         }
 
-        void IWrapper<LLVMTargetMachineRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMTargetMachineRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

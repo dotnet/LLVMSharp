@@ -2,7 +2,7 @@ namespace LLVMSharp
 {
     using System;
 
-    public sealed class IRBuilder : IDisposable, IEquatable<IRBuilder>, IWrapper<LLVMBuilderRef>
+    public sealed class IRBuilder : IDisposable, IEquatable<IRBuilder>, IDisposableWrapper<LLVMBuilderRef>
     {
         public static IRBuilder Create()
         {
@@ -19,7 +19,7 @@ namespace LLVMSharp
             return this._instance;
         }
 
-        void IWrapper<LLVMBuilderRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMBuilderRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

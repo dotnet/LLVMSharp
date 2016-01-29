@@ -27,10 +27,6 @@
             return this._instance;
         }
 
-        void IWrapper<LLVMTargetRef>.MakeHandleOwner()
-        {
-        }
-
         private readonly LLVMTargetRef _instance;
 
         internal Target(LLVMTargetRef instance)

@@ -2,14 +2,14 @@
 {
     using System;
 
-    public sealed class SymbolIterator : IWrapper<LLVMSymbolIteratorRef>, IDisposable
+    public sealed class SymbolIterator : IDisposableWrapper<LLVMSymbolIteratorRef>, IDisposable
     {
         LLVMSymbolIteratorRef IWrapper<LLVMSymbolIteratorRef>.ToHandleType()
         {
             return this._instance;
         }
 
-        void IWrapper<LLVMSymbolIteratorRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMSymbolIteratorRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

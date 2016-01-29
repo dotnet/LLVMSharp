@@ -3,7 +3,7 @@
     using System;
     using System.Runtime.InteropServices;
 
-    public sealed class MemoryBuffer : IWrapper<LLVMMemoryBufferRef>, IDisposable
+    public sealed class MemoryBuffer : IDisposableWrapper<LLVMMemoryBufferRef>, IDisposable
     {
         public static MemoryBuffer CreateMemoryBufferWithContentsOfFile(string path)
         {
@@ -48,7 +48,7 @@
 
         LLVMMemoryBufferRef IWrapper<LLVMMemoryBufferRef>.ToHandleType() => this._instance;
 
-        void IWrapper<LLVMMemoryBufferRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMMemoryBufferRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

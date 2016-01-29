@@ -6,11 +6,7 @@
         {
             return this._instance;
         }
-
-        void IWrapper<LLVMTargetLibraryInfoRef>.MakeHandleOwner()
-        {
-        }
-
+        
         private readonly LLVMTargetLibraryInfoRef _instance;
 
         internal TargetLibraryInfo(LLVMTargetLibraryInfoRef instance)

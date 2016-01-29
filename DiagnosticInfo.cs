@@ -9,10 +9,6 @@
             return this._instance;
         }
 
-        void IWrapper<LLVMDiagnosticInfoRef>.MakeHandleOwner()
-        {
-        }
-
         private readonly LLVMDiagnosticInfoRef _instance;
 
         internal DiagnosticInfo(LLVMDiagnosticInfoRef instance)

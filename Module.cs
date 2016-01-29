@@ -3,7 +3,7 @@
     using System;
     using System.Runtime.InteropServices;
 
-    public sealed class Module : IEquatable<Module>, IDisposable, IWrapper<LLVMModuleRef>
+    public sealed class Module : IEquatable<Module>, IDisposable, IDisposableWrapper<LLVMModuleRef>
     {
         public static Module Create(string moduleId)
         {
@@ -23,7 +23,7 @@
             return this._instance;
         }
 
-        void IWrapper<LLVMModuleRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMModuleRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

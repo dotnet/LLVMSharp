@@ -4,6 +4,5 @@
         where THandle : struct 
     {
         THandle ToHandleType();
-        void MakeHandleOwner();
     }
 }

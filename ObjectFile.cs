@@ -2,7 +2,7 @@
 {
     using System;
 
-    public sealed class ObjectFile : IWrapper<LLVMObjectFileRef>, IDisposable
+    public sealed class ObjectFile : IDisposableWrapper<LLVMObjectFileRef>, IDisposable
     {
         public static ObjectFile Create(MemoryBuffer memBuf)
         {
@@ -14,7 +14,7 @@
             return this._instance;
         }
 
-        void IWrapper<LLVMObjectFileRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMObjectFileRef>.MakeHandleOwner()
         {
             this._owner = true;
         }

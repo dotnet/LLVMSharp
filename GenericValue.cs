@@ -2,7 +2,7 @@
 {
     using System;
 
-    public sealed class GenericValue : IWrapper<LLVMGenericValueRef>, IDisposable
+    public sealed class GenericValue : IDisposableWrapper<LLVMGenericValueRef>, IDisposable
     {
         public static GenericValue CreateGenericValueOfInt(Type t, ulong n, bool isSigned)
         {
@@ -30,7 +30,7 @@
             return this._instance;
         }
 
-        void IWrapper<LLVMGenericValueRef>.MakeHandleOwner()
+        void IDisposableWrapper<LLVMGenericValueRef>.MakeHandleOwner()
         {
             this._owner = true;
         }
