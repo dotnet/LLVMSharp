@@ -4,6 +4,8 @@
 
     public partial struct LLVMPassRegistryRef : IEquatable<LLVMPassRegistryRef>, IHandle<PassRegistry>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         PassRegistry IHandle<PassRegistry>.ToWrapperType()
         {
             return new PassRegistry(this);

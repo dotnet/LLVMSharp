@@ -4,6 +4,8 @@
 
     public partial struct LLVMDisasmContextRef : IEquatable<LLVMDisasmContextRef>, IHandle<DisasmContext>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         public bool Equals(LLVMDisasmContextRef other)
         {
             return this.Pointer == other.Pointer;

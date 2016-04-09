@@ -4,6 +4,8 @@
 
     public partial struct LLVMMemoryBufferRef : IEquatable<LLVMMemoryBufferRef>, IHandle<MemoryBuffer>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         MemoryBuffer IHandle<MemoryBuffer>.ToWrapperType()
         {
             return new MemoryBuffer(this);

@@ -4,6 +4,8 @@
 
     public partial struct LLVMTargetLibraryInfoRef : IEquatable<LLVMTargetLibraryInfoRef>
     {
+        public IntPtr InternalPointer => Pointer;
+
         public bool Equals(LLVMTargetLibraryInfoRef other)
         {
             return this.Pointer == other.Pointer;

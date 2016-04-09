@@ -1,12 +1,23 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using System.Collections.Generic;
 
     public sealed class Target : IWrapper<LLVMTargetRef>
     {
         public static Target First
         {
             get { return LLVM.GetFirstTarget().Wrap(); }
+        }
+
+        public static IEnumerable<Target> EnumerateTargets()
+        {
+            var target = First;
+            while (target != null)
+            {
+                yield return target;
+                target = target.Next;
+            }
         }
 
         public static Target FromName(string name)
@@ -68,6 +79,11 @@
                                                  LLVMRelocMode reloc, LLVMCodeModel codeModel)
         {
             return LLVM.CreateTargetMachine(this.Unwrap(), triple, cpu, features, level, reloc, codeModel).Wrap();
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

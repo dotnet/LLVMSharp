@@ -4,6 +4,8 @@
 
     public partial struct LLVMSectionIteratorRef : IEquatable<LLVMSectionIteratorRef>, IHandle<SectionIterator>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         public bool Equals(LLVMSectionIteratorRef other)
         {
             return this.Pointer == other.Pointer;

@@ -4,6 +4,8 @@
 
     public partial struct LLVMGenericValueRef : IEquatable<LLVMGenericValueRef>, IHandle<GenericValue>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         public bool Equals(LLVMGenericValueRef other)
         {
             return this.Equals(other);

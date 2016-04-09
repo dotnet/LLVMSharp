@@ -4,6 +4,8 @@
 
     public partial struct LLVMPassManagerRef : IEquatable<LLVMPassManagerRef>, IHandle<PassManager>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         PassManager IHandle<PassManager>.ToWrapperType()
         {
             return new PassManager(this);

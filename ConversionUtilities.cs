@@ -27,6 +27,10 @@
         public static TWrapper Wrap<TWrapper>(this IHandle<TWrapper> handle)
             where TWrapper : class
         {
+            if (handle.GetInternalPointer() == IntPtr.Zero)
+            {
+                return null;
+            }
             return handle.ToWrapperType();
         }
 

@@ -1,4 +1,6 @@
-﻿namespace LLVMSharp
+﻿using System.Diagnostics;
+
+namespace LLVMSharp
 {
     using System;
 
@@ -232,7 +234,14 @@
 
         public string StructName
         {
-            get { return LLVM.GetStructName(this.Unwrap()); }
+            get
+            {
+                if (!this.IsStructTy)
+                {
+                    throw new InvalidOperationException();
+                }
+                return LLVM.GetStructName(this.Unwrap());
+            }
         }
 
         public uint StructNumElements
@@ -432,6 +441,68 @@
         public Value Size
         {
             get { return LLVM.SizeOf(this.Unwrap()).Wrap(); }
+        }
+
+        public string Name
+        {
+            get
+            {
+                if (this.IsVoidTy)
+                {
+                    return "void";
+                }
+                if (this.IsHalfTy)
+                {
+                    return "half";
+                }
+                if (this.IsFloatTy)
+                {
+                    return "float";
+                }
+                if (this.IsDoubleTy)
+                {
+                    return "double";
+                }
+                if (this.IsFP128Ty)
+                {
+                    return "fp128";
+                }
+                if (this.IsX86_FP80Ty)
+                {
+                    return "x86_fp80";
+                }
+                if (this.IsPPC_FP128Ty)
+                {
+                    return "ppc_fp128";
+                }
+                if (this.IsX86_MMXTy)
+                {
+                    return "x86_mmx";
+                }
+                if (this.IsIntegerTy)
+                {
+                    return "i" + this.IntBitWidth;
+                }
+                if (this.IsStructTy)
+                {
+                    return this.StructName;
+                }
+                if (this.IsPointerTy)
+                {
+                    return this.ElementType.Name + "*";
+                }
+                return string.Empty;
+            }
+        }
+
+        public override string ToString()
+        {
+            var name = this.Name;
+            if (name != string.Empty)
+            {
+                return name;
+            }
+            return base.ToString();
         }
     }
 }

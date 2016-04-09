@@ -4,6 +4,8 @@
 
     partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>, IHandle<Type>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         Type IHandle<Type>.ToWrapperType()
         {
             return Type.Create(this);

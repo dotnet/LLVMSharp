@@ -4,6 +4,8 @@
 
     partial struct LLVMContextRef : IEquatable<LLVMContextRef>, IHandle<Context>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         Context IHandle<Context>.ToWrapperType()
         {
             return new Context(this);

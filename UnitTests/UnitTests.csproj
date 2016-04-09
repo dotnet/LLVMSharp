@@ -50,7 +50,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Common.cs" />
-    <Compile Include="OOAPITests.cs" />
+    <Compile Include="IRBuilder.cs" />
+    <Compile Include="Targets.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="libLLVM.dll">

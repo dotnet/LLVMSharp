@@ -4,6 +4,8 @@
 
     public partial struct LLVMDiagnosticInfoRef : IEquatable<LLVMDiagnosticInfoRef>, IHandle<DiagnosticInfo>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         DiagnosticInfo IHandle<DiagnosticInfo>.ToWrapperType()
         {
             return new DiagnosticInfo(this);
