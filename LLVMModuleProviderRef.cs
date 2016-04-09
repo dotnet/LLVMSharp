@@ -4,6 +4,8 @@
 
     public partial struct LLVMModuleProviderRef : IEquatable<LLVMModuleProviderRef>, IHandle<ModuleProvider>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         ModuleProvider IHandle<ModuleProvider>.ToWrapperType()
         {            
             return new ModuleProvider(this);

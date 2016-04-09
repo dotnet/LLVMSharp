@@ -4,6 +4,8 @@
 
     public partial struct LLVMPassManagerBuilderRef : IEquatable<LLVMPassManagerBuilderRef>, IHandle<PassManagerBuilder>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         public bool Equals(LLVMPassManagerBuilderRef other)
         {
             return this.Pointer == other.Pointer;

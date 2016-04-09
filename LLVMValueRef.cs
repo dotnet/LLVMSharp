@@ -5,6 +5,8 @@
 
     partial struct LLVMValueRef : IEquatable<LLVMValueRef>, IHandle<Value>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         Value IHandle<Value>.ToWrapperType()
         {
             return Value.Create(this);

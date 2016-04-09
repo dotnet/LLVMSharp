@@ -14,12 +14,12 @@
 
     internal static class Common
     {
-        public static Function DefineFunction(this Module module, Type returnType, string name, Type[] arguments, Action<Function, IRBuilder> generator)
+        public static Function DefineFunction(this Module module, Type returnType, string name, Type[] arguments, Action<Function, LLVMSharp.IRBuilder> generator)
         {
             var signature = new FunctionType(returnType, arguments);
-            var function = module.AddFunction("add", signature);
+            var function = module.AddFunction(name, signature);
             var basicBlock = function.AppendBasicBlock(string.Empty);
-            using (var builder = IRBuilder.Create())
+            using (var builder = LLVMSharp.IRBuilder.Create())
             {
                 builder.PositionBuilderAtEnd(basicBlock);
                 generator.Invoke(function, builder);
@@ -56,6 +56,19 @@
         {
             var functionPtr = executionEngine.GetPointerToGlobal(function);
             return (TDelegate) (object) Marshal.GetDelegateForFunctionPointer(functionPtr, typeof (TDelegate));
+        }
+
+        public static void InNewAppDomain(Action action)
+        {
+            var domain = AppDomain.CreateDomain(string.Empty);
+            try
+            {
+                domain.DoCallBack(new CrossAppDomainDelegate(action));
+            }
+            finally
+            {
+                AppDomain.Unload(domain);
+            }
         }
     }
 }

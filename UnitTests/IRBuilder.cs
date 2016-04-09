@@ -1,10 +1,12 @@
-﻿namespace UnitTests
+﻿using System.Linq;
+
+namespace UnitTests
 {
     using LLVMSharp;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class OOAPITests
+    public class IRBuilder
     {
         [TestMethod]
         public void SimpleAdd()

@@ -4,6 +4,8 @@
 
     public partial struct LLVMExecutionEngineRef : IEquatable<LLVMExecutionEngineRef>, IHandle<ExecutionEngine>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         ExecutionEngine IHandle<ExecutionEngine>.ToWrapperType()
         {
             return new ExecutionEngine(this);

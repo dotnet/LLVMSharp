@@ -4,6 +4,8 @@
 
     public partial struct LLVMModuleRef : IEquatable<LLVMModuleRef>, IHandle<Module>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         Module IHandle<Module>.ToWrapperType()
         {
             return new Module(this);

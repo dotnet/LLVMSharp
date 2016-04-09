@@ -4,6 +4,8 @@
 
     public partial struct LLVMTargetRef : IEquatable<LLVMTargetRef>, IHandle<Target>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         public bool Equals(LLVMTargetRef other)
         {
             return this.Pointer == other.Pointer;

@@ -4,6 +4,8 @@
 
     public partial struct LLVMBuilderRef : IEquatable<LLVMBuilderRef>, IHandle<IRBuilder>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         public bool Equals(LLVMBuilderRef other)
         {
             return this.Pointer == other.Pointer;

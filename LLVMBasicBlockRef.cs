@@ -5,6 +5,8 @@
     partial struct LLVMBasicBlockRef : IEquatable<LLVMBasicBlockRef>, 
         IHandle<BasicBlock>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         BasicBlock IHandle<BasicBlock>.ToWrapperType()
         {
             return (BasicBlock) Value.Create(new LLVMValueRef {Pointer = this.Pointer});

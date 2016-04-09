@@ -4,6 +4,8 @@
 
     public partial struct LLVMMCJITMemoryManagerRef : IEquatable<LLVMMCJITMemoryManagerRef>, IHandle<MCJITMemoryManager>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         public bool Equals(LLVMMCJITMemoryManagerRef other)
         {
             return this.Pointer == other.Pointer;

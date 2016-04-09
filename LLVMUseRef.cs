@@ -4,6 +4,8 @@
 
     public partial struct LLVMUseRef : IEquatable<LLVMUseRef>, IHandle<Use>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         public bool Equals(LLVMUseRef other)
         {
             return this.Pointer == other.Pointer;

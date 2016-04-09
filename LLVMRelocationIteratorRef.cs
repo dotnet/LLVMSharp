@@ -4,6 +4,8 @@
 
     public partial struct LLVMRelocationIteratorRef : IEquatable<LLVMRelocationIteratorRef>, IHandle<RelocationIterator>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         public bool Equals(LLVMRelocationIteratorRef other)
         {
             return this.Pointer == other.Pointer;

@@ -4,6 +4,8 @@
 
     public partial struct LLVMSymbolIteratorRef : IEquatable<LLVMSymbolIteratorRef>, IHandle<SymbolIterator>
     {
+        public IntPtr GetInternalPointer() => Pointer;
+
         public bool Equals(LLVMSymbolIteratorRef other)
         {
             return this.Pointer == other.Pointer;
