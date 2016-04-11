@@ -1,15 +1,13 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     public partial struct LLVMModuleRef : IEquatable<LLVMModuleRef>, IHandle<Module>
     {
-        public IntPtr GetInternalPointer() => Pointer;
-
-        Module IHandle<Module>.ToWrapperType()
-        {
-            return new Module(this);
-        }
+        IntPtr IHandle<Module>.GetInternalPointer() => this.Pointer;
+        Module IHandle<Module>.ToWrapperType() => new Module(this);
 
         public bool Equals(LLVMModuleRef other)
         {
@@ -22,10 +20,7 @@
             {
                 return this.Equals((LLVMModuleRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMModuleRef op1, LLVMModuleRef op2)

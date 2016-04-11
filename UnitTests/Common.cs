@@ -3,8 +3,11 @@
     using System;
     using System.Runtime.InteropServices;
     using LLVMSharp;
+    using LLVMSharp.Api;
+    using LLVMSharp.Api.Types;
+    using LLVMSharp.Api.Values.Constants.GlobalValues.GlobalObjects;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Type = LLVMSharp.Type;
+    using Type = LLVMSharp.Api.Type;
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int Int32Delegate();
@@ -14,12 +17,12 @@
 
     internal static class Common
     {
-        public static Function DefineFunction(this Module module, Type returnType, string name, Type[] arguments, Action<Function, LLVMSharp.IRBuilder> generator)
+        public static Function DefineFunction(this Module module, Type returnType, string name, Type[] arguments, Action<Function, LLVMSharp.Api.IRBuilder> generator)
         {
             var signature = new FunctionType(returnType, arguments);
             var function = module.AddFunction(name, signature);
             var basicBlock = function.AppendBasicBlock(string.Empty);
-            using (var builder = LLVMSharp.IRBuilder.Create())
+            using (var builder = LLVMSharp.Api.IRBuilder.Create())
             {
                 builder.PositionBuilderAtEnd(basicBlock);
                 generator.Invoke(function, builder);

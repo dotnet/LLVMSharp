@@ -1,10 +1,13 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
-    public partial struct LLVMTargetLibraryInfoRef : IEquatable<LLVMTargetLibraryInfoRef>
+    public partial struct LLVMTargetLibraryInfoRef : IEquatable<LLVMTargetLibraryInfoRef>, IHandle<TargetLibraryInfo>
     {
-        public IntPtr InternalPointer => Pointer;
+        IntPtr IHandle<TargetLibraryInfo>.GetInternalPointer() => this.Pointer;
+        TargetLibraryInfo IHandle<TargetLibraryInfo>.ToWrapperType() => new TargetLibraryInfo(this);
 
         public bool Equals(LLVMTargetLibraryInfoRef other)
         {
@@ -17,10 +20,7 @@
             {
                 return this.Equals((LLVMTargetLibraryInfoRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMTargetLibraryInfoRef op1, LLVMTargetLibraryInfoRef op2)

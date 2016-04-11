@@ -1,19 +1,17 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     public partial struct LLVMGenericValueRef : IEquatable<LLVMGenericValueRef>, IHandle<GenericValue>
     {
-        public IntPtr GetInternalPointer() => Pointer;
+        IntPtr IHandle<GenericValue>.GetInternalPointer() => this.Pointer;
+        GenericValue IHandle<GenericValue>.ToWrapperType() => new GenericValue(this);
 
         public bool Equals(LLVMGenericValueRef other)
         {
             return this.Equals(other);
-        }
-
-        GenericValue IHandle<GenericValue>.ToWrapperType()
-        {
-            return new GenericValue(this);
         }
 
         public override bool Equals(object obj)
@@ -22,10 +20,7 @@
             {
                 return this.Equals((LLVMGenericValueRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMGenericValueRef op1, LLVMGenericValueRef op2)

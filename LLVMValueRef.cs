@@ -2,20 +2,18 @@
 {
     using System;
     using System.Runtime.InteropServices;
+    using Api;
+    using Utilities;
 
     partial struct LLVMValueRef : IEquatable<LLVMValueRef>, IHandle<Value>
     {
-        public IntPtr GetInternalPointer() => Pointer;
-
-        Value IHandle<Value>.ToWrapperType()
-        {
-            return Value.Create(this);
-        }
+        IntPtr IHandle<Value>.GetInternalPointer() => this.Pointer;
+        Value IHandle<Value>.ToWrapperType() => Value.Create(this);
 
         public override string ToString()
         {
-            IntPtr ptr = LLVM.PrintValueToString(this);
-            string retVal = Marshal.PtrToStringAnsi(ptr);
+            var ptr = LLVM.PrintValueToString(this);
+            var retVal = Marshal.PtrToStringAnsi(ptr);
             LLVM.DisposeMessage(ptr);
             return retVal ?? string.Empty;
         }
@@ -1311,10 +1309,7 @@
             {
                 return this.Equals((LLVMValueRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMValueRef op1, LLVMValueRef op2)

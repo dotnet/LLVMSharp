@@ -1,8 +1,7 @@
-﻿using System.Linq;
-
-namespace UnitTests
+﻿namespace UnitTests
 {
     using LLVMSharp;
+    using LLVMSharp.Api;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]

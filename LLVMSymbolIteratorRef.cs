@@ -1,19 +1,17 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     public partial struct LLVMSymbolIteratorRef : IEquatable<LLVMSymbolIteratorRef>, IHandle<SymbolIterator>
     {
-        public IntPtr GetInternalPointer() => Pointer;
+        IntPtr IHandle<SymbolIterator>.GetInternalPointer() => this.Pointer;
+        SymbolIterator IHandle<SymbolIterator>.ToWrapperType() => new SymbolIterator(this);
 
         public bool Equals(LLVMSymbolIteratorRef other)
         {
             return this.Pointer == other.Pointer;
-        }
-
-        SymbolIterator IHandle<SymbolIterator>.ToWrapperType()
-        {
-            return new SymbolIterator(this);
         }
 
         public override bool Equals(object obj)
@@ -22,10 +20,7 @@
             {
                 return this.Equals((LLVMSymbolIteratorRef)obj);
             }
-            else
-            {
-                return false;
-            }  
+            return false;
         }
 
         public static bool operator ==(LLVMSymbolIteratorRef op1, LLVMSymbolIteratorRef op2)

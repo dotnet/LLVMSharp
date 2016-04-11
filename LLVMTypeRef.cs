@@ -1,15 +1,13 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Utilities;
+    using Type = Api.Type;
 
     partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>, IHandle<Type>
     {
-        public IntPtr GetInternalPointer() => Pointer;
-
-        Type IHandle<Type>.ToWrapperType()
-        {
-            return Type.Create(this);
-        }
+        IntPtr IHandle<Type>.GetInternalPointer() => this.Pointer;
+        Type IHandle<Type>.ToWrapperType() => Type.Create(this);
 
         public static LLVMTypeRef FunctionType(LLVMTypeRef returnType, LLVMTypeRef[] paramTypes, LLVMBool isVarArg)
         {
@@ -417,10 +415,7 @@
             {
                 return this.Equals((LLVMTypeRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMTypeRef op1, LLVMTypeRef op2)

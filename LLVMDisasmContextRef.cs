@@ -1,19 +1,17 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     public partial struct LLVMDisasmContextRef : IEquatable<LLVMDisasmContextRef>, IHandle<DisasmContext>
     {
-        public IntPtr GetInternalPointer() => Pointer;
+        IntPtr IHandle<DisasmContext>.GetInternalPointer() => this.Pointer;
+        DisasmContext IHandle<DisasmContext>.ToWrapperType() => new DisasmContext(this);
 
         public bool Equals(LLVMDisasmContextRef other)
         {
             return this.Pointer == other.Pointer;
-        }
-
-        DisasmContext IHandle<DisasmContext>.ToWrapperType()
-        {
-            return new DisasmContext(this);
         }
 
         public override bool Equals(object obj)
@@ -22,10 +20,7 @@
             {
                 return this.Equals((LLVMDisasmContextRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMDisasmContextRef op1, LLVMDisasmContextRef op2)

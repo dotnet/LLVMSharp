@@ -1,19 +1,17 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     public partial struct LLVMRelocationIteratorRef : IEquatable<LLVMRelocationIteratorRef>, IHandle<RelocationIterator>
     {
-        public IntPtr GetInternalPointer() => Pointer;
+        IntPtr IHandle<RelocationIterator>.GetInternalPointer() => this.Pointer;
+        RelocationIterator IHandle<RelocationIterator>.ToWrapperType() => new RelocationIterator(this);
 
         public bool Equals(LLVMRelocationIteratorRef other)
         {
             return this.Pointer == other.Pointer;
-        }
-
-        RelocationIterator IHandle<RelocationIterator>.ToWrapperType()
-        {
-            return new RelocationIterator(this);
         }
 
         public override bool Equals(object obj)
@@ -22,10 +20,7 @@
             {
                 return this.Equals((LLVMRelocationIteratorRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMRelocationIteratorRef op1, LLVMRelocationIteratorRef op2)

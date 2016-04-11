@@ -1,19 +1,17 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     public partial struct LLVMMCJITMemoryManagerRef : IEquatable<LLVMMCJITMemoryManagerRef>, IHandle<MCJITMemoryManager>
     {
-        public IntPtr GetInternalPointer() => Pointer;
+        IntPtr IHandle<MCJITMemoryManager>.GetInternalPointer() => this.Pointer;
+        MCJITMemoryManager IHandle<MCJITMemoryManager>.ToWrapperType() => new MCJITMemoryManager(this);
 
         public bool Equals(LLVMMCJITMemoryManagerRef other)
         {
             return this.Pointer == other.Pointer;
-        }
-
-        MCJITMemoryManager IHandle<MCJITMemoryManager>.ToWrapperType()
-        {
-            return new MCJITMemoryManager(this);
         }
 
         public override bool Equals(object obj)
@@ -22,10 +20,7 @@
             {
                 return this.Equals((LLVMMCJITMemoryManagerRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMMCJITMemoryManagerRef op1, LLVMMCJITMemoryManagerRef op2)
