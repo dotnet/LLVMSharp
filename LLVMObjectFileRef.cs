@@ -1,19 +1,17 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     public partial struct LLVMObjectFileRef : IEquatable<LLVMObjectFileRef>, IHandle<ObjectFile>
     {
-        public IntPtr GetInternalPointer() => Pointer;
+        IntPtr IHandle<ObjectFile>.GetInternalPointer() => this.Pointer;
+        ObjectFile IHandle<ObjectFile>.ToWrapperType() => new ObjectFile(this);
 
         public bool Equals(LLVMObjectFileRef other)
         {
             return this.Pointer == other.Pointer;
-        }
-
-        ObjectFile IHandle<ObjectFile>.ToWrapperType()
-        {
-            return new ObjectFile(this);
         }
 
         public override bool Equals(object obj)
@@ -22,10 +20,7 @@
             {
                 return this.Equals((LLVMObjectFileRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMObjectFileRef op1, LLVMObjectFileRef op2)

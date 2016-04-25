@@ -1,19 +1,17 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     public partial struct LLVMUseRef : IEquatable<LLVMUseRef>, IHandle<Use>
     {
-        public IntPtr GetInternalPointer() => Pointer;
+        IntPtr IHandle<Use>.GetInternalPointer() => this.Pointer;
+        Use IHandle<Use>.ToWrapperType() => new Use(this);
 
         public bool Equals(LLVMUseRef other)
         {
             return this.Pointer == other.Pointer;
-        }
-
-        Use IHandle<Use>.ToWrapperType()
-        {
-            return new Use(this);
         }
 
         public override bool Equals(object obj)
@@ -22,10 +20,7 @@
             {
                 return this.Equals((LLVMUseRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMUseRef op1, LLVMUseRef op2)

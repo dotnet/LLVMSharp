@@ -1,16 +1,14 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     public partial struct LLVMExecutionEngineRef : IEquatable<LLVMExecutionEngineRef>, IHandle<ExecutionEngine>
     {
-        public IntPtr GetInternalPointer() => Pointer;
+        IntPtr IHandle<ExecutionEngine>.GetInternalPointer() => this.Pointer;
+        ExecutionEngine IHandle<ExecutionEngine>.ToWrapperType() => new ExecutionEngine(this);
 
-        ExecutionEngine IHandle<ExecutionEngine>.ToWrapperType()
-        {
-            return new ExecutionEngine(this);
-        }
-        
         public bool Equals(LLVMExecutionEngineRef other)
         {
             return this.Pointer == other.Pointer;
@@ -22,10 +20,7 @@
             {
                 return this.Equals((LLVMExecutionEngineRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMExecutionEngineRef op1, LLVMExecutionEngineRef op2)

@@ -1,15 +1,13 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     public partial struct LLVMDiagnosticInfoRef : IEquatable<LLVMDiagnosticInfoRef>, IHandle<DiagnosticInfo>
     {
-        public IntPtr GetInternalPointer() => Pointer;
-
-        DiagnosticInfo IHandle<DiagnosticInfo>.ToWrapperType()
-        {
-            return new DiagnosticInfo(this);
-        }
+        IntPtr IHandle<DiagnosticInfo>.GetInternalPointer() => this.Pointer;
+        DiagnosticInfo IHandle<DiagnosticInfo>.ToWrapperType() => new DiagnosticInfo(this);
 
         public bool Equals(LLVMDiagnosticInfoRef other)
         {
@@ -22,10 +20,7 @@
             {
                 return this.Equals((LLVMDiagnosticInfoRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMDiagnosticInfoRef op1, LLVMDiagnosticInfoRef op2)

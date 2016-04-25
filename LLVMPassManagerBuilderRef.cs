@@ -1,19 +1,17 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     public partial struct LLVMPassManagerBuilderRef : IEquatable<LLVMPassManagerBuilderRef>, IHandle<PassManagerBuilder>
     {
-        public IntPtr GetInternalPointer() => Pointer;
+        IntPtr IHandle<PassManagerBuilder>.GetInternalPointer() => this.Pointer;
+        PassManagerBuilder IHandle<PassManagerBuilder>.ToWrapperType() => new PassManagerBuilder(this);
 
         public bool Equals(LLVMPassManagerBuilderRef other)
         {
             return this.Pointer == other.Pointer;
-        }
-
-        PassManagerBuilder IHandle<PassManagerBuilder>.ToWrapperType()
-        {
-            return new PassManagerBuilder(this);
         }
 
         public override bool Equals(object obj)
@@ -22,10 +20,7 @@
             {
                 return this.Equals((LLVMPassManagerBuilderRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMPassManagerBuilderRef op1, LLVMPassManagerBuilderRef op2)

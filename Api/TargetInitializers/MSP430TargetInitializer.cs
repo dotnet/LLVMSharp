@@ -1,0 +1,30 @@
+﻿namespace LLVMSharp.Api.TargetInitializers
+{
+    public sealed class MSP430TargetInitializer :
+        ITarget, ITargetInfo, ITargetMC, IAsmPrinter
+    {
+        internal MSP430TargetInitializer()
+        {            
+        }
+
+        public void Target()
+        {
+            LLVM.InitializeMSP430Target();
+        }
+
+        public void TargetInfo()
+        {
+            LLVM.InitializeMSP430TargetInfo();
+        }
+
+        public void TargetMC()
+        {
+            LLVM.InitializeMSP430TargetMC();
+        }
+
+        public void AsmPrinter()
+        {
+            LLVM.InitializeMSP430AsmPrinter();
+        }
+    }
+}

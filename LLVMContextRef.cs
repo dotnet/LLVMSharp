@@ -1,15 +1,13 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     partial struct LLVMContextRef : IEquatable<LLVMContextRef>, IHandle<Context>
     {
-        public IntPtr GetInternalPointer() => Pointer;
-
-        Context IHandle<Context>.ToWrapperType()
-        {
-            return new Context(this);
-        }
+        IntPtr IHandle<Context>.GetInternalPointer() => this.Pointer;
+        Context IHandle<Context>.ToWrapperType() => new Context(this);
 
         public void ContextDispose()
         {
@@ -182,10 +180,7 @@
             {
                 return this.Equals((LLVMContextRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMContextRef op1, LLVMContextRef op2)

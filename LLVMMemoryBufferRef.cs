@@ -1,15 +1,13 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     public partial struct LLVMMemoryBufferRef : IEquatable<LLVMMemoryBufferRef>, IHandle<MemoryBuffer>
     {
-        public IntPtr GetInternalPointer() => Pointer;
-
-        MemoryBuffer IHandle<MemoryBuffer>.ToWrapperType()
-        {
-            return new MemoryBuffer(this);
-        }
+        IntPtr IHandle<MemoryBuffer>.GetInternalPointer() => this.Pointer;
+        MemoryBuffer IHandle<MemoryBuffer>.ToWrapperType() => new MemoryBuffer(this);
 
         public bool Equals(LLVMMemoryBufferRef other)
         {
@@ -22,10 +20,7 @@
             {
                 return this.Equals((LLVMMemoryBufferRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMMemoryBufferRef op1, LLVMMemoryBufferRef op2)

@@ -1,31 +1,25 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     public partial struct LLVMBuilderRef : IEquatable<LLVMBuilderRef>, IHandle<IRBuilder>
     {
-        public IntPtr GetInternalPointer() => Pointer;
+        IntPtr IHandle<IRBuilder>.GetInternalPointer() => this.Pointer;
+        IRBuilder IHandle<IRBuilder>.ToWrapperType() => new IRBuilder(this);
 
         public bool Equals(LLVMBuilderRef other)
         {
             return this.Pointer == other.Pointer;
         }
-
-        IRBuilder IHandle<IRBuilder>.ToWrapperType()
-        {
-            return new IRBuilder(this);
-        }
-
         public override bool Equals(object obj)
         {
             if (obj is LLVMBuilderRef)
             {
                 return this.Equals((LLVMBuilderRef) obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMBuilderRef op1, LLVMBuilderRef op2)

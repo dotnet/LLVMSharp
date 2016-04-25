@@ -1,15 +1,13 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Utilities;
 
     public partial struct LLVMPassManagerRef : IEquatable<LLVMPassManagerRef>, IHandle<PassManager>
     {
-        public IntPtr GetInternalPointer() => Pointer;
-
-        PassManager IHandle<PassManager>.ToWrapperType()
-        {
-            return new PassManager(this);
-        }
+        IntPtr IHandle<PassManager>.GetInternalPointer() => this.Pointer;
+        PassManager IHandle<PassManager>.ToWrapperType() => new PassManager(this);
 
         public bool Equals(LLVMPassManagerRef other)
         {
@@ -22,10 +20,7 @@
             {
                 return this.Equals((LLVMPassManagerRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMPassManagerRef op1, LLVMPassManagerRef op2)

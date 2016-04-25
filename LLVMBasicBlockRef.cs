@@ -1,17 +1,17 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using Api;
+    using Api.Values;
+    using Utilities;
 
     partial struct LLVMBasicBlockRef : IEquatable<LLVMBasicBlockRef>, 
         IHandle<BasicBlock>
     {
-        public IntPtr GetInternalPointer() => Pointer;
-
+        IntPtr IHandle<BasicBlock>.GetInternalPointer() => this.Pointer;
         BasicBlock IHandle<BasicBlock>.ToWrapperType()
-        {
-            return (BasicBlock) Value.Create(new LLVMValueRef {Pointer = this.Pointer});
-        }
-    
+            => (BasicBlock) Value.Create(new LLVMValueRef {Pointer = this.Pointer});
+
         public LLVMValueRef BasicBlockAsValue()
         {
             return LLVM.BasicBlockAsValue(this);
@@ -83,10 +83,7 @@
             {
                 return this.Equals((LLVMBasicBlockRef)obj);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static bool operator ==(LLVMBasicBlockRef op1, LLVMBasicBlockRef op2)
