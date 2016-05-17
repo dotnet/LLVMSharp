@@ -87,19 +87,9 @@
             LLVM.AddModule(this.instance, @M);
         }
 
-        public void AddModuleProvider(LLVMModuleProviderRef @MP)
-        {
-            LLVM.AddModuleProvider(this.instance, @MP);
-        }
-
         public bool RemoveModule(LLVMModuleRef @M, out LLVMModuleRef @OutMod, out IntPtr @OutError)
         {
             return LLVM.RemoveModule(this.instance, @M, out @OutMod, out @OutError);
-        }
-
-        public bool RemoveModuleProvider(LLVMModuleProviderRef @MP, out LLVMModuleRef @OutMod, out IntPtr @OutError)
-        {
-            return LLVM.RemoveModuleProvider(this.instance, @MP, out @OutMod, out @OutError);
         }
 
         public bool FindFunction(string @Name, out LLVMValueRef @OutFn)

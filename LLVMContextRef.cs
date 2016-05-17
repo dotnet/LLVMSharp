@@ -144,11 +144,6 @@
             return LLVM.GetBitcodeModuleInContext(this, @MemBuf, out @OutM, out @OutMessage);
         }
 
-        public bool GetBitcodeModuleProviderInContext(LLVMMemoryBufferRef @MemBuf, out LLVMModuleProviderRef @OutMP, out IntPtr @OutMessage)
-        {
-            return LLVM.GetBitcodeModuleProviderInContext(this, @MemBuf, out @OutMP, out @OutMessage);
-        }
-
         public LLVMTypeRef IntPtrTypeInContext(LLVMTargetDataRef @TD)
         {
             return LLVM.IntPtrTypeInContext(this, @TD);
