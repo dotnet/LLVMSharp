@@ -4,7 +4,7 @@
 
 LLVMSharp are strongly-typed safe LLVM bindings written in C# for .NET and Mono, tested on Linux and Windows. They are auto-generated using [ClangSharp](http://www.clangsharp.org) parsing LLVM-C header files.
 
-If you're on Windows, consider using the [**LLVMSharp 3.7 NuGet Package**](http://www.nuget.org/packages/LLVMSharp/3.7.0) - built from LLVM 3.7 Release.
+If you're on Windows, consider using the [**LLVMSharp 3.8 NuGet Package**](http://www.nuget.org/packages/LLVMSharp/3.8.0) - built from LLVM 3.8 Release.
 
 ## Building LLVMSharp
 
