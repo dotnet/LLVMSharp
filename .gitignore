@@ -183,3 +183,4 @@ UpgradeLog*.htm
 FakesAssemblies/
 *.exe
 *.dll
+*.db
