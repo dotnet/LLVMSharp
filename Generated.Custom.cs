@@ -3,6 +3,16 @@ namespace LLVMSharp
     using System;
     using System.Runtime.InteropServices;
 
+    public partial struct size_t
+    {
+        public size_t(IntPtr Pointer)
+        {
+            this.Pointer = Pointer;
+        }
+
+        public IntPtr Pointer;
+    }
+
     public partial struct LLVMOpaqueMetadata
     {
     }
