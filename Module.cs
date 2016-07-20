@@ -185,11 +185,6 @@
             return LLVM.WriteBitcodeToMemoryBuffer(this.instance);
         }
 
-        public bool LinkModules(LLVMModuleRef @Src, LLVMLinkerMode @Unused, out IntPtr @OutMessage)
-        {
-            return LLVM.LinkModules(this.instance, @Src, @Unused, out @OutMessage);
-        }
-
         public override string ToString()
         {
             return this.PrintModuleToString();

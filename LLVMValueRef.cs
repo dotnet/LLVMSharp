@@ -478,7 +478,7 @@
             return LLVM.IsConstantString(this);
         }
 
-        public string GetAsString(out int @out)
+        public string GetAsString(out size_t @out)
         {
             return LLVM.GetAsString(this, out @out);
         }

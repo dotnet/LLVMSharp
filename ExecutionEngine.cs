@@ -33,7 +33,7 @@
             return new ExecutionEngine(instance);
         }
 
-        public static ExecutionEngine CreateMCJITCompiler(Module module, LLVMMCJITCompilerOptions options, int optionsSize)
+        public static ExecutionEngine CreateMCJITCompiler(Module module, LLVMMCJITCompilerOptions options, size_t optionsSize)
         {
             LLVM.InitializeMCJITCompilerOptions(out options, optionsSize);
 

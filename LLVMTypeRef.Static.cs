@@ -232,12 +232,12 @@
             return LLVM.ConstIntOfArbitraryPrecision(@IntTy, (uint)@Words.Length, @Words);
         }
 
-        public static LLVMValueRef ConstIntOfString(LLVMTypeRef @IntTy, string @Text, char @Radix)
+        public static LLVMValueRef ConstIntOfString(LLVMTypeRef @IntTy, string @Text, byte @Radix)
         {
             return LLVM.ConstIntOfString(@IntTy, @Text, @Radix);
         }
 
-        public static LLVMValueRef ConstIntOfStringAndSize(LLVMTypeRef @IntTy, string @Text, uint @SLen, char @Radix)
+        public static LLVMValueRef ConstIntOfStringAndSize(LLVMTypeRef @IntTy, string @Text, uint @SLen, byte @Radix)
         {
             return LLVM.ConstIntOfStringAndSize(@IntTy, @Text, @SLen, @Radix);
         }
