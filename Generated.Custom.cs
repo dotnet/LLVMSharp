@@ -13,34 +13,6 @@ namespace LLVMSharp
         public IntPtr Pointer;
     }
 
-    public partial struct LLVMOpaqueMetadata
-    {
-    }
-
-    public partial struct LLVMOpaqueDIBuilder
-    {
-    }
-
-    public partial struct LLVMMetadataRef
-    {
-        public LLVMMetadataRef(IntPtr pointer)
-        {
-            this.Pointer = pointer;
-        }
-
-        public IntPtr Pointer;
-    }
-
-    public partial struct LLVMDIBuilderRef
-    {
-        public LLVMDIBuilderRef(IntPtr pointer)
-        {
-            this.Pointer = pointer;
-        }
-
-        public IntPtr Pointer;
-    }
-
     public static partial class LLVM
     {
         [DllImport(libraryPath, EntryPoint = "LLVMAddFunctionAttr2", CallingConvention = CallingConvention.Cdecl)]
