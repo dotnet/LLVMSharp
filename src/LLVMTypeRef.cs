@@ -58,6 +58,11 @@
             return LLVM.GetParamTypes(this);
         }
 
+        public LLVMTypeRef[] GetSubtypes()
+        {
+            return LLVM.GetSubtypes(this);
+        }
+
         public string GetStructName()
         {
             return LLVM.GetStructName(this);

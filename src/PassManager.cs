@@ -155,6 +155,11 @@
             LLVM.AddCFGSimplificationPass(this.instance);
         }
 
+        public void AddLateCFGSimplificationPass()
+        {
+            LLVM.AddLateCFGSimplificationPass(this.instance);
+        }
+
         public void AddDeadStoreEliminationPass()
         {
             LLVM.AddDeadStoreEliminationPass(this.instance);
@@ -173,6 +178,11 @@
         public void AddGVNPass()
         {
             LLVM.AddGVNPass(this.instance);
+        }
+
+        public void AddNewGVNPass()
+        {
+            LLVM.AddNewGVNPass(this.instance);
         }
 
         public void AddIndVarSimplifyPass()
@@ -303,6 +313,11 @@
         public void AddEarlyCSEPass()
         {
             LLVM.AddEarlyCSEPass(this.instance);
+        }
+
+        public void AddEarlyCSEMemSSAPass()
+        {
+            LLVM.AddEarlyCSEMemSSAPass(this.instance);
         }
 
         public void AddLowerExpectIntrinsicPass()

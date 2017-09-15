@@ -117,6 +117,11 @@
             return LLVM.ConstExactSDiv(@LHSConstant, @RHSConstant);
         }
 
+        public static LLVMValueRef ConstExactUDiv(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant)
+        {
+            return LLVM.ConstExactUDiv(@LHSConstant, @RHSConstant);
+        }
+
         public static LLVMValueRef ConstFDiv(LLVMValueRef @LHSConstant, LLVMValueRef @RHSConstant)
         {
             return LLVM.ConstFDiv(@LHSConstant, @RHSConstant);

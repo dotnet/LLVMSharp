@@ -673,24 +673,19 @@
             LLVM.SetGC(this, @Name);
         }
 
-        public void AddFunctionAttr(LLVMAttribute @PA)
-        {
-            LLVM.AddFunctionAttr(this, @PA);
-        }
-
         public void AddTargetDependentFunctionAttr(string @A, string @V)
         {
             LLVM.AddTargetDependentFunctionAttr(this, @A, @V);
         }
 
-        public LLVMAttribute GetFunctionAttr()
+        public LLVMAttributeRef[] GetAttributesAtIndex(LLVMAttributeIndex @Idx)
         {
-            return LLVM.GetFunctionAttr(this);
+            return LLVM.GetAttributesAtIndex(this, Idx);
         }
 
-        public void RemoveFunctionAttr(LLVMAttribute @PA)
+        public LLVMAttributeRef[] GetCallSiteAttributes(LLVMAttributeIndex @Idx)
         {
-            LLVM.RemoveFunctionAttr(this, @PA);
+            return LLVM.GetCallSiteAttributes(this, Idx);
         }
 
         public uint CountParams()
@@ -731,21 +726,6 @@
         public LLVMValueRef GetPreviousParam()
         {
             return LLVM.GetPreviousParam(this);
-        }
-
-        public void AddAttribute(LLVMAttribute @PA)
-        {
-            LLVM.AddAttribute(this, @PA);
-        }
-
-        public void RemoveAttribute(LLVMAttribute @PA)
-        {
-            LLVM.RemoveAttribute(this, @PA);
-        }
-
-        public LLVMAttribute GetAttribute()
-        {
-            return LLVM.GetAttribute(this);
         }
 
         public void SetParamAlignment(uint @align)
@@ -871,16 +851,6 @@
         public uint GetInstructionCallConv()
         {
             return LLVM.GetInstructionCallConv(this);
-        }
-
-        public void AddInstrAttribute(uint @index, LLVMAttribute @param2)
-        {
-            LLVM.AddInstrAttribute(this, @index, @param2);
-        }
-
-        public void RemoveInstrAttribute(uint @index, LLVMAttribute @param2)
-        {
-            LLVM.RemoveInstrAttribute(this, @index, @param2);
         }
 
         public void SetInstrParamAlignment(uint @index, uint @align)

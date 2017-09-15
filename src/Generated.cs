@@ -1282,7 +1282,7 @@ namespace LLVMSharp
         internal static extern void GetSubtypes(LLVMTypeRef @Tp, out LLVMTypeRef @Arr);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetNumContainedTypes", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetNumContainedTypes(LLVMTypeRef @Tp);
+        internal static extern uint GetNumContainedTypes(LLVMTypeRef @Tp);
 
         [DllImport(libraryPath, EntryPoint = "LLVMArrayType", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef ArrayType(LLVMTypeRef @ElementType, uint @ElementCount);
@@ -2206,7 +2206,7 @@ namespace LLVMSharp
         public static extern void AddCallSiteAttribute(LLVMValueRef @C, LLVMAttributeIndex @Idx, LLVMAttributeRef @A);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetCallSiteAttributeCount", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetCallSiteAttributeCount(LLVMValueRef @C, LLVMAttributeIndex @Idx);
+        internal static extern uint GetCallSiteAttributeCount(LLVMValueRef @C, LLVMAttributeIndex @Idx);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetCallSiteAttributes", CallingConvention = CallingConvention.Cdecl)]
         internal static extern void GetCallSiteAttributes(LLVMValueRef @C, LLVMAttributeIndex @Idx, out LLVMAttributeRef @Attrs);
