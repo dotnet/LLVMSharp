@@ -260,6 +260,12 @@
 
         public static LLVMValueRef BuildAggregateRet(LLVMBuilderRef param0, LLVMValueRef[] RetVals)
         {
+            if (RetVals.Length == 0)
+            {
+                LLVMValueRef dummy;
+                return BuildAggregateRet(param0, out dummy, 0);
+            }
+
             return BuildAggregateRet(param0, out RetVals[0], (uint)RetVals.Length);
         }
 
@@ -316,6 +322,30 @@
             }
 
             return RunFunction(EE, F, (uint)Args.Length, out Args[0]);
+        }
+
+        public static LLVMTypeRef[] GetSubtypes(LLVMTypeRef Tp)
+        {
+            var arr = new LLVMTypeRef[GetNumContainedTypes(Tp)];
+            GetSubtypes(Tp, out arr[0]);
+
+            return arr;
+        }
+
+        public static LLVMAttributeRef[] GetAttributesAtIndex(LLVMValueRef F, LLVMAttributeIndex Idx)
+        {
+            var arr = new LLVMAttributeRef[GetAttributeCountAtIndex(F, Idx)];
+            GetAttributesAtIndex(F, Idx, out arr[0]);
+
+            return arr;
+        }
+
+        public static LLVMAttributeRef[] GetCallSiteAttributes(LLVMValueRef C, LLVMAttributeIndex Idx)
+        {
+            var arr = new LLVMAttributeRef[GetCallSiteAttributeCount(C, Idx)];
+            GetCallSiteAttributes(C, Idx, out arr[0]);
+
+            return arr;
         }
     }
 }

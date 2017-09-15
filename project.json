@@ -1,0 +1,29 @@
+{
+  "authors": [ "mjsabby" ],
+  "buildOptions": {
+    "compile": {
+      "exclude": [ "KaleidoscopeTutorial", "tools" ]
+    },
+    "debugType": "portable"
+  },
+  "dependencies": {},
+  "description": "LLVM C# bindings for .NET Core and .NET Framework",
+  "frameworks": {
+    "net45": {},
+    "netstandard1.1": {
+      "dependencies": {
+        "System.Runtime": "4.0.0",
+        "System.Resources.ResourceManager": "4.0.0",
+        "System.Runtime.InteropServices": "4.0.0"
+      }
+    }
+  },
+  "packOptions": {
+    "licenseUrl": "https://raw.githubusercontent.com/Microsoft/LLVMSharp/master/LICENSE.txt",
+    "owners": [ "mjsabby" ],
+    "projectUrl": "https://github.com/Microsoft/LLVMSharp",
+    "summary": "LLVM C# bindings for .NET Core and .NET Framework",
+    "tags": [ "llvm", "clang", "libLLVM", "kaleidoscope", "libclang", "clangsharp", "llvmsharp", "ast", "c++", "c", "roslyn", "compilers", "parsers", "clang.net", "llvm.net", "bindings", "pinvoke" ]
+  },
+  "version": "3.9.1"
+}

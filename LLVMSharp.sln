@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24201.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26014.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLVMSharp", "LLVMSharp.csproj", "{E230F816-0E92-4AE4-83E4-24D74DEB9609}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLVMSharp", "LLVMSharp.csproj", "{134605B0-3140-4C9A-BE4B-E8720933620B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E230F816-0E92-4AE4-83E4-24D74DEB9609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E230F816-0E92-4AE4-83E4-24D74DEB9609}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E230F816-0E92-4AE4-83E4-24D74DEB9609}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E230F816-0E92-4AE4-83E4-24D74DEB9609}.Release|Any CPU.Build.0 = Release|Any CPU
+		{134605B0-3140-4C9A-BE4B-E8720933620B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{134605B0-3140-4C9A-BE4B-E8720933620B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{134605B0-3140-4C9A-BE4B-E8720933620B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{134605B0-3140-4C9A-BE4B-E8720933620B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
