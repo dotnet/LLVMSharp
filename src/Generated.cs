@@ -299,10 +299,10 @@ namespace LLVMSharp
     public delegate void LLVMFatalErrorHandler([MarshalAs(UnmanagedType.LPStr)] string @Reason);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void LLVMDiagnosticHandler(out LLVMOpaqueDiagnosticInfo @param0, IntPtr @param1);
+    public delegate void LLVMDiagnosticHandler(LLVMDiagnosticInfoRef @param0, IntPtr @param1);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void LLVMYieldCallback(out LLVMOpaqueContext @param0, IntPtr @param1);
+    public delegate void LLVMYieldCallback(LLVMContextRef @param0, IntPtr @param1);
 
     public partial struct LLVMDisasmContextRef
     {
@@ -315,10 +315,10 @@ namespace LLVMSharp
     }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int LLVMOpInfoCallback(IntPtr @DisInfo, int @PC, int @Offset, int @Size, int @TagType, IntPtr @TagBuf);
+    public delegate int LLVMOpInfoCallback(IntPtr @DisInfo, ulong @PC, ulong @Offset, ulong @Size, int @TagType, IntPtr @TagBuf);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate string LLVMSymbolLookupCallback(IntPtr @DisInfo, int @ReferenceValue, out int @ReferenceType, int @ReferencePC, out IntPtr @ReferenceName);
+    public delegate IntPtr LLVMSymbolLookupCallback(IntPtr @DisInfo, ulong @ReferenceValue, out ulong @ReferenceType, ulong @ReferencePC, out IntPtr @ReferenceName);
 
     public partial struct LLVMTargetDataRef
     {
