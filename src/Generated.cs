@@ -53,17 +53,17 @@ namespace LLVMSharp
 
     public partial struct LLVMOpInfoSymbol1
     {
-        public int @Present;
+        public ulong @Present;
         [MarshalAs(UnmanagedType.LPStr)] public string @Name;
-        public int @Value;
+        public ulong @Value;
     }
 
     public partial struct LLVMOpInfo1
     {
         public LLVMOpInfoSymbol1 @AddSymbol;
         public LLVMOpInfoSymbol1 @SubtractSymbol;
-        public int @Value;
-        public int @VariantKind;
+        public ulong @Value;
+        public ulong @VariantKind;
     }
 
     public partial struct LLVMOpaqueTargetData
@@ -2731,13 +2731,13 @@ namespace LLVMSharp
         public static extern LLVMDisasmContextRef CreateDisasmCPUFeatures([MarshalAs(UnmanagedType.LPStr)] string @Triple, [MarshalAs(UnmanagedType.LPStr)] string @CPU, [MarshalAs(UnmanagedType.LPStr)] string @Features, IntPtr @DisInfo, int @TagType, LLVMOpInfoCallback @GetOpInfo, LLVMSymbolLookupCallback @SymbolLookUp);
 
         [DllImport(libraryPath, EntryPoint = "LLVMSetDisasmOptions", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int SetDisasmOptions(LLVMDisasmContextRef @DC, int @Options);
+        public static extern int SetDisasmOptions(LLVMDisasmContextRef @DC, ulong @Options);
 
         [DllImport(libraryPath, EntryPoint = "LLVMDisasmDispose", CallingConvention = CallingConvention.Cdecl)]
         public static extern void DisasmDispose(LLVMDisasmContextRef @DC);
 
         [DllImport(libraryPath, EntryPoint = "LLVMDisasmInstruction", CallingConvention = CallingConvention.Cdecl)]
-        public static extern ulong DisasmInstruction(LLVMDisasmContextRef @DC, IntPtr @Bytes, long @BytesSize, long @PC, IntPtr @OutString, size_t @OutStringSize);
+        public static extern size_t DisasmInstruction(LLVMDisasmContextRef @DC, IntPtr @Bytes, ulong @BytesSize, ulong @PC, IntPtr @OutString, size_t @OutStringSize);
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeAMDGPUTargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeAMDGPUTargetInfo();
@@ -3193,10 +3193,10 @@ namespace LLVMSharp
         public static extern IntPtr GetPointerToGlobal(LLVMExecutionEngineRef @EE, LLVMValueRef @Global);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetGlobalValueAddress", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetGlobalValueAddress(LLVMExecutionEngineRef @EE, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        public static extern ulong GetGlobalValueAddress(LLVMExecutionEngineRef @EE, [MarshalAs(UnmanagedType.LPStr)] string @Name);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetFunctionAddress", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetFunctionAddress(LLVMExecutionEngineRef @EE, [MarshalAs(UnmanagedType.LPStr)] string @Name);
+        public static extern ulong GetFunctionAddress(LLVMExecutionEngineRef @EE, [MarshalAs(UnmanagedType.LPStr)] string @Name);
 
         [DllImport(libraryPath, EntryPoint = "LLVMCreateSimpleMCJITMemoryManager", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMMCJITMemoryManagerRef CreateSimpleMCJITMemoryManager(IntPtr @Opaque, LLVMMemoryManagerAllocateCodeSectionCallback @AllocateCodeSection, LLVMMemoryManagerAllocateDataSectionCallback @AllocateDataSection, LLVMMemoryManagerFinalizeMemoryCallback @FinalizeMemory, LLVMMemoryManagerDestroyCallback @Destroy);
@@ -3280,13 +3280,13 @@ namespace LLVMSharp
         public static extern string GetSectionName(LLVMSectionIteratorRef @SI);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetSectionSize", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetSectionSize(LLVMSectionIteratorRef @SI);
+        public static extern ulong GetSectionSize(LLVMSectionIteratorRef @SI);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetSectionContents", CallingConvention = CallingConvention.Cdecl)]
         public static extern string GetSectionContents(LLVMSectionIteratorRef @SI);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetSectionAddress", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetSectionAddress(LLVMSectionIteratorRef @SI);
+        public static extern ulong GetSectionAddress(LLVMSectionIteratorRef @SI);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetSectionContainsSymbol", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool GetSectionContainsSymbol(LLVMSectionIteratorRef @SI, LLVMSymbolIteratorRef @Sym);
@@ -3307,19 +3307,19 @@ namespace LLVMSharp
         public static extern string GetSymbolName(LLVMSymbolIteratorRef @SI);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetSymbolAddress", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetSymbolAddress(LLVMSymbolIteratorRef @SI);
+        public static extern ulong GetSymbolAddress(LLVMSymbolIteratorRef @SI);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetSymbolSize", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetSymbolSize(LLVMSymbolIteratorRef @SI);
+        public static extern ulong GetSymbolSize(LLVMSymbolIteratorRef @SI);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetRelocationOffset", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetRelocationOffset(LLVMRelocationIteratorRef @RI);
+        public static extern ulong GetRelocationOffset(LLVMRelocationIteratorRef @RI);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetRelocationSymbol", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMSymbolIteratorRef GetRelocationSymbol(LLVMRelocationIteratorRef @RI);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetRelocationType", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetRelocationType(LLVMRelocationIteratorRef @RI);
+        public static extern ulong GetRelocationType(LLVMRelocationIteratorRef @RI);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetRelocationTypeName", CallingConvention = CallingConvention.Cdecl)]
         public static extern string GetRelocationTypeName(LLVMRelocationIteratorRef @RI);
