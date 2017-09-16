@@ -122,12 +122,12 @@
             return LLVM.GetPointerToGlobal(this.instance, @Global);
         }
 
-        public int GetGlobalValueAddress(string @Name)
+        public ulong GetGlobalValueAddress(string @Name)
         {
             return LLVM.GetGlobalValueAddress(this.instance, @Name);
         }
 
-        public int GetFunctionAddress(string @Name)
+        public ulong GetFunctionAddress(string @Name)
         {
             return LLVM.GetFunctionAddress(this.instance, @Name);
         }
