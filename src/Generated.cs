@@ -2671,13 +2671,13 @@ namespace LLVMSharp
         public static extern LLVMBool CreateMemoryBufferWithSTDIN(out LLVMMemoryBufferRef @OutMemBuf, out IntPtr @OutMessage);
 
         [DllImport(libraryPath, EntryPoint = "LLVMCreateMemoryBufferWithMemoryRange", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMMemoryBufferRef CreateMemoryBufferWithMemoryRange([MarshalAs(UnmanagedType.LPStr)] string @InputData, size_t @InputDataLength, [MarshalAs(UnmanagedType.LPStr)] string @BufferName, LLVMBool @RequiresNullTerminator);
+        public static extern LLVMMemoryBufferRef CreateMemoryBufferWithMemoryRange(IntPtr @InputData, size_t @InputDataLength, [MarshalAs(UnmanagedType.LPStr)] string @BufferName, LLVMBool @RequiresNullTerminator);
 
         [DllImport(libraryPath, EntryPoint = "LLVMCreateMemoryBufferWithMemoryRangeCopy", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMMemoryBufferRef CreateMemoryBufferWithMemoryRangeCopy([MarshalAs(UnmanagedType.LPStr)] string @InputData, size_t @InputDataLength, [MarshalAs(UnmanagedType.LPStr)] string @BufferName);
+        public static extern LLVMMemoryBufferRef CreateMemoryBufferWithMemoryRangeCopy(IntPtr @InputData, size_t @InputDataLength, [MarshalAs(UnmanagedType.LPStr)] string @BufferName);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetBufferStart", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetBufferStart(LLVMMemoryBufferRef @MemBuf);
+        public static extern IntPtr GetBufferStart(LLVMMemoryBufferRef @MemBuf);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetBufferSize", CallingConvention = CallingConvention.Cdecl)]
         public static extern size_t GetBufferSize(LLVMMemoryBufferRef @MemBuf);
