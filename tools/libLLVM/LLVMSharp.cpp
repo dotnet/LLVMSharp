@@ -1,63 +1,54 @@
-#include "llvm/CodeGen/GCs.h"
 #include "llvm-c/Target.h"
 
 extern "C"
 {
-	void LLVMInitializeAllTargetInfos_()
-	{
-		LLVMInitializeAllTargetInfos();
-	}
+    void LLVMInitializeAllTargetInfos_()
+    {
+        LLVMInitializeAllTargetInfos();
+    }
 
-	void LLVMInitializeAllTargets_()
-	{
-		LLVMInitializeAllTargets();
-	}
+    void LLVMInitializeAllTargets_()
+    {
+        LLVMInitializeAllTargets();
+    }
 
-	void LLVMInitializeAllTargetMCs_()
-	{
-		LLVMInitializeAllTargetMCs();
-	}
+    void LLVMInitializeAllTargetMCs_()
+    {
+        LLVMInitializeAllTargetMCs();
+    }
 
-	void LLVMInitializeAllAsmPrinters_()
-	{
-		LLVMInitializeAllAsmPrinters();
-	}
+    void LLVMInitializeAllAsmPrinters_()
+    {
+        LLVMInitializeAllAsmPrinters();
+    }
 
-	void LLVMInitializeAllAsmParsers_()
-	{
-		LLVMInitializeAllAsmParsers();
-	}
+    void LLVMInitializeAllAsmParsers_()
+    {
+        LLVMInitializeAllAsmParsers();
+    }
 
-	void LLVMInitializeAllDisassemblers_()
-	{
-		LLVMInitializeAllDisassemblers();
-	}
+    void LLVMInitializeAllDisassemblers_()
+    {
+        LLVMInitializeAllDisassemblers();
+    }
 
-	LLVMBool LLVMInitializeNativeTarget_()
-	{
-		return LLVMInitializeNativeTarget();
-	}
+    LLVMBool LLVMInitializeNativeTarget_()
+    {
+        return LLVMInitializeNativeTarget();
+    }
 
-	LLVMBool LLVMInitializeNativeAsmParser_()
-	{
-		return LLVMInitializeNativeAsmParser();
-	}
+    LLVMBool LLVMInitializeNativeAsmParser_()
+    {
+        return LLVMInitializeNativeAsmParser();
+    }
 
-	LLVMBool LLVMInitializeNativeAsmPrinter_()
-	{
-		return LLVMInitializeNativeAsmPrinter();
-	}
+    LLVMBool LLVMInitializeNativeAsmPrinter_()
+    {
+        return LLVMInitializeNativeAsmPrinter();
+    }
 
-	LLVMBool LLVMInitializeNativeDisassembler_()
-	{
-		return LLVMInitializeNativeDisassembler();
-	}
-
-	void LLVMLinkInGC() {
-		llvm::linkCoreCLRGC();
-		llvm::linkShadowStackGC();
-		llvm::linkOcamlGC();
-		llvm::linkErlangGC();
-		llvm::linkStatepointExampleGC();
-	}
+    LLVMBool LLVMInitializeNativeDisassembler_()
+    {
+        return LLVMInitializeNativeDisassembler();
+    }
 }

@@ -185,3 +185,4 @@ FakesAssemblies/
 *.dll
 *.db
 *.ide
+*.opendb
