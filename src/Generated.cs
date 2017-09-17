@@ -925,7 +925,7 @@ namespace LLVMSharp
         private const string libraryPath = "libLLVM";
 
         [DllImport(libraryPath, EntryPoint = "LLVMVerifyModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool VerifyModule(LLVMModuleRef @M, LLVMVerifierFailureAction @Action, out IntPtr @OutMessage);
+        internal static extern LLVMBool VerifyModule(LLVMModuleRef @M, LLVMVerifierFailureAction @Action, out IntPtr @OutMessage);
 
         [DllImport(libraryPath, EntryPoint = "LLVMVerifyFunction", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool VerifyFunction(LLVMValueRef @Fn, LLVMVerifierFailureAction @Action);
@@ -937,25 +937,25 @@ namespace LLVMSharp
         public static extern void ViewFunctionCFGOnly(LLVMValueRef @Fn);
 
         [DllImport(libraryPath, EntryPoint = "LLVMParseBitcode", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool ParseBitcode(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutModule, out IntPtr @OutMessage);
+        internal static extern LLVMBool ParseBitcode(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutModule, out IntPtr @OutMessage);
 
         [DllImport(libraryPath, EntryPoint = "LLVMParseBitcode2", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool ParseBitcode2(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutModule);
 
         [DllImport(libraryPath, EntryPoint = "LLVMParseBitcodeInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool ParseBitcodeInContext(LLVMContextRef @ContextRef, LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutModule, out IntPtr @OutMessage);
+        internal static extern LLVMBool ParseBitcodeInContext(LLVMContextRef @ContextRef, LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutModule, out IntPtr @OutMessage);
 
         [DllImport(libraryPath, EntryPoint = "LLVMParseBitcodeInContext2", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool ParseBitcodeInContext2(LLVMContextRef @ContextRef, LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutModule);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetBitcodeModuleInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool GetBitcodeModuleInContext(LLVMContextRef @ContextRef, LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage);
+        internal static extern LLVMBool GetBitcodeModuleInContext(LLVMContextRef @ContextRef, LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetBitcodeModuleInContext2", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool GetBitcodeModuleInContext2(LLVMContextRef @ContextRef, LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetBitcodeModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool GetBitcodeModule(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage);
+        internal static extern LLVMBool GetBitcodeModule(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetBitcodeModule2", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool GetBitcodeModule2(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM);
@@ -1093,7 +1093,7 @@ namespace LLVMSharp
         public static extern void DumpModule(LLVMModuleRef @M);
 
         [DllImport(libraryPath, EntryPoint = "LLVMPrintModuleToFile", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool PrintModuleToFile(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @Filename, out IntPtr @ErrorMessage);
+        internal static extern LLVMBool PrintModuleToFile(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @Filename, out IntPtr @ErrorMessage);
 
         [DllImport(libraryPath, EntryPoint = "LLVMPrintModuleToString", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr PrintModuleToString(LLVMModuleRef @M);
@@ -2665,10 +2665,10 @@ namespace LLVMSharp
         public static extern void DisposeModuleProvider(LLVMModuleProviderRef @M);
 
         [DllImport(libraryPath, EntryPoint = "LLVMCreateMemoryBufferWithContentsOfFile", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateMemoryBufferWithContentsOfFile([MarshalAs(UnmanagedType.LPStr)] string @Path, out LLVMMemoryBufferRef @OutMemBuf, out IntPtr @OutMessage);
+        internal static extern LLVMBool CreateMemoryBufferWithContentsOfFile([MarshalAs(UnmanagedType.LPStr)] string @Path, out LLVMMemoryBufferRef @OutMemBuf, out IntPtr @OutMessage);
 
         [DllImport(libraryPath, EntryPoint = "LLVMCreateMemoryBufferWithSTDIN", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateMemoryBufferWithSTDIN(out LLVMMemoryBufferRef @OutMemBuf, out IntPtr @OutMessage);
+        internal static extern LLVMBool CreateMemoryBufferWithSTDIN(out LLVMMemoryBufferRef @OutMemBuf, out IntPtr @OutMessage);
 
         [DllImport(libraryPath, EntryPoint = "LLVMCreateMemoryBufferWithMemoryRange", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMMemoryBufferRef CreateMemoryBufferWithMemoryRange(IntPtr @InputData, size_t @InputDataLength, [MarshalAs(UnmanagedType.LPStr)] string @BufferName, LLVMBool @RequiresNullTerminator);
@@ -3052,7 +3052,7 @@ namespace LLVMSharp
         public static extern LLVMTargetRef GetTargetFromName([MarshalAs(UnmanagedType.LPStr)] string @Name);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetTargetFromTriple", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool GetTargetFromTriple([MarshalAs(UnmanagedType.LPStr)] string @Triple, out LLVMTargetRef @T, out IntPtr @ErrorMessage);
+        internal static extern LLVMBool GetTargetFromTriple([MarshalAs(UnmanagedType.LPStr)] string @Triple, out LLVMTargetRef @T, out IntPtr @ErrorMessage);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetTargetName", CallingConvention = CallingConvention.Cdecl)]
         public static extern string GetTargetName(LLVMTargetRef @T);
@@ -3094,10 +3094,10 @@ namespace LLVMSharp
         public static extern void SetTargetMachineAsmVerbosity(LLVMTargetMachineRef @T, LLVMBool @VerboseAsm);
 
         [DllImport(libraryPath, EntryPoint = "LLVMTargetMachineEmitToFile", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool TargetMachineEmitToFile(LLVMTargetMachineRef @T, LLVMModuleRef @M, IntPtr @Filename, LLVMCodeGenFileType @codegen, out IntPtr @ErrorMessage);
+        internal static extern LLVMBool TargetMachineEmitToFile(LLVMTargetMachineRef @T, LLVMModuleRef @M, IntPtr @Filename, LLVMCodeGenFileType @codegen, out IntPtr @ErrorMessage);
 
         [DllImport(libraryPath, EntryPoint = "LLVMTargetMachineEmitToMemoryBuffer", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool TargetMachineEmitToMemoryBuffer(LLVMTargetMachineRef @T, LLVMModuleRef @M, LLVMCodeGenFileType @codegen, out IntPtr @ErrorMessage, out LLVMMemoryBufferRef @OutMemBuf);
+        internal static extern LLVMBool TargetMachineEmitToMemoryBuffer(LLVMTargetMachineRef @T, LLVMModuleRef @M, LLVMCodeGenFileType @codegen, out IntPtr @ErrorMessage, out LLVMMemoryBufferRef @OutMemBuf);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetDefaultTargetTriple", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetDefaultTargetTriple();
@@ -3136,19 +3136,19 @@ namespace LLVMSharp
         public static extern void DisposeGenericValue(LLVMGenericValueRef @GenVal);
 
         [DllImport(libraryPath, EntryPoint = "LLVMCreateExecutionEngineForModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateExecutionEngineForModule(out LLVMExecutionEngineRef @OutEE, LLVMModuleRef @M, out IntPtr @OutError);
+        internal static extern LLVMBool CreateExecutionEngineForModule(out LLVMExecutionEngineRef @OutEE, LLVMModuleRef @M, out IntPtr @OutError);
 
         [DllImport(libraryPath, EntryPoint = "LLVMCreateInterpreterForModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateInterpreterForModule(out LLVMExecutionEngineRef @OutInterp, LLVMModuleRef @M, out IntPtr @OutError);
+        internal static extern LLVMBool CreateInterpreterForModule(out LLVMExecutionEngineRef @OutInterp, LLVMModuleRef @M, out IntPtr @OutError);
 
         [DllImport(libraryPath, EntryPoint = "LLVMCreateJITCompilerForModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateJITCompilerForModule(out LLVMExecutionEngineRef @OutJIT, LLVMModuleRef @M, uint @OptLevel, out IntPtr @OutError);
+        internal static extern LLVMBool CreateJITCompilerForModule(out LLVMExecutionEngineRef @OutJIT, LLVMModuleRef @M, uint @OptLevel, out IntPtr @OutError);
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeMCJITCompilerOptions", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeMCJITCompilerOptions(out LLVMMCJITCompilerOptions @Options, size_t @SizeOfOptions);
+        internal static extern unsafe void InitializeMCJITCompilerOptions(LLVMMCJITCompilerOptions* @Options, size_t @SizeOfOptions);
 
         [DllImport(libraryPath, EntryPoint = "LLVMCreateMCJITCompilerForModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool CreateMCJITCompilerForModule(out LLVMExecutionEngineRef @OutJIT, LLVMModuleRef @M, out LLVMMCJITCompilerOptions @Options, size_t @SizeOfOptions, out IntPtr @OutError);
+        internal static extern unsafe LLVMBool CreateMCJITCompilerForModule(out LLVMExecutionEngineRef @OutJIT, LLVMModuleRef @M, LLVMMCJITCompilerOptions* @Options, size_t @SizeOfOptions, out IntPtr @OutError);
 
         [DllImport(libraryPath, EntryPoint = "LLVMDisposeExecutionEngine", CallingConvention = CallingConvention.Cdecl)]
         public static extern void DisposeExecutionEngine(LLVMExecutionEngineRef @EE);
@@ -3172,7 +3172,7 @@ namespace LLVMSharp
         public static extern void AddModule(LLVMExecutionEngineRef @EE, LLVMModuleRef @M);
 
         [DllImport(libraryPath, EntryPoint = "LLVMRemoveModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool RemoveModule(LLVMExecutionEngineRef @EE, LLVMModuleRef @M, out LLVMModuleRef @OutMod, out IntPtr @OutError);
+        internal static extern LLVMBool RemoveModule(LLVMExecutionEngineRef @EE, LLVMModuleRef @M, out LLVMModuleRef @OutMod, out IntPtr @OutError);
 
         [DllImport(libraryPath, EntryPoint = "LLVMFindFunction", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool FindFunction(LLVMExecutionEngineRef @EE, [MarshalAs(UnmanagedType.LPStr)] string @Name, out LLVMValueRef @OutFn);
@@ -3238,7 +3238,7 @@ namespace LLVMSharp
         public static extern void InitializeTarget(LLVMPassRegistryRef @R);
 
         [DllImport(libraryPath, EntryPoint = "LLVMParseIRInContext", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool ParseIRInContext(LLVMContextRef @ContextRef, LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage);
+        internal static extern LLVMBool ParseIRInContext(LLVMContextRef @ContextRef, LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage);
 
         [DllImport(libraryPath, EntryPoint = "LLVMLinkModules2", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool LinkModules2(LLVMModuleRef @Dest, LLVMModuleRef @Src);
@@ -3346,7 +3346,7 @@ namespace LLVMSharp
         public static extern string OrcGetErrorMsg(LLVMOrcJITStackRef @JITStack);
 
         [DllImport(libraryPath, EntryPoint = "LLVMOrcGetMangledSymbol", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void OrcGetMangledSymbol(LLVMOrcJITStackRef @JITStack, out IntPtr @MangledSymbol, [MarshalAs(UnmanagedType.LPStr)] string @Symbol);
+        internal static extern void OrcGetMangledSymbol(LLVMOrcJITStackRef @JITStack, out IntPtr @MangledSymbol, [MarshalAs(UnmanagedType.LPStr)] string @Symbol);
 
         [DllImport(libraryPath, EntryPoint = "LLVMOrcDisposeMangledSymbol", CallingConvention = CallingConvention.Cdecl)]
         public static extern void OrcDisposeMangledSymbol(IntPtr @MangledSymbol);

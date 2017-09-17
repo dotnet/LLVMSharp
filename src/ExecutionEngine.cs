@@ -1,7 +1,7 @@
 ﻿namespace LLVMSharp
 {
     using System;
-    using System.Runtime.InteropServices;
+    using System.Runtime.CompilerServices;
 
     public sealed class ExecutionEngine : IDisposable
     {
@@ -11,9 +11,7 @@
 
         public static ExecutionEngine Create(Module module)
         {
-            IntPtr error;
-            LLVMExecutionEngineRef instance;
-            if (!LLVM.CreateExecutionEngineForModule(out instance, module.instance, out error))
+            if (!LLVM.CreateExecutionEngineForModule(out var instance, module.instance, out string error))
             {
                 ThrowError(error);
             }
@@ -23,9 +21,7 @@
 
         public static ExecutionEngine CreateInterpreter(Module module)
         {
-            IntPtr error;
-            LLVMExecutionEngineRef instance;
-            if (LLVM.CreateInterpreterForModule(out instance, module.instance, out error))
+            if (LLVM.CreateInterpreterForModule(out var instance, module.instance, out string error))
             {
                 ThrowError(error);
             }
@@ -33,13 +29,10 @@
             return new ExecutionEngine(instance);
         }
 
-        public static ExecutionEngine CreateMCJITCompiler(Module module, LLVMMCJITCompilerOptions options, size_t optionsSize)
+        public static ExecutionEngine CreateMCJITCompiler(Module module, LLVMMCJITCompilerOptions options)
         {
-            LLVM.InitializeMCJITCompilerOptions(out options, optionsSize);
-
-            IntPtr error;
-            LLVMExecutionEngineRef instance;
-            if (LLVM.CreateMCJITCompilerForModule(out instance, module.instance, out options, optionsSize, out error))
+            LLVM.InitializeMCJITCompilerOptions(options);
+            if (LLVM.CreateMCJITCompilerForModule(out var instance, module.instance, options, out var error))
             {
                 ThrowError(error);
             }
@@ -150,11 +143,10 @@
             this.disposed = true;
         }
 
-        private static void ThrowError(IntPtr error)
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void ThrowError(string error)
         {
-            string errormessage = Marshal.PtrToStringAnsi(error);
-            LLVM.DisposeMessage(error);
-            throw new Exception(errormessage);
+            throw new Exception(error);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace LLVMSharp
 {
     using System;
+    using System.Runtime.InteropServices;
 
     partial class LLVM
     {
@@ -346,6 +347,164 @@
             GetCallSiteAttributes(C, Idx, out arr[0]);
 
             return arr;
+        }
+
+        public static LLVMBool VerifyModule(LLVMModuleRef M, LLVMVerifierFailureAction Action, out string OutMessage)
+        {
+            var retVal = VerifyModule(M, Action, out IntPtr message);
+            OutMessage = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool ParseBitcode(LLVMMemoryBufferRef MemBuf, out LLVMModuleRef OutModule, out string OutMessage)
+        {
+            var retVal = ParseBitcode(MemBuf, out OutModule, out IntPtr message);
+            OutMessage = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool ParseBitcodeInContext(LLVMContextRef ContextRef, LLVMMemoryBufferRef MemBuf, out LLVMModuleRef OutModule, out string OutMessage)
+        {
+            var retVal = ParseBitcodeInContext(ContextRef, MemBuf, out OutModule, out IntPtr message);
+            OutMessage = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool GetBitcodeModuleInContext(LLVMContextRef ContextRef, LLVMMemoryBufferRef MemBuf, out LLVMModuleRef OutM, out string OutMessage)
+        {
+            var retVal = GetBitcodeModuleInContext(ContextRef, MemBuf, out OutM, out IntPtr message);
+            OutMessage = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool GetBitcodeModule(LLVMMemoryBufferRef MemBuf, out LLVMModuleRef OutM, out string OutMessage)
+        {
+            var retVal = GetBitcodeModule(MemBuf, out OutM, out IntPtr message);
+            OutMessage = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool PrintModuleToFile(LLVMModuleRef M, string Filename, out string ErrorMessage)
+        {
+            var retVal = PrintModuleToFile(M, Filename, out IntPtr message);
+            ErrorMessage = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool CreateMemoryBufferWithContentsOfFile(string Path, out LLVMMemoryBufferRef OutMemBuf, out string OutMessage)
+        {
+            var retVal = CreateMemoryBufferWithContentsOfFile(Path, out OutMemBuf, out IntPtr message);
+            OutMessage = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool CreateMemoryBufferWithSTDIN(out LLVMMemoryBufferRef OutMemBuf, out string OutMessage)
+        {
+            var retVal = CreateMemoryBufferWithSTDIN(out OutMemBuf, out IntPtr message);
+            OutMessage = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool GetTargetFromTriple(string Triple, out LLVMTargetRef T, out string ErrorMessage)
+        {
+            var retVal = GetTargetFromTriple(Triple, out T, out IntPtr message);
+            ErrorMessage = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool TargetMachineEmitToFile(LLVMTargetMachineRef T, LLVMModuleRef M, IntPtr Filename, LLVMCodeGenFileType codegen, out string ErrorMessage)
+        {
+            var retVal = TargetMachineEmitToFile(T, M, Filename, codegen, out IntPtr message);
+            ErrorMessage = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool TargetMachineEmitToMemoryBuffer(LLVMTargetMachineRef T, LLVMModuleRef M, LLVMCodeGenFileType codegen, out string ErrorMessage, out LLVMMemoryBufferRef OutMemBuf)
+        {
+            var retVal = TargetMachineEmitToMemoryBuffer(T, M, codegen, out IntPtr message, out OutMemBuf);
+            ErrorMessage = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool CreateExecutionEngineForModule(out LLVMExecutionEngineRef OutEE, LLVMModuleRef M, out string OutError)
+        {
+            var retVal = CreateExecutionEngineForModule(out OutEE, M, out IntPtr message);
+            OutError = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool CreateInterpreterForModule(out LLVMExecutionEngineRef OutInterp, LLVMModuleRef M, out string OutError)
+        {
+            var retVal = CreateInterpreterForModule(out OutInterp, M, out IntPtr message);
+            OutError = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool CreateJITCompilerForModule(out LLVMExecutionEngineRef OutJIT, LLVMModuleRef M, uint OptLevel, out string OutError)
+        {
+            var retVal = CreateJITCompilerForModule(out OutJIT, M, OptLevel, out IntPtr message);
+            OutError = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static void InitializeMCJITCompilerOptions(LLVMMCJITCompilerOptions Options)
+        {
+            unsafe
+            {
+                InitializeMCJITCompilerOptions(&Options, sizeof(LLVMMCJITCompilerOptions));
+            }
+        }
+
+        public static LLVMBool CreateMCJITCompilerForModule(out LLVMExecutionEngineRef OutJIT, LLVMModuleRef M, LLVMMCJITCompilerOptions Options, out string OutError)
+        {
+            LLVMBool retVal;
+            IntPtr message;
+
+            unsafe
+            {
+                retVal = CreateMCJITCompilerForModule(out OutJIT, M, &Options, sizeof(LLVMMCJITCompilerOptions), out message);
+            }
+
+            OutError = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool RemoveModule(LLVMExecutionEngineRef EE, LLVMModuleRef M, out LLVMModuleRef OutMod, out string OutError)
+        {
+            var retVal = RemoveModule(EE, M, out OutMod, out IntPtr message);
+            OutError = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static LLVMBool ParseIRInContext(LLVMContextRef ContextRef, LLVMMemoryBufferRef MemBuf, out LLVMModuleRef OutM, out string OutMessage)
+        {
+            var retVal = ParseIRInContext(ContextRef, MemBuf, out OutM, out IntPtr message);
+            OutMessage = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
+            DisposeMessage(message);
+            return retVal;
+        }
+
+        public static void OrcGetMangledSymbol(LLVMOrcJITStackRef JITStack, out string MangledSymbol, string Symbol)
+        {
+            OrcGetMangledSymbol(JITStack, out IntPtr ptr, Symbol);
+            MangledSymbol = ptr != IntPtr.Zero ? Marshal.PtrToStringAnsi(ptr) : null;
+            OrcDisposeMangledSymbol(ptr);
         }
     }
 }
