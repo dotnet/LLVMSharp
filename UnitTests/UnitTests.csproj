@@ -59,7 +59,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LLVMSharp.csproj">
+    <ProjectReference Include="..\src\LLVMSharp.csproj">
       <Project>{e230f816-0e92-4ae4-83e4-24d74deb9609}</Project>
       <Name>LLVMSharp</Name>
     </ProjectReference>
