@@ -181,3 +181,8 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+*.exe
+*.dll
+*.db
+*.ide
+*.opendb

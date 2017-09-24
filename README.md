@@ -1,30 +1,29 @@
 # LLVMSharp
 
-LLVMSharp are strongly-typed safe LLVM bindings written in C# for .NET and Mono, tested on Linux and Windows. They are auto-generated using [ClangSharp](http://www.clangsharp.org) parsing LLVM-C header files.
+[![Join the chat at https://gitter.im/mjsabby/LLVMSharp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mjsabby/LLVMSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-If you're on Windows, consider using the [**LLVMSharp 3.6 NuGet Package**](http://www.nuget.org/packages/LLVMSharp/3.6.0) - built from LLVM 3.6 Release.
+LLVMSharp is a multi-platform .NET Standard library for accessing the LLLVM infrastructure. The bindings are auto-generated using [ClangSharp](http://www.clangsharp.org) parsing LLVM-C header files.
+
+[**LLVMSharp 5.0 NuGet Package**](http://www.nuget.org/packages/LLVMSharp/5.0.0) for .NET Core 2.0+ (Linux, macOS, Windows) and .NET Framework 4+ - built from the LLVM 5.0.0 Release.
 
 ## Building LLVMSharp
 
-On Linux using Mono:
+On Linux using .NET Core:
 
 ```bash
- $ git clone http://github.com/mjsabby/LLVMSharp
- $ cd LLVMSharp
- $ chmod +x build.sh
- $ ./build.sh /path/to/libLLVM.so /path/llvm/include
+ $ git clone http://github.com/Microsoft/LLVMSharp
+ $ cd LLVMSharp/src
+ $ dotnet build
 ```
 
-On Windows using Microsoft.NET:
+On Windows using .NET Core
 
-**Note:** - you need to run from the Visual Studio Command Prompt of the architecture you want to target.
+**Note:** - you need to run these commands from the Visual Studio Developer Command Prompt.
 
 ```bash
- :> cd c:\path\to\llvm_source\{Release|Debug}\lib
  :> git clone http://github.com/mjsabby/LLVMSharp
- :> cd LLVMSharp
- :> powershell ./LLVMSharp/GenLLVMDLL.ps1
- :> build.bat C:\path\llvm.dll C:\path\to\llvm\include
+ :> cd LLVMSharp\src
+ :> dotnet build
 ```
 
 ## Features
@@ -51,71 +50,72 @@ The tutorials have been tested to run on Windows and Linux, however the build (u
 
 * Functions are put in a C# class called LLVM and the LLVM prefix is removed from the functions, for example: LLVM.ModuleCreateWithName("LLVMSharpIntro");
 
-* For certain functions requiring a pointer to an array, you must pass the array indexed into its first element. If you do not want to pass any element, you can either pass an array with a dummy element, or make a single type and pass it, otherwise you won't be able to compile, for example: LLVM.FunctionType(LLVM.Int32Type(), out typesArr[0], 0, False); is equivalent to LLVM.FunctionType(LLVM.Int32Type(), out type, 0, False);
-
 ## Example application
 
-Main:
-
 ```csharp
-LLVMBool False = new LLVMBool(0);
-LLVMModuleRef mod = LLVM.ModuleCreateWithName("LLVMSharpIntro");
+    using System;
+    using System.Runtime.InteropServices;
+    using LLVMSharp;
 
-LLVMTypeRef[] param_types = { LLVM.Int32Type(), LLVM.Int32Type() };
-LLVMTypeRef ret_type = LLVM.FunctionType(LLVM.Int32Type(), out param_types[0], 2, False);
-LLVMValueRef sum = LLVM.AddFunction(mod, "sum", ret_type);
+    internal sealed class Program
+    {
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate int Add(int a, int b);
 
-LLVMBasicBlockRef entry = LLVM.AppendBasicBlock(sum, "entry");
+        private static void Main(string[] args)
+        {
+            LLVMBool Success = new LLVMBool(0);
+            LLVMModuleRef mod = LLVM.ModuleCreateWithName("LLVMSharpIntro");
 
-LLVMBuilderRef builder = LLVM.CreateBuilder();
-LLVM.PositionBuilderAtEnd(builder, entry);
-LLVMValueRef tmp = LLVM.BuildAdd(builder, LLVM.GetParam(sum, 0), LLVM.GetParam(sum, 1), "tmp");
-LLVM.BuildRet(builder, tmp);
+            LLVMTypeRef[] param_types = { LLVM.Int32Type(), LLVM.Int32Type() };
+            LLVMTypeRef ret_type = LLVM.FunctionType(LLVM.Int32Type(), param_types, false);
+            LLVMValueRef sum = LLVM.AddFunction(mod, "sum", ret_type);
 
-IntPtr error;
-LLVM.VerifyModule(mod, LLVMVerifierFailureAction.LLVMAbortProcessAction, out error);
-LLVM.DisposeMessage(error);
+            LLVMBasicBlockRef entry = LLVM.AppendBasicBlock(sum, "entry");
 
-LLVMExecutionEngineRef engine;
+            LLVMBuilderRef builder = LLVM.CreateBuilder();
+            LLVM.PositionBuilderAtEnd(builder, entry);
+            LLVMValueRef tmp = LLVM.BuildAdd(builder, LLVM.GetParam(sum, 0), LLVM.GetParam(sum, 1), "tmp");
+            LLVM.BuildRet(builder, tmp);
 
-LLVM.LinkInMCJIT();
-LLVM.InitializeX86Target();
-LLVM.InitializeX86TargetInfo();
-LLVM.InitializeX86TargetMC();
-LLVM.InitializeX86AsmPrinter();
+            if (LLVM.VerifyModule(mod, LLVMVerifierFailureAction.LLVMPrintMessageAction, out var error) != Success)
+            {
+                Console.WriteLine($"Error: {error}");
+            }
 
-var platform = Environment.OSVersion.Platform;
-if (platform == PlatformID.Win32NT) // On Windows, LLVM currently (3.6) does not support PE/COFF
-{
-    LLVM.SetTarget(mod, Marshal.PtrToStringAnsi(LLVM.GetDefaultTargetTriple()) + "-elf");
-}
+            LLVM.LinkInMCJIT();
 
-var options = new LLVMMCJITCompilerOptions();
-var optionsSize = (4 * sizeof(int)) + IntPtr.Size; // LLVMMCJITCompilerOptions has 4 ints and a pointer
+            LLVM.InitializeX86TargetMC();
+            LLVM.InitializeX86Target();
+            LLVM.InitializeX86TargetInfo();
+            LLVM.InitializeX86AsmParser();
+            LLVM.InitializeX86AsmPrinter();
 
-LLVM.InitializeMCJITCompilerOptions(out options, optionsSize);
-LLVM.CreateMCJITCompilerForModule(out engine, mod, out options, optionsSize, out error);
+            LLVMMCJITCompilerOptions options = new LLVMMCJITCompilerOptions { NoFramePointerElim = 1 };
+            LLVM.InitializeMCJITCompilerOptions(options);
+            if (LLVM.CreateMCJITCompilerForModule(out var engine, mod, options, out error) != Success)
+            {
+                Console.WriteLine($"Error: {error}");
+            }
 
-var addMethod = (Add)Marshal.GetDelegateForFunctionPointer(LLVM.GetPointerToGlobal(engine, sum), typeof(Add));
-int result = addMethod(10, 10);
+            var addMethod = (Add)Marshal.GetDelegateForFunctionPointer(LLVM.GetPointerToGlobal(engine, sum), typeof(Add));
+            int result = addMethod(10, 10);
 
-Console.WriteLine("Result of sum is: " + result);
+            Console.WriteLine("Result of sum is: " + result);
 
-if (LLVM.WriteBitcodeToFile(mod, "sum.bc") != 0)
-{
-    Console.WriteLine("error writing bitcode to file, skipping");
-}
+            if (LLVM.WriteBitcodeToFile(mod, "sum.bc") != 0)
+            {
+                Console.WriteLine("error writing bitcode to file, skipping");
+            }
 
-LLVM.DumpModule(mod);
+            LLVM.DumpModule(mod);
 
-LLVM.DisposeBuilder(builder);
-LLVM.DisposeExecutionEngine(engine);
-Console.ReadKey();
+            LLVM.DisposeBuilder(builder);
+            LLVM.DisposeExecutionEngine(engine);
+        }
+    }
 ````
 
-Delegate definition:
+## Microsoft Open Source Code of Conduct
 
-```csharp
-[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public delegate int Add(int a, int b);
-```
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.

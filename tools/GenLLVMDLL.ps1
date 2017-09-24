@@ -1,6 +1,6 @@
 param (
     [string]$filename = "libLLVM.dll",
-    [string]$arch = "X86"
+    [string]$arch = "X64"
  )
 
 function Get-Matches($Pattern) { 
@@ -47,6 +47,4 @@ else {
 }
 
 Remove-Item dumpbinoutput.txt
-Remove-Item LLVM.lib
 Remove-Item MergeLLVM.lib
-Remove-Item EXPORTS.DEF
