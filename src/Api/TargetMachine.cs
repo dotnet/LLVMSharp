@@ -66,12 +66,7 @@
         {
             get { return LLVM.GetTargetMachineFeatureString(this.Unwrap()); }
         }
-
-        public TargetData Data
-        {
-            get { return LLVM.GetTargetMachineData(this.Unwrap()).Wrap(); }
-        }
-
+        
         public void SetAsmVerbosity(bool verboseAsm)
         {
             LLVM.SetTargetMachineAsmVerbosity(this.Unwrap(), verboseAsm);

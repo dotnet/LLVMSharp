@@ -1,10 +1,15 @@
 ﻿namespace LLVMSharp
 {
+    using LLVMSharp.Api;
+    using LLVMSharp.Utilities;
     using System;
     using System.Runtime.InteropServices;
 
-    partial struct LLVMValueRef
-    {   
+    partial struct LLVMValueRef : IEquatable<LLVMValueRef>, IHandle<Value>
+    {
+        IntPtr IHandle<Value>.GetInternalPointer() => this.Pointer;
+        Value IHandle<Value>.ToWrapperType() => Value.Create(this);
+
         public LLVMValueRef GetNextFunction()
         {
             return LLVM.GetNextFunction(this);
@@ -680,12 +685,16 @@
 
         public LLVMAttributeRef[] GetAttributesAtIndex(LLVMAttributeIndex @Idx)
         {
-            return LLVM.GetAttributesAtIndex(this, Idx);
+            var e = new LLVMAttributeRef[LLVM.GetAttributeCountAtIndex(this, @Idx)];
+            LLVM.GetAttributesAtIndex(this, @Idx, out e[0]);
+            return e;
         }
 
         public LLVMAttributeRef[] GetCallSiteAttributes(LLVMAttributeIndex @Idx)
         {
-            return LLVM.GetCallSiteAttributes(this, Idx);
+            var e = new LLVMAttributeRef[LLVM.GetCallSiteAttributeCount(this, @Idx)];
+            LLVM.GetCallSiteAttributes(this, Idx, out e[0]);
+            return e;
         }
 
         public uint CountParams()
@@ -695,7 +704,9 @@
 
         public LLVMValueRef[] GetParams()
         {
-            return LLVM.GetParams(this);
+            var e = new LLVMValueRef[LLVM.CountParams(this)];
+            LLVM.GetParams(this, out e[0]);
+            return e;
         }
 
         public LLVMValueRef GetParam(uint @Index)
@@ -745,7 +756,9 @@
 
         public LLVMValueRef[] GetMDNodeOperands()
         {
-            return LLVM.GetMDNodeOperands(this);
+            var e = new LLVMValueRef[LLVM.GetMDNodeNumOperands(this)];
+            LLVM.GetMDNodeOperands(this, out e[0]);
+            return e;
         }
 
         public bool ValueIsBasicBlock()
@@ -765,7 +778,9 @@
 
         public LLVMBasicBlockRef[] GetBasicBlocks()
         {
-            return LLVM.GetBasicBlocks(this);
+            var e = new LLVMBasicBlockRef[LLVM.CountBasicBlocks(this)];
+            LLVM.GetBasicBlocks(this, out e[0]);
+            return e;
         }
 
         public LLVMBasicBlockRef GetFirstBasicBlock()
@@ -905,7 +920,7 @@
 
         public void AddIncoming(LLVMValueRef[] @IncomingValues, LLVMBasicBlockRef[] @IncomingBlocks, uint @Count)
         {
-            LLVM.AddIncoming(this, @IncomingValues, @IncomingBlocks, @Count);
+            LLVM.AddIncoming(this, out @IncomingValues[0], out @IncomingBlocks[0], @Count);
         }
 
         public uint CountIncoming()
@@ -972,5 +987,9 @@
         {
             return this.PrintValueToString();
         }
+
+        public bool Equals(LLVMValueRef other) => this.Pointer == other.Pointer;
+        public static bool operator==(LLVMValueRef op1, LLVMValueRef op2) => op1.Equals(op2);
+        public static bool operator!=(LLVMValueRef op1, LLVMValueRef op2) => !(op1 == op2);
     }
 }

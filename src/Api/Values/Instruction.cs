@@ -114,16 +114,6 @@
             set { LLVM.SetInstructionCallConv(this.Unwrap(), value); }
         }
         
-        public void AddInstrAttribute(uint index, LLVMAttribute param2)
-        {
-            LLVM.AddInstrAttribute(this.Unwrap(), index, param2);
-        }
-
-        public void RemoveInstrAttribute(uint index, LLVMAttribute param2)
-        {
-            LLVM.RemoveInstrAttribute(this.Unwrap(), index, param2);
-        }
-
         public Value GetMetadata(uint kindID)
         {
             return LLVM.GetMetadata(this.Unwrap(), kindID).Wrap();

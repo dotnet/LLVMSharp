@@ -1,5 +1,6 @@
 ﻿namespace LLVMSharp.Api
 {
+    using LLVMSharp;
     using System;
     using System.Runtime.InteropServices;
     using Utilities;
@@ -56,12 +57,12 @@
 
         public static Value ConstStruct(Value[] constantVals, bool packed)
         {
-            return LLVM.ConstStruct(constantVals.Unwrap(), packed).Wrap();
+            return LLVM.ConstStruct(out constantVals.Unwrap()[0], (uint)constantVals.Length, packed).Wrap();
         }
 
         public static Value ConstVector(Value[] scalarConstantVals)
         {
-            return LLVM.ConstVector(scalarConstantVals.Unwrap()).Wrap();
+            return LLVM.ConstVector(out scalarConstantVals.Unwrap()[0], (uint)scalarConstantVals.Length).Wrap();
         }
 
         LLVMValueRef IWrapper<LLVMValueRef>.ToHandleType()
@@ -134,7 +135,9 @@
 
         public Value[] GetMDNodeOperands()
         {
-            return LLVM.GetMDNodeOperands(this.Unwrap()).Wrap<LLVMValueRef, Value>();
+            var e = new LLVMValueRef[LLVM.GetMDNodeNumOperands(this.Unwrap())];
+            LLVM.GetMDNodeOperands(this.Unwrap(), out e[0]);
+            return e.Wrap<LLVMValueRef, Value>();
         }
 
         public override string ToString()
@@ -621,7 +624,7 @@
             get { return LLVM.IsConstantString(this.Unwrap()); }
         }
 
-        public string GetAsString(out int @out)
+        public string GetAsString(out size_t @out)
         {
             return LLVM.GetAsString(this.Unwrap(), out @out);
         }
@@ -798,12 +801,12 @@
 
         public static Value ConstGEP(Value constantVal, Value[] constantIndices)
         {
-            return LLVM.ConstGEP(constantVal.Unwrap(), constantIndices.Unwrap()).Wrap();
+            return LLVM.ConstGEP(constantVal.Unwrap(), out constantIndices.Unwrap()[0], (uint)constantIndices.Length).Wrap();
         }
 
         public static Value ConstInBoundsGEP(Value constantVal, Value[] constantIndices)
         {
-            return LLVM.ConstInBoundsGEP(constantVal.Unwrap(), constantIndices.Unwrap()).Wrap();
+            return LLVM.ConstInBoundsGEP(constantVal.Unwrap(), out constantIndices.Unwrap()[0], (uint)constantIndices.Length).Wrap();
         }
 
         public static Value ConstTrunc(Value constantVal, Type toType)
@@ -1062,29 +1065,19 @@
             set { LLVM.SetGC(this.Unwrap(), value); }
         }
 
-        public void AddFunctionAttr(Value fn, LLVMAttribute pa)
-        {
-            LLVM.AddFunctionAttr(this.Unwrap(), pa);
-        }
-
         public void AddTargetDependentFunctionAttr(string a, string v)
         {
             LLVM.AddTargetDependentFunctionAttr(this.Unwrap(), a, v);
         }
 
-        public LLVMAttribute GetFunctionAttr(Value fn)
-        {
-            return LLVM.GetFunctionAttr(this.Unwrap());
-        }
-
-        public void RemoveFunctionAttr(LLVMAttribute pa)
-        {
-            LLVM.RemoveFunctionAttr(this.Unwrap(), pa);
-        }
-
         public Value[] Params
         {
-            get { return LLVM.GetParams(this.Unwrap()).Wrap<LLVMValueRef, Value>(); }
+            get
+            {
+                var e = new LLVMValueRef[LLVM.CountParams(this.Unwrap())];
+                LLVM.GetParams(this.Unwrap(), out e[0]);
+                return e.Wrap<LLVMValueRef, Value>();
+            }
         }
 
         public Value GetParam(uint index)
@@ -1117,21 +1110,6 @@
             get { return LLVM.GetPreviousParam(this.Unwrap()).Wrap(); }
         }
 
-        public void AddAttribute(LLVMAttribute pa)
-        {
-            LLVM.AddAttribute(this.Unwrap(), pa);
-        }
-
-        public void RemoveAttribute(LLVMAttribute pa)
-        {
-            LLVM.RemoveAttribute(this.Unwrap(), pa);
-        }
-
-        public LLVMAttribute Attribute
-        {
-            get { return LLVM.GetAttribute(this.Unwrap()); }
-        }
-
         public void SetParamAlignment(uint align)
         {
             LLVM.SetParamAlignment(this.Unwrap(), align);
@@ -1144,7 +1122,7 @@
 
         public static Value MDNode(Value[] vals)
         {
-            return LLVM.MDNode(vals.Unwrap()).Wrap();
+            return LLVM.MDNode(out vals.Unwrap()[0], (uint)vals.Length).Wrap();
         }
 
         public string MDString(out uint len)
@@ -1154,7 +1132,12 @@
 
         public Value[] MDNodeOperands
         {
-            get { return LLVM.GetMDNodeOperands(this.Unwrap()).Wrap<LLVMValueRef, Value>(); }
+            get
+            {
+                var e = new LLVMValueRef[LLVM.GetMDNodeNumOperands(this.Unwrap())];
+                LLVM.GetMDNodeOperands(this.Unwrap(), out e[0]);
+                return e.Wrap<LLVMValueRef, Value>();
+            }
         }
 
         public BasicBlock FirstBasicBlock
@@ -1220,8 +1203,7 @@
 
         public void AddIncoming(Value phiNode, Value[] incomingValues, BasicBlock[] incomingBlocks)
         {
-            LLVM.AddIncoming(phiNode.Unwrap(), incomingBlocks.Unwrap<LLVMValueRef>(),
-                             incomingBlocks.Unwrap<LLVMBasicBlockRef>());
+            LLVM.AddIncoming(phiNode.Unwrap(), out incomingBlocks.Unwrap<LLVMValueRef>()[0], out incomingBlocks.Unwrap<LLVMBasicBlockRef>()[0], (uint)incomingValues.Length);
         }
         
         public void AddCase(Value onVal, BasicBlock dest)

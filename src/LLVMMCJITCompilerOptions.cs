@@ -1,14 +1,15 @@
 ﻿namespace LLVMSharp
 {
+    using System;
     using System.Runtime.InteropServices;
 
     partial struct LLVMMCJITCompilerOptions
     {
-        public static LLVMMCJITCompilerOptions Initialize()
+        public unsafe static LLVMMCJITCompilerOptions Initialize()
         {
             LLVMMCJITCompilerOptions options;
-            var sizeOfOptions = Marshal.SizeOf(typeof (LLVMMCJITCompilerOptions));
-            LLVM.InitializeMCJITCompilerOptions(out options, sizeOfOptions);
+            var sizeOfOptions = new size_t(new IntPtr(Marshal.SizeOf(typeof (LLVMMCJITCompilerOptions))));
+            LLVM.InitializeMCJITCompilerOptions(&options, sizeOfOptions);
             return options;
         }
     }

@@ -65,7 +65,7 @@
             get { return LLVM.GetSectionName(this.Unwrap()); }
         }
 
-        public int SectionSize
+        public ulong SectionSize
         {
             get { return LLVM.GetSectionSize(this.Unwrap()); }
         }
@@ -75,7 +75,7 @@
             get { return LLVM.GetSectionContents(this.Unwrap()); }
         }
 
-        public int SectionAddress
+        public ulong SectionAddress
         {
             get { return LLVM.GetSectionAddress(this.Unwrap()); }
         }

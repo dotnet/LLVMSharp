@@ -120,18 +120,18 @@
         }
 
         public Type StructType(Type[] elementTypes, bool packed)
-            => LLVM.StructTypeInContext(this.Unwrap(), elementTypes.Unwrap(), packed).Wrap();
+            => LLVM.StructTypeInContext(this.Unwrap(), out elementTypes.Unwrap()[0], (uint)elementTypes.Length, packed).Wrap();
 
         public Value ConstStringInContext(string str, uint length, bool dontNullTerminate)
             => LLVM.ConstStringInContext(this.Unwrap(), str, length, dontNullTerminate).Wrap();
 
         public Value ConstStructInContext(Value[] constantVals, bool packed)
-            => LLVM.ConstStructInContext(this.Unwrap(), constantVals.Unwrap(), packed).Wrap();
+            => LLVM.ConstStructInContext(this.Unwrap(), out constantVals.Unwrap()[0], (uint)constantVals.Length, packed).Wrap();
 
         public Value MDStringInContext(string str, uint sLen)
             => LLVM.MDStringInContext(this.Unwrap(), str, sLen).Wrap();
 
-        public Value MDNodeInContext(Value[] vals) => LLVM.MDNodeInContext(this.Unwrap(), vals.Unwrap()).Wrap();
+        public Value MDNodeInContext(Value[] vals) => LLVM.MDNodeInContext(this.Unwrap(), out vals.Unwrap()[0], (uint)vals.Length).Wrap();
 
         public BasicBlock AppendBasicBlockInContext(Value fn, string name)
             => LLVM.AppendBasicBlockInContext(this.Unwrap(), fn.Unwrap(), name).Wrap();
@@ -164,19 +164,7 @@
 
             return m.Wrap();
         }
-
-        public ModuleProvider GetBitcodeModuleProviderInContext(MemoryBuffer memBuf)
-        {
-            LLVMModuleProviderRef m;
-            IntPtr error;
-            if (LLVM.GetBitcodeModuleProviderInContext(this.Unwrap(), memBuf.Unwrap(), out m, out error).Failed())
-            {
-                ErrorUtilities.Throw(error);
-            }
-
-            return m.Wrap();
-        }
-
+        
         public Type IntPtrTypeInContext(TargetData td)
             => LLVM.IntPtrTypeInContext(this.Unwrap(), td.Unwrap()).Wrap();
 

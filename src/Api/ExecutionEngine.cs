@@ -30,36 +30,12 @@
 
             return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>();
         }
-
-        public static ExecutionEngine Create(ModuleProvider provider)
-        {
-            IntPtr error;
-            LLVMExecutionEngineRef instance;
-            if (LLVM.CreateExecutionEngine(out instance, provider.Unwrap(), out error).Failed())
-            {
-                ErrorUtilities.Throw(error);
-            }
-
-            return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>();
-        }
-
+        
         public static ExecutionEngine CreateInterpreter(Module module)
         {
             IntPtr error;
             LLVMExecutionEngineRef instance;
             if (LLVM.CreateInterpreterForModule(out instance, module.Unwrap(), out error).Failed())
-            {
-                ErrorUtilities.Throw(error);
-            }
-
-            return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>();
-        }
-
-        public static ExecutionEngine CreateInterpreter(ModuleProvider provider)
-        {
-            IntPtr error;
-            LLVMExecutionEngineRef instance;
-            if (LLVM.CreateInterpreter(out instance, provider.Unwrap(), out error).Failed())
             {
                 ErrorUtilities.Throw(error);
             }
@@ -78,27 +54,16 @@
 
             return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>();
         }
-
-        public static ExecutionEngine CreateJITCompiler(ModuleProvider provider, uint optLevel)
-        {
-            IntPtr error;
-            LLVMExecutionEngineRef instance;
-            if (LLVM.CreateJITCompiler(out instance, provider.Unwrap(), optLevel, out error).Failed())
-            {
-                ErrorUtilities.Throw(error);
-            }
-
-            return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>();
-        }
-
-        public static ExecutionEngine CreateMCJITCompiler(Module module, int optionsSize)
+        
+        public unsafe static ExecutionEngine CreateMCJITCompiler(Module module, int optionsSize)
         {
             LLVMMCJITCompilerOptions options;
-            LLVM.InitializeMCJITCompilerOptions(out options, optionsSize);
+            var size = new size_t(new IntPtr(optionsSize));
+            LLVM.InitializeMCJITCompilerOptions(&options, size);
 
             IntPtr error;
             LLVMExecutionEngineRef instance;
-            if (LLVM.CreateMCJITCompilerForModule(out instance, module.Unwrap(), out options, optionsSize, out error).Failed())
+            if (LLVM.CreateMCJITCompilerForModule(out instance, module.Unwrap(), &options, size, out error).Failed())
             {
                 ErrorUtilities.Throw(error);
             }
@@ -133,7 +98,7 @@
 
         public GenericValue RunFunction(Value f, LLVMGenericValueRef[] args)
         {
-            return LLVM.RunFunction(this.Unwrap(), f.Unwrap(), args).Wrap();
+            return LLVM.RunFunction(this.Unwrap(), f.Unwrap(), (uint)args.Length, out args[0]).Wrap();
         }
 
         public void FreeMachineCodeForFunction(Value f)
@@ -146,23 +111,10 @@
             LLVM.AddModule(this.Unwrap(), m.Unwrap());
         }
 
-        public void AddModuleProvider(ModuleProvider mp)
-        {
-            LLVM.AddModuleProvider(this.Unwrap(), mp.Unwrap());
-        }
-
         public bool RemoveModule(Module m, out Module outMod, out IntPtr outError)
         {
             LLVMModuleRef outModRef;
             var result = LLVM.RemoveModule(this.Unwrap(), m.Unwrap(), out outModRef, out outError);
-            outMod = outModRef.Wrap();
-            return result;
-        }
-
-        public bool RemoveModuleProvider(ModuleProvider mp, out Module outMod, out IntPtr outError)
-        {
-            LLVMModuleRef outModRef;
-            var result = LLVM.RemoveModuleProvider(this.Unwrap(), mp.Unwrap(), out outModRef, out outError);
             outMod = outModRef.Wrap();
             return result;
         }
@@ -200,12 +152,12 @@
             return LLVM.GetPointerToGlobal(this.Unwrap(), global.Unwrap());
         }
 
-        public int GetGlobalValueAddress(string name)
+        public ulong GetGlobalValueAddress(string name)
         {
             return LLVM.GetGlobalValueAddress(this.Unwrap(), name);
         }
 
-        public int GetFunctionAddress(string name)
+        public ulong GetFunctionAddress(string name)
         {
             return LLVM.GetFunctionAddress(this.Unwrap(), name);
         }

@@ -56,7 +56,7 @@
             this.Dispose(false);
         }
 
-        public int SetDisasmOptions(int options)
+        public int SetDisasmOptions(ulong options)
         {
             return LLVM.SetDisasmOptions(this.Unwrap(), options);
         }
@@ -82,11 +82,9 @@
             this._disposed = true;
         }
 
-        public int DisasmInstruction(out char bytes, int bytesSize, int pc, IntPtr outString, int outStringSize)
+        public size_t DisasmInstruction(IntPtr bytes, ulong bytesSize, ulong pc, IntPtr outString, int outStringSize)
         {
-            return LLVM.DisasmInstruction(this.Unwrap(), out bytes, bytesSize, pc, outString, outStringSize);
+            return LLVM.DisasmInstruction(this.Unwrap(), bytes, bytesSize, pc, outString, new size_t(outStringSize));
         }
-
-
     }
 }

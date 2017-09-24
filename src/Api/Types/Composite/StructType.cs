@@ -10,7 +10,7 @@
         }
 
         public StructType(Type[] types, bool packed)
-            : this(LLVM.StructType(types.Unwrap(), packed))
+            : this(LLVM.StructType(out types.Unwrap()[0], (uint)types.Length, packed))
         {            
         }
 

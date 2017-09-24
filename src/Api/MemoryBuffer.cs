@@ -29,21 +29,28 @@
             return bufferRef.Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
         }
 
-        public static MemoryBuffer CreateMemoryBufferWithMemoryRange(string inputData, int inputDataLength,
+        public unsafe static MemoryBuffer CreateMemoryBufferWithMemoryRange(string inputData, size_t inputDataLength,
                                                                      string bufferLength, bool requiresNullTerminator)
         {
-            return
-                LLVM.CreateMemoryBufferWithMemoryRange(inputData, inputDataLength, bufferLength, requiresNullTerminator)
-                    .Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
+            fixed(char* c = inputData)
+            {
+                return
+                    LLVM.CreateMemoryBufferWithMemoryRange(new IntPtr(c), inputDataLength, bufferLength, requiresNullTerminator)
+                        .Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
+
+            }
         }
 
-        public static MemoryBuffer CreateMemoryBufferWithMemoryRangeCopy(string inputData, int inputDataLength,
+        public unsafe static MemoryBuffer CreateMemoryBufferWithMemoryRangeCopy(string inputData, size_t inputDataLength,
                                                                          string bufferName)
         {
-            return
-                LLVM.CreateMemoryBufferWithMemoryRangeCopy(inputData, inputDataLength, bufferName)
-                    .Wrap()
-                    .MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
+            fixed(char* c = inputData)
+            {
+                return
+                    LLVM.CreateMemoryBufferWithMemoryRangeCopy(new IntPtr(c), inputDataLength, bufferName)
+                        .Wrap()
+                        .MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
+            }
         }
 
         LLVMMemoryBufferRef IWrapper<LLVMMemoryBufferRef>.ToHandleType() => this._instance;
@@ -67,12 +74,12 @@
             this.Dispose(false);
         }
 
-        public string BufferStart
+        public IntPtr BufferStart
         {
             get { return LLVM.GetBufferStart(this.Unwrap()); }
         }
 
-        public int BufferSize
+        public size_t BufferSize
         {
             get { return LLVM.GetBufferSize(this.Unwrap()); }
         }
@@ -116,18 +123,6 @@
             LLVMModuleRef m;
             IntPtr error;
             if (LLVM.GetBitcodeModule(this.Unwrap(), out m, out error).Failed())
-            {
-                ErrorUtilities.Throw(error);
-            }
-
-            return m.Wrap();
-        }
-
-        public ModuleProvider GetBitcodeModuleProvider()
-        {
-            LLVMModuleProviderRef m;
-            IntPtr error;
-            if (LLVM.GetBitcodeModuleProvider(this.Unwrap(), out m, out error).Failed())
             {
                 ErrorUtilities.Throw(error);
             }

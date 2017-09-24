@@ -141,7 +141,9 @@
 
         public Value[] GetNamedMetadataOperands(string name)
         {
-            return LLVM.GetNamedMetadataOperands(this.Unwrap(), name).Wrap<LLVMValueRef, Value>();
+            var e = new LLVMValueRef[LLVM.GetNamedMetadataNumOperands(this.Unwrap(), name)];
+            LLVM.GetNamedMetadataOperands(this.Unwrap(), name, out e[0]);
+            return e.Wrap<LLVMValueRef, Value>();
         }
 
         public void AddNamedMetadataOperand(string name, Value val)
@@ -221,13 +223,13 @@
             return f;
         }
 
-        public ExecutionEngine CreateMCJITCompilerForModule()
+        public unsafe ExecutionEngine CreateMCJITCompilerForModule()
         {
             LLVMExecutionEngineRef executionEngineRef;
             LLVMMCJITCompilerOptions options;
             IntPtr error;
-            var optionsSize = Marshal.SizeOf(typeof (LLVMMCJITCompilerOptions));
-            if (LLVM.CreateMCJITCompilerForModule(out executionEngineRef, this.Unwrap(), out options, optionsSize,
+            var optionsSize = new size_t(new IntPtr(Marshal.SizeOf(typeof (LLVMMCJITCompilerOptions))));
+            if (LLVM.CreateMCJITCompilerForModule(out executionEngineRef, this.Unwrap(), &options, optionsSize,
                                                   out error).Failed())
             {
                 ErrorUtilities.Throw(error);
@@ -338,13 +340,9 @@
             LLVM.SetTarget(this.Unwrap(), target);
         }
 
-        public static void LinkModules(Module destination, Module source, uint unused)
+        public static void LinkModules(Module destination, Module source)
         {
-            IntPtr error;
-            if (LLVM.LinkModules(destination.Unwrap(), source.Unwrap(), unused, out error).Failed())
-            {
-                ErrorUtilities.Throw(error);
-            }
+            LLVM.LinkModules2(destination.Unwrap(), source.Unwrap());
         }
     }
 }

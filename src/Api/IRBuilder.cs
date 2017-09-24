@@ -126,7 +126,7 @@ namespace LLVMSharp.Api
 
         public ReturnInst CreateAggregateRet(Value[] retVals)
         {
-            return new ReturnInst(LLVM.BuildAggregateRet(this.Unwrap(), retVals.Unwrap()));
+            return new ReturnInst(LLVM.BuildAggregateRet(this.Unwrap(), out retVals.Unwrap()[0], (uint)retVals.Length));
         }
 
         public BranchInst CreateBr(BasicBlock dest)
@@ -153,7 +153,7 @@ namespace LLVMSharp.Api
 
         public InvokeInst CreateInvoke(Value fn, Value[] args, BasicBlock then, BasicBlock Catch, string name)
         {
-            return new InvokeInst(LLVM.BuildInvoke(this.Unwrap(), fn.Unwrap(), args.Unwrap(),
+            return new InvokeInst(LLVM.BuildInvoke(this.Unwrap(), fn.Unwrap(), out args.Unwrap()[0], (uint)args.Length,
                                                    then.Unwrap<LLVMBasicBlockRef>(), Catch.Unwrap<LLVMBasicBlockRef>(),
                                                    name));
         }
@@ -366,12 +366,12 @@ namespace LLVMSharp.Api
 
         public GetElementPtrInst CreateGEP(Value pointer, Value[] indices, string name)
         {
-            return new GetElementPtrInst(LLVM.BuildGEP(this.Unwrap(), pointer.Unwrap(), indices.Unwrap(), name));
+            return new GetElementPtrInst(LLVM.BuildGEP(this.Unwrap(), pointer.Unwrap(), out indices.Unwrap()[0], (uint)indices.Length, name));
         }
 
         public GetElementPtrInst CreateInBoundsGEP(Value pointer, Value[] indices, string name)
         {
-            return new GetElementPtrInst(LLVM.BuildInBoundsGEP(this.Unwrap(), pointer.Unwrap(), indices.Unwrap(), name));
+            return new GetElementPtrInst(LLVM.BuildInBoundsGEP(this.Unwrap(), pointer.Unwrap(), out indices.Unwrap()[0], (uint)indices.Length, name));
         }
 
         public GetElementPtrInst CreateStructGEP(Value pointer, uint idx, string name)
@@ -618,7 +618,7 @@ namespace LLVMSharp.Api
 
         public CallInst CreateCall(Value fn, Value[] args, string name)
         {
-            return new CallInst(LLVM.BuildCall(this.Unwrap(), fn.Unwrap(), args.Unwrap(), name));
+            return new CallInst(LLVM.BuildCall(this.Unwrap(), fn.Unwrap(), out args.Unwrap()[0], (uint)args.Length, name));
         }
 
         public SelectInst CreateSelect(Value @If, Value then, Value @Else, string name)

@@ -33,12 +33,7 @@
         {
             this.Dispose(false);
         }
-
-        public void AddTargetData(PassManager pm)
-        {
-            LLVM.AddTargetData(this.Unwrap(), pm.Unwrap());
-        }
-
+        
         public IntPtr CopyStringRepOfTargetData()
         {
             return LLVM.CopyStringRepOfTargetData(this.Unwrap());

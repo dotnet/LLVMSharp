@@ -1,10 +1,15 @@
 ﻿namespace LLVMSharp
 {
+    using LLVMSharp.Utilities;
     using System;
     using System.Runtime.InteropServices;
+    using Type = Api.Type;
 
-    partial struct LLVMTypeRef
+    partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>, IHandle<Type>
     {
+        IntPtr IHandle<Type>.GetInternalPointer() => this.Pointer;
+        Type IHandle<Type>.ToWrapperType() => new Type(this);
+
         public LLVMTypeKind TypeKind
         {
             get { return LLVM.GetTypeKind(this); }
@@ -55,12 +60,9 @@
 
         public LLVMTypeRef[] GetParamTypes()
         {
-            return LLVM.GetParamTypes(this);
-        }
-
-        public LLVMTypeRef[] GetSubtypes()
-        {
-            return LLVM.GetSubtypes(this);
+            var e = new LLVMTypeRef[LLVM.CountParamTypes(this)];
+            LLVM.GetParamTypes(this, out e[0]);
+            return e;
         }
 
         public string GetStructName()
@@ -70,7 +72,7 @@
 
         public void StructSetBody(LLVMTypeRef[] @ElementTypes, bool @Packed)
         {
-            LLVM.StructSetBody(this, @ElementTypes, @Packed);
+            LLVM.StructSetBody(this, out @ElementTypes[0], (uint)ElementTypes.Length, new LLVMBool(@Packed));
         }
 
         public uint CountStructElementTypes()
@@ -80,7 +82,9 @@
 
         public LLVMTypeRef[] GetStructElementTypes()
         {
-            return LLVM.GetStructElementTypes(this);
+            var e = new LLVMTypeRef[LLVM.CountStructElementTypes(this)];
+            LLVM.GetStructElementTypes(this, out e[0]);
+            return e;
         }
 
         public LLVMTypeRef StructGetTypeAtIndex(uint @index)
@@ -142,5 +146,9 @@
         {
             return this.PrintTypeToString();
         }
+
+        public bool Equals(LLVMTypeRef other) => this.Pointer == other.Pointer;
+        public static bool operator==(LLVMTypeRef op1, LLVMTypeRef op2) => op1.Equals(op2);
+        public static bool operator!=(LLVMTypeRef op1, LLVMTypeRef op2) => !(op1 == op2);
     }
 }

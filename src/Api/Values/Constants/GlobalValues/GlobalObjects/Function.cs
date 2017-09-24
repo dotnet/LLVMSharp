@@ -25,7 +25,12 @@
 
         public BasicBlock[] BasicBlocks
         {
-            get { return LLVM.GetBasicBlocks(this.Unwrap()).Wrap<LLVMBasicBlockRef, BasicBlock>(); }
+            get
+            {
+                var e = new LLVMBasicBlockRef[LLVM.CountBasicBlocks(this.Unwrap())];
+                LLVM.GetBasicBlocks(this.Unwrap(), out e[0]);
+                return e.Wrap<LLVMBasicBlockRef, BasicBlock>();
+            }
         }
 
         public Type FunctionType

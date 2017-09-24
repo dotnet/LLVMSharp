@@ -62,12 +62,12 @@
 
         public int SymbolAddress
         {
-            get { return LLVM.GetSymbolAddress(this.Unwrap()); }
+            get { return (int)LLVM.GetSymbolAddress(this.Unwrap()); }
         }
 
         public int SymbolSize
         {
-            get { return LLVM.GetSymbolSize(this.Unwrap()); }
+            get { return (int)LLVM.GetSymbolSize(this.Unwrap()); }
         }
 
 

@@ -218,7 +218,9 @@
 
         public Type GetFunctionParamType(uint i)
         {
-            return Create(LLVM.GetParamTypes(this.Unwrap())[i]);
+            var e = new LLVMTypeRef[LLVM.CountParamTypes(this.Unwrap())];
+            LLVM.GetParamTypes(this.Unwrap(), out e[0]);
+            return Create(e[i]);
         }
 
         public uint FunctionNumParams
@@ -250,7 +252,9 @@
 
         public Type GetStructElementType(uint i)
         {
-            return Create(LLVM.GetStructElementTypes(this.Unwrap())[i]);
+            var e = new LLVMTypeRef[LLVM.CountStructElementTypes(this.Unwrap())];
+            LLVM.GetStructElementTypes(this.Unwrap(), out e[0]);
+            return Create(e[i]);
         }
         
         public static LLVMTypeRef LabelType()
@@ -308,12 +312,18 @@
 
         public void StructSetBody(Type structTy, Type[] elementTypes, bool packed)
         {
-            LLVM.StructSetBody(structTy.Unwrap(), elementTypes.Unwrap(), packed);
+            var e = elementTypes.Unwrap();
+            LLVM.StructSetBody(structTy.Unwrap(), out e[0], (uint)e.Length, new LLVMBool(packed));
         }
 
         public Type[] StructElementTypes
         {
-            get { return LLVM.GetStructElementTypes(this.Unwrap()).Wrap<LLVMTypeRef, Type>(); }
+            get
+            {
+                var e = new LLVMTypeRef[LLVM.CountStructElementTypes(this.Unwrap())];
+                LLVM.GetStructElementTypes(this.Unwrap(), out e[0]);
+                return e.Wrap<LLVMTypeRef, Type>();
+            }
         }
 
         public bool IsPackedStruct
@@ -393,12 +403,12 @@
 
         public Value ConstIntOfString(string text, char radix)
         {
-            return LLVM.ConstIntOfString(this.Unwrap(), text, radix).Wrap();
+            return LLVM.ConstIntOfString(this.Unwrap(), text, (byte) radix).Wrap();
         }
 
         public Value ConstIntOfStringAndSize(string text, uint sLen, char radix)
         {
-            return LLVM.ConstIntOfStringAndSize(this.Unwrap(), text, sLen, radix).Wrap();
+            return LLVM.ConstIntOfStringAndSize(this.Unwrap(), text, sLen, (byte) radix).Wrap();
         }
 
         public Value ConstReal(double n)
@@ -418,12 +428,12 @@
 
         public Value ConstArray(Value[] constantVals)
         {
-            return LLVM.ConstArray(this.Unwrap(), constantVals.Unwrap()).Wrap();
+            return LLVM.ConstArray(this.Unwrap(), out constantVals.Unwrap()[0], (uint)constantVals.Length).Wrap();
         }
 
         public Value ConstNamedStruct(Value[] constantVals)
         {
-            return LLVM.ConstNamedStruct(this.Unwrap(), constantVals.Unwrap()).Wrap();
+            return LLVM.ConstNamedStruct(this.Unwrap(), out constantVals.Unwrap()[0], (uint)constantVals.Length).Wrap();
         }
 
         public Value Align

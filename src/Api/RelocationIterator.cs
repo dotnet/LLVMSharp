@@ -55,12 +55,7 @@
             LLVM.MoveToNextRelocation(this.Unwrap());
         }
 
-        public int Address
-        {
-            get { return LLVM.GetRelocationAddress(this.Unwrap()); }
-        }
-
-        public int Offset
+        public ulong Offset
         {
             get { return LLVM.GetRelocationOffset(this.Unwrap()); }
         }
@@ -70,7 +65,7 @@
             get { return LLVM.GetRelocationSymbol(this.Unwrap()).Wrap(); }
         }
 
-        public int Type
+        public ulong Type
         {
             get { return LLVM.GetRelocationType(this.Unwrap()); }
         }

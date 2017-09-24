@@ -39,7 +39,7 @@
         }
 
         public FunctionType(Type returnType, Type[] parameterTypes, bool isVarArgs)
-            : base(LLVM.FunctionType(returnType.Unwrap(), parameterTypes.Unwrap(), isVarArgs))
+            : base(LLVM.FunctionType(returnType.Unwrap(), out parameterTypes.Unwrap()[0], (uint)parameterTypes.Length, isVarArgs))
         {
         }
         
@@ -65,7 +65,9 @@
 
         public Type[] GetParamTypes()
         {
-            return LLVM.GetParamTypes(this.Unwrap()).Wrap<LLVMTypeRef, Type>();
+            var e = new LLVMTypeRef[LLVM.CountParamTypes(this.Unwrap())];
+            LLVM.GetParamTypes(this.Unwrap(), out e[0]);
+            return e.Wrap<LLVMTypeRef, Type>();
         }
     }
 }

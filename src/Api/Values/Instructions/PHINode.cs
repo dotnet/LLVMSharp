@@ -11,7 +11,7 @@ namespace LLVMSharp.Api.Values.Instructions
 
         public void AddIncoming(Value[] incomingValues, BasicBlock[] incomingBlocks)
         {
-            LLVM.AddIncoming(this.Unwrap(), incomingValues.Unwrap(), incomingBlocks.Unwrap<LLVMBasicBlockRef>());
+            LLVM.AddIncoming(this.Unwrap(), out incomingValues.Unwrap()[0], out incomingBlocks.Unwrap<LLVMBasicBlockRef>()[0], (uint)incomingValues.Length);
         }
 
         public uint CountIncoming
