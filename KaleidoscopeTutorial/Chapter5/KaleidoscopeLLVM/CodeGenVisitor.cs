@@ -1,10 +1,10 @@
-﻿namespace KaleidoscopeLLVM
-{
-    using System;
-    using System.Collections.Generic;
-    using Kaleidoscope.AST;
-    using LLVMSharp;
+﻿using System;
+using System.Collections.Generic;
+using Kaleidoscope.AST;
+using LLVMSharp;
 
+namespace KaleidoscopeLLVM
+{
     internal sealed class CodeGenVisitor : ExprVisitor
     {
         private static readonly LLVMBool LLVMBoolFalse = new LLVMBool(0);
@@ -25,16 +25,16 @@
             this.builder = builder;
         }
 
-        public Stack<LLVMValueRef> ResultStack { get { return this.valueStack; } }
+        public Stack<LLVMValueRef> ResultStack { get { return valueStack; } }
 
         public void ClearResultStack()
         {
-            this.valueStack.Clear();
+            valueStack.Clear();
         }
 
         protected override ExprAST VisitNumberExprAST(NumberExprAST node)
         {
-            this.valueStack.Push(LLVM.ConstReal(LLVM.DoubleType(), node.Value));
+            valueStack.Push(LLVM.ConstReal(LLVM.DoubleType(), node.Value));
             return node;
         }
 
@@ -43,9 +43,9 @@
             LLVMValueRef value;
 
             // Look this variable up in the function.
-            if (this.namedValues.TryGetValue(node.Name, out value))
+            if (namedValues.TryGetValue(node.Name, out value))
             {
-                this.valueStack.Push(value);
+                valueStack.Push(value);
             }
             else
             {
@@ -57,40 +57,40 @@
 
         protected override ExprAST VisitBinaryExprAST(BinaryExprAST node)
         {
-            this.Visit(node.Lhs);
-            this.Visit(node.Rhs);
+            Visit(node.Lhs);
+            Visit(node.Rhs);
 
-            LLVMValueRef r = this.valueStack.Pop();
-            LLVMValueRef l = this.valueStack.Pop();
+            LLVMValueRef r = valueStack.Pop();
+            LLVMValueRef l = valueStack.Pop();
 
             LLVMValueRef n;
 
             switch (node.NodeType)
             {
                 case ExprType.AddExpr:
-                    n = LLVM.BuildFAdd(this.builder, l, r, "addtmp");
+                    n = LLVM.BuildFAdd(builder, l, r, "addtmp");
                     break;
                 case ExprType.SubtractExpr:
-                    n = LLVM.BuildFSub(this.builder, l, r, "subtmp");
+                    n = LLVM.BuildFSub(builder, l, r, "subtmp");
                     break;
                 case ExprType.MultiplyExpr:
-                    n = LLVM.BuildFMul(this.builder, l, r, "multmp");
+                    n = LLVM.BuildFMul(builder, l, r, "multmp");
                     break;
                 case ExprType.LessThanExpr:
                     // Convert bool 0/1 to double 0.0 or 1.0
-                    n = LLVM.BuildUIToFP(this.builder, LLVM.BuildFCmp(this.builder, LLVMRealPredicate.LLVMRealULT, l, r, "cmptmp"), LLVM.DoubleType(), "booltmp");
+                    n = LLVM.BuildUIToFP(builder, LLVM.BuildFCmp(builder, LLVMRealPredicate.LLVMRealULT, l, r, "cmptmp"), LLVM.DoubleType(), "booltmp");
                     break;
                 default:
                     throw new Exception("invalid binary operator");
             }
 
-            this.valueStack.Push(n);
+            valueStack.Push(n);
             return node;
         }
 
         protected override ExprAST VisitCallExprAST(CallExprAST node)
         {
-            var calleeF = LLVM.GetNamedFunction(this.module, node.Callee);
+            var calleeF = LLVM.GetNamedFunction(module, node.Callee);
             if (calleeF.Pointer == IntPtr.Zero)
             {
                 throw new Exception("Unknown function referenced");
@@ -105,11 +105,11 @@
             var argsV = new LLVMValueRef[Math.Max(argumentCount, 1)];
             for (int i = 0; i < argumentCount; ++i)
             {
-                this.Visit(node.Arguments[i]);
-                argsV[i] = this.valueStack.Pop();
+                Visit(node.Arguments[i]);
+                argsV[i] = valueStack.Pop();
             }
 
-            this.valueStack.Push(LLVM.BuildCall(this.builder, calleeF, out argsV[0], argumentCount, "calltmp"));
+            valueStack.Push(LLVM.BuildCall(builder, calleeF, argsV, "calltmp"));
 
             return node;
         }
@@ -120,7 +120,7 @@
             var argumentCount = (uint)node.Arguments.Count;
             var arguments = new LLVMTypeRef[Math.Max(argumentCount, 1)];
 
-            var function = LLVM.GetNamedFunction(this.module, node.Name);
+            var function = LLVM.GetNamedFunction(module, node.Name);
 
             // If F conflicted, there was already something named 'Name'.  If it has a
             // body, don't allow redefinition or reextern.
@@ -145,38 +145,38 @@
                     arguments[i] = LLVM.DoubleType();
                 }
 
-                function = LLVM.AddFunction(this.module, node.Name, LLVM.FunctionType(LLVM.DoubleType(), out arguments[0], argumentCount, LLVMBoolFalse));
+                function = LLVM.AddFunction(module, node.Name, LLVM.FunctionType(LLVM.DoubleType(), arguments, LLVMBoolFalse));
                 LLVM.SetLinkage(function, LLVMLinkage.LLVMExternalLinkage);
             }
 
             for (int i = 0; i < argumentCount; ++i)
             {
-                string argumentName = node.Arguments[i];
+                var argumentName = node.Arguments[i];
 
                 LLVMValueRef param = LLVM.GetParam(function, (uint)i);
                 LLVM.SetValueName(param, argumentName);
 
-                this.namedValues[argumentName] = param;
+                namedValues[argumentName] = param;
             }
 
-            this.valueStack.Push(function);
+            valueStack.Push(function);
             return node;
         }
 
         protected override ExprAST VisitFunctionAST(FunctionAST node)
         {
-            this.namedValues.Clear();
+            namedValues.Clear();
 
-            this.Visit(node.Proto);
+            Visit(node.Proto);
 
-            LLVMValueRef function = this.valueStack.Pop();
+            LLVMValueRef function = valueStack.Pop();
 
             // Create a new basic block to start insertion into.
-            LLVM.PositionBuilderAtEnd(this.builder, LLVM.AppendBasicBlock(function, "entry"));
+            LLVM.PositionBuilderAtEnd(builder, LLVM.AppendBasicBlock(function, "entry"));
 
             try
             {
-                this.Visit(node.Body);
+                Visit(node.Body);
             }
             catch (Exception)
             {
@@ -185,20 +185,20 @@
             }
 
             // Finish off the function.
-            LLVM.BuildRet(this.builder, this.valueStack.Pop());
+            LLVM.BuildRet(builder, valueStack.Pop());
 
             // Validate the generated code, checking for consistency.
             LLVM.VerifyFunction(function, LLVMVerifierFailureAction.LLVMPrintMessageAction);
 
-            this.valueStack.Push(function);
+            valueStack.Push(function);
 
             return node;
         }
 
         protected override ExprAST VisitIfExprAST(IfExpAST node)
         {
-            this.Visit(node.Condition);
-            var condv = LLVM.BuildFCmp(this.builder, LLVMRealPredicate.LLVMRealONE, this.valueStack.Pop(), LLVM.ConstReal(LLVM.DoubleType(), 0.0), "ifcond");
+            Visit(node.Condition);
+            var condv = LLVM.BuildFCmp(builder, LLVMRealPredicate.LLVMRealONE, valueStack.Pop(), LLVM.ConstReal(LLVM.DoubleType(), 0.0), "ifcond");
 
             LLVMValueRef func = LLVM.GetBasicBlockParent(LLVM.GetInsertBlock(builder));
 
@@ -208,39 +208,39 @@
             LLVMBasicBlockRef elseBB = LLVM.AppendBasicBlock(func, "else");
             LLVMBasicBlockRef mergeBB = LLVM.AppendBasicBlock(func, "ifcont");
 
-            LLVM.BuildCondBr(this.builder, condv, thenBB, elseBB);
+            LLVM.BuildCondBr(builder, condv, thenBB, elseBB);
 
             // Emit then value.
-            LLVM.PositionBuilderAtEnd(this.builder, thenBB);
+            LLVM.PositionBuilderAtEnd(builder, thenBB);
 
-            this.Visit(node.Then);
-            var thenV = this.valueStack.Pop();
+            Visit(node.Then);
+            var thenV = valueStack.Pop();
 
-            LLVM.BuildBr(this.builder, mergeBB);
+            LLVM.BuildBr(builder, mergeBB);
 
             // Codegen of 'Then' can change the current block, update ThenBB for the PHI.
-            thenBB = LLVM.GetInsertBlock(this.builder);
+            thenBB = LLVM.GetInsertBlock(builder);
 
               // Emit else block.
 
-            LLVM.PositionBuilderAtEnd(this.builder, elseBB);
+            LLVM.PositionBuilderAtEnd(builder, elseBB);
 
-            this.Visit(node.Else);
-            var elseV = this.valueStack.Pop();
+            Visit(node.Else);
+            var elseV = valueStack.Pop();
 
-            LLVM.BuildBr(this.builder, mergeBB);
+            LLVM.BuildBr(builder, mergeBB);
 
             // Codegen of 'Else' can change the current block, update ElseBB for the PHI.
-            elseBB = LLVM.GetInsertBlock(this.builder);
+            elseBB = LLVM.GetInsertBlock(builder);
 
             // Emit merge block.
-            LLVM.PositionBuilderAtEnd(this.builder, mergeBB);
-            var phi = LLVM.BuildPhi(this.builder, LLVM.DoubleType(), "iftmp");
+            LLVM.PositionBuilderAtEnd(builder, mergeBB);
+            var phi = LLVM.BuildPhi(builder, LLVM.DoubleType(), "iftmp");
 
-            LLVM.AddIncoming(phi, out thenV, out thenBB, 1);
-            LLVM.AddIncoming(phi, out elseV, out elseBB, 1);
+            LLVM.AddIncoming(phi, new []{thenV}, new []{thenBB}, 1);
+            LLVM.AddIncoming(phi, new []{elseV}, new []{elseBB}, 1);
 
-            this.valueStack.Push(phi);
+            valueStack.Push(phi);
 
             return node;
         }
@@ -264,48 +264,48 @@
             // outloop:
 
             // Emit the start code first, without 'variable' in scope.
-            this.Visit(node.Start);
-            var startVal = this.valueStack.Pop();
+            Visit(node.Start);
+            var startVal = valueStack.Pop();
 
             // Make the new basic block for the loop header, inserting after current
             // block.
-            var preheaderBB = LLVM.GetInsertBlock(this.builder);
+            var preheaderBB = LLVM.GetInsertBlock(builder);
             var function = LLVM.GetBasicBlockParent(preheaderBB);
             var loopBB = LLVM.AppendBasicBlock(function, "loop");
 
             // Insert an explicit fall through from the current block to the LoopBB.
-            LLVM.BuildBr(this.builder, loopBB);
+            LLVM.BuildBr(builder, loopBB);
 
             // Start insertion in LoopBB.
-            LLVM.PositionBuilderAtEnd(this.builder, loopBB);
+            LLVM.PositionBuilderAtEnd(builder, loopBB);
 
             // Start the PHI node with an entry for Start.
-            var variable = LLVM.BuildPhi(this.builder, LLVM.DoubleType(), node.VarName);
-            LLVM.AddIncoming(variable, out startVal, out preheaderBB, 1);
+            var variable = LLVM.BuildPhi(builder, LLVM.DoubleType(), node.VarName);
+            LLVM.AddIncoming(variable, new []{startVal}, new []{preheaderBB}, 1);
 
             // Within the loop, the variable is defined equal to the PHI node.  If it
             // shadows an existing variable, we have to restore it, so save it now.
             LLVMValueRef oldVal;
-            if (this.namedValues.TryGetValue(node.VarName, out oldVal))
+            if (namedValues.TryGetValue(node.VarName, out oldVal))
             {
-                this.namedValues[node.VarName] = variable;
+                namedValues[node.VarName] = variable;
             }
             else
             {
-                this.namedValues.Add(node.VarName, variable);
+                namedValues.Add(node.VarName, variable);
             }
 
             // Emit the body of the loop.  This, like any other expr, can change the
             // current BB.  Note that we ignore the value computed by the body, but don't
             // allow an error.
-            this.Visit(node.Body);
+            Visit(node.Body);
 
             // Emit the step value.
             LLVMValueRef stepVal;
             if (node.Step != null)
             {
-                this.Visit(node.Step);
-                stepVal = this.valueStack.Pop();
+                Visit(node.Step);
+                stepVal = valueStack.Pop();
             }
             else
             {
@@ -313,36 +313,36 @@
                 stepVal = LLVM.ConstReal(LLVM.DoubleType(), 1.0);
             }
 
-            LLVMValueRef nextVar = LLVM.BuildFAdd(this.builder, variable, stepVal, "nextvar");
+            LLVMValueRef nextVar = LLVM.BuildFAdd(builder, variable, stepVal, "nextvar");
 
             // Compute the end condition.
-            this.Visit(node.End);
-            LLVMValueRef endCond = LLVM.BuildFCmp(this.builder, LLVMRealPredicate.LLVMRealONE, this.valueStack.Pop(), LLVM.ConstReal(LLVM.DoubleType(), 0.0), "loopcond");
+            Visit(node.End);
+            LLVMValueRef endCond = LLVM.BuildFCmp(builder, LLVMRealPredicate.LLVMRealONE, valueStack.Pop(), LLVM.ConstReal(LLVM.DoubleType(), 0.0), "loopcond");
 
             // Create the "after loop" block and insert it.
-            var loopEndBB = LLVM.GetInsertBlock(this.builder);
+            var loopEndBB = LLVM.GetInsertBlock(builder);
             var afterBB = LLVM.AppendBasicBlock(function, "afterloop");
 
             // Insert the conditional branch into the end of LoopEndBB.
-            LLVM.BuildCondBr(this.builder, endCond, loopBB, afterBB);
+            LLVM.BuildCondBr(builder, endCond, loopBB, afterBB);
 
             // Any new code will be inserted in AfterBB.
-            LLVM.PositionBuilderAtEnd(this.builder, afterBB);
+            LLVM.PositionBuilderAtEnd(builder, afterBB);
 
             // Add a new entry to the PHI node for the backedge.
-            LLVM.AddIncoming(variable, out nextVar, out loopEndBB, 1);
+            LLVM.AddIncoming(variable, new []{nextVar}, new []{loopEndBB}, 1);
 
             // Restore the unshadowed variable.
             if (oldVal.Pointer != IntPtr.Zero)
             {
-                this.namedValues[node.VarName] = oldVal;
+                namedValues[node.VarName] = oldVal;
             }
             else
             {
-                this.namedValues.Remove(node.VarName);
+                namedValues.Remove(node.VarName);
             }
 
-            this.valueStack.Push(LLVM.ConstReal(LLVM.DoubleType(), 0.0));
+            valueStack.Push(LLVM.ConstReal(LLVM.DoubleType(), 0.0));
 
             return node;
         }
