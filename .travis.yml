@@ -1,0 +1,12 @@
+language: csharp
+mono: none
+dotnet: 2.0.0
+dist: trusty
+solution: LLVMSharp.sln
+
+cache:
+  apt: true
+
+script:
+  - dotnet restore
+
