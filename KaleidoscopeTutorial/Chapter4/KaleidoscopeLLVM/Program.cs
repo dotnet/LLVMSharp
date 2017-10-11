@@ -8,23 +8,23 @@
 
     public sealed class Program
     {
+        public delegate double D();
+        
         private static void Main(string[] args)
         {
             // Make the module, which holds all the code.
             LLVMModuleRef module = LLVM.ModuleCreateWithName("my cool jit");
             LLVMBuilderRef builder = LLVM.CreateBuilder();
 
-            LLVM.LinkInJIT();
+            LLVM.LinkInMCJIT();
             LLVM.InitializeX86TargetInfo();
             LLVM.InitializeX86Target();
             LLVM.InitializeX86TargetMC();
 
-            LLVMExecutionEngineRef engine;
-            IntPtr errorMessage;
-            if (LLVM.CreateExecutionEngineForModule(out engine, module, out errorMessage).Value == 1)
+            if (LLVM.CreateExecutionEngineForModule(out var engine, module, out var errorMessage).Value == 1)
             {
-                Console.WriteLine(Marshal.PtrToStringAnsi(errorMessage));
-                LLVM.DisposeMessage(errorMessage);
+                Console.WriteLine(errorMessage);
+                // LLVM.DisposeMessage(errorMessage);
                 return;
             }
 
@@ -33,7 +33,7 @@
 
             // Set up the optimizer pipeline.  Start with registering info about how the
             // target lays out data structures.
-            LLVM.AddTargetData(LLVM.GetExecutionEngineTargetData(engine), passManager);
+            LLVM.DisposeTargetData(LLVM.GetExecutionEngineTargetData(engine));
 
             // Provide basic AliasAnalysis support for GVN.
             LLVM.AddBasicAliasAnalysisPass(passManager);
@@ -59,11 +59,14 @@
 
             // Install standard binary operators.
             // 1 is lowest precedence.
-            var binopPrecedence = new Dictionary<char, int>();
-            binopPrecedence['<'] = 10;
-            binopPrecedence['+'] = 20;
-            binopPrecedence['-'] = 20;
-            binopPrecedence['*'] = 40;  // highest.
+            var binopPrecedence = new Dictionary<char, int>
+            {
+                ['<'] = 10,
+                ['+'] = 20,
+                ['-'] = 20,
+                ['*'] = 40
+            };
+            // highest.
 
             var scanner = new Lexer(Console.In, binopPrecedence);
             var parser = new Parser(scanner, codeGenlistener);
