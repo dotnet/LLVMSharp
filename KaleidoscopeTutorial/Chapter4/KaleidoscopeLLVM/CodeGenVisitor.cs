@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Kaleidoscope.AST;
-using LLVMSharp;
-
-namespace KaleidoscopeLLVM
+﻿namespace KaleidoscopeLLVM
 {
+    using System;
+    using System.Collections.Generic;
+    using Kaleidoscope.AST;
+    using LLVMSharp;
+
     internal sealed class CodeGenVisitor : ExprVisitor
     {
         private static readonly LLVMBool LLVMBoolFalse = new LLVMBool(0);
@@ -29,12 +29,12 @@ namespace KaleidoscopeLLVM
 
         public void ClearResultStack()
         {
-            valueStack.Clear();
+            this.valueStack.Clear();
         }
 
         protected override ExprAST VisitNumberExprAST(NumberExprAST node)
         {
-            valueStack.Push(LLVM.ConstReal(LLVM.DoubleType(), node.Value));
+            this.valueStack.Push(LLVM.ConstReal(LLVM.DoubleType(), node.Value));
             return node;
         }
 
@@ -43,9 +43,9 @@ namespace KaleidoscopeLLVM
             LLVMValueRef value;
 
             // Look this variable up in the function.
-            if (namedValues.TryGetValue(node.Name, out value))
+            if (this.namedValues.TryGetValue(node.Name, out value))
             {
-                valueStack.Push(value);
+                this.valueStack.Push(value);
             }
             else
             {
@@ -57,40 +57,40 @@ namespace KaleidoscopeLLVM
 
         protected override ExprAST VisitBinaryExprAST(BinaryExprAST node)
         {
-            Visit(node.Lhs);
-            Visit(node.Rhs);
+            this.Visit(node.Lhs);
+            this.Visit(node.Rhs);
 
-            LLVMValueRef r = valueStack.Pop();
-            LLVMValueRef l = valueStack.Pop();
+            LLVMValueRef r = this.valueStack.Pop();
+            LLVMValueRef l = this.valueStack.Pop();
 
             LLVMValueRef n;
 
             switch (node.NodeType)
             {
                 case ExprType.AddExpr:
-                    n = LLVM.BuildFAdd(builder, l, r, "addtmp");
+                    n = LLVM.BuildFAdd(this.builder, l, r, "addtmp");
                     break;
                 case ExprType.SubtractExpr:
-                    n = LLVM.BuildFSub(builder, l, r, "subtmp");
+                    n = LLVM.BuildFSub(this.builder, l, r, "subtmp");
                     break;
                 case ExprType.MultiplyExpr:
-                    n = LLVM.BuildFMul(builder, l, r, "multmp");
+                    n = LLVM.BuildFMul(this.builder, l, r, "multmp");
                     break;
                 case ExprType.LessThanExpr:
                     // Convert bool 0/1 to double 0.0 or 1.0
-                    n = LLVM.BuildUIToFP(builder, LLVM.BuildFCmp(builder, LLVMRealPredicate.LLVMRealULT, l, r, "cmptmp"), LLVM.DoubleType(), "booltmp");
+                    n = LLVM.BuildUIToFP(this.builder, LLVM.BuildFCmp(this.builder, LLVMRealPredicate.LLVMRealULT, l, r, "cmptmp"), LLVM.DoubleType(), "booltmp");
                     break;
                 default:
                     throw new Exception("invalid binary operator");
             }
 
-            valueStack.Push(n);
+            this.valueStack.Push(n);
             return node;
         }
 
         protected override ExprAST VisitCallExprAST(CallExprAST node)
         {
-            var calleeF = LLVM.GetNamedFunction(module, node.Callee);
+            var calleeF = LLVM.GetNamedFunction(this.module, node.Callee);
             if (calleeF.Pointer == IntPtr.Zero)
             {
                 throw new Exception("Unknown function referenced");
@@ -105,11 +105,11 @@ namespace KaleidoscopeLLVM
             var argsV = new LLVMValueRef[Math.Max(argumentCount, 1)];
             for (int i = 0; i < argumentCount; ++i)
             {
-                Visit(node.Arguments[i]);
-                argsV[i] = valueStack.Pop();
+                this.Visit(node.Arguments[i]);
+                argsV[i] = this.valueStack.Pop();
             }
 
-            valueStack.Push(LLVM.BuildCall(builder, calleeF, argsV, "calltmp"));
+            this.valueStack.Push(LLVM.BuildCall(this.builder, calleeF, argsV, "calltmp"));
 
             return node;
         }
@@ -120,7 +120,7 @@ namespace KaleidoscopeLLVM
             var argumentCount = (uint)node.Arguments.Count;
             var arguments = new LLVMTypeRef[Math.Max(argumentCount, 1)];
 
-            var function = LLVM.GetNamedFunction(module, node.Name);
+            var function = LLVM.GetNamedFunction(this.module, node.Name);
 
             // If F conflicted, there was already something named 'Name'.  If it has a
             // body, don't allow redefinition or reextern.
@@ -145,7 +145,7 @@ namespace KaleidoscopeLLVM
                     arguments[i] = LLVM.DoubleType();
                 }
 
-                function = LLVM.AddFunction(module, node.Name, LLVM.FunctionType(LLVM.DoubleType(), arguments, LLVMBoolFalse));
+                function = LLVM.AddFunction(this.module, node.Name, LLVM.FunctionType(LLVM.DoubleType(), arguments, LLVMBoolFalse));
                 LLVM.SetLinkage(function, LLVMLinkage.LLVMExternalLinkage);
             }
 
@@ -156,10 +156,10 @@ namespace KaleidoscopeLLVM
                 LLVMValueRef param = LLVM.GetParam(function, (uint)i);
                 LLVM.SetValueName(param, argumentName);
 
-                namedValues[argumentName] = param;
+                this.namedValues[argumentName] = param;
             }
 
-            valueStack.Push(function);
+            this.valueStack.Push(function);
             return node;
         }
 
