@@ -13,9 +13,6 @@
     <NuGetPackageImportStamp>b8df454a</NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Kaleidoscope\Kaleidoscope.csproj" />
   </ItemGroup>
   <ItemGroup>
