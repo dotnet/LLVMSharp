@@ -1,10 +1,10 @@
-﻿namespace KaleidoscopeLLVM
-{
-    using System;
-    using System.Collections.Generic;
-    using Kaleidoscope.AST;
-    using LLVMSharp;
+﻿using System;
+using System.Collections.Generic;
+using Kaleidoscope.AST;
+using LLVMSharp;
 
+namespace KaleidoscopeLLVM
+{
     internal sealed class CodeGenVisitor : ExprVisitor
     {
         private static readonly LLVMBool LLVMBoolFalse = new LLVMBool(0);
@@ -25,7 +25,7 @@
             this.builder = builder;
         }
 
-        public Stack<LLVMValueRef> ResultStack { get { return this.valueStack; } }
+        public Stack<LLVMValueRef> ResultStack { get { return valueStack; } }
 
         public void ClearResultStack()
         {
@@ -109,7 +109,7 @@
                 argsV[i] = this.valueStack.Pop();
             }
 
-            this.valueStack.Push(LLVM.BuildCall(this.builder, calleeF, out argsV[0], argumentCount, "calltmp"));
+            valueStack.Push(LLVM.BuildCall(this.builder, calleeF, argsV, "calltmp"));
 
             return node;
         }
@@ -145,7 +145,7 @@
                     arguments[i] = LLVM.DoubleType();
                 }
 
-                function = LLVM.AddFunction(this.module, node.Name, LLVM.FunctionType(LLVM.DoubleType(), out arguments[0], argumentCount, LLVMBoolFalse));
+                function = LLVM.AddFunction(this.module, node.Name, LLVM.FunctionType(LLVM.DoubleType(), arguments, LLVMBoolFalse));
                 LLVM.SetLinkage(function, LLVMLinkage.LLVMExternalLinkage);
             }
 
