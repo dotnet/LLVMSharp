@@ -145,7 +145,7 @@
                     arguments[i] = LLVM.DoubleType();
                 }
 
-                function = LLVM.AddFunction(this.module, node.Name, LLVM.FunctionType(LLVM.DoubleType(), out arguments[0], argumentCount, LLVMBoolFalse));
+                function = LLVM.AddFunction(this.module, node.Name, LLVM.FunctionType(LLVM.DoubleType(), arguments, LLVMBoolFalse));
                 LLVM.SetLinkage(function, LLVMLinkage.LLVMExternalLinkage);
             }
 
