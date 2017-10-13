@@ -25,7 +25,7 @@
             this.builder = builder;
         }
 
-        public Stack<LLVMValueRef> ResultStack { get { return this.valueStack; } }
+        public Stack<LLVMValueRef> ResultStack { get { return valueStack; } }
 
         public void ClearResultStack()
         {
@@ -109,7 +109,7 @@
                 argsV[i] = this.valueStack.Pop();
             }
 
-            this.valueStack.Push(LLVM.BuildCall(this.builder, calleeF, out argsV[0], argumentCount, "calltmp"));
+            valueStack.Push(LLVM.BuildCall(this.builder, calleeF, argsV, "calltmp"));
 
             return node;
         }
@@ -145,7 +145,7 @@
                     arguments[i] = LLVM.DoubleType();
                 }
 
-                function = LLVM.AddFunction(this.module, node.Name, LLVM.FunctionType(LLVM.DoubleType(), out arguments[0], argumentCount, LLVMBoolFalse));
+                function = LLVM.AddFunction(this.module, node.Name, LLVM.FunctionType(LLVM.DoubleType(), arguments, LLVMBoolFalse));
                 LLVM.SetLinkage(function, LLVMLinkage.LLVMExternalLinkage);
             }
 
@@ -237,8 +237,8 @@
             LLVM.PositionBuilderAtEnd(this.builder, mergeBB);
             var phi = LLVM.BuildPhi(this.builder, LLVM.DoubleType(), "iftmp");
 
-            LLVM.AddIncoming(phi, out thenV, out thenBB, 1);
-            LLVM.AddIncoming(phi, out elseV, out elseBB, 1);
+            LLVM.AddIncoming(phi, new []{thenV}, new []{thenBB}, 1);
+            LLVM.AddIncoming(phi, new []{elseV}, new []{elseBB}, 1);
 
             this.valueStack.Push(phi);
 
@@ -280,8 +280,8 @@
             LLVM.PositionBuilderAtEnd(this.builder, loopBB);
 
             // Start the PHI node with an entry for Start.
-            var variable = LLVM.BuildPhi(this.builder, LLVM.DoubleType(), node.VarName);
-            LLVM.AddIncoming(variable, out startVal, out preheaderBB, 1);
+            var variable = LLVM.BuildPhi(builder, LLVM.DoubleType(), node.VarName);
+            LLVM.AddIncoming(variable, new []{startVal}, new []{preheaderBB}, 1);
 
             // Within the loop, the variable is defined equal to the PHI node.  If it
             // shadows an existing variable, we have to restore it, so save it now.
@@ -298,14 +298,14 @@
             // Emit the body of the loop.  This, like any other expr, can change the
             // current BB.  Note that we ignore the value computed by the body, but don't
             // allow an error.
-            this.Visit(node.Body);
+            Visit(node.Body);
 
             // Emit the step value.
             LLVMValueRef stepVal;
             if (node.Step != null)
             {
-                this.Visit(node.Step);
-                stepVal = this.valueStack.Pop();
+                Visit(node.Step);
+                stepVal = valueStack.Pop();
             }
             else
             {
@@ -313,36 +313,36 @@
                 stepVal = LLVM.ConstReal(LLVM.DoubleType(), 1.0);
             }
 
-            LLVMValueRef nextVar = LLVM.BuildFAdd(this.builder, variable, stepVal, "nextvar");
+            LLVMValueRef nextVar = LLVM.BuildFAdd(builder, variable, stepVal, "nextvar");
 
             // Compute the end condition.
-            this.Visit(node.End);
-            LLVMValueRef endCond = LLVM.BuildFCmp(this.builder, LLVMRealPredicate.LLVMRealONE, this.valueStack.Pop(), LLVM.ConstReal(LLVM.DoubleType(), 0.0), "loopcond");
+            Visit(node.End);
+            LLVMValueRef endCond = LLVM.BuildFCmp(builder, LLVMRealPredicate.LLVMRealONE, valueStack.Pop(), LLVM.ConstReal(LLVM.DoubleType(), 0.0), "loopcond");
 
             // Create the "after loop" block and insert it.
-            var loopEndBB = LLVM.GetInsertBlock(this.builder);
+            var loopEndBB = LLVM.GetInsertBlock(builder);
             var afterBB = LLVM.AppendBasicBlock(function, "afterloop");
 
             // Insert the conditional branch into the end of LoopEndBB.
-            LLVM.BuildCondBr(this.builder, endCond, loopBB, afterBB);
+            LLVM.BuildCondBr(builder, endCond, loopBB, afterBB);
 
             // Any new code will be inserted in AfterBB.
-            LLVM.PositionBuilderAtEnd(this.builder, afterBB);
+            LLVM.PositionBuilderAtEnd(builder, afterBB);
 
             // Add a new entry to the PHI node for the backedge.
-            LLVM.AddIncoming(variable, out nextVar, out loopEndBB, 1);
+            LLVM.AddIncoming(variable, new []{nextVar}, new []{loopEndBB}, 1);
 
             // Restore the unshadowed variable.
             if (oldVal.Pointer != IntPtr.Zero)
             {
-                this.namedValues[node.VarName] = oldVal;
+                namedValues[node.VarName] = oldVal;
             }
             else
             {
-                this.namedValues.Remove(node.VarName);
+                namedValues.Remove(node.VarName);
             }
 
-            this.valueStack.Push(LLVM.ConstReal(LLVM.DoubleType(), 0.0));
+            valueStack.Push(LLVM.ConstReal(LLVM.DoubleType(), 0.0));
 
             return node;
         }

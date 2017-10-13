@@ -25,7 +25,7 @@
             this.builder = builder;
         }
 
-        public Stack<LLVMValueRef> ResultStack { get { return this.valueStack; } }
+        public Stack<LLVMValueRef> ResultStack => valueStack;
 
         public void ClearResultStack()
         {
@@ -109,7 +109,7 @@
                 argsV[i] = this.valueStack.Pop();
             }
 
-            this.valueStack.Push(LLVM.BuildCall(this.builder, calleeF, out argsV[0], argumentCount, "calltmp"));
+            this.valueStack.Push(LLVM.BuildCall(this.builder, calleeF, argsV, "calltmp"));
 
             return node;
         }
@@ -145,13 +145,13 @@
                     arguments[i] = LLVM.DoubleType();
                 }
 
-                function = LLVM.AddFunction(this.module, node.Name, LLVM.FunctionType(LLVM.DoubleType(), out arguments[0], argumentCount, LLVMBoolFalse));
+                function = LLVM.AddFunction(this.module, node.Name, LLVM.FunctionType(LLVM.DoubleType(), arguments, LLVMBoolFalse));
                 LLVM.SetLinkage(function, LLVMLinkage.LLVMExternalLinkage);
             }
 
             for (int i = 0; i < argumentCount; ++i)
             {
-                string argumentName = node.Arguments[i];
+                var argumentName = node.Arguments[i];
 
                 LLVMValueRef param = LLVM.GetParam(function, (uint)i);
                 LLVM.SetValueName(param, argumentName);
@@ -165,18 +165,18 @@
 
         protected override ExprAST VisitFunctionAST(FunctionAST node)
         {
-            this.namedValues.Clear();
+            namedValues.Clear();
 
-            this.Visit(node.Proto);
+            Visit(node.Proto);
 
-            LLVMValueRef function = this.valueStack.Pop();
+            LLVMValueRef function = valueStack.Pop();
 
             // Create a new basic block to start insertion into.
-            LLVM.PositionBuilderAtEnd(this.builder, LLVM.AppendBasicBlock(function, "entry"));
+            LLVM.PositionBuilderAtEnd(builder, LLVM.AppendBasicBlock(function, "entry"));
 
             try
             {
-                this.Visit(node.Body);
+                Visit(node.Body);
             }
             catch (Exception)
             {
@@ -185,12 +185,12 @@
             }
 
             // Finish off the function.
-            LLVM.BuildRet(this.builder, this.valueStack.Pop());
+            LLVM.BuildRet(builder, valueStack.Pop());
 
             // Validate the generated code, checking for consistency.
             LLVM.VerifyFunction(function, LLVMVerifierFailureAction.LLVMPrintMessageAction);
 
-            this.valueStack.Push(function);
+            valueStack.Push(function);
 
             return node;
         }
