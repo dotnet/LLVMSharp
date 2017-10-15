@@ -2,12 +2,12 @@
 {
     using LLVMSharp;
     using LLVMSharp.Api;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class IRBuilder
     {
-        [TestMethod]
+        [Test]
         public void SimpleAdd()
         {
             using (var module = Module.Create("test_add"))
@@ -32,7 +32,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void SimpleShift()
         {
             using (var module = Module.Create("test_shift"))
@@ -56,7 +56,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void GreaterThan()
         {
             using (var module = Module.Create("test_greaterthan"))
@@ -82,7 +82,7 @@
 
         }
 
-        [TestMethod]
+        [Test]
         public void FunctionCall()
         {
             using (var module = Module.Create("test_call"))
@@ -113,7 +113,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Constant()
         {
             using (var module = Module.Create("test_constant"))

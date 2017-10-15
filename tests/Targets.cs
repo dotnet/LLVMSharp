@@ -2,12 +2,12 @@
 {
     using System.Linq;
     using LLVMSharp.Api;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class Targets
     {
-        [TestMethod]
+        [Test]
         public void InitializeX86Targets()
         {
             Initialize.X86.TargetInfo();
@@ -16,7 +16,7 @@
             Assert.IsTrue(targets.Any(x => x.Name == "x86-64"));
         }
 
-        [TestMethod]
+        [Test]
         public void InitializeARMTargets()
         {
             Initialize.ARM.TargetInfo();
@@ -25,7 +25,7 @@
             Assert.IsTrue(targets.Any(x => x.Name == "armeb"));
         }
 
-        [TestMethod]
+        [Test]
         public void DefaultTargetTriple()
         {
             var str = Host.GetDefaultTargetTriple();

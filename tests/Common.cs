@@ -6,8 +6,9 @@
     using LLVMSharp.Api;
     using LLVMSharp.Api.Types;
     using LLVMSharp.Api.Values.Constants.GlobalValues.GlobalObjects;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Type = LLVMSharp.Api.Type;
+    using Api = LLVMSharp.Api;
+    using NUnit.Framework;
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int Int32Delegate();
@@ -22,7 +23,7 @@
             var signature = new FunctionType(returnType, arguments);
             var function = module.AddFunction(name, signature);
             var basicBlock = function.AppendBasicBlock(string.Empty);
-            using (var builder = LLVMSharp.Api.IRBuilder.Create())
+            using (var builder = Api.IRBuilder.Create())
             {
                 builder.PositionBuilderAtEnd(basicBlock);
                 generator.Invoke(function, builder);
@@ -45,8 +46,7 @@
             LLVM.InitializeX86TargetMC();
             LLVM.InitializeX86AsmPrinter();
 
-            var platform = Environment.OSVersion.Platform;
-            if (platform == PlatformID.Win32NT)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 var defaultTarget = Marshal.PtrToStringAnsi(LLVM.GetDefaultTargetTriple());
                 module.SetTarget(defaultTarget + "-elf");
@@ -58,20 +58,7 @@
         public static TDelegate GetDelegate<TDelegate>(this ExecutionEngine executionEngine, Function function)
         {
             var functionPtr = executionEngine.GetPointerToGlobal(function);
-            return (TDelegate) (object) Marshal.GetDelegateForFunctionPointer(functionPtr, typeof (TDelegate));
-        }
-
-        public static void InNewAppDomain(Action action)
-        {
-            var domain = AppDomain.CreateDomain(string.Empty);
-            try
-            {
-                domain.DoCallBack(new CrossAppDomainDelegate(action));
-            }
-            finally
-            {
-                AppDomain.Unload(domain);
-            }
+            return Marshal.GetDelegateForFunctionPointer<TDelegate>(functionPtr);
         }
     }
 }
