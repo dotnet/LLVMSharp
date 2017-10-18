@@ -32,7 +32,9 @@ On Windows using .NET Core
  * Type safe (LLVMValueRef and LLVMTypeRef are different types, despite being pointers internally)
  * Nearly identical to LLVM C APIs, e.g. LLVMModuleCreateWithName in C, vs. LLVM.ModuleCreateWithName (notice the . in the C# API)
 
-## Kaleidoscope Tutorial
+## Kaleidoscope Tutorials
+
+There's a [C# translation of the LLVM official Kaleidoscope Tutorial](http://ice1000.org/llvm-cs/en/).
 
 Much of the tutorial is already implemented here, and has some nice improvements like the Visitor pattern for code generation to make the LLVM code stand out and help you bootstrap your compiler.
 
