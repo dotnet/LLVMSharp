@@ -2,24 +2,24 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.InteropServices;
     using Kaleidoscope;
     using LLVMSharp;
 
     public sealed class Program
     {
         public delegate double D();
-        
-        private static void Main(string[] args)
+
+        public static void Main(string[] args)
         {
             // Make the module, which holds all the code.
             LLVMModuleRef module = LLVM.ModuleCreateWithName("my cool jit");
             LLVMBuilderRef builder = LLVM.CreateBuilder();
-
             LLVM.LinkInMCJIT();
-            LLVM.InitializeX86TargetInfo();
-            LLVM.InitializeX86Target();
             LLVM.InitializeX86TargetMC();
+            LLVM.InitializeX86Target();
+            LLVM.InitializeX86TargetInfo();
+            LLVM.InitializeX86AsmParser();
+            LLVM.InitializeX86AsmPrinter();
 
             if (LLVM.CreateExecutionEngineForModule(out var engine, module, out var errorMessage).Value == 1)
             {
@@ -33,7 +33,7 @@
 
             // Set up the optimizer pipeline.  Start with registering info about how the
             // target lays out data structures.
-            LLVM.DisposeTargetData(LLVM.GetExecutionEngineTargetData(engine));
+            // LLVM.DisposeTargetData(LLVM.GetExecutionEngineTargetData(engine));
 
             // Provide basic AliasAnalysis support for GVN.
             LLVM.AddBasicAliasAnalysisPass(passManager);

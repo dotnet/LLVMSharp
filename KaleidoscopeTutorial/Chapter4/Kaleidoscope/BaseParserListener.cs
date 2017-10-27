@@ -28,8 +28,10 @@
         public void ExitRule(ExprAST argument)
         {
             string ruleName = this.descentStack.Pop();
-            this.ascentStack.Push(new ASTContext(IParserListenerType.GetMethod("Exit" + ruleName), this.listener, argument));
-            this.ascentStack.Push(new ASTContext(IParserListenerType.GetMethod("Enter" + ruleName), this.listener, argument));
+            this.ascentStack.Push(new ASTContext(IParserListenerType.GetMethod("Exit" + ruleName), this.listener,
+                argument));
+            this.ascentStack.Push(new ASTContext(IParserListenerType.GetMethod("Enter" + ruleName), this.listener,
+                argument));
         }
 
         public void Listen()
@@ -39,8 +41,8 @@
                 while (this.ascentStack.Count != 0)
                 {
                     var context = this.ascentStack.Pop();
-                    context.MethodInfo.Invoke(context.Instance, new object[] { context.Argument });
-                }    
+                    context.MethodInfo.Invoke(context.Instance, new object[] {context.Argument});
+                }
             }
         }
 

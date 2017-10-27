@@ -54,11 +54,12 @@ namespace KaleidoscopeLLVM
         {
             this.visitor.Visit(data);
             var anonymousFunction = this.visitor.ResultStack.Pop();
-            LLVM.DumpValue(anonymousFunction); // Dump the function for exposition purposes.
-            var dFunc = (Program.D)Marshal.GetDelegateForFunctionPointer(LLVM.GetPointerToGlobal(this.ee, anonymousFunction), typeof(Program.D));
+//            LLVM.DumpValue(anonymousFunction); // Dump the function for exposition purposes.
+            var dFunc = (Program.D) Marshal.GetDelegateForFunctionPointer(
+                LLVM.GetPointerToGlobal(this.ee, anonymousFunction), typeof(Program.D));
             LLVM.RunFunctionPassManager(this.passManager, anonymousFunction);
 
-            LLVM.DumpValue(anonymousFunction); // Dump the function for exposition purposes.
+//            LLVM.DumpValue(anonymousFunction); // Dump the function for exposition purposes.
             Console.WriteLine("Evaluated to " + dFunc());
         }
     }
