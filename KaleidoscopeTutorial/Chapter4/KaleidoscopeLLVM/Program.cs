@@ -90,15 +90,15 @@
                 Console.Write("ready> ");
                 switch (lexer.CurrentToken)
                 {
-                case (int)Token.EOF:
+                case (int) Token.EOF:
                     return;
                 case ';':
                     lexer.GetNextToken();
                     break;
-                case (int)Token.DEF:
+                case (int) Token.DEF:
                     parser.HandleDefinition();
                     break;
-                case (int)Token.EXTERN:
+                case (int) Token.EXTERN:
                     parser.HandleExtern();
                     break;
                 default:

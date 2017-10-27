@@ -47,7 +47,7 @@
             }
             else
             {
-                throw new Exception("Unknown variable name");
+                throw new Exception($"Unknown variable name {node.Name}");
             }
 
             return node;
@@ -93,7 +93,7 @@
             var calleeF = LLVM.GetNamedFunction(this.module, node.Callee);
             if (calleeF.Pointer == IntPtr.Zero)
             {
-                throw new Exception("Unknown function referenced");
+                throw new Exception($"Unknown function referenced {node.Callee}");
             }
 
             if (LLVM.CountParams(calleeF) != node.Arguments.Count)

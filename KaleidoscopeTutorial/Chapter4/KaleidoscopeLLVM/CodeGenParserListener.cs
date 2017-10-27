@@ -30,10 +30,10 @@ namespace KaleidoscopeLLVM
         {
             this.visitor.Visit(data);
             var function = this.visitor.ResultStack.Pop();
-            LLVM.DumpValue(function);
+            // LLVM.DumpValue(function);
 
             LLVM.RunFunctionPassManager(this.passManager, function);
-            LLVM.DumpValue(function); // Dump the function for exposition purposes.
+            // LLVM.DumpValue(function); // Dump the function for exposition purposes.
         }
 
         public void EnterHandleExtern(PrototypeAST data)
@@ -43,7 +43,7 @@ namespace KaleidoscopeLLVM
         public void ExitHandleExtern(PrototypeAST data)
         {
             this.visitor.Visit(data);
-            LLVM.DumpValue(this.visitor.ResultStack.Pop());
+            // LLVM.DumpValue(this.visitor.ResultStack.Pop());
         }
 
         public void EnterHandleTopLevelExpression(FunctionAST data)
