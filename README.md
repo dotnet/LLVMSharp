@@ -53,67 +53,38 @@ The tutorials have been tested to run on Windows and Linux, however the build (u
 ## Example application
 
 ```csharp
-    using System;
-    using System.Runtime.InteropServices;
-    using LLVMSharp;
+using LLVMSharp.Api;
+using System.Runtime.InteropServices;
 
-    internal sealed class Program
+static class Program
+{
+    [UnmanagedFunctionPointer(System.Runtime.InteropServices.CallingConvention.Cdecl)]
+    delegate int BinaryInt32Operation(int op1, int op2);
+
+    static void Main(string[] args)
     {
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate int Add(int a, int b);
-
-        private static void Main(string[] args)
+        using(var module = Module.Create("LLVMSharpIntro"))
         {
-            LLVMBool Success = new LLVMBool(0);
-            LLVMModuleRef mod = LLVM.ModuleCreateWithName("LLVMSharpIntro");
+            var def = module.AddFunction(
+                Type.Int32, "sum", new[] { Type.Int32, Type.Int32 }, (f, b) =>
+                {
+                    var p1 = f.Parameters[0];
+                    var p2 = f.Parameters[1];
+                    var add = b.CreateAdd(p1, p2);
+                    var ret = b.CreateRet(add);
+                });
+            module.Verify();
 
-            LLVMTypeRef[] param_types = { LLVM.Int32Type(), LLVM.Int32Type() };
-            LLVMTypeRef ret_type = LLVM.FunctionType(LLVM.Int32Type(), param_types, false);
-            LLVMValueRef sum = LLVM.AddFunction(mod, "sum", ret_type);
-
-            LLVMBasicBlockRef entry = LLVM.AppendBasicBlock(sum, "entry");
-
-            LLVMBuilderRef builder = LLVM.CreateBuilder();
-            LLVM.PositionBuilderAtEnd(builder, entry);
-            LLVMValueRef tmp = LLVM.BuildAdd(builder, LLVM.GetParam(sum, 0), LLVM.GetParam(sum, 1), "tmp");
-            LLVM.BuildRet(builder, tmp);
-
-            if (LLVM.VerifyModule(mod, LLVMVerifierFailureAction.LLVMPrintMessageAction, out var error) != Success)
+            Initialize.X86.All();
+            using (var engine = module.CreateMCJITCompilerForModule())
             {
-                Console.WriteLine($"Error: {error}");
+                var function = engine.GetDelegate<BinaryInt32Operation>(def);
+                var result = function(2, 2);
+                Assert.Equal(4, result);
             }
-
-            LLVM.LinkInMCJIT();
-
-            LLVM.InitializeX86TargetMC();
-            LLVM.InitializeX86Target();
-            LLVM.InitializeX86TargetInfo();
-            LLVM.InitializeX86AsmParser();
-            LLVM.InitializeX86AsmPrinter();
-
-            LLVMMCJITCompilerOptions options = new LLVMMCJITCompilerOptions { NoFramePointerElim = 1 };
-            LLVM.InitializeMCJITCompilerOptions(options);
-            if (LLVM.CreateMCJITCompilerForModule(out var engine, mod, options, out error) != Success)
-            {
-                Console.WriteLine($"Error: {error}");
-            }
-
-            var addMethod = (Add)Marshal.GetDelegateForFunctionPointer(LLVM.GetPointerToGlobal(engine, sum), typeof(Add));
-            int result = addMethod(10, 10);
-
-            Console.WriteLine("Result of sum is: " + result);
-
-            if (LLVM.WriteBitcodeToFile(mod, "sum.bc") != 0)
-            {
-                Console.WriteLine("error writing bitcode to file, skipping");
-            }
-
-            LLVM.DumpModule(mod);
-
-            LLVM.DisposeBuilder(builder);
-            LLVM.DisposeExecutionEngine(engine);
         }
     }
+}
 ````
 
 ## Microsoft Open Source Code of Conduct

@@ -5,7 +5,7 @@
     using LLVMSharp.Api.Values.Constants;
     using Xunit;
 
-    public class IRBuilder
+    public class IR
     {
         [Theory]
         [InlineData(0, 0, 0)]
@@ -15,7 +15,7 @@
         {
             using (var module = Module.Create("test_add"))
             {
-                var def = module.DefineFunction(
+                var def = module.AddFunction(
                     Type.Int32, "add", new[] { Type.Int32, Type.Int32 }, (f, b) =>
                     {
                         var p1 = f.Parameters[0];
@@ -23,8 +23,10 @@
                         var add = b.CreateAdd(p1, p2);
                         var ret = b.CreateRet(add);
                     });
+                module.Verify();
 
-                using (var engine = module.CreateExecutionEngine())
+                Initialize.X86.All();
+                using (var engine = module.CreateMCJITCompilerForModule())
                 {
                     var func = engine.GetDelegate<Int32Int32Int32Delegate>(def);
                     Assert.Equal(result, func(op1, op2));
@@ -39,7 +41,7 @@
         {
             using (var module = Module.Create("test_lshift"))
             {
-                var def = module.DefineFunction(
+                var def = module.AddFunction(
                     Type.Int32, "lshift", new[] { Type.Int32, Type.Int32 }, (f, b) =>
                     {
                         var p1 = f.Parameters[0];
@@ -47,8 +49,10 @@
                         var shift = b.CreateLShr(p1, p2);
                         var ret = b.CreateRet(shift);
                     });
+                module.Verify();
 
-                using (var engine = module.CreateExecutionEngine())
+                Initialize.X86.All();
+                using (var engine = module.CreateMCJITCompilerForModule())
                 {
                     var func = engine.GetDelegate<Int32Int32Int32Delegate>(def);
                     Assert.Equal(result, func(op1, op2));
@@ -64,7 +68,7 @@
         {
             using (var module = Module.Create("test_greaterthan"))
             {
-                var def = module.DefineFunction(
+                var def = module.AddFunction(
                     Type.Int1, "greaterthan", new[] { Type.Int32, Type.Int32 }, (f, b) =>
                     {
                         var p1 = f.Parameters[0];
@@ -73,8 +77,10 @@
                         var r = b.CreateBitCast(cmp, f.FunctionType.ReturnType);
                         var ret = b.CreateRet(r);
                     });
+                module.Verify();
 
-                using (var engine = module.CreateExecutionEngine())
+                Initialize.X86.All();
+                using (var engine = module.CreateMCJITCompilerForModule())
                 {
                     var func = engine.GetDelegate<Int32Int32Int8Delegate>(def);
                     Assert.Equal(result, func(op1, op2));
@@ -90,7 +96,7 @@
         {
             using (var module = Module.Create("test_call"))
             {
-                var defAdd = module.DefineFunction(
+                var defAdd = module.AddFunction(
                     Type.Int32, "add", new[] { Type.Int32, Type.Int32 }, (f, b) =>
                     {
                         var p1 = f.Parameters[0];
@@ -98,7 +104,7 @@
                         var add = b.CreateAdd(p1, p2);
                         var ret = b.CreateRet(add);
                     });
-                var defEntry = module.DefineFunction(
+                var defEntry = module.AddFunction(
                     Type.Int32, "entry", new[] { Type.Int32, Type.Int32 }, (f, b) =>
                     {
                         var p1 = f.Parameters[0];
@@ -106,8 +112,10 @@
                         var call = b.CreateCall(defAdd, p1, p2);
                         var ret = b.CreateRet(call);
                     });
-                
-                using (var engine = module.CreateExecutionEngine())
+                module.Verify();
+
+                Initialize.X86.All();
+                using (var engine = module.CreateMCJITCompilerForModule())
                 {
                     var func = engine.GetDelegate<Int32Int32Int32Delegate>(defEntry);
                     Assert.Equal(result, func(op1, op2));
@@ -122,14 +130,16 @@
         {
             using (var module = Module.Create("test_constant"))
             {
-                var def = module.DefineFunction(
+                var def = module.AddFunction(
                     Type.Int32, "constant", new Type[0], (f, b) =>
                     {
                         var value = ConstantInt.Get(Type.Int32, input);
                         var ret = b.CreateRet(value);
                     });
+                module.Verify();
 
-                using (var engine = module.CreateExecutionEngine())
+                Initialize.X86.All();
+                using (var engine = module.CreateMCJITCompilerForModule())
                 {
                     var func = engine.GetDelegate<Int32Delegate>(def);
                     Assert.Equal(output, func());
@@ -143,15 +153,17 @@
             using(var module = Module.Create("test_sizeof"))
             {
                 var str = StructType.Create(new[] { Type.Int32, Type.Int32 }, true);
-                var def = module.DefineFunction(
+                var def = module.AddFunction(
                     Type.Int32, "structure", new Type[0], (f, b) =>
                     {
                         var sz = ConstantExpr.GetSizeOf(str);
                         var sz32 = b.CreateBitCast(sz, Type.Int32);
                         var ret = b.CreateRet(sz32);
                     });
+                module.Verify();
 
-                using(var engine = module.CreateExecutionEngine())
+                Initialize.X86.All();
+                using(var engine = module.CreateMCJITCompilerForModule())
                 {
                     var func = engine.GetDelegate<Int32Delegate>(def);
                     Assert.Equal(8, func());

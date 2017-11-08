@@ -1,6 +1,6 @@
 ﻿namespace LLVMSharp.Api.TargetInitializers
 {
-    public sealed class AArch64TargetInitializer : 
+    public sealed class AArch64TargetInitializer : TargetInitializer,
         ITarget, ITargetInfo, ITargetMC, IAsmPrinter, IAsmParser, IDisassembler
     {
         internal AArch64TargetInitializer()

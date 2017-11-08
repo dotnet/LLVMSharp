@@ -1,6 +1,6 @@
 ﻿namespace LLVMSharp.Api.TargetInitializers
 {
-    public sealed class HexagonTargetInitializer : 
+    public sealed class HexagonTargetInitializer : TargetInitializer,
         ITarget, ITargetInfo, ITargetMC, IAsmPrinter
     {
         internal HexagonTargetInitializer()

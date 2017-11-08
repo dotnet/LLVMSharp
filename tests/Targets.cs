@@ -1,24 +1,31 @@
 ﻿namespace Tests
 {
     using LLVMSharp.Api;
+    using LLVMSharp.Api.TargetInitializers;
     using Xunit;
 
     public class Targets
     {
-        public void InitializeX86Targets()
+        [Theory]
+        [InlineData("x86", "x86-64")]
+        public void InitializeX86Targets(params string[] expected) => this.InitializeTargets(Initialize.X86, expected);
+
+        [Theory]
+        [InlineData("arm")]
+        public void InitializeARMTargets(params string[] expected) => this.InitializeTargets(Initialize.ARM, expected);
+       
+        public void InitializeTargets(TargetInitializer init, string[] expectedTargets)
         {
-            Initialize.X86.TargetInfo();
-            var targets = Target.Targets;
-            Assert.Contains(targets, x => x.Name == "x86");
-            Assert.Contains(targets, x => x.Name == "x86-64");
-        }
-        
-        public void InitializeARMTargets()
-        {
-            Initialize.ARM.TargetInfo();
-            var targets = Target.Targets;
-            Assert.Contains(targets, x => x.Name == "arm");
-            Assert.Contains(targets, x => x.Name == "armeb");
+            init.All();
+            foreach (var u in Target.Targets)
+            {
+                u.EnsurePropertiesWork();
+            }
+            foreach (var t in expectedTargets)
+            {
+                Assert.Contains(Target.Targets, x => x.Name == t);
+
+            }
         }
 
         [Fact]

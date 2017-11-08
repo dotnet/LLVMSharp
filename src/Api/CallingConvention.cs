@@ -1,6 +1,6 @@
 ﻿namespace LLVMSharp.Api
 {
-    public enum CallingConvention : uint
+    public enum CallingConv : uint
     {
         C = 0,
         Fast = 8,

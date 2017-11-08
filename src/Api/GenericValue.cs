@@ -1,5 +1,6 @@
 ﻿namespace LLVMSharp.Api
 {
+    using LLVMSharp.Api.Types;
     using System;
     using Utilities;
 
@@ -8,9 +9,10 @@
         LLVMGenericValueRef IWrapper<LLVMGenericValueRef>.ToHandleType => this._instance;
         void IDisposableWrapper<LLVMGenericValueRef>.MakeHandleOwner() => this._owner = true;
 
-        public static GenericValue CreateGenericValueOfInt(Type t, ulong n, bool isSigned) => LLVM.CreateGenericValueOfInt(t.Unwrap(), n, isSigned).Wrap().MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
-        public static GenericValue CreateGenericValueOfPointer(IntPtr p) => LLVM.CreateGenericValueOfPointer(p).Wrap().MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
-        public static GenericValue CreateGenericValueOfFloat(Type ty, double n) => LLVM.CreateGenericValueOfFloat(ty.Unwrap(), n).Wrap().MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
+        public static GenericValue Create(IntegerType t, ulong n, bool isSigned) => LLVM.CreateGenericValueOfInt(t.Unwrap(), n, isSigned).Wrap().MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
+        public static GenericValue Create(IntegerType t, ulong n) => Create(t, n, false);
+        public static GenericValue Create(FPType ty, double n) => LLVM.CreateGenericValueOfFloat(ty.Unwrap(), n).Wrap().MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
+        public static GenericValue Create(IntPtr p) => LLVM.CreateGenericValueOfPointer(p).Wrap().MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
 
         private readonly LLVMGenericValueRef _instance;
         private bool _disposed;

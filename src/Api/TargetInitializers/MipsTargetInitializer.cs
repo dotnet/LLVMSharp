@@ -1,6 +1,6 @@
 ﻿namespace LLVMSharp.Api.TargetInitializers
 {
-    public sealed class MipsTargetInitializer : 
+    public sealed class MipsTargetInitializer : TargetInitializer,
         ITarget, ITargetInfo, ITargetMC, IAsmPrinter, IAsmParser, IDisassembler
     {
         internal MipsTargetInitializer()

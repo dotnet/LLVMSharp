@@ -1,7 +1,9 @@
 ﻿namespace LLVMSharp.Api.Values.Constants.GlobalValues.GlobalObjects
 {
     using LLVMSharp.Api.Types.Composite.SequentialTypes;
+    using System;
     using System.Collections.Generic;
+    using System.Runtime.InteropServices;
     using Types;
 
     public sealed class Function : GlobalObject
@@ -50,6 +52,15 @@
 
         public Function NextFunction => LLVM.GetNextFunction(this.Unwrap()).WrapAs<Function>();
         public Function PreviousFunction => LLVM.GetPreviousFunction(this.Unwrap()).WrapAs<Function>();
+
+        public void Verify()
+        {
+            if (!this.TryVerify())
+            {
+                throw new InvalidOperationException($"Function \"{this.Name}\" has errors. Verify the containing module for detailed information.");
+            }
+        }
+        public bool TryVerify() => !LLVM.VerifyFunction(this.Unwrap(), LLVMVerifierFailureAction.LLVMReturnStatusAction);
 
         public void ViewFunctionCFG() => LLVM.ViewFunctionCFG(this.Unwrap());
         public void ViewFunctionCFGOnly() => LLVM.ViewFunctionCFGOnly(this.Unwrap());

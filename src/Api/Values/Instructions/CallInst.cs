@@ -13,9 +13,9 @@ namespace LLVMSharp.Api.Values.Instructions
             get => LLVM.IsTailCall(this.Unwrap());
         }
 
-        public CallingConvention CallingConvention
+        public CallingConv CallingConvention
         {
-            get => (CallingConvention)LLVM.GetInstructionCallConv(this.Unwrap());
+            get => (CallingConv)LLVM.GetInstructionCallConv(this.Unwrap());
             set => LLVM.SetInstructionCallConv(this.Unwrap(), (uint)value);
         }
     }

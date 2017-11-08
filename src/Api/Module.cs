@@ -1,6 +1,8 @@
 ﻿namespace LLVMSharp.Api
 {
+    using LLVMSharp.Api.Types;
     using System;
+    using System.Collections.Generic;
     using System.Runtime.InteropServices;
     using Utilities;
     using Values.Constants;
@@ -23,8 +25,11 @@
         internal Module(LLVMModuleRef m) => this._instance = m;
         ~Module() => this.Dispose(false);
 
-        public string GetDataLayout() => LLVM.GetDataLayout(this.Unwrap());
-        public void SetDataLayout(string value) => LLVM.SetDataLayout(this.Unwrap(), value);
+        public string DataLayout
+        {
+            get => Marshal.PtrToStringAnsi(LLVM.GetDataLayoutAsPtr(this.Unwrap()));
+            set => LLVM.SetDataLayout(this.Unwrap(), value);
+        }
 
         public Context Context => LLVM.GetModuleContext(this.Unwrap()).Wrap();
 
@@ -50,10 +55,19 @@
         public Value[] GetNamedMetadataOperands(string name) => LLVM.GetNamedMetadataOperands(this.Unwrap(), name).Wrap<LLVMValueRef, Value>();
         public void AddNamedMetadataOperand(string name, Value val) => LLVM.AddNamedMetadataOperand(this.Unwrap(), name, val.Unwrap());
         public Function AddFunction(string name, Type functionTy) => LLVM.AddFunction(this.Unwrap(), name, functionTy.Unwrap()).WrapAs<Function>();
+        public Function AddFunction(Type returnType, string name, Type[] parameterTypes, Action<Function, IRBuilder> action)
+        {
+            var type = FunctionType.Create(returnType, parameterTypes);
+            var func = this.AddFunction(name, type);
+            var block = func.AppendBasicBlock(string.Empty);
+            var builder = IRBuilder.Create(this.Context);
+            builder.PositionBuilderAtEnd(block);
+            action(func, builder);
+            return func;
+        }
         public Function GetNamedFunction(string name) => LLVM.GetNamedFunction(this.Unwrap(), name).WrapAs<Function>();
 
         public Function GetFirstFunction() => LLVM.GetFirstFunction(this.Unwrap()).WrapAs<Function>();
-
         public Function GetLastFunction() => LLVM.GetLastFunction(this.Unwrap()).WrapAs<Function>();
 
         public GlobalValue AddGlobal(Type ty, string name) => LLVM.AddGlobal(this.Unwrap(), ty.Unwrap(), name).WrapAs<GlobalValue>();
@@ -82,13 +96,19 @@
 
         public ModuleProvider CreateModuleProviderForExistingModule() => LLVM.CreateModuleProviderForExistingModule(this.Unwrap()).Wrap();
         public PassManager CreateFunctionPassManagerForModule() => LLVM.CreateFunctionPassManagerForModule(this.Unwrap()).Wrap();
-        public bool VerifyModule(LLVMVerifierFailureAction action, out IntPtr outMessage) => LLVM.VerifyModule(this.Unwrap(), action, out outMessage);
 
-        public bool VerifyModule(LLVMVerifierFailureAction action, out string message)
+        public void Verify()
         {
-            var result = this.VerifyModule(action, out IntPtr messagePointer);
-            message = Marshal.PtrToStringAnsi(messagePointer);
-            return result;
+            if(!this.TryVerify(out string message))
+            {
+                throw new InvalidOperationException(message);
+            }
+        }
+        public bool TryVerify(out string message)
+        {
+            var success = !LLVM.VerifyModule(this.Unwrap(), LLVMVerifierFailureAction.LLVMPrintMessageAction, out IntPtr messagePtr);
+            message = Marshal.PtrToStringAnsi(messagePtr);
+            return success;
         }
 
         public int WriteBitcodeToFile(string path) => LLVM.WriteBitcodeToFile(this.Unwrap(), path);
@@ -123,7 +143,10 @@
             this._disposed = true;
         }
 
-        public void SetTarget(string target) => LLVM.SetTarget(this.Unwrap(), target);
-        public string GetTarget() => LLVM.GetTarget(this.Unwrap());
+        public string Target
+        {
+            get => Marshal.PtrToStringAnsi(LLVM.GetTargetAsPtr(this.Unwrap()));
+            set => LLVM.SetTarget(this.Unwrap(), value);
+        }
     }
 }

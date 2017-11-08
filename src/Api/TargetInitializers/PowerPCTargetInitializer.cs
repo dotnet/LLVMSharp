@@ -1,6 +1,6 @@
 ﻿namespace LLVMSharp.Api.TargetInitializers
 {
-    public sealed class PowerPCTargetInitializer :
+    public sealed class PowerPCTargetInitializer : TargetInitializer,
         ITarget, ITargetInfo, ITargetMC, IAsmPrinter, IAsmParser, IDisassembler
     {
         internal PowerPCTargetInitializer()

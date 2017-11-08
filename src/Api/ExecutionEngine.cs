@@ -3,6 +3,7 @@
     using LLVMSharp.Api.Values.Constants;
     using LLVMSharp.Api.Values.Constants.GlobalValues.GlobalObjects;
     using System;
+    using System.Runtime.InteropServices;
     using Utilities;
 
     public sealed class ExecutionEngine : IDisposable, IEquatable<ExecutionEngine>, IDisposableWrapper<LLVMExecutionEngineRef>
@@ -93,9 +94,14 @@
         public void AddGlobalMapping(Value global, IntPtr addr) => LLVM.AddGlobalMapping(this.Unwrap(), global.Unwrap(), addr);
 
         public IntPtr GetPointerToGlobal(GlobalValue global) => LLVM.GetPointerToGlobal(this.Unwrap(), global.Unwrap());
-
         public ulong GetGlobalValueAddress(string name) => LLVM.GetGlobalValueAddress(this.Unwrap(), name);
         public ulong GetFunctionAddress(string name) => LLVM.GetFunctionAddress(this.Unwrap(), name);
+
+        public TDelegate GetDelegate<TDelegate>(Function function)
+        {
+            var functionPtr = this.GetPointerToGlobal(function);
+            return (TDelegate)(object)Marshal.GetDelegateForFunctionPointer(functionPtr, typeof(TDelegate));
+        }
 
         public void Dispose()
         {

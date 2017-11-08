@@ -1,6 +1,6 @@
 ﻿namespace LLVMSharp.Api.TargetInitializers
 {
-    public sealed class XCoreTargetInitializer :
+    public sealed class XCoreTargetInitializer : TargetInitializer,
         ITarget, ITargetInfo, ITargetMC, IAsmPrinter, IDisassembler
     {
         internal XCoreTargetInitializer()

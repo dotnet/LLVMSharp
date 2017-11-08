@@ -1,6 +1,6 @@
 ﻿namespace LLVMSharp.Api.TargetInitializers
 {
-    public sealed class NativeTargetInitializer :
+    public sealed class NativeTargetInitializer : TargetInitializer,
         ITarget, IAsmPrinter, IAsmParser, IDisassembler
     {
         internal NativeTargetInitializer()

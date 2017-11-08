@@ -1,6 +1,6 @@
 ﻿namespace LLVMSharp.Api.TargetInitializers
 {
-    public sealed class SparcTargetInitializer :
+    public sealed class SparcTargetInitializer : TargetInitializer,
         ITarget, ITargetInfo, ITargetMC, IAsmPrinter, IAsmParser, IDisassembler
     {
         internal SparcTargetInitializer()

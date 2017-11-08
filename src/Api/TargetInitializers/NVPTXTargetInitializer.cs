@@ -1,6 +1,6 @@
 ﻿namespace LLVMSharp.Api.TargetInitializers
 {
-    public sealed class NVPTXTargetInitializer :
+    public sealed class NVPTXTargetInitializer : TargetInitializer,
         ITarget, ITargetInfo, ITargetMC, IAsmPrinter
     {
         internal NVPTXTargetInitializer()

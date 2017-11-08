@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.InteropServices;
     using Utilities;
 
     public sealed class Target : IWrapper<LLVMTargetRef>
@@ -34,10 +35,10 @@
         {
             this._instance = instance;
         }
-        
-        public string Name => LLVM.GetTargetName(this.Unwrap());
 
-        public string Description => LLVM.GetTargetDescription(this.Unwrap());
+        public string Name => Marshal.PtrToStringAnsi(LLVM.GetTargetNameAsPtr(this.Unwrap()));
+
+        public string Description => Marshal.PtrToStringAnsi(LLVM.GetTargetDescriptionAsPtr(this.Unwrap()));
 
         public bool HasJIT => LLVM.TargetHasJIT(this.Unwrap());
         public bool HasTargetMachine => LLVM.TargetHasTargetMachine(this.Unwrap());
