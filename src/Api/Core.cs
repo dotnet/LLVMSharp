@@ -2,9 +2,6 @@
 {
     public static class Core
     {
-        public static void Shutdown()
-        {
-            LLVM.Shutdown();
-        }        
+        public static void Shutdown() => LLVM.Shutdown();
     }
 }

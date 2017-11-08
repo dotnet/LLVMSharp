@@ -9,33 +9,10 @@
         IntPtr IHandle<TargetLibraryInfo>.GetInternalPointer() => this.Pointer;
         TargetLibraryInfo IHandle<TargetLibraryInfo>.ToWrapperType() => new TargetLibraryInfo(this);
 
-        public bool Equals(LLVMTargetLibraryInfoRef other)
-        {
-            return this.Pointer == other.Pointer;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is LLVMTargetLibraryInfoRef)
-            {
-                return this.Equals((LLVMTargetLibraryInfoRef)obj);
-            }
-            return false;
-        }
-
-        public static bool operator ==(LLVMTargetLibraryInfoRef op1, LLVMTargetLibraryInfoRef op2)
-        {
-            return op1.Equals(op2);
-        }
-
-        public static bool operator !=(LLVMTargetLibraryInfoRef op1, LLVMTargetLibraryInfoRef op2)
-        {
-            return !(op1 == op2);
-        }
-
-        public override int GetHashCode()
-        {
-            return this.Pointer.GetHashCode();
-        }
+        public override int GetHashCode() => this.Pointer.GetHashCode();
+        public override bool Equals(object obj) => obj is LLVMTargetLibraryInfoRef t && this.Equals(t);
+        public bool Equals(LLVMTargetLibraryInfoRef other) => this.Pointer == other.Pointer;
+        public static bool operator ==(LLVMTargetLibraryInfoRef op1, LLVMTargetLibraryInfoRef op2) => op1.Pointer == op2.Pointer;
+        public static bool operator !=(LLVMTargetLibraryInfoRef op1, LLVMTargetLibraryInfoRef op2) => !(op1 == op2);
     }
 }

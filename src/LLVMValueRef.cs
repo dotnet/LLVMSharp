@@ -704,9 +704,7 @@
 
         public LLVMValueRef[] GetParams()
         {
-            var e = new LLVMValueRef[LLVM.CountParams(this)];
-            LLVM.GetParams(this, out e[0]);
-            return e;
+            return LLVM.GetParams(this);
         }
 
         public LLVMValueRef GetParam(uint @Index)
@@ -756,9 +754,7 @@
 
         public LLVMValueRef[] GetMDNodeOperands()
         {
-            var e = new LLVMValueRef[LLVM.GetMDNodeNumOperands(this)];
-            LLVM.GetMDNodeOperands(this, out e[0]);
-            return e;
+            return LLVM.GetMDNodeOperands(this);
         }
 
         public bool ValueIsBasicBlock()
@@ -778,9 +774,7 @@
 
         public LLVMBasicBlockRef[] GetBasicBlocks()
         {
-            var e = new LLVMBasicBlockRef[LLVM.CountBasicBlocks(this)];
-            LLVM.GetBasicBlocks(this, out e[0]);
-            return e;
+            return LLVM.GetBasicBlocks(this);
         }
 
         public LLVMBasicBlockRef GetFirstBasicBlock()
@@ -918,9 +912,9 @@
             return LLVM.GetSwitchDefaultDest(this);
         }
 
-        public void AddIncoming(LLVMValueRef[] @IncomingValues, LLVMBasicBlockRef[] @IncomingBlocks, uint @Count)
+        public void AddIncoming(LLVMValueRef[] @IncomingValues, LLVMBasicBlockRef[] @IncomingBlocks)
         {
-            LLVM.AddIncoming(this, out @IncomingValues[0], out @IncomingBlocks[0], @Count);
+            LLVM.AddIncoming(this, @IncomingValues, @IncomingBlocks);
         }
 
         public uint CountIncoming()
@@ -987,9 +981,11 @@
         {
             return this.PrintValueToString();
         }
-
+        
+        public override int GetHashCode() => this.Pointer.GetHashCode();
+        public override bool Equals(object obj) => obj is LLVMValueRef t && this.Equals(t);
         public bool Equals(LLVMValueRef other) => this.Pointer == other.Pointer;
-        public static bool operator==(LLVMValueRef op1, LLVMValueRef op2) => op1.Equals(op2);
-        public static bool operator!=(LLVMValueRef op1, LLVMValueRef op2) => !(op1 == op2);
+        public static bool operator ==(LLVMValueRef op1, LLVMValueRef op2) => op1.Pointer == op2.Pointer;
+        public static bool operator !=(LLVMValueRef op1, LLVMValueRef op2) => !(op1 == op2);
     }
 }

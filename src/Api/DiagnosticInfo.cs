@@ -4,10 +4,7 @@
 
     public sealed class DiagnosticInfo : IWrapper<LLVMDiagnosticInfoRef>
     {
-        LLVMDiagnosticInfoRef IWrapper<LLVMDiagnosticInfoRef>.ToHandleType()
-        {
-            return this._instance;
-        }
+        LLVMDiagnosticInfoRef IWrapper<LLVMDiagnosticInfoRef>.ToHandleType => this._instance;
 
         private readonly LLVMDiagnosticInfoRef _instance;
 
@@ -16,8 +13,7 @@
             this._instance = instance;
         }
 
-        public string Description => LLVM.GetDiagInfoDescription(this.Unwrap()).IntPtrToString();
-
-        public LLVMDiagnosticSeverity Severity => LLVM.GetDiagInfoSeverity(this.Unwrap());
+        public DiagnosticSeverity Severity => LLVM.GetDiagInfoSeverity(this.Unwrap()).Wrap();
+        public string Description => LLVM.GetDiagInfoDescription(this.Unwrap()).MessageToString();
     }
 }

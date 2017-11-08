@@ -6,5 +6,13 @@ namespace LLVMSharp.Api.Values.Instructions
             : base(instance)
         {
         }
+
+        public bool IsCleanup
+        {
+            get => LLVM.IsCleanup(this.Unwrap());
+            set => LLVM.SetCleanup(this.Unwrap(), value);
+        }
+
+        public void AddClause(Value clauseVal) => LLVM.AddClause(this.Unwrap(), clauseVal.Unwrap());
     }
 }

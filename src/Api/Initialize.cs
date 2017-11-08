@@ -1,6 +1,6 @@
 ﻿namespace LLVMSharp.Api
 {
-    using TargetInitializers;
+    using LLVMSharp.Api.TargetInitializers;
 
     public static class Initialize
     {

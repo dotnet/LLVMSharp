@@ -5,36 +5,12 @@
 
     public sealed class GenericValue : IDisposableWrapper<LLVMGenericValueRef>, IDisposable
     {
-        public static GenericValue CreateGenericValueOfInt(Type t, ulong n, bool isSigned)
-        {
-            return
-                LLVM.CreateGenericValueOfInt(t.Unwrap(), n, isSigned)
-                    .Wrap()
-                    .MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
-        }
+        LLVMGenericValueRef IWrapper<LLVMGenericValueRef>.ToHandleType => this._instance;
+        void IDisposableWrapper<LLVMGenericValueRef>.MakeHandleOwner() => this._owner = true;
 
-        public static GenericValue CreateGenericValueOfPointer(IntPtr p)
-        {
-            return LLVM.CreateGenericValueOfPointer(p).Wrap().MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
-        }
-
-        public static GenericValue CreateGenericValueOfFloat(Type ty, double n)
-        {
-            return
-                LLVM.CreateGenericValueOfFloat(ty.Unwrap(), n)
-                    .Wrap()
-                    .MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
-        }
-
-        LLVMGenericValueRef IWrapper<LLVMGenericValueRef>.ToHandleType()
-        {
-            return this._instance;
-        }
-
-        void IDisposableWrapper<LLVMGenericValueRef>.MakeHandleOwner()
-        {
-            this._owner = true;
-        }
+        public static GenericValue CreateGenericValueOfInt(Type t, ulong n, bool isSigned) => LLVM.CreateGenericValueOfInt(t.Unwrap(), n, isSigned).Wrap().MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
+        public static GenericValue CreateGenericValueOfPointer(IntPtr p) => LLVM.CreateGenericValueOfPointer(p).Wrap().MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
+        public static GenericValue CreateGenericValueOfFloat(Type ty, double n) => LLVM.CreateGenericValueOfFloat(ty.Unwrap(), n).Wrap().MakeHandleOwner<GenericValue, LLVMGenericValueRef>();
 
         private readonly LLVMGenericValueRef _instance;
         private bool _disposed;
@@ -50,26 +26,11 @@
             this.Dispose(false);
         }
 
-        public uint IntWidth
-        {
-            get { return LLVM.GenericValueIntWidth(this.Unwrap()); }
-        }
+        public uint IntWidth => LLVM.GenericValueIntWidth(this.Unwrap());
+        public ulong ToInt(bool isSigned) => LLVM.GenericValueToInt(this.Unwrap(), isSigned);
+        public IntPtr ToPointer() => LLVM.GenericValueToPointer(this.Unwrap());
+        public double ToFloat(Type ty) => LLVM.GenericValueToFloat(ty.Unwrap(), this.Unwrap());
 
-        public ulong ToInt(bool isSigned)
-        {
-            return LLVM.GenericValueToInt(this.Unwrap(), isSigned);
-        }
-
-        public IntPtr ToPointer()
-        {
-            return LLVM.GenericValueToPointer(this.Unwrap());
-        }
-
-        public double ToFloat(Type ty)
-        {
-            return LLVM.GenericValueToFloat(ty.Unwrap(), this.Unwrap());
-        }
-        
         public void Dispose()
         {
             this.Dispose(true);

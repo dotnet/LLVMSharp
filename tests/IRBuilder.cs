@@ -1,134 +1,161 @@
-﻿namespace UnitTests
+﻿namespace Tests
 {
-    using LLVMSharp;
     using LLVMSharp.Api;
-    using NUnit.Framework;
+    using LLVMSharp.Api.Types.Composite;
+    using LLVMSharp.Api.Values.Constants;
+    using Xunit;
 
-    [TestFixture]
     public class IRBuilder
     {
-        [Test]
-        public void SimpleAdd()
+        [Theory]
+        [InlineData(0, 0, 0)]
+        [InlineData(1, 2, 3)]
+        [InlineData(9, 1, 10)]
+        public void AddsSigned(int op1, int op2, int result)
         {
             using (var module = Module.Create("test_add"))
             {
-                var func = module.DefineFunction(
+                var def = module.DefineFunction(
                     Type.Int32, "add", new[] { Type.Int32, Type.Int32 }, (f, b) =>
                     {
-                        var p1 = f.GetParameter(0);
-                        var p2 = f.GetParameter(1);
-                        var add = b.CreateAdd(p1, p2, string.Empty);
+                        var p1 = f.Parameters[0];
+                        var p2 = f.Parameters[1];
+                        var add = b.CreateAdd(p1, p2);
                         var ret = b.CreateRet(add);
                     });
 
                 using (var engine = module.CreateExecutionEngine())
                 {
-                    var run = engine.GetDelegate<Int32Int32Int32Delegate>(func);
-
-                    Assert.AreEqual(0, run(0, 0));
-                    Assert.AreEqual(3, run(1, 2));
-                    Assert.AreEqual(10, run(9, 1));
+                    var func = engine.GetDelegate<Int32Int32Int32Delegate>(def);
+                    Assert.Equal(result, func(op1, op2));
                 }
             }
         }
 
-        [Test]
-        public void SimpleShift()
+        [Theory]
+        [InlineData(4, 1, 2)]
+        [InlineData(4, 2, 1)]
+        public void ShiftsLeft(int op1, int op2, int result)
         {
-            using (var module = Module.Create("test_shift"))
+            using (var module = Module.Create("test_lshift"))
             {
-                var func = module.DefineFunction(
-                    Type.Int32, "shift", new[] { Type.Int32, Type.Int32 }, (f, b) =>
+                var def = module.DefineFunction(
+                    Type.Int32, "lshift", new[] { Type.Int32, Type.Int32 }, (f, b) =>
                     {
-                        var p1 = f.GetParameter(0);
-                        var p2 = f.GetParameter(1);
-                        var shift = b.CreateLShr(p1, p2, string.Empty);
+                        var p1 = f.Parameters[0];
+                        var p2 = f.Parameters[1];
+                        var shift = b.CreateLShr(p1, p2);
                         var ret = b.CreateRet(shift);
                     });
 
                 using (var engine = module.CreateExecutionEngine())
                 {
-                    var run = engine.GetDelegate<Int32Int32Int32Delegate>(func);
-
-                    Assert.AreEqual(2, run(4, 1));
-                    Assert.AreEqual(1, run(4, 2));
+                    var func = engine.GetDelegate<Int32Int32Int32Delegate>(def);
+                    Assert.Equal(result, func(op1, op2));
                 }
             }
         }
 
-        [Test]
-        public void GreaterThan()
+        [Theory]
+        [InlineData(10, 5, 1)]
+        [InlineData(5, 10, 0)]
+        [InlineData(0, 0, 0)]
+        public void ComparesGreaterThan(int op1, int op2, int result)
         {
             using (var module = Module.Create("test_greaterthan"))
             {
-                var func = module.DefineFunction(
+                var def = module.DefineFunction(
                     Type.Int1, "greaterthan", new[] { Type.Int32, Type.Int32 }, (f, b) =>
                     {
-                        var p1 = f.GetParameter(0);
-                        var p2 = f.GetParameter(1);
-                        var comparison = b.CreateICmp(LLVMIntPredicate.LLVMIntSGT,
-                            p1, p2, string.Empty);
-                        var result = b.CreateBitCast(comparison, Type.Int1, string.Empty);
-                        var ret = b.CreateRet(result);
+                        var p1 = f.Parameters[0];
+                        var p2 = f.Parameters[1];
+                        var cmp = b.CreateICmp(IntPredicate.SGT, p1, p2);
+                        var r = b.CreateBitCast(cmp, f.FunctionType.ReturnType);
+                        var ret = b.CreateRet(r);
                     });
 
-                var engine = module.CreateExecutionEngine();
-                var run = engine.GetDelegate<Int32Int32Int32Delegate>(func);
-
-                Assert.AreEqual(1, run(10, 5));
-                Assert.AreEqual(0, run(5, 10));
-                Assert.AreEqual(0, run(5, 5));
+                using (var engine = module.CreateExecutionEngine())
+                {
+                    var func = engine.GetDelegate<Int32Int32Int8Delegate>(def);
+                    Assert.Equal(result, func(op1, op2));
+                }
             }
-
         }
 
-        [Test]
-        public void FunctionCall()
+        [Theory]
+        [InlineData(1, 0, 1)]
+        [InlineData(1, 1, 2)]
+        [InlineData(1, 2, 3)]
+        public void CallsFunction(int op1, int op2, int result)
         {
             using (var module = Module.Create("test_call"))
             {
-                var addFunc = module.DefineFunction(
+                var defAdd = module.DefineFunction(
                     Type.Int32, "add", new[] { Type.Int32, Type.Int32 }, (f, b) =>
                     {
-                        var p1 = f.GetParameter(0);
-                        var p2 = f.GetParameter(1);
-                        var add = b.CreateAdd(p1, p2, string.Empty);
+                        var p1 = f.Parameters[0];
+                        var p2 = f.Parameters[1];
+                        var add = b.CreateAdd(p1, p2);
                         var ret = b.CreateRet(add);
                     });
-                var entryFunc = module.DefineFunction(
+                var defEntry = module.DefineFunction(
                     Type.Int32, "entry", new[] { Type.Int32, Type.Int32 }, (f, b) =>
                     {
-                        var p1 = f.GetParameter(0);
-                        var p2 = f.GetParameter(1);
-                        var call = b.CreateCall(addFunc, new[] { p1, p2 }, string.Empty);
+                        var p1 = f.Parameters[0];
+                        var p2 = f.Parameters[1];
+                        var call = b.CreateCall(defAdd, p1, p2);
                         var ret = b.CreateRet(call);
                     });
-
-                var engine = module.CreateExecutionEngine();
-                var run = engine.GetDelegate<Int32Int32Int32Delegate>(entryFunc);
-
-                Assert.AreEqual(1, run(1, 0));
-                Assert.AreEqual(2, run(1, 1));
-                Assert.AreEqual(3, run(1, 2));
+                
+                using (var engine = module.CreateExecutionEngine())
+                {
+                    var func = engine.GetDelegate<Int32Int32Int32Delegate>(defEntry);
+                    Assert.Equal(result, func(op1, op2));
+                }
             }
         }
 
-        [Test]
-        public void Constant()
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(1, 1)]
+        public void ReturnsConstant(uint input, int output)
         {
             using (var module = Module.Create("test_constant"))
             {
-                var func = module.DefineFunction(
+                var def = module.DefineFunction(
                     Type.Int32, "constant", new Type[0], (f, b) =>
                     {
-                        var value = Type.Int32.ConstInt(5u, false);
+                        var value = ConstantInt.Get(Type.Int32, input);
                         var ret = b.CreateRet(value);
                     });
 
-                var engine = module.CreateExecutionEngine();
-                var run = engine.GetDelegate<Int32Delegate>(func);
+                using (var engine = module.CreateExecutionEngine())
+                {
+                    var func = engine.GetDelegate<Int32Delegate>(def);
+                    Assert.Equal(output, func());
+                }
+            }
+        }
 
-                Assert.AreEqual(5, run());
+        [Fact]
+        public void ReturnsSizeOf()
+        {
+            using(var module = Module.Create("test_sizeof"))
+            {
+                var str = StructType.Create(new[] { Type.Int32, Type.Int32 }, true);
+                var def = module.DefineFunction(
+                    Type.Int32, "structure", new Type[0], (f, b) =>
+                    {
+                        var sz = ConstantExpr.GetSizeOf(str);
+                        var sz32 = b.CreateBitCast(sz, Type.Int32);
+                        var ret = b.CreateRet(sz32);
+                    });
+
+                using(var engine = module.CreateExecutionEngine())
+                {
+                    var func = engine.GetDelegate<Int32Delegate>(def);
+                    Assert.Equal(8, func());
+                }
             }
         }
     }

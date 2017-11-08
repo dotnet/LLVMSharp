@@ -7,24 +7,9 @@
         {            
         }
 
-        public void Target()
-        {
-            LLVM.InitializeNVPTXTarget();
-        }
-
-        public void TargetInfo()
-        {
-            LLVM.InitializeNVPTXTargetInfo();
-        }
-
-        public void TargetMC()
-        {
-            LLVM.InitializeNVPTXTargetMC();
-        }
-
-        public void AsmPrinter()
-        {
-            LLVM.InitializeNVPTXAsmPrinter();
-        }
+        public void Target() => LLVM.InitializeNVPTXTarget();
+        public void TargetInfo() => LLVM.InitializeNVPTXTargetInfo();
+        public void TargetMC() => LLVM.InitializeNVPTXTargetMC();
+        public void AsmPrinter() => LLVM.InitializeNVPTXAsmPrinter();
     }
 }

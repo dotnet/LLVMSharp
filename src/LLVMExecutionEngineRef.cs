@@ -9,33 +9,10 @@
         IntPtr IHandle<ExecutionEngine>.GetInternalPointer() => this.Pointer;
         ExecutionEngine IHandle<ExecutionEngine>.ToWrapperType() => new ExecutionEngine(this);
 
-        public bool Equals(LLVMExecutionEngineRef other)
-        {
-            return this.Pointer == other.Pointer;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is LLVMExecutionEngineRef)
-            {
-                return this.Equals((LLVMExecutionEngineRef)obj);
-            }
-            return false;
-        }
-
-        public static bool operator ==(LLVMExecutionEngineRef op1, LLVMExecutionEngineRef op2)
-        {
-            return op1.Equals(op2);
-        }
-
-        public static bool operator !=(LLVMExecutionEngineRef op1, LLVMExecutionEngineRef op2)
-        {
-            return !(op1 == op2);
-        }
-
-        public override int GetHashCode()
-        {
-            return this.Pointer.GetHashCode();
-        }
+        public override int GetHashCode() => this.Pointer.GetHashCode();
+        public override bool Equals(object obj) => obj is LLVMExecutionEngineRef t && this.Equals(t);
+        public bool Equals(LLVMExecutionEngineRef other) => this.Pointer == other.Pointer;
+        public static bool operator ==(LLVMExecutionEngineRef op1, LLVMExecutionEngineRef op2) => op1.Pointer == op2.Pointer;
+        public static bool operator !=(LLVMExecutionEngineRef op1, LLVMExecutionEngineRef op2) => !(op1 == op2);
     }
 }

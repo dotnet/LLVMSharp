@@ -1,10 +1,35 @@
 ﻿namespace LLVMSharp.Api
 {
+    using LLVMSharp.Api.Types;
+    using LLVMSharp.Api.Types.Composite;
+    using LLVMSharp.Api.Types.Composite.SequentialTypes;
     using System;
+    using System.Collections.Generic;
     using Utilities;
 
-    public class Type : IEquatable<Type>, IWrapper<LLVMTypeRef>
+    public abstract class Type : IEquatable<Type>, IWrapper<LLVMTypeRef>
     {
+        LLVMTypeRef IWrapper<LLVMTypeRef>.ToHandleType => this._instance;
+
+        private static Dictionary<LLVMTypeKind, Func<LLVMTypeRef, Type>> Map = new Dictionary<LLVMTypeKind, Func<LLVMTypeRef, Type>>
+            {
+                { LLVMTypeKind.LLVMArrayTypeKind, u => new ArrayType(u) },
+                { LLVMTypeKind.LLVMFunctionTypeKind, u => new FunctionType(u) },
+                { LLVMTypeKind.LLVMPointerTypeKind, u => new PointerType(u) },
+                { LLVMTypeKind.LLVMStructTypeKind, u => new StructType(u) },
+                { LLVMTypeKind.LLVMVectorTypeKind, u => new VectorType(u) },
+                { LLVMTypeKind.LLVMVoidTypeKind, u => new VoidType(u) },
+                { LLVMTypeKind.LLVMIntegerTypeKind, u => new IntegerType(u) },
+                { LLVMTypeKind.LLVMHalfTypeKind, u => new HalfType(u) },
+                { LLVMTypeKind.LLVMFloatTypeKind, u => new FloatType(u) },
+                { LLVMTypeKind.LLVMDoubleTypeKind, u => new DoubleType(u) },
+                { LLVMTypeKind.LLVMX86_FP80TypeKind, u => new X86FP80Type(u) },
+                { LLVMTypeKind.LLVMFP128TypeKind, u => new FP128Type(u) },
+                { LLVMTypeKind.LLVMPPC_FP128TypeKind, u => new PPCFP128Type(u) },
+                { LLVMTypeKind.LLVMX86_MMXTypeKind, u => new X86MMXType(u) },
+                { LLVMTypeKind.LLVMLabelTypeKind, u => new LabelType(u) },
+            };
+
         internal static Type Create(LLVMTypeRef t)
         {
             if (t.Pointer == IntPtr.Zero)
@@ -12,500 +37,76 @@
                 return null;
             }
 
-            return new Type(t);
+            var kind = LLVM.GetTypeKind(t);
+            if (Map.ContainsKey(kind))
+            {
+                return Map[kind](t);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        public static Type Int1
-        {
-            get { return Context.Global.Int1Type; }
-        }
+        public static VoidType Void => Context.Global.VoidType;
+        public static IntegerType Int1 => Context.Global.Int1Type;
+        public static IntegerType Int8 => Context.Global.Int8Type;
+        public static IntegerType Int16 => Context.Global.Int16Type;
+        public static IntegerType Int32 => Context.Global.Int32Type;
+        public static IntegerType Int64 => Context.Global.Int64Type;
+        public static IntegerType Int(uint bitLength) => Context.Global.IntType(bitLength);
+        public static HalfType Half => Context.Global.HalfType;
+        public static FloatType Float => Context.Global.FloatType;
+        public static DoubleType Double => Context.Global.DoubleType;
+        public static X86FP80Type X86FP80 => Context.Global.X86FP80Type;
+        public static FP128Type FP128 => Context.Global.FP128Type;
+        public static PPCFP128Type PPCFP128 => Context.Global.PPCFP128Type;
 
-        public static Type Int8
-        {
-            get { return Context.Global.Int8Type; }
-        }
-
-        public static Type Int16
-        {
-            get { return Context.Global.Int16Type; }
-        }
-
-        public static Type Int32
-        {
-            get { return Context.Global.Int32Type; }
-        }
-
-        public static Type Int64
-        {
-            get { return Context.Global.Int64Type; }
-        }
-
-        public static Type Int(int bitLength)
-        {
-            return LLVM.IntType((uint) bitLength).Wrap();
-        }
-
-        public static Type Half
-        {
-            get { return Context.Global.HalfType; }
-        }
-
-        public static Type Float
-        {
-            get { return Context.Global.FloatType; }
-        }
-
-        public static Type Double
-        {
-            get { return Context.Global.DoubleType; }
-        }
-
-        public static Type X86FP80
-        {
-            get { return Context.Global.X86FP80Type; }
-        }
-
-        public static Type FP128
-        {
-            get { return Context.Global.FP128Type; }
-        }
-
-        public static Type PPCFP128
-        {
-            get { return Context.Global.FP128Type; }
-        }
-
-        LLVMTypeRef IWrapper<LLVMTypeRef>.ToHandleType()
-        {
-            return this._instance;
-        }
-        
         private readonly LLVMTypeRef _instance;
 
-        internal Type(LLVMTypeRef typeRef)
-        {
-            this._instance = typeRef;
-        }
-
-        public uint AddressSpace
-        {
-            get { return LLVM.GetPointerAddressSpace(this.Unwrap()); }
-        }
-
-        public Context Context
-        {
-            get { return LLVM.GetTypeContext(this.Unwrap()).Wrap(); }
-        }
-
-        public Type GetPointerType(uint addressSpace)
-        {
-            return LLVM.PointerType(this.Unwrap(), addressSpace).Wrap();
-        }
-
-        public string Print()
-        {
-            return LLVM.PrintTypeToString(this.Unwrap()).IntPtrToString();
-        }
-
-        public void Dump()
-        {
-            LLVM.DumpType(this.Unwrap());
-        }
-
-        public Context TypeContext
-        {
-            get { return LLVM.GetTypeContext(this.Unwrap()).Wrap(); }
-        }
-
-        public bool IsVoidTy
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMVoidTypeKind; }
-        }
-
-        public bool IsHalfTy
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMHalfTypeKind; }
-        }
-
-        public bool IsFloatTy
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMFloatTypeKind; }
-        }
-
-        public bool IsDoubleTy
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMDoubleTypeKind; }
-        }
-
-        public bool IsX86_FP80Ty
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMX86_FP80TypeKind; }
-        }
-
-        public bool IsFP128Ty
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMFP128TypeKind; }
-        }
-
-        public bool IsPPC_FP128Ty
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMPPC_FP128TypeKind; }
-        }
-
-        public bool IsFloatingPointTy
-        {
-            get
-            {
-                return this.IsHalfTy || this.IsFloatTy || this.IsDoubleTy || this.IsX86_FP80Ty ||
-                       this.IsFP128Ty || this.IsPPC_FP128Ty;
-            }
-        }
-
-        public bool IsX86_MMXTy
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMX86_MMXTypeKind; }
-        }
-
-        public bool IsLabelTy
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMLabelTypeKind; }
-        }
-
-        public bool IsMetadataTy
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMMetadataTypeKind; }
-        }
-
-        public bool IsIntegerTy
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMIntegerTypeKind; }
-        }
-
-        public bool IsIntegerBitwidh(uint bitwidth)
-        {
-            return this.TypeKind == LLVMTypeKind.LLVMIntegerTypeKind && LLVM.GetIntTypeWidth(this._instance) == bitwidth;
-        }
+        internal Type(LLVMTypeRef typeRef) => this._instance = typeRef;
         
-        public bool IsFunctionTy
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMFunctionTypeKind; }
-        }
+        public string Print() => LLVM.PrintTypeToString(this.Unwrap()).MessageToString();
 
-        public bool IsStructTy
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMStructTypeKind; }
-        }
+        public void Dump() => LLVM.DumpType(this.Unwrap());
 
-        public bool IsArrayTy
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMArrayTypeKind; }
-        }
+        public Context Context => LLVM.GetTypeContext(this.Unwrap()).Wrap();
 
-        public bool IsPointerTy
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMPointerTypeKind; }
-        }
+        public bool IsFloatingPoint => this is FPType;
+        public bool IsIntegerType => this is IntegerType;
+        public bool IsIntegerTypeOfWidth(uint bitWidth) => this is IntegerType t && t.BitWidth == bitWidth;
 
-        public bool IsVectorTy
-        {
-            get { return this.TypeKind == LLVMTypeKind.LLVMVectorTypeKind; }
-        }
+        public bool IsTypeOrVectorTypeOf<TType>() where TType : Type => this.ScalarType is TType;
 
-        public uint IntBitWidth
-        {
-            get { return LLVM.GetIntTypeWidth(this.Unwrap()); }
-        }
+        public virtual bool IsEmpty => false;
+        public virtual bool IsFirstClassType => true;
+        public virtual bool IsSingleValueType => false;
+        public bool IsAggregateType => this is IAggregateType;
+        public bool IsSized => LLVM.TypeIsSized(this.Unwrap());
+        public virtual uint PrimitiveSizeInBits => 0;
+        public uint ScalarSizeInBits => this.ScalarType.PrimitiveSizeInBits;
 
-        public Type GetFunctionParamType(uint i)
-        {
-            var e = new LLVMTypeRef[LLVM.CountParamTypes(this.Unwrap())];
-            LLVM.GetParamTypes(this.Unwrap(), out e[0]);
-            return Create(e[i]);
-        }
+        public bool IsIntOrIntVectorType() => this.ScalarType is IntegerType;
+        public bool IsIntOrIntVectorType(uint bitWidth) => this.ScalarType is IntegerType t && t.BitWidth == bitWidth;
 
-        public uint FunctionNumParams
-        {
-            get { return LLVM.CountParamTypes(this.Unwrap()); }
-        }
+        public virtual Type ScalarType => this;
+        public PointerType PointerType => this.PointerTypeInAddressSpace(0u);
+        public PointerType PointerTypeInAddressSpace(uint addressSpace) => PointerType.Get(this, addressSpace);
+        public virtual bool CanHaveConstants => true;
+        public virtual bool CanHaveVectors => true;
+        public virtual bool CanHaveArrays => true;
 
-        public bool IsFunctionVarArg
-        {
-            get { return LLVM.IsFunctionVarArg(this.Unwrap()); }
-        }
+        protected internal virtual string GetUnsizedTypeMessage() => $"The type {this.Name} does not have a size or alignment.";
+        protected internal virtual string GetLimitedTypeMessage() => string.Empty;
 
-        public string StructName
-        {
-            get
-            {
-                if (!this.IsStructTy)
-                {
-                    throw new InvalidOperationException();
-                }
-                return LLVM.GetStructName(this.Unwrap());
-            }
-        }
+        public virtual string Name => this.GetType().Name;
 
-        public uint StructNumElements
-        {
-            get { return LLVM.CountStructElementTypes(this.Unwrap()); }
-        }
+        public override string ToString() => !string.IsNullOrEmpty(this.Name) ? this.Name : base.ToString();
 
-        public Type GetStructElementType(uint i)
-        {
-            var e = new LLVMTypeRef[LLVM.CountStructElementTypes(this.Unwrap())];
-            LLVM.GetStructElementTypes(this.Unwrap(), out e[0]);
-            return Create(e[i]);
-        }
-        
-        public static LLVMTypeRef LabelType()
-        {
-            return LLVM.LabelType();
-        }
-
-        public static Type LabelType(Context c)
-        {
-            return Create(LLVM.LabelTypeInContext(c.Unwrap()));
-        }
-
-        public bool Equals(Type other)
-        {
-            if (ReferenceEquals(other, null))
-            {
-                return false;
-            }
-            return this._instance == other._instance;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return this.Equals(obj as Type);
-        }
-
-        public static bool operator ==(Type op1, Type op2)
-        {
-            if (ReferenceEquals(op1, null))
-            {
-                return ReferenceEquals(op2, null);
-            }
-            return op1.Equals(op2);
-        }
-
-        public static bool operator !=(Type op1, Type op2)
-        {
-            return !(op1 == op2);
-        }
-
-        public override int GetHashCode()
-        {
-            return this._instance.GetHashCode();
-        }
-
-        public LLVMTypeKind TypeKind
-        {
-            get { return LLVM.GetTypeKind(this.Unwrap()); }
-        }
-
-        public bool IsSized
-        {
-            get { return LLVM.TypeIsSized(this.Unwrap()); }
-        }
-
-        public void StructSetBody(Type structTy, Type[] elementTypes, bool packed)
-        {
-            var e = elementTypes.Unwrap();
-            LLVM.StructSetBody(structTy.Unwrap(), out e[0], (uint)e.Length, new LLVMBool(packed));
-        }
-
-        public Type[] StructElementTypes
-        {
-            get
-            {
-                var e = new LLVMTypeRef[LLVM.CountStructElementTypes(this.Unwrap())];
-                LLVM.GetStructElementTypes(this.Unwrap(), out e[0]);
-                return e.Wrap<LLVMTypeRef, Type>();
-            }
-        }
-
-        public bool IsPackedStruct
-        {
-            get { return LLVM.IsPackedStruct(this.Unwrap()); }
-        }
-
-        public bool IsOpaqueStruct
-        {
-            get { return LLVM.IsOpaqueStruct(this.Unwrap()); }
-        }
-
-        public Type ElementType
-        {
-            get { return LLVM.GetElementType(this.Unwrap()).Wrap(); }
-        }
-
-        public Type ArrayType(uint elementCount)
-        {
-            return LLVM.ArrayType(this.Unwrap(), elementCount).Wrap();
-        }
-
-        public uint ArrayLength
-        {
-            get { return LLVM.GetArrayLength(this.Unwrap()); }
-        }
-
-        public Type PointerType(uint addressSpace)
-        {
-            return LLVM.PointerType(this.Unwrap(), addressSpace).Wrap();
-        }
-
-        public uint PointerAddressSpace
-        {
-            get { return LLVM.GetPointerAddressSpace(this.Unwrap()); }
-        }
-
-        public Type VectorType(uint elementCount)
-        {
-            return LLVM.VectorType(this.Unwrap(), elementCount).Wrap();
-        }
-
-        public uint VectorSize
-        {
-            get { return LLVM.GetVectorSize(this.Unwrap()); }
-        }
-
-        public Value ConstNull
-        {
-            get { return LLVM.ConstNull(this.Unwrap()).Wrap(); }
-        }
-
-        public Value ConstAllOnes
-        {
-            get { return LLVM.ConstAllOnes(this.Unwrap()).Wrap(); }
-        }
-
-        public Value GetUndef
-        {
-            get { return LLVM.GetUndef(this.Unwrap()).Wrap(); }
-        }
-
-        public Value ConstPointerNull
-        {
-            get { return LLVM.ConstPointerNull(this.Unwrap()).Wrap(); }
-        }
-
-        public Value ConstInt(ulong n, bool signExtend)
-        {
-            return LLVM.ConstInt(this.Unwrap(), n, signExtend).Wrap();
-        }
-
-        public Value ConstIntOfArbitraryPrecision(uint numWords, int[] words)
-        {
-            return LLVM.ConstIntOfArbitraryPrecision(this.Unwrap(), numWords, words).Wrap();
-        }
-
-        public Value ConstIntOfString(string text, char radix)
-        {
-            return LLVM.ConstIntOfString(this.Unwrap(), text, (byte) radix).Wrap();
-        }
-
-        public Value ConstIntOfStringAndSize(string text, uint sLen, char radix)
-        {
-            return LLVM.ConstIntOfStringAndSize(this.Unwrap(), text, sLen, (byte) radix).Wrap();
-        }
-
-        public Value ConstReal(double n)
-        {
-            return LLVM.ConstReal(this.Unwrap(), n).Wrap();
-        }
-
-        public Value ConstRealOfString(string text)
-        {
-            return LLVM.ConstRealOfString(this.Unwrap(), text).Wrap();
-        }
-
-        public Value ConstRealOfStringAndSize(string text, uint sLen)
-        {
-            return LLVM.ConstRealOfStringAndSize(this.Unwrap(), text, sLen).Wrap();
-        }
-
-        public Value ConstArray(Value[] constantVals)
-        {
-            return LLVM.ConstArray(this.Unwrap(), out constantVals.Unwrap()[0], (uint)constantVals.Length).Wrap();
-        }
-
-        public Value ConstNamedStruct(Value[] constantVals)
-        {
-            return LLVM.ConstNamedStruct(this.Unwrap(), out constantVals.Unwrap()[0], (uint)constantVals.Length).Wrap();
-        }
-
-        public Value Align
-        {
-            get { return LLVM.AlignOf(this.Unwrap()).Wrap(); }
-        }
-
-        public Value Size
-        {
-            get { return LLVM.SizeOf(this.Unwrap()).Wrap(); }
-        }
-
-        public string Name
-        {
-            get
-            {
-                if (this.IsVoidTy)
-                {
-                    return "void";
-                }
-                if (this.IsHalfTy)
-                {
-                    return "half";
-                }
-                if (this.IsFloatTy)
-                {
-                    return "float";
-                }
-                if (this.IsDoubleTy)
-                {
-                    return "double";
-                }
-                if (this.IsFP128Ty)
-                {
-                    return "fp128";
-                }
-                if (this.IsX86_FP80Ty)
-                {
-                    return "x86_fp80";
-                }
-                if (this.IsPPC_FP128Ty)
-                {
-                    return "ppc_fp128";
-                }
-                if (this.IsX86_MMXTy)
-                {
-                    return "x86_mmx";
-                }
-                if (this.IsIntegerTy)
-                {
-                    return "i" + this.IntBitWidth;
-                }
-                if (this.IsStructTy)
-                {
-                    return this.StructName;
-                }
-                if (this.IsPointerTy)
-                {
-                    return this.ElementType.Name + "*";
-                }
-                return string.Empty;
-            }
-        }
-
-        public override string ToString()
-        {
-            var name = this.Name;
-            if (name != string.Empty)
-            {
-                return name;
-            }
-            return base.ToString();
-        }
+        public bool Equals(Type other) => ReferenceEquals(other, null) ? false : this._instance == other._instance;
+        public override bool Equals(object obj) => this.Equals(obj as Type);
+        public static bool operator ==(Type op1, Type op2) => (ReferenceEquals(op1, null) && ReferenceEquals(op2, null)) || op1.Equals(op2);
+        public static bool operator !=(Type op1, Type op2) => !(op1 == op2);
+        public override int GetHashCode() => this._instance.GetHashCode();
     }
 }

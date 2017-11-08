@@ -6,5 +6,7 @@
             : base(instance)
         {
         }
+
+        public RealPredicate FCmpPredicate => LLVM.GetFCmpPredicate(this.Unwrap()).Wrap();
     }
 }

@@ -7,24 +7,9 @@
         {            
         }
 
-        public void Target()
-        {
-            LLVM.InitializeMSP430Target();
-        }
-
-        public void TargetInfo()
-        {
-            LLVM.InitializeMSP430TargetInfo();
-        }
-
-        public void TargetMC()
-        {
-            LLVM.InitializeMSP430TargetMC();
-        }
-
-        public void AsmPrinter()
-        {
-            LLVM.InitializeMSP430AsmPrinter();
-        }
+        public void Target() => LLVM.InitializeMSP430Target();
+        public void TargetInfo() => LLVM.InitializeMSP430TargetInfo();
+        public void TargetMC() => LLVM.InitializeMSP430TargetMC();
+        public void AsmPrinter() => LLVM.InitializeMSP430AsmPrinter();
     }
 }

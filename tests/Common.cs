@@ -1,4 +1,4 @@
-﻿namespace UnitTests
+﻿namespace Tests
 {
     using System;
     using System.Runtime.InteropServices;
@@ -8,19 +8,30 @@
     using LLVMSharp.Api.Values.Constants.GlobalValues.GlobalObjects;
     using Type = LLVMSharp.Api.Type;
     using Api = LLVMSharp.Api;
-    using NUnit.Framework;
 
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UnmanagedFunctionPointer(global::System.Runtime.InteropServices.CallingConvention.Cdecl)]
     public delegate int Int32Delegate();
 
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    [UnmanagedFunctionPointer(global::System.Runtime.InteropServices.CallingConvention.Cdecl)]
+    public delegate long Int64Delegate();
+
+    [UnmanagedFunctionPointer(global::System.Runtime.InteropServices.CallingConvention.Cdecl)]
+    internal delegate TwoInt32 TwoInt32Delegate();
+
+    [UnmanagedFunctionPointer(global::System.Runtime.InteropServices.CallingConvention.Cdecl)]
     public delegate int Int32Int32Int32Delegate(int a, int b);
+
+    [UnmanagedFunctionPointer(global::System.Runtime.InteropServices.CallingConvention.Cdecl)]
+    public delegate byte Int32Int32Int8Delegate(int a, int b);
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    internal struct TwoInt32 { public int X, Y; }
 
     internal static class Common
     {
-        public static Function DefineFunction(this Module module, Type returnType, string name, Type[] arguments, Action<Function, LLVMSharp.Api.IRBuilder> generator)
+        public static Function DefineFunction(this Module module, Type returnType, string name, Type[] arguments, Action<Function, Api.IRBuilder> generator)
         {
-            var signature = new FunctionType(returnType, arguments);
+            var signature = FunctionType.Create(returnType, arguments);
             var function = module.AddFunction(name, signature);
             var basicBlock = function.AppendBasicBlock(string.Empty);
             using (var builder = Api.IRBuilder.Create())
@@ -33,18 +44,16 @@
 
         public static ExecutionEngine CreateExecutionEngine(this Module module)
         {
-            string verificationErrorMessage;
-            module.VerifyModule(LLVMVerifierFailureAction.LLVMPrintMessageAction, out verificationErrorMessage);
+            module.VerifyModule(LLVMVerifierFailureAction.LLVMPrintMessageAction, out string verificationErrorMessage);
             if (!string.IsNullOrEmpty(verificationErrorMessage))
             {
-                Assert.Fail(verificationErrorMessage);
+                throw new Exception(verificationErrorMessage);
             }
 
-            LLVM.LinkInMCJIT();
-            LLVM.InitializeX86Target();
-            LLVM.InitializeX86TargetInfo();
-            LLVM.InitializeX86TargetMC();
-            LLVM.InitializeX86AsmPrinter();
+            Initialize.X86.Target();
+            Initialize.X86.TargetInfo();
+            Initialize.X86.TargetMC();
+            Initialize.X86.AsmPrinter();
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {

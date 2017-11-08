@@ -2,82 +2,37 @@
 {
     using System;
     using System.Runtime.InteropServices;
-    using Types;
     using Utilities;
-    using Values;
     using Values.Constants;
     using Values.Constants.GlobalValues.GlobalObjects;
 
     public sealed class Module : IEquatable<Module>, IDisposable, IDisposableWrapper<LLVMModuleRef>
     {
-        public static Module Create(string moduleId)
-        {
-            return LLVM.ModuleCreateWithName(moduleId).Wrap().MakeHandleOwner<Module, LLVMModuleRef>();
-        }
+        LLVMModuleRef IWrapper<LLVMModuleRef>.ToHandleType => this._instance;
+        void IDisposableWrapper<LLVMModuleRef>.MakeHandleOwner() => this._owner = true;
 
-        public static Module Create(string moduleId, Context context)
-        {
-            return
-                LLVM.ModuleCreateWithNameInContext(moduleId, context.Unwrap())
-                    .Wrap()
-                    .MakeHandleOwner<Module, LLVMModuleRef>();
-        }
+        public static Module Create(string moduleId) => LLVM.ModuleCreateWithName(moduleId).Wrap().MakeHandleOwner<Module, LLVMModuleRef>();
+        public static Module Create(string moduleId, Context context) => LLVM.ModuleCreateWithNameInContext(moduleId, context.Unwrap()).Wrap().MakeHandleOwner<Module, LLVMModuleRef>();
 
-        LLVMModuleRef IWrapper<LLVMModuleRef>.ToHandleType()
-        {
-            return this._instance;
-        }
-
-        void IDisposableWrapper<LLVMModuleRef>.MakeHandleOwner()
-        {
-            this._owner = true;
-        }
+        public static void LinkModules(Module destination, Module source) => LLVM.LinkModules2(destination.Unwrap(), source.Unwrap());
 
         private readonly LLVMModuleRef _instance;
         private bool _disposed;
         private bool _owner;
 
-        internal Module(LLVMModuleRef m)
-        {
-            this._instance = m;
-        }
+        internal Module(LLVMModuleRef m) => this._instance = m;
+        ~Module() => this.Dispose(false);
 
-        ~Module()
-        {
-            this.Dispose(false);
-        }
+        public string GetDataLayout() => LLVM.GetDataLayout(this.Unwrap());
+        public void SetDataLayout(string value) => LLVM.SetDataLayout(this.Unwrap(), value);
 
-        public string DataLayout
-        {
-            get { return LLVM.GetDataLayout(this.Unwrap()); }
-            set { LLVM.SetDataLayout(this.Unwrap(), value); }
-        }
+        public Context Context => LLVM.GetModuleContext(this.Unwrap()).Wrap();
 
-        public string Target
-        {
-            get { return LLVM.GetTarget(this.Unwrap()); }
-            set { LLVM.SetTarget(this.Unwrap(), value); }
-        }
+        public Module CloneModule() => LLVM.CloneModule(this.Unwrap()).Wrap();
 
-        public Context Context
-        {
-            get { return LLVM.GetModuleContext(this.Unwrap()).Wrap(); }
-        }
+        public void Dump() => LLVM.DumpModule(this.Unwrap());
 
-        public Module CloneModule()
-        {
-            return LLVM.CloneModule(this.Unwrap()).Wrap();
-        }
-
-        public void DumpModule()
-        {
-            LLVM.DumpModule(this.Unwrap());
-        }
-
-        public bool PrintModuleToFile(string filename, out IntPtr errorMessage)
-        {
-            return LLVM.PrintModuleToFile(this.Unwrap(), filename, out errorMessage);
-        }
+        public bool PrintToFile(string filename, out IntPtr errorMessage) => LLVM.PrintModuleToFile(this.Unwrap(), filename, out errorMessage);
 
         public string PrintModuleToString()
         {
@@ -87,232 +42,65 @@
             return retVal;
         }
 
-        public void SetModuleInlineAsm(string asm)
-        {
-            LLVM.SetModuleInlineAsm(this.Unwrap(), asm);
-        }
+        public void SetModuleInlineAsm(string asm) => LLVM.SetModuleInlineAsm(this.Unwrap(), asm);
+        
+        public GlobalVariable GetNamedGlobal(string name) => LLVM.GetNamedGlobal(this.Unwrap(), name).WrapAs<GlobalVariable>();
+        public Type GetTypeByName(string name) => LLVM.GetTypeByName(this.Unwrap(), name).Wrap();
+        public uint GetNamedMetadataNumOperands(string name) => LLVM.GetNamedMetadataNumOperands(this.Unwrap(), name);
+        public Value[] GetNamedMetadataOperands(string name) => LLVM.GetNamedMetadataOperands(this.Unwrap(), name).Wrap<LLVMValueRef, Value>();
+        public void AddNamedMetadataOperand(string name, Value val) => LLVM.AddNamedMetadataOperand(this.Unwrap(), name, val.Unwrap());
+        public Function AddFunction(string name, Type functionTy) => LLVM.AddFunction(this.Unwrap(), name, functionTy.Unwrap()).WrapAs<Function>();
+        public Function GetNamedFunction(string name) => LLVM.GetNamedFunction(this.Unwrap(), name).WrapAs<Function>();
 
-        public GlobalVariable GetGlobalVariable(string name, bool allowLocal)
-        {
-            var result = this.GetNamedValue(name) as GlobalVariable;
-            if (result != null)
-            {
-                if (allowLocal || !result.ExternalLinkage.IsLocalLinkage())
-                {
-                    return result;
-                }
-            }
-            return null;
-        }
+        public Function GetFirstFunction() => LLVM.GetFirstFunction(this.Unwrap()).WrapAs<Function>();
 
-        public GlobalVariable GetNamedGlobal(string name)
-        {
-            return LLVM.GetNamedGlobal(this.Unwrap(), name).WrapAs<GlobalVariable>();
-        }
+        public Function GetLastFunction() => LLVM.GetLastFunction(this.Unwrap()).WrapAs<Function>();
 
-        public GlobalVariable GetOrInsertGlobal(string name, Type ty)
-        {
-            var gv = this.GetNamedGlobal(name);
-            if (gv == null)
-            {
-                return LLVM.AddGlobal(this.Unwrap(), ty.Unwrap(), name).WrapAs<GlobalVariable>();
-            }
+        public GlobalValue AddGlobal(Type ty, string name) => LLVM.AddGlobal(this.Unwrap(), ty.Unwrap(), name).WrapAs<GlobalValue>();
+        public GlobalValue AddGlobalInAddressSpace(Type ty, string name, uint addressSpace) => LLVM.AddGlobalInAddressSpace(this.Unwrap(), ty.Unwrap(), name, addressSpace).WrapAs<GlobalValue>();
 
-            var gvType = gv.Type;
-            var ptrType = ty.GetPointerType(gvType.AddressSpace);
+        public GlobalValue GetNamedValue(string name) => LLVM.GetNamedGlobal(this.Unwrap(), name).WrapAs<GlobalValue>();
 
-            if (gvType != ptrType)
-            {
-                return LLVM.ConstBitCast(gv.Unwrap(), ptrType.Unwrap()).WrapAs<GlobalVariable>();
-            }
+        public GlobalValue GetFirstGlobal() => LLVM.GetFirstGlobal(this.Unwrap()).WrapAs<GlobalValue>();
+        public GlobalValue GetLastGlobal() => LLVM.GetLastGlobal(this.Unwrap()).WrapAs<GlobalValue>();
 
-            return gv;
-        }
+        public GlobalValue AddAlias(Type ty, Value aliasee, string name) => LLVM.AddAlias(this.Unwrap(), ty.Unwrap(), aliasee.Unwrap(), name).WrapAs<GlobalValue>();
 
-        public Type GetTypeByName(string name)
-        {
-            return LLVM.GetTypeByName(this.Unwrap(), name).Wrap();
-        }
-
-        public uint GetNamedMetadataNumOperands(string name)
-        {
-            return LLVM.GetNamedMetadataNumOperands(this.Unwrap(), name);
-        }
-
-        public Value[] GetNamedMetadataOperands(string name)
-        {
-            var e = new LLVMValueRef[LLVM.GetNamedMetadataNumOperands(this.Unwrap(), name)];
-            LLVM.GetNamedMetadataOperands(this.Unwrap(), name, out e[0]);
-            return e.Wrap<LLVMValueRef, Value>();
-        }
-
-        public void AddNamedMetadataOperand(string name, Value val)
-        {
-            LLVM.AddNamedMetadataOperand(this.Unwrap(), name, val.Unwrap());
-        }
-
-        public Function AddFunction(string name, Type functionTy)
-        {
-            return LLVM.AddFunction(this.Unwrap(), name, functionTy.Unwrap()).WrapAs<Function>();
-        }
-
-        public Function GetNamedFunction(string name)
-        {
-            return LLVM.GetNamedFunction(this.Unwrap(), name).WrapAs<Function>();
-        }
-
-        public Function GetFirstFunction()
-        {
-            return LLVM.GetFirstFunction(this.Unwrap()).WrapAs<Function>();
-        }
-
-        public Function GetLastFunction()
-        {
-            return LLVM.GetLastFunction(this.Unwrap()).WrapAs<Function>();
-        }
-
-        public GlobalValue AddGlobal(Type ty, string name)
-        {
-            return LLVM.AddGlobal(this.Unwrap(), ty.Unwrap(), name).WrapAs<GlobalValue>();
-        }
-
-        public GlobalValue AddGlobalInAddressSpace(Type ty, string name, uint addressSpace)
-        {
-            return LLVM.AddGlobalInAddressSpace(this.Unwrap(), ty.Unwrap(), name, addressSpace).WrapAs<GlobalValue>();
-        }
-
-        public GlobalValue GetNamedValue(string name)
-        {
-            return LLVM.GetNamedGlobal(this.Unwrap(), name).WrapAs<GlobalValue>();
-        }
-
-        public GlobalValue GetFirstGlobal()
-        {
-            return LLVM.GetFirstGlobal(this.Unwrap()).WrapAs<GlobalValue>();
-        }
-
-        public GlobalValue GetLastGlobal()
-        {
-            return LLVM.GetLastGlobal(this.Unwrap()).WrapAs<GlobalValue>();
-        }
-
-        public GlobalValue AddAlias(Type ty, Value aliasee, string name)
-        {
-            return LLVM.AddAlias(this.Unwrap(), ty.Unwrap(), aliasee.Unwrap(), name).WrapAs<GlobalValue>();
-        }
-
-        public uint GetMDKindID(string name)
-        {
-            return LLVM.GetMDKindIDInContext(this.Context.Unwrap(), name, (uint) name.Length);
-        }
-
-        public Constant GetOrInsertFunction(string name, FunctionType t)
-        {
-            var f = this.GetNamedFunction(name);
-            if (f == null)
-            {
-                var @new = Function.Create(t, LLVMLinkage.LLVMExternalLinkage, name, this);
-                return @new;
-            }
-
-            if (f.FunctionType != t)
-            {
-                return LLVM.ConstBitCast(f.Unwrap(), t.Unwrap()).WrapAs<Constant>();
-            }
-
-            return f;
-        }
+        public uint GetMDKindID(string name) => LLVM.GetMDKindIDInContext(this.Context.Unwrap(), name, (uint)name.Length);
 
         public unsafe ExecutionEngine CreateMCJITCompilerForModule()
         {
-            LLVMExecutionEngineRef executionEngineRef;
             LLVMMCJITCompilerOptions options;
-            IntPtr error;
-            var optionsSize = new size_t(new IntPtr(Marshal.SizeOf(typeof (LLVMMCJITCompilerOptions))));
-            if (LLVM.CreateMCJITCompilerForModule(out executionEngineRef, this.Unwrap(), &options, optionsSize,
-                                                  out error).Failed())
+            var optionsSize = new size_t(new IntPtr(Marshal.SizeOf(typeof(LLVMMCJITCompilerOptions))));
+            if (LLVM.CreateMCJITCompilerForModule(out LLVMExecutionEngineRef executionEngineRef, this.Unwrap(), &options, optionsSize, out IntPtr error).Failed())
             {
-                ErrorUtilities.Throw(error);
+                TextUtilities.Throw(error);
             }
 
             return executionEngineRef.Wrap();
         }
 
-        public ModuleProvider CreateModuleProviderForExistingModule()
-        {
-            return LLVM.CreateModuleProviderForExistingModule(this.Unwrap()).Wrap();
-        }
-
-        public PassManager CreateFunctionPassManagerForModule()
-        {
-            return LLVM.CreateFunctionPassManagerForModule(this.Unwrap()).Wrap();
-        }
-
-        public bool VerifyModule(LLVMVerifierFailureAction action, out IntPtr outMessage)
-        {
-            return LLVM.VerifyModule(this.Unwrap(), action, out outMessage);
-        }
+        public ModuleProvider CreateModuleProviderForExistingModule() => LLVM.CreateModuleProviderForExistingModule(this.Unwrap()).Wrap();
+        public PassManager CreateFunctionPassManagerForModule() => LLVM.CreateFunctionPassManagerForModule(this.Unwrap()).Wrap();
+        public bool VerifyModule(LLVMVerifierFailureAction action, out IntPtr outMessage) => LLVM.VerifyModule(this.Unwrap(), action, out outMessage);
 
         public bool VerifyModule(LLVMVerifierFailureAction action, out string message)
         {
-            IntPtr messagePointer;
-            var result = this.VerifyModule(action, out messagePointer);
+            var result = this.VerifyModule(action, out IntPtr messagePointer);
             message = Marshal.PtrToStringAnsi(messagePointer);
             return result;
         }
 
-        public int WriteBitcodeToFile(string path)
-        {
-            return LLVM.WriteBitcodeToFile(this.Unwrap(), path);
-        }
+        public int WriteBitcodeToFile(string path) => LLVM.WriteBitcodeToFile(this.Unwrap(), path);
+        public int WriteBitcodeToFD(int fd, int shouldClose, int unbuffered) => LLVM.WriteBitcodeToFD(this.Unwrap(), fd, shouldClose, unbuffered);
+        public int WriteBitcodeToFileHandle(int handle) => LLVM.WriteBitcodeToFileHandle(this.Unwrap(), handle);
+        public MemoryBuffer WriteBitcodeToMemoryBuffer() => LLVM.WriteBitcodeToMemoryBuffer(this.Unwrap()).Wrap();
 
-        public int WriteBitcodeToFD(int fd, int shouldClose, int unbuffered)
-        {
-            return LLVM.WriteBitcodeToFD(this.Unwrap(), fd, shouldClose, unbuffered);
-        }
-
-        public int WriteBitcodeToFileHandle(int handle)
-        {
-            return LLVM.WriteBitcodeToFileHandle(this.Unwrap(), handle);
-        }
-
-        public MemoryBuffer WriteBitcodeToMemoryBuffer()
-        {
-            return LLVM.WriteBitcodeToMemoryBuffer(this.Unwrap()).Wrap();
-        }
-        
-        public bool Equals(Module other)
-        {
-            if (ReferenceEquals(other, null))
-            {
-                return false;
-            }
-            return this._instance == other._instance;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return this.Equals(obj as Module);
-        }
-
-        public static bool operator ==(Module op1, Module op2)
-        {
-            if (ReferenceEquals(op1, null))
-            {
-                return ReferenceEquals(op2, null);
-            }
-            return op1.Equals(op2);
-        }
-
-        public static bool operator !=(Module op1, Module op2)
-        {
-            return !(op1 == op2);
-        }
-
-        public override int GetHashCode()
-        {
-            return this._instance.GetHashCode();
-        }
+        public bool Equals(Module other) => ReferenceEquals(other, null) ? false : this._instance == other._instance;
+        public override bool Equals(object obj) => this.Equals(obj as Module);
+        public static bool operator ==(Module op1, Module op2) => ReferenceEquals(op1, null) ? ReferenceEquals(op2, null) : op1.Equals(op2);
+        public static bool operator !=(Module op1, Module op2) => !(op1 == op2);
+        public override int GetHashCode() => this._instance.GetHashCode();
 
         public void Dispose()
         {
@@ -335,14 +123,7 @@
             this._disposed = true;
         }
 
-        public void SetTarget(string target)
-        {
-            LLVM.SetTarget(this.Unwrap(), target);
-        }
-
-        public static void LinkModules(Module destination, Module source)
-        {
-            LLVM.LinkModules2(destination.Unwrap(), source.Unwrap());
-        }
+        public void SetTarget(string target) => LLVM.SetTarget(this.Unwrap(), target);
+        public string GetTarget() => LLVM.GetTarget(this.Unwrap());
     }
 }

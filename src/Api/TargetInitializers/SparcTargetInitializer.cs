@@ -7,34 +7,11 @@
         {            
         }
 
-        public void Target()
-        {
-            LLVM.InitializeSparcTarget();
-        }
-
-        public void TargetInfo()
-        {
-            LLVM.InitializeSparcTargetInfo();
-        }
-
-        public void TargetMC()
-        {
-            LLVM.InitializeSparcTargetMC();
-        }
-
-        public void AsmPrinter()
-        {
-            LLVM.InitializeSparcAsmPrinter();
-        }
-
-        public void AsmParser()
-        {
-            LLVM.InitializeSparcAsmParser();
-        }
-
-        public void Disassembler()
-        {
-            LLVM.InitializeSparcDisassembler();
-        }
+        public void Target() => LLVM.InitializeSparcTarget();
+        public void TargetInfo() => LLVM.InitializeSparcTargetInfo();
+        public void TargetMC() => LLVM.InitializeSparcTargetMC();
+        public void AsmPrinter() => LLVM.InitializeSparcAsmPrinter();
+        public void AsmParser() => LLVM.InitializeSparcAsmParser();
+        public void Disassembler() => LLVM.InitializeSparcDisassembler();
     }
 }

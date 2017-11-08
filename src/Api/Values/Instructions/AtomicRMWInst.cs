@@ -1,6 +1,6 @@
 ﻿namespace LLVMSharp.Api.Values.Instructions
 {
-    public class AtomicRMWInst : Instruction
+    public sealed class AtomicRMWInst : Instruction
     {
         internal AtomicRMWInst(LLVMValueRef instance)
             : base(instance)

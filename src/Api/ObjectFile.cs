@@ -5,19 +5,12 @@
 
     public sealed class ObjectFile : IDisposableWrapper<LLVMObjectFileRef>, IDisposable
     {
+        LLVMObjectFileRef IWrapper<LLVMObjectFileRef>.ToHandleType => this._instance;
+        void IDisposableWrapper<LLVMObjectFileRef>.MakeHandleOwner() => this._owner = true;
+
         public static ObjectFile Create(MemoryBuffer memBuf)
         {
             return LLVM.CreateObjectFile(memBuf.Unwrap()).Wrap().MakeHandleOwner<ObjectFile, LLVMObjectFileRef>();
-        }
-
-        LLVMObjectFileRef IWrapper<LLVMObjectFileRef>.ToHandleType()
-        {
-            return this._instance;
-        }
-
-        void IDisposableWrapper<LLVMObjectFileRef>.MakeHandleOwner()
-        {
-            this._owner = true;
         }
 
         private readonly LLVMObjectFileRef _instance;
@@ -55,26 +48,10 @@
             this._disposed = true;
         }
 
-        public SectionIterator Sections
-        {
-            get { return LLVM.GetSections(this.Unwrap()).Wrap(); }
-        }
+        public SectionIterator Sections => LLVM.GetSections(this.Unwrap()).Wrap();
+        public bool IsSectionIteratorAtEnd(SectionIterator si) => LLVM.IsSectionIteratorAtEnd(this.Unwrap(), si.Unwrap());
 
-        public bool IsSectionIteratorAtEnd(SectionIterator si)
-        {
-            return LLVM.IsSectionIteratorAtEnd(this.Unwrap(), si.Unwrap());
-        }
-
-        public SymbolIterator Symbols
-        {
-            get { return LLVM.GetSymbols(this.Unwrap()).Wrap(); }
-        }
-
-        public bool IsSymbolIteratorAtEnd(SymbolIterator si)
-        {
-            return LLVM.IsSymbolIteratorAtEnd(this.Unwrap(), si.Unwrap());
-        }
-
-
+        public SymbolIterator Symbols => LLVM.GetSymbols(this.Unwrap()).Wrap();
+        public bool IsSymbolIteratorAtEnd(SymbolIterator si) => LLVM.IsSymbolIteratorAtEnd(this.Unwrap(), si.Unwrap());
     }
 }

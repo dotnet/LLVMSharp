@@ -1,19 +1,14 @@
 ﻿namespace LLVMSharp.Api
 {
+    using LLVMSharp.Api.Values.Constants;
+    using LLVMSharp.Api.Values.Constants.GlobalValues.GlobalObjects;
     using System;
     using Utilities;
 
     public sealed class ExecutionEngine : IDisposable, IEquatable<ExecutionEngine>, IDisposableWrapper<LLVMExecutionEngineRef>
     {
-        LLVMExecutionEngineRef IWrapper<LLVMExecutionEngineRef>.ToHandleType()
-        {
-            return this._instance;
-        }
-
-        void IDisposableWrapper<LLVMExecutionEngineRef>.MakeHandleOwner()
-        {
-            this._owner = true;
-        }
+        LLVMExecutionEngineRef IWrapper<LLVMExecutionEngineRef>.ToHandleType => this._instance;
+        void IDisposableWrapper<LLVMExecutionEngineRef>.MakeHandleOwner() => this._owner = true;
 
         private readonly LLVMExecutionEngineRef _instance;        
         private bool _disposed;
@@ -21,11 +16,9 @@
 
         public static ExecutionEngine Create(Module module)
         {
-            IntPtr error;
-            LLVMExecutionEngineRef instance;
-            if (LLVM.CreateExecutionEngineForModule(out instance, module.Unwrap(), out error).Failed())
+            if (LLVM.CreateExecutionEngineForModule(out LLVMExecutionEngineRef instance, module.Unwrap(), out IntPtr error).Failed())
             {
-                ErrorUtilities.Throw(error);
+                TextUtilities.Throw(error);
             }
 
             return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>();
@@ -33,11 +26,9 @@
         
         public static ExecutionEngine CreateInterpreter(Module module)
         {
-            IntPtr error;
-            LLVMExecutionEngineRef instance;
-            if (LLVM.CreateInterpreterForModule(out instance, module.Unwrap(), out error).Failed())
+            if (LLVM.CreateInterpreterForModule(out LLVMExecutionEngineRef instance, module.Unwrap(), out IntPtr error).Failed())
             {
-                ErrorUtilities.Throw(error);
+                TextUtilities.Throw(error);
             }
 
             return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>();
@@ -45,11 +36,9 @@
 
         public static ExecutionEngine CreateJITCompiler(Module m, uint optLevel)
         {
-            IntPtr error;
-            LLVMExecutionEngineRef instance;
-            if (LLVM.CreateJITCompilerForModule(out instance, m.Unwrap(), optLevel, out error).Failed())
+            if (LLVM.CreateJITCompilerForModule(out LLVMExecutionEngineRef instance, m.Unwrap(), optLevel, out IntPtr error).Failed())
             {
-                ErrorUtilities.Throw(error);
+                TextUtilities.Throw(error);
             }
 
             return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>();
@@ -60,12 +49,9 @@
             LLVMMCJITCompilerOptions options;
             var size = new size_t(new IntPtr(optionsSize));
             LLVM.InitializeMCJITCompilerOptions(&options, size);
-
-            IntPtr error;
-            LLVMExecutionEngineRef instance;
-            if (LLVM.CreateMCJITCompilerForModule(out instance, module.Unwrap(), &options, size, out error).Failed())
+            if (LLVM.CreateMCJITCompilerForModule(out LLVMExecutionEngineRef instance, module.Unwrap(), &options, size, out IntPtr error).Failed())
             {
-                ErrorUtilities.Throw(error);
+                TextUtilities.Throw(error);
             }
 
             return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>();
@@ -81,86 +67,35 @@
             this.Dispose(false);
         }
 
-        public void RunStaticConstructors()
+        public void RunStaticConstructors() => LLVM.RunStaticConstructors(this.Unwrap());
+        public void RunStaticDestructors() => LLVM.RunStaticDestructors(this.Unwrap());
+
+        public GenericValue Run(Function f, params GenericValue[] args) => LLVM.RunFunction(this.Unwrap(), f.Unwrap(), args.Unwrap()).Wrap();
+        public int RunAsMain(Function f, uint argC, string[] argV, string[] envP) => LLVM.RunFunctionAsMain(this.Unwrap(), f.Unwrap(), argC, argV, envP);
+        public int RunAsMain(Function f, params string[] argV) => this.RunAsMain(f, (uint)argV.Length, argV, new string[0]); 
+        public void FreeMachineCode(Function f) => LLVM.FreeMachineCodeForFunction(this.Unwrap(), f.Unwrap());
+
+        public void AddModule(Module m) => LLVM.AddModule(this.Unwrap(), m.Unwrap());
+
+        public Module RemoveModule(Module m)
         {
-            LLVM.RunStaticConstructors(this.Unwrap());
+            LLVM.RemoveModule(this.Unwrap(), m.Unwrap(), out LLVMModuleRef outModRef, out IntPtr outError);
+            return outModRef.Wrap();
         }
 
-        public void RunStaticDestructors()
-        {
-            LLVM.RunStaticDestructors(this.Unwrap());
-        }
+        public Function FindFunction(string name) => LLVM.FindFunction(this.Unwrap(), name, out LLVMValueRef outFnValueRef) ? null : outFnValueRef.WrapAs<Function>();
 
-        public int RunFunctionAsMain(Value f, uint argC, string[] argV, string[] envP)
-        {
-            return LLVM.RunFunctionAsMain(this.Unwrap(), f.Unwrap(), argC, argV, envP);
-        }
+        public IntPtr RecompileAndRelinkFunction(Value fn) => LLVM.RecompileAndRelinkFunction(this.Unwrap(), fn.Unwrap());
 
-        public GenericValue RunFunction(Value f, LLVMGenericValueRef[] args)
-        {
-            return LLVM.RunFunction(this.Unwrap(), f.Unwrap(), (uint)args.Length, out args[0]).Wrap();
-        }
+        public TargetData TargetData => LLVM.GetExecutionEngineTargetData(this.Unwrap()).Wrap();
+        public TargetMachine TargetMachine => LLVM.GetExecutionEngineTargetMachine(this.Unwrap()).Wrap();
 
-        public void FreeMachineCodeForFunction(Value f)
-        {
-            LLVM.FreeMachineCodeForFunction(this.Unwrap(), f.Unwrap());
-        }
+        public void AddGlobalMapping(Value global, IntPtr addr) => LLVM.AddGlobalMapping(this.Unwrap(), global.Unwrap(), addr);
 
-        public void AddModule(Module m)
-        {
-            LLVM.AddModule(this.Unwrap(), m.Unwrap());
-        }
+        public IntPtr GetPointerToGlobal(GlobalValue global) => LLVM.GetPointerToGlobal(this.Unwrap(), global.Unwrap());
 
-        public bool RemoveModule(Module m, out Module outMod, out IntPtr outError)
-        {
-            LLVMModuleRef outModRef;
-            var result = LLVM.RemoveModule(this.Unwrap(), m.Unwrap(), out outModRef, out outError);
-            outMod = outModRef.Wrap();
-            return result;
-        }
-
-        public bool FindFunction(string name, out Value outFn)
-        {
-            LLVMValueRef outFnValueRef;
-            var result = LLVM.FindFunction(this.Unwrap(), name, out outFnValueRef);
-            outFn = outFnValueRef.Wrap();
-            return result;
-        }
-
-        public IntPtr RecompileAndRelinkFunction(Value fn)
-        {
-            return LLVM.RecompileAndRelinkFunction(this.Unwrap(), fn.Unwrap());
-        }
-
-        public TargetData TargetData
-        {
-            get { return LLVM.GetExecutionEngineTargetData(this.Unwrap()).Wrap(); }
-        }
-
-        public TargetMachine TargetMachine
-        {
-            get { return LLVM.GetExecutionEngineTargetMachine(this.Unwrap()).Wrap(); }
-        }
-
-        public void AddGlobalMapping(Value global, IntPtr addr)
-        {
-            LLVM.AddGlobalMapping(this.Unwrap(), global.Unwrap(), addr);
-        }
-
-        public IntPtr GetPointerToGlobal(Value global)
-        {
-            return LLVM.GetPointerToGlobal(this.Unwrap(), global.Unwrap());
-        }
-
-        public ulong GetGlobalValueAddress(string name)
-        {
-            return LLVM.GetGlobalValueAddress(this.Unwrap(), name);
-        }
-
-        public ulong GetFunctionAddress(string name)
-        {
-            return LLVM.GetFunctionAddress(this.Unwrap(), name);
-        }
+        public ulong GetGlobalValueAddress(string name) => LLVM.GetGlobalValueAddress(this.Unwrap(), name);
+        public ulong GetFunctionAddress(string name) => LLVM.GetFunctionAddress(this.Unwrap(), name);
 
         public void Dispose()
         {
@@ -183,37 +118,11 @@
             this._disposed = true;
         }
 
-        public bool Equals(ExecutionEngine other)
-        {
-            if (ReferenceEquals(other, null))
-            {
-                return false;
-            }
-            return this._instance == other._instance;
-        }
+        public override int GetHashCode() => this._instance.GetHashCode();
+        public override bool Equals(object obj) => this.Equals(obj as ExecutionEngine);
+        public bool Equals(ExecutionEngine other) => ReferenceEquals(other, null) ? false : this._instance == other._instance;
+        public static bool operator ==(ExecutionEngine op1, ExecutionEngine op2) => ReferenceEquals(op1, null) ? ReferenceEquals(op2, null) : op1.Equals(op2);
+        public static bool operator !=(ExecutionEngine op1, ExecutionEngine op2) => !(op1 == op2);
 
-        public override bool Equals(object obj)
-        {
-            return this.Equals(obj as ExecutionEngine);
-        }
-
-        public static bool operator ==(ExecutionEngine op1, ExecutionEngine op2)
-        {
-            if (ReferenceEquals(op1, null))
-            {
-                return ReferenceEquals(op2, null);
-            }
-            return op1.Equals(op2);
-        }
-
-        public static bool operator !=(ExecutionEngine op1, ExecutionEngine op2)
-        {
-            return !(op1 == op2);
-        }
-
-        public override int GetHashCode()
-        {
-            return this._instance.GetHashCode();
-        }
     }
 }

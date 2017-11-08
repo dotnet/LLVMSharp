@@ -7,24 +7,9 @@
         {            
         }
 
-        public void Target()
-        {
-            LLVM.InitializeNativeTarget();
-        }
-
-        public void AsmPrinter()
-        {
-            LLVM.InitializeNativeAsmPrinter();
-        }
-
-        public void AsmParser()
-        {
-            LLVM.InitializeNativeAsmParser();
-        }
-
-        public void Disassembler()
-        {
-            LLVM.InitializeNativeDisassembler();
-        }
+        public void Target() => LLVM.InitializeNativeTarget();
+        public void AsmPrinter() => LLVM.InitializeNativeAsmPrinter();
+        public void AsmParser() => LLVM.InitializeNativeAsmParser();
+        public void Disassembler() => LLVM.InitializeNativeDisassembler();
     }
 }

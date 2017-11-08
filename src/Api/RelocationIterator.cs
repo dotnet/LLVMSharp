@@ -5,15 +5,8 @@
 
     public sealed class RelocationIterator : IDisposableWrapper<LLVMRelocationIteratorRef>, IDisposable
     {
-        LLVMRelocationIteratorRef IWrapper<LLVMRelocationIteratorRef>.ToHandleType()
-        {
-            return this._instance;
-        }
-
-        void IDisposableWrapper<LLVMRelocationIteratorRef>.MakeHandleOwner()
-        {
-            this._owner = true;
-        }
+        LLVMRelocationIteratorRef IWrapper<LLVMRelocationIteratorRef>.ToHandleType => this._instance;
+        void IDisposableWrapper<LLVMRelocationIteratorRef>.MakeHandleOwner() => this._owner = true;
 
         private readonly LLVMRelocationIteratorRef _instance;
         private bool _disposed;
@@ -55,31 +48,10 @@
             LLVM.MoveToNextRelocation(this.Unwrap());
         }
 
-        public ulong Offset
-        {
-            get { return LLVM.GetRelocationOffset(this.Unwrap()); }
-        }
-
-        public SymbolIterator Symbol
-        {
-            get { return LLVM.GetRelocationSymbol(this.Unwrap()).Wrap(); }
-        }
-
-        public ulong Type
-        {
-            get { return LLVM.GetRelocationType(this.Unwrap()); }
-        }
-
-        public string TypeName
-        {
-            get { return LLVM.GetRelocationTypeName(this.Unwrap()); }
-        }
-
-        public string ValueString
-        {
-            get { return LLVM.GetRelocationValueString(this.Unwrap()); }
-        }
-
-
+        public ulong Offset => LLVM.GetRelocationOffset(this.Unwrap());
+        public SymbolIterator Symbol => LLVM.GetRelocationSymbol(this.Unwrap()).Wrap();
+        public ulong Type => LLVM.GetRelocationType(this.Unwrap());
+        public string TypeName => LLVM.GetRelocationTypeName(this.Unwrap());
+        public string ValueString => LLVM.GetRelocationValueString(this.Unwrap());
     }
 }

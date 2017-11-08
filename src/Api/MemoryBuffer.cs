@@ -5,13 +5,14 @@
 
     public sealed class MemoryBuffer : IDisposableWrapper<LLVMMemoryBufferRef>, IDisposable
     {
+        LLVMMemoryBufferRef IWrapper<LLVMMemoryBufferRef>.ToHandleType => this._instance;
+        void IDisposableWrapper<LLVMMemoryBufferRef>.MakeHandleOwner() => this._owner = true;
+
         public static MemoryBuffer CreateMemoryBufferWithContentsOfFile(string path)
         {
-            LLVMMemoryBufferRef bufferRef;
-            IntPtr error;
-            if (LLVM.CreateMemoryBufferWithContentsOfFile(path, out bufferRef, out error).Failed())
+            if (LLVM.CreateMemoryBufferWithContentsOfFile(path, out LLVMMemoryBufferRef bufferRef, out IntPtr error).Failed())
             {
-                ErrorUtilities.Throw(error);
+                TextUtilities.Throw(error);
             }
 
             return bufferRef.Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
@@ -19,45 +20,28 @@
 
         public static MemoryBuffer CreateMemoryBufferWithSTDIN()
         {
-            LLVMMemoryBufferRef bufferRef;
-            IntPtr error;
-            if (LLVM.CreateMemoryBufferWithSTDIN(out bufferRef, out error).Failed())
+            if (LLVM.CreateMemoryBufferWithSTDIN(out LLVMMemoryBufferRef bufferRef, out IntPtr error).Failed())
             {
-                ErrorUtilities.Throw(error);
+                TextUtilities.Throw(error);
             }
 
             return bufferRef.Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
         }
 
-        public unsafe static MemoryBuffer CreateMemoryBufferWithMemoryRange(string inputData, size_t inputDataLength,
-                                                                     string bufferLength, bool requiresNullTerminator)
+        public unsafe static MemoryBuffer CreateMemoryBufferWithMemoryRange(string inputData, string bufferLength, bool requiresNullTerminator)
         {
             fixed(char* c = inputData)
             {
-                return
-                    LLVM.CreateMemoryBufferWithMemoryRange(new IntPtr(c), inputDataLength, bufferLength, requiresNullTerminator)
-                        .Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
-
+                return LLVM.CreateMemoryBufferWithMemoryRange(new IntPtr(c), new size_t(inputData.Length), bufferLength, requiresNullTerminator).Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
             }
         }
 
-        public unsafe static MemoryBuffer CreateMemoryBufferWithMemoryRangeCopy(string inputData, size_t inputDataLength,
-                                                                         string bufferName)
+        public unsafe static MemoryBuffer CreateMemoryBufferWithMemoryRangeCopy(string inputData, string bufferName)
         {
             fixed(char* c = inputData)
             {
-                return
-                    LLVM.CreateMemoryBufferWithMemoryRangeCopy(new IntPtr(c), inputDataLength, bufferName)
-                        .Wrap()
-                        .MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
+                return LLVM.CreateMemoryBufferWithMemoryRangeCopy(new IntPtr(c), new size_t(inputData.Length), bufferName).Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
             }
-        }
-
-        LLVMMemoryBufferRef IWrapper<LLVMMemoryBufferRef>.ToHandleType() => this._instance;
-
-        void IDisposableWrapper<LLVMMemoryBufferRef>.MakeHandleOwner()
-        {
-            this._owner = true;
         }
 
         private readonly LLVMMemoryBufferRef _instance;
@@ -74,15 +58,8 @@
             this.Dispose(false);
         }
 
-        public IntPtr BufferStart
-        {
-            get { return LLVM.GetBufferStart(this.Unwrap()); }
-        }
-
-        public size_t BufferSize
-        {
-            get { return LLVM.GetBufferSize(this.Unwrap()); }
-        }
+        public IntPtr BufferStart => LLVM.GetBufferStart(this.Unwrap());
+        public size_t BufferSize => LLVM.GetBufferSize(this.Unwrap());
 
         public void Dispose()
         {
@@ -108,11 +85,9 @@
 
         public Module ParseBitcode()
         {
-            LLVMModuleRef m;
-            IntPtr error;
-            if (LLVM.ParseBitcode(this.Unwrap(), out m, out error).Failed())
+            if (LLVM.ParseBitcode(this.Unwrap(), out LLVMModuleRef m, out IntPtr error).Failed())
             {
-                ErrorUtilities.Throw(error);
+                TextUtilities.Throw(error);
             }
 
             return m.Wrap();
@@ -120,11 +95,9 @@
 
         public Module GetBitcodeModule()
         {
-            LLVMModuleRef m;
-            IntPtr error;
-            if (LLVM.GetBitcodeModule(this.Unwrap(), out m, out error).Failed())
+            if (LLVM.GetBitcodeModule(this.Unwrap(), out LLVMModuleRef m, out IntPtr error).Failed())
             {
-                ErrorUtilities.Throw(error);
+                TextUtilities.Throw(error);
             }
 
             return m.Wrap();

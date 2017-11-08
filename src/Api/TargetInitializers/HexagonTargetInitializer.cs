@@ -7,24 +7,9 @@
         {            
         }
 
-        public void Target()
-        {
-            LLVM.InitializeHexagonTarget();
-        }
-
-        public void TargetInfo()
-        {
-            LLVM.InitializeHexagonTargetInfo();
-        }
-
-        public void TargetMC()
-        {
-            LLVM.InitializeHexagonTargetMC();
-        }
-
-        public void AsmPrinter()
-        {
-            LLVM.InitializeHexagonAsmPrinter();
-        }
+        public void Target() => LLVM.InitializeHexagonTarget();
+        public void TargetInfo() => LLVM.InitializeHexagonTargetInfo();
+        public void TargetMC() => LLVM.InitializeHexagonTargetMC();
+        public void AsmPrinter() => LLVM.InitializeHexagonAsmPrinter();
     }
 }

@@ -4,17 +4,17 @@
     {
         public static LLVMValueRef ConstVector(LLVMValueRef[] @ScalarConstantVars)
         {
-            return LLVM.ConstVector(out @ScalarConstantVars[0], (uint)ScalarConstantVars.Length);
+            return LLVM.ConstVector(@ScalarConstantVars);
         }
 
         public static LLVMValueRef ConstStruct(LLVMValueRef[] @ConstantVals, bool @Packed)
         {
-            return LLVM.ConstStruct(out @ConstantVals[0], (uint)ConstantVals.Length, @Packed);
+            return LLVM.ConstStruct(@ConstantVals, @Packed);
         }
 
         public static LLVMValueRef MDNode(LLVMValueRef[] Vals)
         {
-            return LLVM.MDNode(out Vals[0], (uint)Vals.Length);
+            return LLVM.MDNode(Vals);
         }
 
         public static LLVMValueRef ConstNeg(LLVMValueRef @ConstantVal)
@@ -174,12 +174,12 @@
 
         public static LLVMValueRef ConstGEP(LLVMValueRef @ConstantVal, LLVMValueRef[] @ConstantIndices)
         {
-            return LLVM.ConstGEP(@ConstantVal, out @ConstantIndices[0], (uint)ConstantIndices.Length);
+            return LLVM.ConstGEP(@ConstantVal, @ConstantIndices);
         }
 
         public static LLVMValueRef ConstInBoundsGEP(LLVMValueRef @ConstantVal, LLVMValueRef[] @ConstantIndices)
         {
-            return LLVM.ConstInBoundsGEP(@ConstantVal, out @ConstantIndices[0], (uint)ConstantIndices.Length);
+            return LLVM.ConstInBoundsGEP(@ConstantVal, @ConstantIndices);
         }
 
         public static LLVMValueRef ConstTrunc(LLVMValueRef @ConstantVal, LLVMTypeRef @ToType)
@@ -299,12 +299,12 @@
 
         public static LLVMValueRef ConstExtractValue(LLVMValueRef @AggConstant, uint[] @IdxList)
         {
-            return LLVM.ConstExtractValue(@AggConstant, out @IdxList[0], (uint)IdxList.Length);
+            return LLVM.ConstExtractValue(@AggConstant, @IdxList);
         }
 
         public static LLVMValueRef ConstInsertValue(LLVMValueRef @AggConstant, LLVMValueRef @ElementValueConstant, uint[] @IdxList)
         {
-            return LLVM.ConstInsertValue(@AggConstant, @ElementValueConstant, out @IdxList[0], (uint)IdxList.Length);
+            return LLVM.ConstInsertValue(@AggConstant, @ElementValueConstant, @IdxList);
         }
     }
 }

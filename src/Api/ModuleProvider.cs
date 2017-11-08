@@ -5,15 +5,8 @@
 
     public sealed class ModuleProvider : IDisposableWrapper<LLVMModuleProviderRef>, IDisposable
     {
-        LLVMModuleProviderRef IWrapper<LLVMModuleProviderRef>.ToHandleType()
-        {
-            return this._instance;
-        }
-
-        void IDisposableWrapper<LLVMModuleProviderRef>.MakeHandleOwner()
-        {
-            this._owner = true;
-        }
+        LLVMModuleProviderRef IWrapper<LLVMModuleProviderRef>.ToHandleType => this._instance;
+        void IDisposableWrapper<LLVMModuleProviderRef>.MakeHandleOwner() => this._owner = true;
 
         private readonly LLVMModuleProviderRef _instance;
         private bool _disposed;

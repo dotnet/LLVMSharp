@@ -8,7 +8,7 @@
     partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>, IHandle<Type>
     {
         IntPtr IHandle<Type>.GetInternalPointer() => this.Pointer;
-        Type IHandle<Type>.ToWrapperType() => new Type(this);
+        Type IHandle<Type>.ToWrapperType() => Type.Create(this);
 
         public LLVMTypeKind TypeKind
         {
@@ -60,9 +60,7 @@
 
         public LLVMTypeRef[] GetParamTypes()
         {
-            var e = new LLVMTypeRef[LLVM.CountParamTypes(this)];
-            LLVM.GetParamTypes(this, out e[0]);
-            return e;
+            return LLVM.GetParamTypes(this);
         }
 
         public string GetStructName()
@@ -72,7 +70,7 @@
 
         public void StructSetBody(LLVMTypeRef[] @ElementTypes, bool @Packed)
         {
-            LLVM.StructSetBody(this, out @ElementTypes[0], (uint)ElementTypes.Length, new LLVMBool(@Packed));
+            LLVM.StructSetBody(this, @ElementTypes, new LLVMBool(@Packed));
         }
 
         public uint CountStructElementTypes()
@@ -80,11 +78,9 @@
             return LLVM.CountStructElementTypes(this);
         }
 
-        public LLVMTypeRef[] GetStructElementTypes()
+        public LLVMTypeRef[] GetStructElementTypes() 
         {
-            var e = new LLVMTypeRef[LLVM.CountStructElementTypes(this)];
-            LLVM.GetStructElementTypes(this, out e[0]);
-            return e;
+            return LLVM.GetStructElementTypes(this);
         }
 
         public LLVMTypeRef StructGetTypeAtIndex(uint @index)
@@ -147,8 +143,10 @@
             return this.PrintTypeToString();
         }
 
+        public override int GetHashCode() => this.Pointer.GetHashCode();
+        public override bool Equals(object obj) => obj is LLVMTypeRef t && this.Equals(t);
         public bool Equals(LLVMTypeRef other) => this.Pointer == other.Pointer;
-        public static bool operator==(LLVMTypeRef op1, LLVMTypeRef op2) => op1.Equals(op2);
-        public static bool operator!=(LLVMTypeRef op1, LLVMTypeRef op2) => !(op1 == op2);
+        public static bool operator ==(LLVMTypeRef op1, LLVMTypeRef op2) => op1.Pointer == op2.Pointer;
+        public static bool operator !=(LLVMTypeRef op1, LLVMTypeRef op2) => !(op1 == op2);
     }
 }

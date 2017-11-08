@@ -7,34 +7,11 @@
         {
         }
 
-        public void Target()
-        {
-            LLVM.InitializeARMTarget();
-        }
-
-        public void TargetInfo()
-        {
-            LLVM.InitializeARMTargetInfo();
-        }
-
-        public void TargetMC()
-        {
-            LLVM.InitializeARMTargetMC();
-        }
-
-        public void AsmPrinter()
-        {
-            LLVM.InitializeARMAsmPrinter();
-        }
-
-        public void AsmParser()
-        {
-            LLVM.InitializeARMAsmParser();
-        }
-
-        public void Disassembler()
-        {
-            LLVM.InitializeARMDisassembler();
-        }
+        public void Target() => LLVM.InitializeARMTarget();
+        public void TargetInfo() => LLVM.InitializeARMTargetInfo();
+        public void TargetMC() => LLVM.InitializeARMTargetMC();
+        public void AsmPrinter() => LLVM.InitializeARMAsmPrinter();
+        public void AsmParser() => LLVM.InitializeARMAsmParser();
+        public void Disassembler() => LLVM.InitializeARMDisassembler();
     }
 }

@@ -9,33 +9,10 @@
         IntPtr IHandle<SectionIterator>.GetInternalPointer() => this.Pointer;
         SectionIterator IHandle<SectionIterator>.ToWrapperType() => new SectionIterator(this);
 
-        public bool Equals(LLVMSectionIteratorRef other)
-        {
-            return this.Pointer == other.Pointer;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is LLVMSectionIteratorRef)
-            {
-                return this.Equals((LLVMSectionIteratorRef)obj);
-            }
-            return false;
-        }
-
-        public static bool operator ==(LLVMSectionIteratorRef op1, LLVMSectionIteratorRef op2)
-        {
-            return op1.Equals(op2);
-        }
-
-        public static bool operator !=(LLVMSectionIteratorRef op1, LLVMSectionIteratorRef op2)
-        {
-            return !(op1 == op2);
-        }
-
-        public override int GetHashCode()
-        {
-            return this.Pointer.GetHashCode();
-        }
+        public override int GetHashCode() => this.Pointer.GetHashCode();
+        public override bool Equals(object obj) => obj is LLVMSectionIteratorRef t && this.Equals(t);
+        public bool Equals(LLVMSectionIteratorRef other) => this.Pointer == other.Pointer;
+        public static bool operator ==(LLVMSectionIteratorRef op1, LLVMSectionIteratorRef op2) => op1.Pointer == op2.Pointer;
+        public static bool operator !=(LLVMSectionIteratorRef op1, LLVMSectionIteratorRef op2) => !(op1 == op2);
     }
 }

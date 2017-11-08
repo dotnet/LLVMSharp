@@ -9,33 +9,10 @@
         IntPtr IHandle<PassManager>.GetInternalPointer() => this.Pointer;
         PassManager IHandle<PassManager>.ToWrapperType() => new PassManager(this);
 
-        public bool Equals(LLVMPassManagerRef other)
-        {
-            return this.Pointer == other.Pointer;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is LLVMPassManagerRef)
-            {
-                return this.Equals((LLVMPassManagerRef)obj);
-            }
-            return false;
-        }
-
-        public static bool operator ==(LLVMPassManagerRef op1, LLVMPassManagerRef op2)
-        {
-            return op1.Equals(op2);
-        }
-
-        public static bool operator !=(LLVMPassManagerRef op1, LLVMPassManagerRef op2)
-        {
-            return !(op1 == op2);
-        }
-
-        public override int GetHashCode()
-        {
-            return this.Pointer.GetHashCode();
-        }
+        public override int GetHashCode() => this.Pointer.GetHashCode();
+        public override bool Equals(object obj) => obj is LLVMPassManagerRef t && this.Equals(t);
+        public bool Equals(LLVMPassManagerRef other) => this.Pointer == other.Pointer;
+        public static bool operator ==(LLVMPassManagerRef op1, LLVMPassManagerRef op2) => op1.Pointer == op2.Pointer;
+        public static bool operator !=(LLVMPassManagerRef op1, LLVMPassManagerRef op2) => !(op1 == op2);
     }
 }

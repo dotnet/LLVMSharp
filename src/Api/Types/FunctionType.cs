@@ -1,73 +1,26 @@
 ﻿namespace LLVMSharp.Api.Types
 {
-    using System;
-    using Utilities;
     using Type = Api.Type;
 
     public sealed class FunctionType : Type
     {
-        private readonly Type[] _params;
+        public static FunctionType Create(Type returnType) => Create(returnType, false);
+        public static FunctionType Create(Type returnType, bool isVarArg) => Create(returnType, new Type[0], isVarArg);
+        public static FunctionType Create(Type returnType, params Type[] parameterTypes) => Create(returnType, parameterTypes, false);
+        public static FunctionType Create(Type returnType, Type[] parameterTypes, bool isVarArg) => LLVM.FunctionType(returnType.Unwrap(), parameterTypes.Unwrap(), isVarArg ? new LLVMBool(1) : new LLVMBool(0)).WrapAs<FunctionType>();
 
-        public static FunctionType Get(Type result, bool isVarArg)
-        {
-            return Get(result, new Type[1], isVarArg);
-        }
-
-        public static FunctionType Get(Type result, Type[] @params, bool isVarArg)
-        {
-            var count = (uint) @params.Length;
-            var args = new LLVMTypeRef[Math.Max(count, 1)];
-            for (var i = 0; i < count; ++i)
-            {
-                args[i] = @params[i].Unwrap();
-            }
-
-            return
-                new FunctionType(LLVM.FunctionType(result.Unwrap(), out args[0], (uint) args.Length,
-                    isVarArg ? new LLVMBool(1) : new LLVMBool(0)));
-        }
-
-        internal FunctionType(LLVMTypeRef typeRef) 
+        internal FunctionType(LLVMTypeRef typeRef)
             : base(typeRef)
         {
-            this._params = new Type[LLVM.CountParamTypes(this.Unwrap())];
         }
 
-        public FunctionType(Type returnType, Type[] parameterTypes)
-            : this(returnType, parameterTypes, false)
-        {            
-        }
+        public override string Name => $"{ReturnType} ({string.Join<Type>(", ", ParamTypes)})";
+        public override bool IsFirstClassType => false;
 
-        public FunctionType(Type returnType, Type[] parameterTypes, bool isVarArgs)
-            : base(LLVM.FunctionType(returnType.Unwrap(), out parameterTypes.Unwrap()[0], (uint)parameterTypes.Length, isVarArgs))
-        {
-        }
-        
-        public uint NumParams
-        {
-            get { return (uint) this._params.Length; }
-        }
-
-        public bool IsVarArg
-        {
-            get { return LLVM.IsFunctionVarArg(this.Unwrap()).Value == 1; }
-        }
-
-        public Type ReturnType
-        {
-            get { return Create(LLVM.GetReturnType(this.Unwrap())); }
-        }
-
-        public Type GetParamType(uint i)
-        {
-            return this._params[i];
-        }
-
-        public Type[] GetParamTypes()
-        {
-            var e = new LLVMTypeRef[LLVM.CountParamTypes(this.Unwrap())];
-            LLVM.GetParamTypes(this.Unwrap(), out e[0]);
-            return e.Wrap<LLVMTypeRef, Type>();
-        }
+        public Type ReturnType => Create(LLVM.GetReturnType(this.Unwrap()));
+        public uint NumParams => LLVM.CountParamTypes(this.Unwrap());
+        public Type GetParamType(uint index) => Create(LLVM.GetParamTypes(this.Unwrap())[index]);
+        public Type[] ParamTypes => LLVM.GetParamTypes(this.Unwrap()).Wrap<LLVMTypeRef, Type>();
+        public bool IsVarArg => LLVM.IsFunctionVarArg(this.Unwrap());
     }
 }

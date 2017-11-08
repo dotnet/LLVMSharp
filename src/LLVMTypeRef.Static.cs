@@ -4,7 +4,7 @@
     {
         public static LLVMTypeRef FunctionType(LLVMTypeRef returnType, LLVMTypeRef[] @ParamTypes, bool @IsVarArg)
         {
-            return LLVM.FunctionType(returnType, out @ParamTypes[0], (uint)ParamTypes.Length, @IsVarArg);
+            return LLVM.FunctionType(returnType, @ParamTypes, @IsVarArg);
         }
 
         public static LLVMTypeRef Int1Type()
@@ -194,7 +194,7 @@
 
         public static LLVMTypeRef StructType(LLVMTypeRef[] @ElementTypes, bool @Packed)
         {
-            return LLVM.StructType(out @ElementTypes[0], (uint)ElementTypes.Length, @Packed);
+            return LLVM.StructType(@ElementTypes, @Packed);
         }
 
         public static LLVMTypeRef StructCreateNamed(LLVMContextRef @C, string @Name)
@@ -259,12 +259,12 @@
 
         public static LLVMValueRef ConstArray(LLVMTypeRef @ElementTy, LLVMValueRef[] @ConstantVals)
         {
-            return LLVM.ConstArray(@ElementTy, out @ConstantVals[0], (uint)ConstantVals.Length);
+            return LLVM.ConstArray(@ElementTy, @ConstantVals);
         }
 
         public static LLVMValueRef ConstNamedStruct(LLVMTypeRef @StructTy, LLVMValueRef[] @ConstantVals)
         {
-            return LLVM.ConstNamedStruct(@StructTy, out @ConstantVals[0], (uint)ConstantVals.Length);
+            return LLVM.ConstNamedStruct(@StructTy, @ConstantVals);
         }
 
         public static LLVMValueRef ConstNull(LLVMTypeRef @Ty)

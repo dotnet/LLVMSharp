@@ -1,96 +1,59 @@
 ﻿namespace LLVMSharp.Api.Values.Constants.GlobalValues.GlobalObjects
 {
+    using LLVMSharp.Api.Types.Composite.SequentialTypes;
+    using System.Collections.Generic;
     using Types;
-    using Utilities;
 
     public sealed class Function : GlobalObject
     {
+        public static Function Create(FunctionType type, Linkage linkage, string name, Module m)
+        {
+            var value = LLVM.AddFunction(m.Unwrap(), name, type.Unwrap());
+            var f = new Function(value);
+            LLVM.SetLinkage(value, linkage.Unwrap());
+            return f;
+        }
+
         internal Function(LLVMValueRef instance)
             : base(instance)
         {
         }
-
-        public static Function Create(FunctionType type, LLVMLinkage linkage, string name, Module m)
-        {
-            var value = LLVM.AddFunction(m.Unwrap(), name, type.Unwrap());
-            var f = new Function(value);
-            LLVM.SetLinkage(value, linkage);
-            return f;
-        }
-
-        public Type ReturnType
-        {
-            get { return LLVM.GetReturnType(this.Type.Unwrap()).Wrap(); }
-        }
-
-        public BasicBlock[] BasicBlocks
-        {
-            get
-            {
-                var e = new LLVMBasicBlockRef[LLVM.CountBasicBlocks(this.Unwrap())];
-                LLVM.GetBasicBlocks(this.Unwrap(), out e[0]);
-                return e.Wrap<LLVMBasicBlockRef, BasicBlock>();
-            }
-        }
-
-        public Type FunctionType
-        {
-            get { return LLVM.TypeOf(this.Unwrap()).Wrap(); }
-        }
-
-        public bool IsVarArg
-        {
-            get { return LLVM.IsFunctionVarArg(this.FunctionType.Unwrap()); }
-        }
-
-        public Value GetParameter(int index)
-        {
-            return LLVM.GetParam(this.Unwrap(), (uint) index).Wrap();
-        }
-
-        public BasicBlock AppendBasicBlock(string name)
-        {
-            return LLVM.AppendBasicBlock(this.Unwrap(), name).Wrap();
-        }
-
-        public uint CountBasicBlocks()
-        {
-            return LLVM.CountBasicBlocks(this.Unwrap());
-        }
         
-        public BasicBlock GetFirstBasicBlock()
+        public CallingConvention CallingConvention
         {
-            return LLVM.GetFirstBasicBlock(this.Unwrap()).Wrap();
+            get => (CallingConvention)LLVM.GetFunctionCallConv(this.Unwrap());
+            set => LLVM.SetFunctionCallConv(this.Unwrap(), (uint)value);
         }
 
-        public BasicBlock GetLastBasicBlock()
+        public Value BlockAddress(BasicBlock bb) => LLVM.BlockAddress(this.Unwrap(), bb.Unwrap<LLVMBasicBlockRef>()).Wrap();
+
+        public uint IntrinsicID => LLVM.GetIntrinsicID(this.Unwrap());
+
+        public string GC
         {
-            return LLVM.GetLastBasicBlock(this.Unwrap()).Wrap();
+            get => LLVM.GetGC(this.Unwrap());
+            set => LLVM.SetGC(this.Unwrap(), value);
         }
 
-        public BasicBlock GetEntryBasicBlock()
-        {
-            return LLVM.GetEntryBasicBlock(this.Unwrap()).Wrap();
-        }
+        public void AddTargetDependentFunctionAttr(string a, string v) => LLVM.AddTargetDependentFunctionAttr(this.Unwrap(), a, v);
 
-        public Function NextFunction
-        {
-            get { return LLVM.GetNextFunction(this.Unwrap()).WrapAs<Function>(); }
-        }
+        public IReadOnlyList<Argument> Parameters => LLVM.GetParams(this.Unwrap()).WrapAs<Argument>();
+        public IReadOnlyList<BasicBlock> BasicBlocks => LLVM.GetBasicBlocks(this.Unwrap()).Wrap<LLVMBasicBlockRef, BasicBlock>();
 
-        public Function PreviousFunction
-        {
-            get { return LLVM.GetPreviousFunction(this.Unwrap()).WrapAs<Function>(); }
-        }
+        public FunctionType FunctionType => LLVM.GetReturnType(this.Type.Unwrap()).WrapAs<FunctionType>();
 
-        public void ViewFunctionCFG()
-        {
-            LLVM.ViewFunctionCFG(this.Unwrap());
-        }
+        public bool IsVarArg => LLVM.IsFunctionVarArg(this.Type.Unwrap());
 
-        public void ViewFunctionCFGOnly()
-        {
-            LLVM.ViewFunctionCFGOnly(this.Unwrap());
-        }
+        public BasicBlock EntryBasicBlock => LLVM.GetEntryBasicBlock(this.Unwrap()).Wrap();
+        public BasicBlock AppendBasicBlock(string name) => LLVM.AppendBasicBlock(this.Unwrap(), name).Wrap();
+        public BasicBlock AppendBasicBlock(string name, Context context) => LLVM.AppendBasicBlockInContext(context.Unwrap(), this.Unwrap(), name).WrapAs<BasicBlock>();
+
+        public Function NextFunction => LLVM.GetNextFunction(this.Unwrap()).WrapAs<Function>();
+        public Function PreviousFunction => LLVM.GetPreviousFunction(this.Unwrap()).WrapAs<Function>();
+
+        public void ViewFunctionCFG() => LLVM.ViewFunctionCFG(this.Unwrap());
+        public void ViewFunctionCFGOnly() => LLVM.ViewFunctionCFGOnly(this.Unwrap());
+
+        public void Delete() => LLVM.DeleteFunction(this.Unwrap());
     }
 }

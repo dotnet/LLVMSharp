@@ -4,7 +4,6 @@
     using Constants.ConstantDataSequentials;
     using Constants.GlobalValues;
     using Constants.GlobalValues.GlobalObjects;
-    using Utilities;
 
     public class Constant : Value
     {
@@ -107,5 +106,7 @@
             : base(instance)
         {
         }
+
+        public bool IsNull => LLVM.IsNull(this.Unwrap());
     }
 }

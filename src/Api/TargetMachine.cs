@@ -5,12 +5,8 @@
 
     public sealed class TargetMachine : IDisposableWrapper<LLVMTargetMachineRef>, IDisposable
     {
-        LLVMTargetMachineRef IWrapper<LLVMTargetMachineRef>.ToHandleType() => this._instance;
-
-        void IDisposableWrapper<LLVMTargetMachineRef>.MakeHandleOwner()
-        {
-            this._owner = true;
-        }
+        LLVMTargetMachineRef IWrapper<LLVMTargetMachineRef>.ToHandleType => this._instance;
+        void IDisposableWrapper<LLVMTargetMachineRef>.MakeHandleOwner() => this._owner = true;
 
         private readonly LLVMTargetMachineRef _instance;
         private bool _disposed;
@@ -47,54 +43,26 @@
             this._disposed = true;
         }
 
-        public Target Target
-        {
-            get { return LLVM.GetTargetMachineTarget(this.Unwrap()).Wrap(); }
-        }
+        public Target Target => LLVM.GetTargetMachineTarget(this.Unwrap()).Wrap();
+        public string Triple => LLVM.GetTargetMachineTriple(this.Unwrap()).MessageToString();
+        public string CPU => LLVM.GetTargetMachineCPU(this.Unwrap()).MessageToString();
 
-        public IntPtr Triple
-        {
-            get { return LLVM.GetTargetMachineTriple(this.Unwrap()); }
-        }
+        public string FeatureString => LLVM.GetTargetMachineFeatureString(this.Unwrap()).MessageToString();
 
-        public IntPtr CPU
-        {
-            get { return LLVM.GetTargetMachineCPU(this.Unwrap()); }
-        }
+        public void SetAsmVerbosity(bool verboseAsm) => LLVM.SetTargetMachineAsmVerbosity(this.Unwrap(), verboseAsm);
 
-        public IntPtr FeatureString
-        {
-            get { return LLVM.GetTargetMachineFeatureString(this.Unwrap()); }
-        }
-        
-        public void SetAsmVerbosity(bool verboseAsm)
-        {
-            LLVM.SetTargetMachineAsmVerbosity(this.Unwrap(), verboseAsm);
-        }
-
-        public bool EmitToFile(Module m, IntPtr filename, LLVMCodeGenFileType codegen, out IntPtr errorMessage)
-        {
-            return LLVM.TargetMachineEmitToFile(this.Unwrap(), m.Unwrap(), filename, codegen, out errorMessage);
-        }
+        public bool EmitToFile(Module m, IntPtr filename, LLVMCodeGenFileType codegen, out IntPtr errorMessage) => LLVM.TargetMachineEmitToFile(this.Unwrap(), m.Unwrap(), filename, codegen, out errorMessage);
 
         public MemoryBuffer EmitToMemoryBuffer(Module m, LLVMCodeGenFileType codegen)
         {
-            LLVMMemoryBufferRef buf;
-            IntPtr error;
-            if (
-                LLVM.TargetMachineEmitToMemoryBuffer(this.Unwrap(), m.Unwrap(), codegen, out error, out buf)
-                    .Failed())
+            if (LLVM.TargetMachineEmitToMemoryBuffer(this.Unwrap(), m.Unwrap(), codegen, out IntPtr error, out LLVMMemoryBufferRef buf).Failed())
             {
-                ErrorUtilities.Throw(error);
+                TextUtilities.Throw(error);
             }
 
             return buf.Wrap();
         }
 
-        public void AddAnalysisPasses(PassManager pm)
-        {
-            LLVM.AddAnalysisPasses(this.Unwrap(), pm.Unwrap());
-        }
-
+        public void AddAnalysisPasses(PassManager pm) => LLVM.AddAnalysisPasses(this.Unwrap(), pm.Unwrap());
     }
 }

@@ -6,5 +6,11 @@
             : base(instance)
         {
         }
+
+        public uint Alignment
+        {
+            get => LLVM.GetAlignment(this.Unwrap());
+            set => LLVM.SetAlignment(this.Unwrap(), value);
+        }
     }
 }

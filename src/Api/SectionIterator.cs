@@ -5,15 +5,8 @@
 
     public sealed class SectionIterator : IDisposableWrapper<LLVMSectionIteratorRef>, IDisposable
     {
-        LLVMSectionIteratorRef IWrapper<LLVMSectionIteratorRef>.ToHandleType()
-        {
-            return this._instance;
-        }
-
-        void IDisposableWrapper<LLVMSectionIteratorRef>.MakeHandleOwner()
-        {
-            this._owner = true;
-        }
+        LLVMSectionIteratorRef IWrapper<LLVMSectionIteratorRef>.ToHandleType => this._instance;
+        void IDisposableWrapper<LLVMSectionIteratorRef>.MakeHandleOwner() => this._owner = true;
 
         private readonly LLVMSectionIteratorRef _instance;
         private bool _disposed;
@@ -50,49 +43,16 @@
             this._disposed = true;
         }
 
-        public void MoveToNextSection()
-        {
-            LLVM.MoveToNextSection(this.Unwrap());
-        }
+        public void MoveToNextSection() => LLVM.MoveToNextSection(this.Unwrap());
+        public void MoveToContainingSection(SymbolIterator sym) => LLVM.MoveToContainingSection(this.Unwrap(), sym.Unwrap());
+        public string SectionName => LLVM.GetSectionName(this.Unwrap());
+        public ulong SectionSize => LLVM.GetSectionSize(this.Unwrap());
+        public string SectionContents => LLVM.GetSectionContents(this.Unwrap());
+        public ulong SectionAddress => LLVM.GetSectionAddress(this.Unwrap());
 
-        public void MoveToContainingSection(SymbolIterator sym)
-        {
-            LLVM.MoveToContainingSection(this.Unwrap(), sym.Unwrap());
-        }
+        public RelocationIterator Relocations => LLVM.GetRelocations(this.Unwrap()).Wrap();
+        public bool IsRelocationIteratorAtEnd(RelocationIterator ri) => LLVM.IsRelocationIteratorAtEnd(this.Unwrap(), ri.Unwrap());
 
-        public string SectionName
-        {
-            get { return LLVM.GetSectionName(this.Unwrap()); }
-        }
-
-        public ulong SectionSize
-        {
-            get { return LLVM.GetSectionSize(this.Unwrap()); }
-        }
-
-        public string SectionContents
-        {
-            get { return LLVM.GetSectionContents(this.Unwrap()); }
-        }
-
-        public ulong SectionAddress
-        {
-            get { return LLVM.GetSectionAddress(this.Unwrap()); }
-        }
-
-        public bool SectionContainsSymbol(SymbolIterator sym)
-        {
-            return LLVM.GetSectionContainsSymbol(this.Unwrap(), sym.Unwrap());
-        }
-
-        public RelocationIterator Relocations
-        {
-            get { return LLVM.GetRelocations(this.Unwrap()).Wrap(); }
-        }
-
-        public bool IsRelocationIteratorAtEnd(RelocationIterator ri)
-        {
-            return LLVM.IsRelocationIteratorAtEnd(this.Unwrap(), ri.Unwrap());
-        }
+        public bool SectionContainsSymbol(SymbolIterator sym) => LLVM.GetSectionContainsSymbol(this.Unwrap(), sym.Unwrap());
     }
 }

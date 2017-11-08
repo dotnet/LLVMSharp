@@ -6,5 +6,7 @@
             : base(instance)
         {
         }
+
+        public IntPredicate ICmpPredicate => LLVM.GetICmpPredicate(this.Unwrap()).Wrap();
     }
 }

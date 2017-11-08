@@ -6,5 +6,7 @@
             : base(instance)
         {
         }
+
+        public void AddDestination(BasicBlock dest) => LLVM.AddDestination(this.Unwrap(), dest.Unwrap<LLVMBasicBlockRef>());
     }
 }

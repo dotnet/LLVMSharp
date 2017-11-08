@@ -13,9 +13,6 @@
             this._ptr = ptr;
         }
 
-        public void Dispose()
-        {
-            LLVM.DisposeMessage(this._ptr);
-        }
+        public void Dispose() => LLVM.DisposeMessage(this._ptr);
     }
 }

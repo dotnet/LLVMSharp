@@ -1,6 +1,6 @@
 namespace LLVMSharp.Api.Values.Instructions
 {
-    using Utilities;
+    using System.Collections.Generic;
 
     public sealed class PHINode : Instruction
     {
@@ -9,9 +9,35 @@ namespace LLVMSharp.Api.Values.Instructions
         {
         }
 
+        public BasicBlock[] IncomingBlocks
+        {
+            get
+            {
+                var blocks = new List<BasicBlock>();
+                for(var i = 0u; i < CountIncoming; i++)
+                {
+                    blocks.Add(GetIncomingBlock(i));
+                }
+                return blocks.ToArray();
+            }
+        }
+
+        public Value[] IncomingValues
+        {
+            get
+            {
+                var values = new List<Value>();
+                for(var i = 0u; i < CountIncoming; i++)
+                {
+                    values.Add(GetIncomingValue(i));
+                }
+                return values.ToArray();
+            }
+        }
+
         public void AddIncoming(Value[] incomingValues, BasicBlock[] incomingBlocks)
         {
-            LLVM.AddIncoming(this.Unwrap(), out incomingValues.Unwrap()[0], out incomingBlocks.Unwrap<LLVMBasicBlockRef>()[0], (uint)incomingValues.Length);
+            LLVM.AddIncoming(this.Unwrap(), incomingValues.Unwrap(), incomingBlocks.Unwrap<LLVMBasicBlockRef>());
         }
 
         public uint CountIncoming

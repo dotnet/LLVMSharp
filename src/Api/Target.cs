@@ -6,38 +6,27 @@
 
     public sealed class Target : IWrapper<LLVMTargetRef>
     {
-        public static Target First
-        {
-            get { return LLVM.GetFirstTarget().Wrap(); }
-        }
+        LLVMTargetRef IWrapper<LLVMTargetRef>.ToHandleType => this._instance;
 
-        public static IEnumerable<Target> EnumerateTargets()
+        public static string DefaultTriple => LLVM.GetDefaultTargetTriple().MessageToString();
+
+        public static IReadOnlyList<Target> Targets
         {
-            var target = First;
-            while (target != null)
+            get
             {
-                yield return target;
-                target = target.Next;
+                var targets = new List<Target>();
+                var t = LLVM.GetFirstTarget().Wrap();
+                while (t != null)
+                {
+                    targets.Add(t);
+                    t = LLVM.GetNextTarget(t.Unwrap()).Wrap();
+                }
+                return targets;
             }
         }
 
-        public static Target FromName(string name)
-        {
-            return LLVM.GetTargetFromName(name).Wrap();
-        }
-
-        public static bool FromTriple(string triple, out Target t, out IntPtr errorMessage)
-        {
-            LLVMTargetRef tRef;
-            var r = LLVM.GetTargetFromTriple(triple, out tRef, out errorMessage);
-            t = tRef.Wrap();
-            return r;
-        }
-
-        LLVMTargetRef IWrapper<LLVMTargetRef>.ToHandleType()
-        {
-            return this._instance;
-        }
+        public static Target FromName(string name) => LLVM.GetTargetFromName(name).Wrap();
+        public static Target FromTriple(string triple) => LLVM.GetTargetFromTriple(triple, out LLVMTargetRef tRef, out IntPtr errorMessage) ? tRef.Wrap() : throw new Exception(errorMessage.MessageToString());
 
         private readonly LLVMTargetRef _instance;
 
@@ -45,46 +34,17 @@
         {
             this._instance = instance;
         }
+        
+        public string Name => LLVM.GetTargetName(this.Unwrap());
 
-        public Target Next
-        {
-            get { return LLVM.GetNextTarget(this.Unwrap()).Wrap(); }
-        }
+        public string Description => LLVM.GetTargetDescription(this.Unwrap());
 
-        public string Name
-        {
-            get { return LLVM.GetTargetName(this.Unwrap()); }
-        }
+        public bool HasJIT => LLVM.TargetHasJIT(this.Unwrap());
+        public bool HasTargetMachine => LLVM.TargetHasTargetMachine(this.Unwrap());
+        public bool HasAsmBackend => LLVM.TargetHasAsmBackend(this.Unwrap());
 
-        public string Description
-        {
-            get { return LLVM.GetTargetDescription(this.Unwrap()); }
-        }
+        public TargetMachine CreateTargetMachine(string triple, string cpu, string features, LLVMCodeGenOptLevel level, LLVMRelocMode reloc, LLVMCodeModel codeModel) => LLVM.CreateTargetMachine(this.Unwrap(), triple, cpu, features, level, reloc, codeModel).Wrap();
 
-        public bool HasJIT
-        {
-            get { return LLVM.TargetHasJIT(this.Unwrap()); }
-        }
-
-        public bool HasTargetMachine
-        {
-            get { return LLVM.TargetHasTargetMachine(this.Unwrap()); }
-        }
-
-        public bool HasAsmBackend
-        {
-            get { return LLVM.TargetHasAsmBackend(this.Unwrap()); }
-        }
-
-        public TargetMachine CreateTargetMachine(string triple, string cpu, string features, LLVMCodeGenOptLevel level,
-                                                 LLVMRelocMode reloc, LLVMCodeModel codeModel)
-        {
-            return LLVM.CreateTargetMachine(this.Unwrap(), triple, cpu, features, level, reloc, codeModel).Wrap();
-        }
-
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
     }
 }
