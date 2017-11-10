@@ -45,8 +45,7 @@
         public int GetTokPrecedence()
         {
             // Make sure it's a declared binop.
-            int tokPrec;
-            if (this.binopPrecedence.TryGetValue((char)this.CurrentToken, out tokPrec))
+            if (this.binopPrecedence.TryGetValue((char)this.CurrentToken, out var tokPrec))
             {
                 return tokPrec;
             }

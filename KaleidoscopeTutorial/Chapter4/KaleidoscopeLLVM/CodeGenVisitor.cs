@@ -40,16 +40,14 @@
 
         protected override ExprAST VisitVariableExprAST(VariableExprAST node)
         {
-            LLVMValueRef value;
-
             // Look this variable up in the function.
-            if (this.namedValues.TryGetValue(node.Name, out value))
+            if (this.namedValues.TryGetValue(node.Name, out var value))
             {
                 this.valueStack.Push(value);
             }
             else
             {
-                throw new Exception("Unknown variable name");
+                throw new Exception($"Unknown variable name {node.Name}");
             }
 
             return node;
@@ -78,7 +76,9 @@
                     break;
                 case ExprType.LessThanExpr:
                     // Convert bool 0/1 to double 0.0 or 1.0
-                    n = LLVM.BuildUIToFP(this.builder, LLVM.BuildFCmp(this.builder, LLVMRealPredicate.LLVMRealULT, l, r, "cmptmp"), LLVM.DoubleType(), "booltmp");
+                    n = LLVM.BuildUIToFP(this.builder,
+                        LLVM.BuildFCmp(this.builder, LLVMRealPredicate.LLVMRealULT, l, r, "cmptmp"), LLVM.DoubleType(),
+                        "booltmp");
                     break;
                 default:
                     throw new Exception("invalid binary operator");
@@ -93,7 +93,7 @@
             var calleeF = LLVM.GetNamedFunction(this.module, node.Callee);
             if (calleeF.Pointer == IntPtr.Zero)
             {
-                throw new Exception("Unknown function referenced");
+                throw new Exception($"Unknown function referenced {node.Callee}");
             }
 
             if (LLVM.CountParams(calleeF) != node.Arguments.Count)
@@ -101,7 +101,7 @@
                 throw new Exception("Incorrect # arguments passed");
             }
 
-            var argumentCount = (uint)node.Arguments.Count;
+            var argumentCount = (uint) node.Arguments.Count;
             var argsV = new LLVMValueRef[Math.Max(argumentCount, 1)];
             for (int i = 0; i < argumentCount; ++i)
             {
@@ -117,8 +117,8 @@
         protected override ExprAST VisitPrototypeAST(PrototypeAST node)
         {
             // Make the function type:  double(double,double) etc.
-            var argumentCount = (uint)node.Arguments.Count;
-            var arguments = new LLVMTypeRef[Math.Max(argumentCount, 1)];
+            var argumentCount = (uint) node.Arguments.Count;
+            var arguments = new LLVMTypeRef[Math.Max(argumentCount, 0)];
 
             var function = LLVM.GetNamedFunction(this.module, node.Name);
 
@@ -145,7 +145,8 @@
                     arguments[i] = LLVM.DoubleType();
                 }
 
-                function = LLVM.AddFunction(this.module, node.Name, LLVM.FunctionType(LLVM.DoubleType(), arguments, LLVMBoolFalse));
+                function = LLVM.AddFunction(this.module, node.Name,
+                    LLVM.FunctionType(LLVM.DoubleType(), arguments, LLVMBoolFalse));
                 LLVM.SetLinkage(function, LLVMLinkage.LLVMExternalLinkage);
             }
 
@@ -153,7 +154,7 @@
             {
                 var argumentName = node.Arguments[i];
 
-                LLVMValueRef param = LLVM.GetParam(function, (uint)i);
+                LLVMValueRef param = LLVM.GetParam(function, (uint) i);
                 LLVM.SetValueName(param, argumentName);
 
                 this.namedValues[argumentName] = param;

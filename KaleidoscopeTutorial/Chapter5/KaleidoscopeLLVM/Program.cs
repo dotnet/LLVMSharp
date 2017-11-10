@@ -33,7 +33,7 @@
 
             // Set up the optimizer pipeline.  Start with registering info about how the
             // target lays out data structures.
-            LLVM.DisposeTargetData(LLVM.GetExecutionEngineTargetData(engine));
+            // LLVM.DisposeTargetData(LLVM.GetExecutionEngineTargetData(engine));
 
             // Provide basic AliasAnalysis support for GVN.
             LLVM.AddBasicAliasAnalysisPass(passManager);

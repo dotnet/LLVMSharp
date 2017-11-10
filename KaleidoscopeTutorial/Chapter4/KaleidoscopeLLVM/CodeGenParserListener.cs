@@ -30,10 +30,10 @@ namespace KaleidoscopeLLVM
         {
             this.visitor.Visit(data);
             var function = this.visitor.ResultStack.Pop();
-            LLVM.DumpValue(function);
+            // LLVM.DumpValue(function);
 
             LLVM.RunFunctionPassManager(this.passManager, function);
-            LLVM.DumpValue(function); // Dump the function for exposition purposes.
+            // LLVM.DumpValue(function); // Dump the function for exposition purposes.
         }
 
         public void EnterHandleExtern(PrototypeAST data)
@@ -43,7 +43,7 @@ namespace KaleidoscopeLLVM
         public void ExitHandleExtern(PrototypeAST data)
         {
             this.visitor.Visit(data);
-            LLVM.DumpValue(this.visitor.ResultStack.Pop());
+            // LLVM.DumpValue(this.visitor.ResultStack.Pop());
         }
 
         public void EnterHandleTopLevelExpression(FunctionAST data)
@@ -54,11 +54,12 @@ namespace KaleidoscopeLLVM
         {
             this.visitor.Visit(data);
             var anonymousFunction = this.visitor.ResultStack.Pop();
-            LLVM.DumpValue(anonymousFunction); // Dump the function for exposition purposes.
-            var dFunc = (Program.D)Marshal.GetDelegateForFunctionPointer(LLVM.GetPointerToGlobal(this.ee, anonymousFunction), typeof(Program.D));
+//            LLVM.DumpValue(anonymousFunction); // Dump the function for exposition purposes.
+            var dFunc = (Program.D) Marshal.GetDelegateForFunctionPointer(
+                LLVM.GetPointerToGlobal(this.ee, anonymousFunction), typeof(Program.D));
             LLVM.RunFunctionPassManager(this.passManager, anonymousFunction);
 
-            LLVM.DumpValue(anonymousFunction); // Dump the function for exposition purposes.
+//            LLVM.DumpValue(anonymousFunction); // Dump the function for exposition purposes.
             Console.WriteLine("Evaluated to " + dFunc());
         }
     }

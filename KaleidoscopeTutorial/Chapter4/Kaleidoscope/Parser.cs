@@ -80,8 +80,8 @@
         private ExprAST ParseIdentifierExpr()
         {
             string idName = this.scanner.GetLastIdentifier();
-            
-            this.scanner.GetNextToken();  // eat identifier.
+
+            this.scanner.GetNextToken(); // eat identifier.
 
             if (this.scanner.CurrentToken != '(') // Simple variable ref.
             {
@@ -89,7 +89,7 @@
             }
 
             // Call.
-            this.scanner.GetNextToken();  // eat (
+            this.scanner.GetNextToken(); // eat (
             List<ExprAST> args = new List<ExprAST>();
 
             if (this.scanner.CurrentToken != ')')
@@ -114,11 +114,11 @@
                         Console.WriteLine("Expected ')' or ',' in argument list");
                         return null;
                     }
-                    
+
                     this.scanner.GetNextToken();
                 }
             }
-            
+
             // Eat the ')'.
             this.scanner.GetNextToken();
 
@@ -136,7 +136,7 @@
         // parenexpr ::= '(' expression ')'
         private ExprAST ParseParenExpr()
         {
-            this.scanner.GetNextToken();  // eat (.
+            this.scanner.GetNextToken(); // eat (.
             ExprAST v = this.ParseExpression();
             if (v == null)
             {
@@ -162,9 +162,9 @@
         {
             switch (this.scanner.CurrentToken)
             {
-                case (int)Token.IDENTIFIER:
+                case (int) Token.IDENTIFIER:
                     return this.ParseIdentifierExpr();
-                case (int)Token.NUMBER:
+                case (int) Token.NUMBER:
                     return this.ParseNumberExpr();
                 case '(':
                     return this.ParseParenExpr();
@@ -192,7 +192,7 @@
 
                 // Okay, we know this is a binop.
                 int binOp = this.scanner.CurrentToken;
-                this.scanner.GetNextToken();  // eat binop
+                this.scanner.GetNextToken(); // eat binop
 
                 // Parse the primary expression after the binary operator.
                 ExprAST rhs = this.ParsePrimary();
@@ -214,7 +214,7 @@
                 }
 
                 // Merge LHS/RHS.
-                lhs = new BinaryExprAST((char)binOp, lhs, rhs);
+                lhs = new BinaryExprAST((char) binOp, lhs, rhs);
             }
         }
 
@@ -236,7 +236,7 @@
         //   ::= id '(' id* ')'
         private PrototypeAST ParsePrototype()
         {
-            if (this.scanner.CurrentToken != (int)Token.IDENTIFIER)
+            if (this.scanner.CurrentToken != (int) Token.IDENTIFIER)
             {
                 Console.WriteLine("Expected function name in prototype");
                 return null;
@@ -253,7 +253,7 @@
             }
 
             List<string> argNames = new List<string>();
-            while (this.scanner.GetNextToken() == (int)Token.IDENTIFIER)
+            while (this.scanner.GetNextToken() == (int) Token.IDENTIFIER)
             {
                 argNames.Add(this.scanner.GetLastIdentifier());
             }
@@ -306,7 +306,7 @@
         /// external ::= 'extern' prototype
         private PrototypeAST ParseExtern()
         {
-            this.scanner.GetNextToken();  // eat extern.
+            this.scanner.GetNextToken(); // eat extern.
             return this.ParsePrototype();
         }
     }

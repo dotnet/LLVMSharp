@@ -8,12 +8,7 @@
 
         public virtual ExprAST Visit(ExprAST node)
         {
-            if (node != null)
-            {
-                return node.Accept(this);
-            }
-
-            return null;
+            return node?.Accept(this);
         }
 
         protected internal virtual ExprAST VisitExtension(ExprAST node)
