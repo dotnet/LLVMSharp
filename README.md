@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/mjsabby/LLVMSharp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mjsabby/LLVMSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-LLVMSharp is a multi-platform .NET Standard library for accessing the LLLVM infrastructure. The bindings are auto-generated using [ClangSharp](http://www.clangsharp.org) parsing LLVM-C header files.
+LLVMSharp is a multi-platform .NET Standard library for accessing the LLVM infrastructure. The bindings are auto-generated using [ClangSharp](http://www.clangsharp.org) parsing LLVM-C header files.
 
 [**LLVMSharp 5.0 NuGet Package**](http://www.nuget.org/packages/LLVMSharp/5.0.0) for .NET Core 2.0+ (Linux, macOS, Windows) and .NET Framework 4+ - built from the LLVM 5.0.0 Release.
 
