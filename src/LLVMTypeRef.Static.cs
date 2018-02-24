@@ -227,7 +227,7 @@
             return LLVM.ConstInt(@IntTy, @N, @SignExtend);
         }
 
-        public static LLVMValueRef ConstIntOfArbitraryPrecision(LLVMTypeRef @IntTy, int[] @Words)
+        public static LLVMValueRef ConstIntOfArbitraryPrecision(LLVMTypeRef @IntTy, ulong[] @Words)
         {
             return LLVM.ConstIntOfArbitraryPrecision(@IntTy, (uint)@Words.Length, @Words);
         }
