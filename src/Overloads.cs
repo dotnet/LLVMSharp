@@ -349,6 +349,42 @@
             return arr;
         }
 
+        public static LLVMAttributeRef GetCallSiteStringAttribute(LLVMValueRef C, LLVMAttributeIndex Idx, [MarshalAs(UnmanagedType.LPStr)] string Kind) {
+            return GetCallSiteStringAttribute(C, Idx, Kind, Kind == null ? 0 : (uint)Kind.Length);
+        }
+
+        public static uint GetEnumAttributeKindForName(string Name) {
+            return GetEnumAttributeKindForName(Name, Name == null ? 0 : (uint)Name.Length);
+        }
+
+        public static LLVMAttributeRef CreateStringAttribute(LLVMContextRef C, string Kind, string Value) {
+            return CreateStringAttribute(C,
+                                         Kind, Kind == null ? 0 : (uint)Kind.Length,
+                                         Value, Value == null ? 0 : (uint)Value.Length);
+        }
+
+        public static LLVMAttributeRef GetStringAttributeAtIndex(LLVMValueRef F, LLVMAttributeIndex Idx, string Kind) {
+            return GetStringAttributeAtIndex(F, Idx, Kind, Kind == null ? 0 : (uint)Kind.Length);
+        }
+
+        public static string GetStringAttributeKind(LLVMAttributeRef A) {
+            return GetStringAttributeKind(A, out uint length);
+        }
+
+        public static string GetStringAttributeValue(LLVMAttributeRef A) {
+            return GetStringAttributeValue(A, out uint length);
+        }
+
+
+        public static void RemoveCallSiteStringAttribute(LLVMValueRef C, LLVMAttributeIndex Idx, [MarshalAs(UnmanagedType.LPStr)] string Kind) {
+            RemoveCallSiteStringAttribute(C, Idx, Kind, Kind == null ? 0 : (uint)Kind.Length);
+        }
+
+
+        public static void RemoveStringAttributeAtIndex(LLVMValueRef F, LLVMAttributeIndex Idx, string Kind) {
+            RemoveStringAttributeAtIndex(F, Idx, Kind, Kind == null ? 0 : (uint)Kind.Length);
+        }
+
         public static LLVMBool VerifyModule(LLVMModuleRef M, LLVMVerifierFailureAction Action, out string OutMessage)
         {
             var retVal = VerifyModule(M, Action, out IntPtr message);
