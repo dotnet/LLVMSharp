@@ -1100,7 +1100,7 @@ namespace LLVMSharp
         public static extern uint GetMDKindID([MarshalAs(UnmanagedType.LPStr)] string @Name, uint @SLen);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetEnumAttributeKindForName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern uint GetEnumAttributeKindForName([MarshalAs(UnmanagedType.LPStr)] string @Name, size_t @SLen);
+        internal static extern uint GetEnumAttributeKindForName([MarshalAs(UnmanagedType.LPStr)] string @Name, size_t @SLen);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetLastEnumAttributeKind", CallingConvention = CallingConvention.Cdecl)]
         public static extern uint GetLastEnumAttributeKind();
@@ -1115,13 +1115,13 @@ namespace LLVMSharp
         public static extern ulong GetEnumAttributeValue(LLVMAttributeRef @A);
 
         [DllImport(libraryPath, EntryPoint = "LLVMCreateStringAttribute", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMAttributeRef CreateStringAttribute(LLVMContextRef @C, [MarshalAs(UnmanagedType.LPStr)] string @K, uint @KLength, [MarshalAs(UnmanagedType.LPStr)] string @V, uint @VLength);
+        internal static extern LLVMAttributeRef CreateStringAttribute(LLVMContextRef @C, [MarshalAs(UnmanagedType.LPStr)] string @K, uint @KLength, [MarshalAs(UnmanagedType.LPStr)] string @V, uint @VLength);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetStringAttributeKind", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetStringAttributeKind(LLVMAttributeRef @A, out uint @Length);
+        internal static extern string GetStringAttributeKind(LLVMAttributeRef @A, out uint @Length);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetStringAttributeValue", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetStringAttributeValue(LLVMAttributeRef @A, out uint @Length);
+        internal static extern string GetStringAttributeValue(LLVMAttributeRef @A, out uint @Length);
 
         [DllImport(libraryPath, EntryPoint = "LLVMIsEnumAttribute", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool IsEnumAttribute(LLVMAttributeRef @A);
@@ -2099,13 +2099,13 @@ namespace LLVMSharp
         public static extern LLVMAttributeRef GetEnumAttributeAtIndex(LLVMValueRef @F, LLVMAttributeIndex @Idx, uint @KindID);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetStringAttributeAtIndex", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMAttributeRef GetStringAttributeAtIndex(LLVMValueRef @F, LLVMAttributeIndex @Idx, [MarshalAs(UnmanagedType.LPStr)] string @K, uint @KLen);
+        internal static extern LLVMAttributeRef GetStringAttributeAtIndex(LLVMValueRef @F, LLVMAttributeIndex @Idx, [MarshalAs(UnmanagedType.LPStr)] string @K, uint @KLen);
 
         [DllImport(libraryPath, EntryPoint = "LLVMRemoveEnumAttributeAtIndex", CallingConvention = CallingConvention.Cdecl)]
         public static extern void RemoveEnumAttributeAtIndex(LLVMValueRef @F, LLVMAttributeIndex @Idx, uint @KindID);
 
         [DllImport(libraryPath, EntryPoint = "LLVMRemoveStringAttributeAtIndex", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void RemoveStringAttributeAtIndex(LLVMValueRef @F, LLVMAttributeIndex @Idx, [MarshalAs(UnmanagedType.LPStr)] string @K, uint @KLen);
+        internal static extern void RemoveStringAttributeAtIndex(LLVMValueRef @F, LLVMAttributeIndex @Idx, [MarshalAs(UnmanagedType.LPStr)] string @K, uint @KLen);
 
         [DllImport(libraryPath, EntryPoint = "LLVMAddTargetDependentFunctionAttr", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddTargetDependentFunctionAttr(LLVMValueRef @Fn, [MarshalAs(UnmanagedType.LPStr)] string @A, [MarshalAs(UnmanagedType.LPStr)] string @V);
@@ -2294,13 +2294,13 @@ namespace LLVMSharp
         public static extern LLVMAttributeRef GetCallSiteEnumAttribute(LLVMValueRef @C, LLVMAttributeIndex @Idx, uint @KindID);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetCallSiteStringAttribute", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMAttributeRef GetCallSiteStringAttribute(LLVMValueRef @C, LLVMAttributeIndex @Idx, [MarshalAs(UnmanagedType.LPStr)] string @K, uint @KLen);
+        internal static extern LLVMAttributeRef GetCallSiteStringAttribute(LLVMValueRef @C, LLVMAttributeIndex @Idx, [MarshalAs(UnmanagedType.LPStr)] string @K, uint @KLen);
 
         [DllImport(libraryPath, EntryPoint = "LLVMRemoveCallSiteEnumAttribute", CallingConvention = CallingConvention.Cdecl)]
         public static extern void RemoveCallSiteEnumAttribute(LLVMValueRef @C, LLVMAttributeIndex @Idx, uint @KindID);
 
         [DllImport(libraryPath, EntryPoint = "LLVMRemoveCallSiteStringAttribute", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void RemoveCallSiteStringAttribute(LLVMValueRef @C, LLVMAttributeIndex @Idx, [MarshalAs(UnmanagedType.LPStr)] string @K, uint @KLen);
+        internal static extern void RemoveCallSiteStringAttribute(LLVMValueRef @C, LLVMAttributeIndex @Idx, [MarshalAs(UnmanagedType.LPStr)] string @K, uint @KLen);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetCalledValue", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef GetCalledValue(LLVMValueRef @Instr);
