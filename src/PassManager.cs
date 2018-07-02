@@ -155,9 +155,9 @@
             LLVM.AddCFGSimplificationPass(this.instance);
         }
 
-        public void AddLateCFGSimplificationPass()
+        public void LLVMAddCalledValuePropagationPass()
         {
-            LLVM.AddLateCFGSimplificationPass(this.instance);
+            LLVM.AddCalledValuePropagationPass(this.instance);
         }
 
         public void AddDeadStoreEliminationPass()
