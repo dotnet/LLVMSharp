@@ -495,16 +495,6 @@ namespace LLVMSharp
         public IntPtr Pointer;
     }
 
-    public partial struct LLVMSharedObjectBufferRef
-    {
-        public LLVMSharedObjectBufferRef(IntPtr pointer)
-        {
-            this.Pointer = pointer;
-        }
-
-        public IntPtr Pointer;
-    }
-
     public partial struct LLVMOrcJITStackRef
     {
         public LLVMOrcJITStackRef(IntPtr pointer)
@@ -809,6 +799,89 @@ namespace LLVMSharp
     {
         @LLVMAttributeReturnIndex = 0,
         @LLVMAttributeFunctionIndex = -1,
+    }
+
+    public enum LLVMDIFlags : int
+    {
+        @LLVMDIFlagZero = 0,
+        @LLVMDIFlagPrivate = 1,
+        @LLVMDIFlagProtected = 2,
+        @LLVMDIFlagPublic = 3,
+        @LLVMDIFlagFwdDecl = 4,
+        @LLVMDIFlagAppleBlock = 8,
+        @LLVMDIFlagBlockByrefStruct = 16,
+        @LLVMDIFlagVirtual = 32,
+        @LLVMDIFlagArtificial = 64,
+        @LLVMDIFlagExplicit = 128,
+        @LLVMDIFlagPrototyped = 256,
+        @LLVMDIFlagObjcClassComplete = 512,
+        @LLVMDIFlagObjectPointer = 1024,
+        @LLVMDIFlagVector = 2048,
+        @LLVMDIFlagStaticMember = 4096,
+        @LLVMDIFlagLValueReference = 8192,
+        @LLVMDIFlagRValueReference = 16384,
+        @LLVMDIFlagReserved = 32768,
+        @LLVMDIFlagSingleInheritance = 65536,
+        @LLVMDIFlagMultipleInheritance = 131072,
+        @LLVMDIFlagVirtualInheritance = 196608,
+        @LLVMDIFlagIntroducedVirtual = 262144,
+        @LLVMDIFlagBitField = 524288,
+        @LLVMDIFlagNoReturn = 1048576,
+        @LLVMDIFlagMainSubprogram = 2097152,
+        @LLVMDIFlagIndirectVirtualBase = 36,
+        @LLVMDIFlagAccessibility = 3,
+        @LLVMDIFlagPtrToMemberRep = 196608,
+    }
+
+    public enum LLVMDWARFSourceLanguage : int
+    {
+        @LLVMDWARFSourceLanguageC89 = 0,
+        @LLVMDWARFSourceLanguageC = 1,
+        @LLVMDWARFSourceLanguageAda83 = 2,
+        @LLVMDWARFSourceLanguageC_plus_plus = 3,
+        @LLVMDWARFSourceLanguageCobol74 = 4,
+        @LLVMDWARFSourceLanguageCobol85 = 5,
+        @LLVMDWARFSourceLanguageFortran77 = 6,
+        @LLVMDWARFSourceLanguageFortran90 = 7,
+        @LLVMDWARFSourceLanguagePascal83 = 8,
+        @LLVMDWARFSourceLanguageModula2 = 9,
+        @LLVMDWARFSourceLanguageJava = 10,
+        @LLVMDWARFSourceLanguageC99 = 11,
+        @LLVMDWARFSourceLanguageAda95 = 12,
+        @LLVMDWARFSourceLanguageFortran95 = 13,
+        @LLVMDWARFSourceLanguagePLI = 14,
+        @LLVMDWARFSourceLanguageObjC = 15,
+        @LLVMDWARFSourceLanguageObjC_plus_plus = 16,
+        @LLVMDWARFSourceLanguageUPC = 17,
+        @LLVMDWARFSourceLanguageD = 18,
+        @LLVMDWARFSourceLanguagePython = 19,
+        @LLVMDWARFSourceLanguageOpenCL = 20,
+        @LLVMDWARFSourceLanguageGo = 21,
+        @LLVMDWARFSourceLanguageModula3 = 22,
+        @LLVMDWARFSourceLanguageHaskell = 23,
+        @LLVMDWARFSourceLanguageC_plus_plus_03 = 24,
+        @LLVMDWARFSourceLanguageC_plus_plus_11 = 25,
+        @LLVMDWARFSourceLanguageOCaml = 26,
+        @LLVMDWARFSourceLanguageRust = 27,
+        @LLVMDWARFSourceLanguageC11 = 28,
+        @LLVMDWARFSourceLanguageSwift = 29,
+        @LLVMDWARFSourceLanguageJulia = 30,
+        @LLVMDWARFSourceLanguageDylan = 31,
+        @LLVMDWARFSourceLanguageC_plus_plus_14 = 32,
+        @LLVMDWARFSourceLanguageFortran03 = 33,
+        @LLVMDWARFSourceLanguageFortran08 = 34,
+        @LLVMDWARFSourceLanguageRenderScript = 35,
+        @LLVMDWARFSourceLanguageBLISS = 36,
+        @LLVMDWARFSourceLanguageMips_Assembler = 37,
+        @LLVMDWARFSourceLanguageGOOGLE_RenderScript = 38,
+        @LLVMDWARFSourceLanguageBORLAND_Delphi = 39,
+    }
+
+    public enum LLVMDWARFEmissionKind : int
+    {
+        @LLVMDWARFEmissionNone = 0,
+        @LLVMDWARFEmissionFull = 1,
+        @LLVMDWARFEmissionLineTablesOnly = 2,
     }
 
     public enum LLVMByteOrdering : int
@@ -1310,6 +1383,12 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMX86MMXTypeInContext", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef X86MMXTypeInContext(LLVMContextRef @C);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMTokenTypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef TokenTypeInContext(LLVMContextRef @C);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMMetadataTypeInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef MetadataTypeInContext(LLVMContextRef @C);
 
         [DllImport(libraryPath, EntryPoint = "LLVMVoidType", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef VoidType();
@@ -2721,6 +2800,36 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMIsMultithreaded", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool IsMultithreaded();
 
+        [DllImport(libraryPath, EntryPoint = "LLVMDebugMetadataVersion", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint DebugMetadataVersion();
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetModuleDebugMetadataVersion", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetModuleDebugMetadataVersion(LLVMModuleRef @Module);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMStripModuleDebugInfo", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool StripModuleDebugInfo(LLVMModuleRef @Module);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMCreateDIBuilderDisallowUnresolved", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMDIBuilderRef CreateDIBuilderDisallowUnresolved(LLVMModuleRef @M);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMCreateDIBuilder", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMDIBuilderRef CreateDIBuilder(LLVMModuleRef @M);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDisposeDIBuilder", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeDIBuilder(LLVMDIBuilderRef @Builder);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderFinalize", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DIBuilderFinalize(LLVMDIBuilderRef @Builder);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateCompileUnit", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateCompileUnit(LLVMDIBuilderRef @Builder, LLVMDWARFSourceLanguage @Lang, LLVMMetadataRef @FileRef, [MarshalAs(UnmanagedType.LPStr)] string @Producer, size_t @ProducerLen, LLVMBool @isOptimized, [MarshalAs(UnmanagedType.LPStr)] string @Flags, size_t @FlagsLen, uint @RuntimeVer, [MarshalAs(UnmanagedType.LPStr)] string @SplitName, size_t @SplitNameLen, LLVMDWARFEmissionKind @Kind, uint @DWOId, LLVMBool @SplitDebugInlining, LLVMBool @DebugInfoForProfiling);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateFile", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateFile(LLVMDIBuilderRef @Builder, [MarshalAs(UnmanagedType.LPStr)] string @Filename, size_t @FilenameLen, [MarshalAs(UnmanagedType.LPStr)] string @Directory, size_t @DirectoryLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateDebugLocation", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateDebugLocation(LLVMContextRef @Ctx, uint @Line, uint @Column, LLVMMetadataRef @Scope, LLVMMetadataRef @InlinedAt);
+
         [DllImport(libraryPath, EntryPoint = "LLVMCreateDisasm", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMDisasmContextRef CreateDisasm([MarshalAs(UnmanagedType.LPStr)] string @TripleName, IntPtr @DisInfo, int @TagType, LLVMOpInfoCallback @GetOpInfo, LLVMSymbolLookupCallback @SymbolLookUp);
 
@@ -3333,12 +3442,6 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMOrcDisposeSharedModuleRef", CallingConvention = CallingConvention.Cdecl)]
         public static extern void OrcDisposeSharedModuleRef(LLVMSharedModuleRef @SharedMod);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMOrcMakeSharedObjectBuffer", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMSharedObjectBufferRef OrcMakeSharedObjectBuffer(LLVMMemoryBufferRef @ObjBuffer);
-
-        [DllImport(libraryPath, EntryPoint = "LLVMOrcDisposeSharedObjectBufferRef", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void OrcDisposeSharedObjectBufferRef(LLVMSharedObjectBufferRef @SharedObjBuffer);
-
         [DllImport(libraryPath, EntryPoint = "LLVMOrcCreateInstance", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMOrcJITStackRef OrcCreateInstance(LLVMTargetMachineRef @TM);
 
@@ -3367,7 +3470,7 @@ namespace LLVMSharp
         public static extern LLVMOrcErrorCode OrcAddLazilyCompiledIR(LLVMOrcJITStackRef @JITStack, out LLVMOrcModuleHandle @RetHandle, LLVMSharedModuleRef @Mod, LLVMOrcSymbolResolverFn @SymbolResolver, IntPtr @SymbolResolverCtx);
 
         [DllImport(libraryPath, EntryPoint = "LLVMOrcAddObjectFile", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMOrcErrorCode OrcAddObjectFile(LLVMOrcJITStackRef @JITStack, out LLVMOrcModuleHandle @RetHandle, LLVMSharedObjectBufferRef @Obj, LLVMOrcSymbolResolverFn @SymbolResolver, IntPtr @SymbolResolverCtx);
+        public static extern LLVMOrcErrorCode OrcAddObjectFile(LLVMOrcJITStackRef @JITStack, out LLVMOrcModuleHandle @RetHandle, LLVMMemoryBufferRef @Obj, LLVMOrcSymbolResolverFn @SymbolResolver, IntPtr @SymbolResolverCtx);
 
         [DllImport(libraryPath, EntryPoint = "LLVMOrcRemoveModule", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMOrcErrorCode OrcRemoveModule(LLVMOrcJITStackRef @JITStack, LLVMOrcModuleHandle @H);
@@ -3395,6 +3498,9 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMAddConstantMergePass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddConstantMergePass(LLVMPassManagerRef @PM);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMAddCalledValuePropagationPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddCalledValuePropagationPass(LLVMPassManagerRef @PM);
 
         [DllImport(libraryPath, EntryPoint = "LLVMAddDeadArgEliminationPass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddDeadArgEliminationPass(LLVMPassManagerRef @PM);
@@ -3476,9 +3582,6 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMAddCFGSimplificationPass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddCFGSimplificationPass(LLVMPassManagerRef @PM);
-
-        [DllImport(libraryPath, EntryPoint = "LLVMAddLateCFGSimplificationPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddLateCFGSimplificationPass(LLVMPassManagerRef @PM);
 
         [DllImport(libraryPath, EntryPoint = "LLVMAddDeadStoreEliminationPass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddDeadStoreEliminationPass(LLVMPassManagerRef @PM);
