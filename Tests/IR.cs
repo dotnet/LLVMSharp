@@ -3,16 +3,15 @@
     using LLVMSharp.Api;
     using LLVMSharp.Api.Types.Composite;
     using LLVMSharp.Api.Values.Constants;
-    using Xunit;
+    using NUnit.Framework;
 
     public class IR
     {
-        [Theory]
-        [InlineData(0, 0, 0)]
-        [InlineData(1, 2, 3)]
-        [InlineData(9, 1, 10)]
-        public void AddsSigned(int op1, int op2, int result)
+        [Test]
+        public void AddsSigned()
         {
+            var op1 = 0;
+            var op2 = 0;
             using (var module = Module.Create("test_add"))
             {
                 var def = module.AddFunction(
@@ -29,15 +28,14 @@
                 using (var engine = module.CreateMCJITCompilerForModule())
                 {
                     var func = engine.GetDelegate<Int32Int32Int32Delegate>(def);
-                    Assert.Equal(result, func(op1, op2));
+                    var result = op1 + op2;
+                    Assert.AreEqual(result, func(op1, op2));
                 }
             }
         }
 
-        [Theory]
-        [InlineData(4, 1, 2)]
-        [InlineData(4, 2, 1)]
-        public void ShiftsLeft(int op1, int op2, int result)
+        [Test]
+        public void ShiftsRight([Range(0, 256)] int op1, [Range(0, 8)] int op2)
         {
             using (var module = Module.Create("test_lshift"))
             {
@@ -55,16 +53,14 @@
                 using (var engine = module.CreateMCJITCompilerForModule())
                 {
                     var func = engine.GetDelegate<Int32Int32Int32Delegate>(def);
-                    Assert.Equal(result, func(op1, op2));
+                    var result = op1 >> op2;
+                    Assert.AreEqual(result, func(op1, op2));
                 }
             }
         }
 
-        [Theory]
-        [InlineData(10, 5, 1)]
-        [InlineData(5, 10, 0)]
-        [InlineData(0, 0, 0)]
-        public void ComparesGreaterThan(int op1, int op2, int result)
+        [Test]
+        public void ComparesGreaterThan([Range(0, 10)] int op1, [Range(0, 10)] int op2)
         {
             using (var module = Module.Create("test_greaterthan"))
             {
@@ -83,16 +79,14 @@
                 using (var engine = module.CreateMCJITCompilerForModule())
                 {
                     var func = engine.GetDelegate<Int32Int32Int8Delegate>(def);
-                    Assert.Equal(result, func(op1, op2));
+                    var result = op1 > op2 ? 1 : 0;
+                    Assert.AreEqual(result, func(op1, op2));
                 }
             }
         }
 
-        [Theory]
-        [InlineData(1, 0, 1)]
-        [InlineData(1, 1, 2)]
-        [InlineData(1, 2, 3)]
-        public void CallsFunction(int op1, int op2, int result)
+        [Test]
+        public void CallsFunction([Range(0, 10)] int op1, [Range(0, 10)] int op2)
         {
             using (var module = Module.Create("test_call"))
             {
@@ -118,22 +112,22 @@
                 using (var engine = module.CreateMCJITCompilerForModule())
                 {
                     var func = engine.GetDelegate<Int32Int32Int32Delegate>(defEntry);
-                    Assert.Equal(result, func(op1, op2));
+                    var result = op1 + op2;
+                    Assert.AreEqual(result, func(op1, op2));
                 }
             }
         }
 
-        [Theory]
-        [InlineData(0, 0)]
-        [InlineData(1, 1)]
-        public void ReturnsConstant(uint input, int output)
+        [Test]
+        public void ReturnsConstant([Range(0, 10)] int input)
         {
+            var uInput = (uint)input;
             using (var module = Module.Create("test_constant"))
             {
                 var def = module.AddFunction(
                     Type.Int32, "constant", new Type[0], (f, b) =>
                     {
-                        var value = ConstantInt.Get(Type.Int32, input);
+                        var value = ConstantInt.Get(Type.Int32, uInput);
                         var ret = b.CreateRet(value);
                     });
                 module.Verify();
@@ -142,12 +136,12 @@
                 using (var engine = module.CreateMCJITCompilerForModule())
                 {
                     var func = engine.GetDelegate<Int32Delegate>(def);
-                    Assert.Equal(output, func());
+                    Assert.AreEqual(input, func());
                 }
             }
         }
 
-        [Fact]
+        [Test]
         public void ReturnsSizeOf()
         {
             using(var module = Module.Create("test_sizeof"))
@@ -166,7 +160,7 @@
                 using(var engine = module.CreateMCJITCompilerForModule())
                 {
                     var func = engine.GetDelegate<Int32Delegate>(def);
-                    Assert.Equal(8, func());
+                    Assert.AreEqual(8, func());
                 }
             }
         }

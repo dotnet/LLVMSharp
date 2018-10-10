@@ -2,19 +2,18 @@
 {
     using LLVMSharp.Api;
     using LLVMSharp.Api.TargetInitializers;
-    using Xunit;
+    using NUnit.Framework;
+    using System.Linq;
 
     public class Targets
     {
-        [Theory]
-        [InlineData("x86", "x86-64")]
-        public void InitializeX86Targets(params string[] expected) => this.InitializeTargets(Initialize.X86, expected);
+        [Test]
+        public void InitializeX86Targets() => this.InitializeTargets(Initialize.X86, new[] { "x86" });
 
-        [Theory]
-        [InlineData("arm")]
-        public void InitializeARMTargets(params string[] expected) => this.InitializeTargets(Initialize.ARM, expected);
+        [Test]
+        public void InitializeARMTargets() => this.InitializeTargets(Initialize.ARM, new[] { "arm" });
        
-        public void InitializeTargets(TargetInitializer init, string[] expectedTargets)
+        private void InitializeTargets(TargetInitializer init, string[] expectedTargets)
         {
             init.All();
             foreach (var u in Target.Targets)
@@ -23,16 +22,15 @@
             }
             foreach (var t in expectedTargets)
             {
-                Assert.Contains(Target.Targets, x => x.Name == t);
-
+                Assert.IsTrue(Target.Targets.Any(x => x.Name == t));
             }
         }
 
-        [Fact]
+        [Test]
         public void DefaultTargetTriple()
         {
             var str = Target.DefaultTriple;
-            Assert.True(str.Length > 0);
+            Assert.Greater(str.Length, 0);
         }
     }
 }

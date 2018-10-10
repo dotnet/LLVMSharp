@@ -1,24 +1,20 @@
 ﻿namespace Tests
 {
     using LLVMSharp.Api;
+    using NUnit.Framework;
     using System.Collections.Generic;
-    using Xunit;
 
     public class Types
     {
-        [Theory]
-        [InlineData(1)]
-        [InlineData(8)]
-        [InlineData(16)]
-        [InlineData(32)]
-        [InlineData(64)]
-        public void IntSizes(uint width)
+        [Test]
+        public void IntSizes([Values(1, 8, 16, 32, 64)] int width)
         {
-            var t = Context.Global.IntType(width);
-            Assert.Equal(width, t.BitWidth);
+            var uWidth = (uint)width;
+            var t = Context.Global.IntType(uWidth);
+            Assert.AreEqual(uWidth, t.BitWidth);
         }
 
-        [Fact]
+        [Test]
         public void FloatingTypes()
         {
             var dic = new Dictionary<Type, bool>
@@ -37,7 +33,7 @@
             };
             foreach (var p in dic.Keys)
             {
-                Assert.Equal(dic[p], p.IsFloatingPoint);
+                Assert.AreEqual(dic[p], p.IsFloatingPoint);
             }
         }
     }

@@ -2,14 +2,14 @@
 {
     using LLVMSharp.Api;
     using System.Runtime.InteropServices;
-    using Xunit;
+    using NUnit.Framework;
 
     public class Examples
     {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate int BinaryInt32Operation(int op1, int op2);
 
-        [Fact]
+        [Test]
         public void Intro()
         {
             using(var module = Module.Create("LLVMSharpIntro"))
@@ -29,7 +29,7 @@
                 {
                     var function = engine.GetDelegate<BinaryInt32Operation>(def);
                     var result = function(2, 2);
-                    Assert.Equal(4, result);
+                    Assert.AreEqual(4, result);
                 }
             }
         }
