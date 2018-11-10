@@ -1,10 +1,15 @@
 ﻿namespace LLVMSharp
 {
+    using LLVMSharp.Utilities;
     using System;
     using System.Runtime.InteropServices;
+    using Type = Api.Type;
 
-    partial struct LLVMTypeRef
+    partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>, IHandle<Type>
     {
+        IntPtr IHandle<Type>.GetInternalPointer() => this.Pointer;
+        Type IHandle<Type>.ToWrapperType() => Type.Create(this);
+
         public LLVMTypeKind TypeKind
         {
             get { return LLVM.GetTypeKind(this); }
@@ -58,11 +63,6 @@
             return LLVM.GetParamTypes(this);
         }
 
-        public LLVMTypeRef[] GetSubtypes()
-        {
-            return LLVM.GetSubtypes(this);
-        }
-
         public string GetStructName()
         {
             return LLVM.GetStructName(this);
@@ -70,7 +70,7 @@
 
         public void StructSetBody(LLVMTypeRef[] @ElementTypes, bool @Packed)
         {
-            LLVM.StructSetBody(this, @ElementTypes, @Packed);
+            LLVM.StructSetBody(this, @ElementTypes, new LLVMBool(@Packed));
         }
 
         public uint CountStructElementTypes()
@@ -78,7 +78,7 @@
             return LLVM.CountStructElementTypes(this);
         }
 
-        public LLVMTypeRef[] GetStructElementTypes()
+        public LLVMTypeRef[] GetStructElementTypes() 
         {
             return LLVM.GetStructElementTypes(this);
         }
@@ -142,5 +142,11 @@
         {
             return this.PrintTypeToString();
         }
+
+        public override int GetHashCode() => this.Pointer.GetHashCode();
+        public override bool Equals(object obj) => obj is LLVMTypeRef t && this.Equals(t);
+        public bool Equals(LLVMTypeRef other) => this.Pointer == other.Pointer;
+        public static bool operator ==(LLVMTypeRef op1, LLVMTypeRef op2) => op1.Pointer == op2.Pointer;
+        public static bool operator !=(LLVMTypeRef op1, LLVMTypeRef op2) => !(op1 == op2);
     }
 }
