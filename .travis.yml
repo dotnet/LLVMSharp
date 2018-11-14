@@ -9,4 +9,5 @@ cache:
 
 script:
   - dotnet restore
-  - dotnet build
+  - dotnet build src/
+  - dotnet test Tests/ -f netcoreapp2.0
