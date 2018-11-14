@@ -1,10 +1,21 @@
 ﻿namespace LLVMSharp
 {
+    using LLVMSharp.API;
+    using LLVMSharp.Utilities;
     using System;
     using System.Runtime.InteropServices;
 
-    partial struct LLVMValueRef
-    {   
+    partial struct LLVMValueRef : IEquatable<LLVMValueRef>, IHandle<Value>
+    {
+        IntPtr IHandle<Value>.GetInternalPointer() => this.Pointer;
+        Value IHandle<Value>.ToWrapperType() => Value.Create(this);
+
+        public override int GetHashCode() => this.Pointer.GetHashCode();
+        public override bool Equals(object obj) => obj is LLVMValueRef t && this.Equals(t);
+        public bool Equals(LLVMValueRef other) => this.Pointer == other.Pointer;
+        public static bool operator ==(LLVMValueRef op1, LLVMValueRef op2) => op1.Pointer == op2.Pointer;
+        public static bool operator !=(LLVMValueRef op1, LLVMValueRef op2) => !(op1 == op2);
+
         public LLVMValueRef GetNextFunction()
         {
             return LLVM.GetNextFunction(this);
