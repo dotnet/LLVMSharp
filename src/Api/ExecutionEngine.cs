@@ -3,17 +3,54 @@
     using LLVMSharp.API.Values.Constants;
     using LLVMSharp.API.Values.Constants.GlobalValues.GlobalObjects;
     using System;
+    using System.Collections.Generic;
     using System.Runtime.InteropServices;
     using Utilities;
 
     public sealed class ExecutionEngine : IDisposable, IEquatable<ExecutionEngine>, IDisposableWrapper<LLVMExecutionEngineRef>
     {
+        private static Dictionary<LLVMExecutionEngineRef, List<Module>> _engineModuleMap = new Dictionary<LLVMExecutionEngineRef, List<Module>>();
+
         LLVMExecutionEngineRef IWrapper<LLVMExecutionEngineRef>.ToHandleType => this._instance;
         void IDisposableWrapper<LLVMExecutionEngineRef>.MakeHandleOwner() => this._owner = true;
 
-        private readonly LLVMExecutionEngineRef _instance;        
+        private readonly LLVMExecutionEngineRef _instance;
         private bool _disposed;
         private bool _owner;
+
+        private ExecutionEngine AssociateWithModule(Module m)
+        {
+            var instance = this.Unwrap();
+            if (!_engineModuleMap.ContainsKey(instance))
+            {
+                _engineModuleMap[instance] = new List<Module>();
+            }
+            _engineModuleMap[instance].Add(m);
+            return this;
+        }
+
+        private ExecutionEngine DisassosicateWithModule(Module m)
+        {
+            var instance = this.Unwrap();
+            if(_engineModuleMap.ContainsKey(instance))
+            {
+                _engineModuleMap[instance].Remove(m);
+            }
+            return this;
+        }
+
+        private IEnumerable<Module> GetAssociatedModules()
+        {
+            var instance = this.Unwrap();
+            if(_engineModuleMap.ContainsKey(instance))
+            {
+                return _engineModuleMap[instance].ToArray();
+            }
+            else
+            {
+                return new Module[0];
+            }
+        }
 
         public static ExecutionEngine Create(Module module)
         {
@@ -22,7 +59,7 @@
                 TextUtilities.Throw(error);
             }
 
-            return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>();
+            return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>().AssociateWithModule(module);
         }
         
         public static ExecutionEngine CreateInterpreter(Module module)
@@ -32,7 +69,7 @@
                 TextUtilities.Throw(error);
             }
 
-            return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>();
+            return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>().AssociateWithModule(module);
         }
 
         public static ExecutionEngine CreateJITCompiler(Module m, uint optLevel)
@@ -42,9 +79,11 @@
                 TextUtilities.Throw(error);
             }
 
-            return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>();
+            return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>().AssociateWithModule(m);
         }
-        
+
+        public static ExecutionEngine CreateMCJITCompilerForModule(Module module) => CreateMCJITCompiler(module, new size_t(new IntPtr(Marshal.SizeOf(typeof(LLVMMCJITCompilerOptions)))));
+
         public unsafe static ExecutionEngine CreateMCJITCompiler(Module module, int optionsSize)
         {
             LLVMMCJITCompilerOptions options;
@@ -55,7 +94,7 @@
                 TextUtilities.Throw(error);
             }
 
-            return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>();
+            return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>().AssociateWithModule(module);
         }
 
         internal ExecutionEngine(LLVMExecutionEngineRef ee)
@@ -76,11 +115,16 @@
         public int RunAsMain(Function f, params string[] argV) => this.RunAsMain(f, (uint)argV.Length, argV, new string[0]); 
         public void FreeMachineCode(Function f) => LLVM.FreeMachineCodeForFunction(this.Unwrap(), f.Unwrap());
 
-        public void AddModule(Module m) => LLVM.AddModule(this.Unwrap(), m.Unwrap());
+        public void AddModule(Module m)
+        {
+            LLVM.AddModule(this.Unwrap(), m.Unwrap());
+            this.AssociateWithModule(m);
+        }
 
         public Module RemoveModule(Module m)
         {
             LLVM.RemoveModule(this.Unwrap(), m.Unwrap(), out LLVMModuleRef outModRef, out IntPtr outError);
+            this.DisassosicateWithModule(m);
             return outModRef.Wrap();
         }
 
@@ -118,6 +162,10 @@
 
             if (this._owner)
             {
+                foreach(var m in GetAssociatedModules())
+                {
+                    this.RemoveModule(m);
+                }
                 LLVM.DisposeExecutionEngine(this.Unwrap());
             }
 

@@ -25,7 +25,7 @@
                 module.Verify();
 
                 Initialize.X86.All();
-                using (var engine = module.CreateMCJITCompilerForModule())
+                using (var engine = ExecutionEngine.CreateMCJITCompilerForModule(module))
                 {
                     var func = engine.GetDelegate<Int32Int32Int32Delegate>(def);
                     var result = op1 + op2;
@@ -50,7 +50,7 @@
                 module.Verify();
 
                 Initialize.X86.All();
-                using (var engine = module.CreateMCJITCompilerForModule())
+                using (var engine = ExecutionEngine.CreateMCJITCompilerForModule(module))
                 {
                     var func = engine.GetDelegate<Int32Int32Int32Delegate>(def);
                     var result = op1 >> op2;
@@ -76,7 +76,7 @@
                 module.Verify();
 
                 Initialize.X86.All();
-                using (var engine = module.CreateMCJITCompilerForModule())
+                using (var engine = ExecutionEngine.CreateMCJITCompilerForModule(module))
                 {
                     var func = engine.GetDelegate<Int32Int32Int8Delegate>(def);
                     var result = op1 > op2 ? 1 : 0;
@@ -109,7 +109,7 @@
                 module.Verify();
 
                 Initialize.X86.All();
-                using (var engine = module.CreateMCJITCompilerForModule())
+                using (var engine = ExecutionEngine.CreateMCJITCompilerForModule(module))
                 {
                     var func = engine.GetDelegate<Int32Int32Int32Delegate>(defEntry);
                     var result = op1 + op2;
@@ -133,7 +133,7 @@
                 module.Verify();
 
                 Initialize.X86.All();
-                using (var engine = module.CreateMCJITCompilerForModule())
+                using (var engine = ExecutionEngine.CreateMCJITCompilerForModule(module))
                 {
                     var func = engine.GetDelegate<Int32Delegate>(def);
                     Assert.AreEqual(input, func());
@@ -157,7 +157,7 @@
                 module.Verify();
 
                 Initialize.X86.All();
-                using(var engine = module.CreateMCJITCompilerForModule())
+                using(var engine = ExecutionEngine.CreateMCJITCompilerForModule(module))
                 {
                     var func = engine.GetDelegate<Int32Delegate>(def);
                     Assert.AreEqual(8, func());

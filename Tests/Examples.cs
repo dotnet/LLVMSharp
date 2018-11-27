@@ -25,7 +25,7 @@
                 module.Verify();
 
                 Initialize.X86.All();
-                using (var engine = module.CreateMCJITCompilerForModule())
+                using (var engine = ExecutionEngine.CreateMCJITCompilerForModule(module))
                 {
                     var function = engine.GetDelegate<BinaryInt32Operation>(def);
                     var result = function(2, 2);
