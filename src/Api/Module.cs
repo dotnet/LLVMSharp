@@ -72,19 +72,7 @@
         public GlobalValue AddAlias(Type ty, Value aliasee, string name) => LLVM.AddAlias(this.Unwrap(), ty.Unwrap(), aliasee.Unwrap(), name).WrapAs<GlobalValue>();
 
         public uint GetMDKindID(string name) => LLVM.GetMDKindIDInContext(this.Context.Unwrap(), name, (uint)name.Length);
-
-        public unsafe ExecutionEngine CreateMCJITCompilerForModule()
-        {
-            LLVMMCJITCompilerOptions options;
-            var optionsSize = new size_t(new IntPtr(Marshal.SizeOf(typeof(LLVMMCJITCompilerOptions))));
-            if (LLVM.CreateMCJITCompilerForModule(out LLVMExecutionEngineRef executionEngineRef, this.Unwrap(), &options, optionsSize, out IntPtr error).Failed())
-            {
-                TextUtilities.Throw(error);
-            }
-
-            return executionEngineRef.Wrap();
-        }
-
+        
         public ModuleProvider CreateModuleProviderForExistingModule() => LLVM.CreateModuleProviderForExistingModule(this.Unwrap()).Wrap();
         public PassManager CreateFunctionPassManagerForModule() => LLVM.CreateFunctionPassManagerForModule(this.Unwrap()).Wrap();
 
