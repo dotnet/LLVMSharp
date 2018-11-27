@@ -41,7 +41,7 @@
 
             return buffer;
         }
-        
+
         public static LLVMTypeRef StructTypeInContext(LLVMContextRef C, LLVMTypeRef[] ElementTypes, bool Packed)
         {
             if (ElementTypes.Length == 0)
@@ -197,7 +197,7 @@
             {
                 GetParams(Fn, out buffer[0]);
             }
-            
+
             return buffer;
         }
 
@@ -232,7 +232,7 @@
             {
                 GetMDNodeOperands(V, out buffer[0]);
             }
-            
+
             return buffer;
         }
 
@@ -245,7 +245,7 @@
             {
                 GetBasicBlocks(Fn, out buffer[0]);
             }
-            
+
             return buffer;
         }
 
@@ -257,6 +257,11 @@
             }
 
             AddIncoming(PhiNode, out IncomingValues[0], out IncomingBlocks[0], Count);
+        }
+
+        public static void AddIncoming(LLVMValueRef phiNode, LLVMValueRef[] incomingValues, LLVMBasicBlockRef[] incomingBlocks)
+        {
+            AddIncoming(phiNode, incomingValues, incomingBlocks, (uint)incomingValues.Length);
         }
 
         public static LLVMValueRef BuildAggregateRet(LLVMBuilderRef param0, LLVMValueRef[] RetVals)
@@ -349,39 +354,47 @@
             return arr;
         }
 
-        public static LLVMAttributeRef GetCallSiteStringAttribute(LLVMValueRef C, LLVMAttributeIndex Idx, [MarshalAs(UnmanagedType.LPStr)] string Kind) {
+        public static LLVMAttributeRef GetCallSiteStringAttribute(LLVMValueRef C, LLVMAttributeIndex Idx, [MarshalAs(UnmanagedType.LPStr)] string Kind)
+        {
             return GetCallSiteStringAttribute(C, Idx, Kind, Kind == null ? 0 : (uint)Kind.Length);
         }
 
-        public static uint GetEnumAttributeKindForName(string Name) {
+        public static uint GetEnumAttributeKindForName(string Name)
+        {
             return GetEnumAttributeKindForName(Name, Name == null ? 0 : (uint)Name.Length);
         }
 
-        public static LLVMAttributeRef CreateStringAttribute(LLVMContextRef C, string Kind, string Value) {
+        public static LLVMAttributeRef CreateStringAttribute(LLVMContextRef C, string Kind, string Value)
+        {
             return CreateStringAttribute(C,
                                          Kind, Kind == null ? 0 : (uint)Kind.Length,
                                          Value, Value == null ? 0 : (uint)Value.Length);
         }
 
-        public static LLVMAttributeRef GetStringAttributeAtIndex(LLVMValueRef F, LLVMAttributeIndex Idx, string Kind) {
+        public static LLVMAttributeRef GetStringAttributeAtIndex(LLVMValueRef F, LLVMAttributeIndex Idx, string Kind)
+        {
             return GetStringAttributeAtIndex(F, Idx, Kind, Kind == null ? 0 : (uint)Kind.Length);
         }
 
-        public static string GetStringAttributeKind(LLVMAttributeRef A) {
+        public static string GetStringAttributeKind(LLVMAttributeRef A)
+        {
             return GetStringAttributeKind(A, out uint length);
         }
 
-        public static string GetStringAttributeValue(LLVMAttributeRef A) {
+        public static string GetStringAttributeValue(LLVMAttributeRef A)
+        {
             return GetStringAttributeValue(A, out uint length);
         }
 
 
-        public static void RemoveCallSiteStringAttribute(LLVMValueRef C, LLVMAttributeIndex Idx, [MarshalAs(UnmanagedType.LPStr)] string Kind) {
+        public static void RemoveCallSiteStringAttribute(LLVMValueRef C, LLVMAttributeIndex Idx, [MarshalAs(UnmanagedType.LPStr)] string Kind)
+        {
             RemoveCallSiteStringAttribute(C, Idx, Kind, Kind == null ? 0 : (uint)Kind.Length);
         }
 
 
-        public static void RemoveStringAttributeAtIndex(LLVMValueRef F, LLVMAttributeIndex Idx, string Kind) {
+        public static void RemoveStringAttributeAtIndex(LLVMValueRef F, LLVMAttributeIndex Idx, string Kind)
+        {
             RemoveStringAttributeAtIndex(F, Idx, Kind, Kind == null ? 0 : (uint)Kind.Length);
         }
 
