@@ -10,3 +10,4 @@ cache:
 script:
   - dotnet restore
   - dotnet build
+  - dotnet test Tests/LLVMSharp.Tests.csproj
