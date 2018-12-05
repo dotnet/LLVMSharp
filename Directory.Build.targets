@@ -1,0 +1,9 @@
+<Project>
+  <Target Name="VSTestIfTestProject">
+    <!-- Change VSTest to call only projects where IsTestProject is defined.
+         This gets defined in Microsoft.NET.Test.Sdk and hence 
+         VSTest is run only on test projects. -->
+    <CallTarget Targets="VSTest" Condition="'$(IsTestProject)' == 'true'" />
+  </Target>
+</Project>
+
