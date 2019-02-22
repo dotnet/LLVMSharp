@@ -1150,14 +1150,8 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMGetDataLayoutStr", CallingConvention = CallingConvention.Cdecl)]
         public static extern string GetDataLayoutStr(LLVMModuleRef @M);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetDataLayout", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetDataLayout(LLVMModuleRef @M);
-
         [DllImport(libraryPath, EntryPoint = "LLVMSetDataLayout", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetDataLayout(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @DataLayoutStr);
-
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTarget", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetTarget(LLVMModuleRef @M);
 
         [DllImport(libraryPath, EntryPoint = "LLVMSetTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetTarget(LLVMModuleRef @M, [MarshalAs(UnmanagedType.LPStr)] string @Triple);
@@ -1404,9 +1398,6 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetValueKind", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueKind GetValueKind(LLVMValueRef @Val);
-
-        [DllImport(libraryPath, EntryPoint = "LLVMGetValueName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetValueName(LLVMValueRef @Val);
 
         [DllImport(libraryPath, EntryPoint = "LLVMSetValueName", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetValueName(LLVMValueRef @Val, [MarshalAs(UnmanagedType.LPStr)] string @Name);
@@ -2172,9 +2163,6 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMValueAsBasicBlock", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBasicBlockRef ValueAsBasicBlock(LLVMValueRef @Val);
-
-        [DllImport(libraryPath, EntryPoint = "LLVMGetBasicBlockName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetBasicBlockName(LLVMBasicBlockRef @BB);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetBasicBlockParent", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef GetBasicBlockParent(LLVMBasicBlockRef @BB);
@@ -3162,12 +3150,6 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetTargetFromTriple", CallingConvention = CallingConvention.Cdecl)]
         internal static extern LLVMBool GetTargetFromTriple([MarshalAs(UnmanagedType.LPStr)] string @Triple, out LLVMTargetRef @T, out IntPtr @ErrorMessage);
-
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTargetName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetTargetName(LLVMTargetRef @T);
-
-        [DllImport(libraryPath, EntryPoint = "LLVMGetTargetDescription", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string GetTargetDescription(LLVMTargetRef @T);
 
         [DllImport(libraryPath, EntryPoint = "LLVMTargetHasJIT", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool TargetHasJIT(LLVMTargetRef @T);
