@@ -361,7 +361,7 @@
 
         public static uint GetEnumAttributeKindForName(string Name)
         {
-            return GetEnumAttributeKindForName(Name, Name == null ? 0 : (uint)Name.Length);
+            return GetEnumAttributeKindForName(Name, Name == null ? IntPtr.Zero : (IntPtr)Name.Length);
         }
 
         public static LLVMAttributeRef CreateStringAttribute(LLVMContextRef C, string Kind, string Value)
@@ -510,23 +510,17 @@
             return retVal;
         }
 
-        public static void InitializeMCJITCompilerOptions(LLVMMCJITCompilerOptions Options)
+        public static unsafe void InitializeMCJITCompilerOptions(LLVMMCJITCompilerOptions Options)
         {
-            unsafe
-            {
-                InitializeMCJITCompilerOptions(&Options, sizeof(LLVMMCJITCompilerOptions));
-            }
+            InitializeMCJITCompilerOptions(out Options, (IntPtr)(sizeof(LLVMMCJITCompilerOptions)));
         }
 
-        public static LLVMBool CreateMCJITCompilerForModule(out LLVMExecutionEngineRef OutJIT, LLVMModuleRef M, LLVMMCJITCompilerOptions Options, out string OutError)
+        public static unsafe LLVMBool CreateMCJITCompilerForModule(out LLVMExecutionEngineRef OutJIT, LLVMModuleRef M, LLVMMCJITCompilerOptions Options, out string OutError)
         {
             LLVMBool retVal;
             IntPtr message;
 
-            unsafe
-            {
-                retVal = CreateMCJITCompilerForModule(out OutJIT, M, &Options, sizeof(LLVMMCJITCompilerOptions), out message);
-            }
+            retVal = CreateMCJITCompilerForModule(out OutJIT, M, out Options, (IntPtr)(sizeof(LLVMMCJITCompilerOptions)), out message);
 
             OutError = message != IntPtr.Zero && retVal.Value != 0 ? Marshal.PtrToStringAnsi(message) : null;
             DisposeMessage(message);

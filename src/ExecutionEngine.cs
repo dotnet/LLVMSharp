@@ -62,7 +62,9 @@
 
         public int RunFunctionAsMain(LLVMValueRef @F, uint @ArgC, string[] @ArgV, string[] @EnvP)
         {
-            return LLVM.RunFunctionAsMain(this.instance, @F, @ArgC, @ArgV, @EnvP);
+            var marshaledArgv = StringMarshaler.MarshalArray(ArgV);
+            var marshaledEnvp = StringMarshaler.MarshalArray(EnvP);
+            return LLVM.RunFunctionAsMain(this.instance, @F, @ArgC, out marshaledArgv[0], out marshaledEnvp[0]);
         }
 
         public LLVMGenericValueRef RunFunction(LLVMValueRef @F, LLVMGenericValueRef[] @Args)
