@@ -998,9 +998,6 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMWriteBitcodeToMemoryBuffer", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMMemoryBufferRef WriteBitcodeToMemoryBuffer(LLVMModuleRef M);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeCore", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeCore(LLVMPassRegistryRef R);
-
         [DllImport(libraryPath, EntryPoint = "LLVMShutdown", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Shutdown();
 
@@ -2858,9 +2855,6 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMDisposeMCJITMemoryManager", CallingConvention = CallingConvention.Cdecl)]
         public static extern void DisposeMCJITMemoryManager(LLVMMCJITMemoryManagerRef MM);
-
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeCore", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeCore(LLVMPassRegistryRef R);
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeTransformUtils", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeTransformUtils(LLVMPassRegistryRef R);
