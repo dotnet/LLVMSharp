@@ -82,14 +82,14 @@
             return instance.Wrap().MakeHandleOwner<ExecutionEngine, LLVMExecutionEngineRef>().AssociateWithModule(m);
         }
 
-        public static ExecutionEngine CreateMCJITCompilerForModule(Module module) => CreateMCJITCompiler(module, new size_t(new IntPtr(Marshal.SizeOf(typeof(LLVMMCJITCompilerOptions)))));
+        public static ExecutionEngine CreateMCJITCompilerForModule(Module module) => CreateMCJITCompiler(module, Marshal.SizeOf(typeof(LLVMMCJITCompilerOptions)));
 
         public unsafe static ExecutionEngine CreateMCJITCompiler(Module module, int optionsSize)
         {
             LLVMMCJITCompilerOptions options;
-            var size = new size_t(new IntPtr(optionsSize));
-            LLVM.InitializeMCJITCompilerOptions(&options, size);
-            if (LLVM.CreateMCJITCompilerForModule(out LLVMExecutionEngineRef instance, module.Unwrap(), &options, size, out IntPtr error).Failed())
+            var size = (IntPtr)(optionsSize);
+            LLVM.InitializeMCJITCompilerOptions(out options, size);
+            if (LLVM.CreateMCJITCompilerForModule(out LLVMExecutionEngineRef instance, module.Unwrap(), out options, size, out IntPtr error).Failed())
             {
                 TextUtilities.Throw(error);
             }
@@ -111,7 +111,12 @@
         public void RunStaticDestructors() => LLVM.RunStaticDestructors(this.Unwrap());
 
         public GenericValue Run(Function f, params GenericValue[] args) => LLVM.RunFunction(this.Unwrap(), f.Unwrap(), args.Unwrap()).Wrap();
-        public int RunAsMain(Function f, uint argC, string[] argV, string[] envP) => LLVM.RunFunctionAsMain(this.Unwrap(), f.Unwrap(), argC, argV, envP);
+        public int RunAsMain(Function f, uint argC, string[] argV, string[] envP)
+        {
+            var marshaledArgv = StringMarshaler.MarshalArray(argV);
+            var marshaledEnvp = StringMarshaler.MarshalArray(envP);
+            return LLVM.RunFunctionAsMain(this.Unwrap(), f.Unwrap(), argC, out marshaledArgv[0], out marshaledEnvp[0]);
+        }
         public int RunAsMain(Function f, params string[] argV) => this.RunAsMain(f, (uint)argV.Length, argV, new string[0]); 
         public void FreeMachineCode(Function f) => LLVM.FreeMachineCodeForFunction(this.Unwrap(), f.Unwrap());
 

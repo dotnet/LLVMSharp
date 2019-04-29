@@ -30,18 +30,12 @@
 
         public unsafe static MemoryBuffer CreateMemoryBufferWithMemoryRange(string inputData, string bufferLength, bool requiresNullTerminator)
         {
-            fixed(char* c = inputData)
-            {
-                return LLVM.CreateMemoryBufferWithMemoryRange(new IntPtr(c), new size_t(inputData.Length), bufferLength, requiresNullTerminator).Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
-            }
+            return LLVM.CreateMemoryBufferWithMemoryRange(inputData, (IntPtr)(inputData.Length), bufferLength, requiresNullTerminator).Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
         }
 
         public unsafe static MemoryBuffer CreateMemoryBufferWithMemoryRangeCopy(string inputData, string bufferName)
         {
-            fixed(char* c = inputData)
-            {
-                return LLVM.CreateMemoryBufferWithMemoryRangeCopy(new IntPtr(c), new size_t(inputData.Length), bufferName).Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
-            }
+            return LLVM.CreateMemoryBufferWithMemoryRangeCopy(inputData, (IntPtr)(inputData.Length), bufferName).Wrap().MakeHandleOwner<MemoryBuffer, LLVMMemoryBufferRef>();
         }
 
         private readonly LLVMMemoryBufferRef _instance;
@@ -59,7 +53,7 @@
         }
 
         public IntPtr BufferStart => LLVM.GetBufferStart(this.Unwrap());
-        public size_t BufferSize => LLVM.GetBufferSize(this.Unwrap());
+        public IntPtr BufferSize => LLVM.GetBufferSize(this.Unwrap());
 
         public void Dispose()
         {

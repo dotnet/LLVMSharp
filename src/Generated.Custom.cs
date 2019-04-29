@@ -3,14 +3,14 @@ namespace LLVMSharp
     using System;
     using System.Runtime.InteropServices;
 
-    public partial struct size_t
+    public partial struct off_t
     {
-        public size_t(IntPtr Pointer)
+        public off_t(int value)
         {
-            this.Pointer = Pointer;
+            this.Value = value;
         }
 
-        public IntPtr Pointer;
+        public int Value;
     }
 
     public static partial class LLVM
@@ -131,5 +131,53 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMLinkInGC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void LinkInGC();
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDisasmInstruction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr DisasmInstruction(LLVMDisasmContextRef DC, out byte Bytes, ulong BytesSize, ulong PC, out byte OutString, IntPtr OutStringSize);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetBufferStart", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetBufferStart(LLVMMemoryBufferRef MemBuf);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetDiagInfoDescription", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetDiagInfoDescription(LLVMDiagnosticInfoRef DI);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetDefaultTargetTriple", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetDefaultTargetTriple();
+
+        [DllImport(libraryPath, EntryPoint = "LLVMCopyStringRepOfTargetData", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr CopyStringRepOfTargetData(LLVMTargetDataRef TD);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetTargetMachineTriple", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetTargetMachineTriple(LLVMTargetMachineRef T);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetTargetMachineCPU", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetTargetMachineCPU(LLVMTargetMachineRef T);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetTargetMachineFeatureString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GetTargetMachineFeatureString(LLVMTargetMachineRef T);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMPrintTypeToString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr PrintTypeToString(LLVMTypeRef Val);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMCreateMessage", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr CreateMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Message);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDisposeMessage", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeMessage(IntPtr Message);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMPrintModuleToString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr PrintModuleToString(LLVMModuleRef M);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMPrintValueToString", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr PrintValueToString(LLVMValueRef Val);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMOrcDisposeMangledSymbol", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void OrcDisposeMangledSymbol(IntPtr MangledSymbol);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMTargetMachineEmitToFile", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool TargetMachineEmitToFile(LLVMTargetMachineRef T, LLVMModuleRef M, IntPtr Filename, LLVMCodeGenFileType codegen, out IntPtr ErrorMessage);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeCore", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeCore(LLVMPassRegistryRef R);
     }
 }

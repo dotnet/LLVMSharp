@@ -2,38 +2,14 @@
 {
     using System;
     using Utilities;
-    using AllocCodeSectionCallback = global::System.Func<global::System.IntPtr, global::System.IntPtr, uint, uint, string, global::System.IntPtr>;
-    using AllocDataSectionCallback = global::System.Func<global::System.IntPtr, global::System.IntPtr, uint, uint, string, bool, global::System.IntPtr>;
-    using FinalizeMemoryCallback = global::System.Func<global::System.IntPtr, global::System.Tuple<int, global::System.IntPtr>>;
 
     public sealed class MCJITMemoryManager : IDisposableWrapper<LLVMMCJITMemoryManagerRef>, IDisposable
     {
         LLVMMCJITMemoryManagerRef IWrapper<LLVMMCJITMemoryManagerRef>.ToHandleType => this._instance;
         void IDisposableWrapper<LLVMMCJITMemoryManagerRef>.MakeHandleOwner() => this._owner = true;
 
-        private class MemoryManagerFinalizeMemoryClosure
+        public static MCJITMemoryManager Create(IntPtr opaque, LLVMMemoryManagerAllocateCodeSectionCallback allocCodeSectionCallback, LLVMMemoryManagerAllocateDataSectionCallback allocDataSectionCallback, LLVMMemoryManagerFinalizeMemoryCallback finalizeMemoryCallback, LLVMMemoryManagerDestroyCallback destroyCallback)
         {
-            private readonly FinalizeMemoryCallback _callback;
-
-            public MemoryManagerFinalizeMemoryClosure(FinalizeMemoryCallback callback)
-            {
-                this._callback = callback;
-            }
-
-            public int Invoke(IntPtr opaque, out IntPtr errMsg)
-            {
-                var r = _callback(opaque);
-                errMsg = r.Item2;
-                return r.Item1;
-            }
-        }
-
-        public static MCJITMemoryManager Create(IntPtr opaque, AllocCodeSectionCallback allocateCodeSection, AllocDataSectionCallback allocateDataSection, FinalizeMemoryCallback finalizeMemory, Action<IntPtr> destroy)
-        {
-            var allocCodeSectionCallback = new LLVMMemoryManagerAllocateCodeSectionCallback(allocateCodeSection);
-            var allocDataSectionCallback = new LLVMMemoryManagerAllocateDataSectionCallback((a, b, c, d, e, f) => allocateDataSection(a, b, c, d, e, f));
-            var finalizeMemoryCallback = new LLVMMemoryManagerFinalizeMemoryCallback(new MemoryManagerFinalizeMemoryClosure(finalizeMemory).Invoke);
-            var destroyCallback = new LLVMMemoryManagerDestroyCallback(destroy);
             var memoryManager = LLVM.CreateSimpleMCJITMemoryManager(opaque, allocCodeSectionCallback, allocDataSectionCallback, finalizeMemoryCallback, destroyCallback)
                                     .Wrap()
                                     .MakeHandleOwner<MCJITMemoryManager, LLVMMCJITMemoryManagerRef>();

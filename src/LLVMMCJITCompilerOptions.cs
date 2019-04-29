@@ -8,8 +8,8 @@
         public unsafe static LLVMMCJITCompilerOptions Initialize()
         {
             LLVMMCJITCompilerOptions options;
-            var sizeOfOptions = new size_t(new IntPtr(Marshal.SizeOf(typeof (LLVMMCJITCompilerOptions))));
-            LLVM.InitializeMCJITCompilerOptions(&options, sizeOfOptions);
+            var sizeOfOptions = (IntPtr)(Marshal.SizeOf(typeof (LLVMMCJITCompilerOptions)));
+            LLVM.InitializeMCJITCompilerOptions(out options, sizeOfOptions);
             return options;
         }
     }
