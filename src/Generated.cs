@@ -10,6 +10,15 @@ namespace LLVMSharp
         LLVMReturnStatusAction = 2,
     }
 
+    public enum LLVMComdatSelectionKind
+    {
+        LLVMAnyComdatSelectionKind = 0,
+        LLVMExactMatchComdatSelectionKind = 1,
+        LLVMLargestComdatSelectionKind = 2,
+        LLVMNoDuplicatesComdatSelectionKind = 3,
+        LLVMSameSizeComdatSelectionKind = 4,
+    }
+
     public enum LLVMOpcode
     {
         LLVMRet = 1,
@@ -18,6 +27,7 @@ namespace LLVMSharp
         LLVMIndirectBr = 4,
         LLVMInvoke = 5,
         LLVMUnreachable = 7,
+        LLVMFNeg = 66,
         LLVMAdd = 8,
         LLVMFAdd = 9,
         LLVMSub = 10,
@@ -127,6 +137,13 @@ namespace LLVMSharp
         LLVMProtectedVisibility = 2,
     }
 
+    public enum LLVMUnnamedAddr
+    {
+        LLVMNoUnnamedAddr = 0,
+        LLVMLocalUnnamedAddr = 1,
+        LLVMGlobalUnnamedAddr = 2,
+    }
+
     public enum LLVMDLLStorageClass
     {
         LLVMDefaultStorageClass = 0,
@@ -139,10 +156,45 @@ namespace LLVMSharp
         LLVMCCallConv = 0,
         LLVMFastCallConv = 8,
         LLVMColdCallConv = 9,
+        LLVMGHCCallConv = 10,
+        LLVMHiPECallConv = 11,
         LLVMWebKitJSCallConv = 12,
         LLVMAnyRegCallConv = 13,
+        LLVMPreserveMostCallConv = 14,
+        LLVMPreserveAllCallConv = 15,
+        LLVMSwiftCallConv = 16,
+        LLVMCXXFASTTLSCallConv = 17,
         LLVMX86StdcallCallConv = 64,
         LLVMX86FastcallCallConv = 65,
+        LLVMARMAPCSCallConv = 66,
+        LLVMARMAAPCSCallConv = 67,
+        LLVMARMAAPCSVFPCallConv = 68,
+        LLVMMSP430INTRCallConv = 69,
+        LLVMX86ThisCallCallConv = 70,
+        LLVMPTXKernelCallConv = 71,
+        LLVMPTXDeviceCallConv = 72,
+        LLVMSPIRFUNCCallConv = 75,
+        LLVMSPIRKERNELCallConv = 76,
+        LLVMIntelOCLBICallConv = 77,
+        LLVMX8664SysVCallConv = 78,
+        LLVMWin64CallConv = 79,
+        LLVMX86VectorCallCallConv = 80,
+        LLVMHHVMCallConv = 81,
+        LLVMHHVMCCallConv = 82,
+        LLVMX86INTRCallConv = 83,
+        LLVMAVRINTRCallConv = 84,
+        LLVMAVRSIGNALCallConv = 85,
+        LLVMAVRBUILTINCallConv = 86,
+        LLVMAMDGPUVSCallConv = 87,
+        LLVMAMDGPUGSCallConv = 88,
+        LLVMAMDGPUPSCallConv = 89,
+        LLVMAMDGPUCSCallConv = 90,
+        LLVMAMDGPUKERNELCallConv = 91,
+        LLVMX86RegCallCallConv = 92,
+        LLVMAMDGPUHSCallConv = 93,
+        LLVMMSP430BUILTINCallConv = 94,
+        LLVMAMDGPULSCallConv = 95,
+        LLVMAMDGPUESCallConv = 96,
     }
 
     public enum LLVMValueKind
@@ -257,6 +309,22 @@ namespace LLVMSharp
         LLVMDSNote = 3,
     }
 
+    public enum LLVMInlineAsmDialect
+    {
+        LLVMInlineAsmDialectATT = 0,
+        LLVMInlineAsmDialectIntel = 1,
+    }
+
+    public enum LLVMModuleFlagBehavior
+    {
+        LLVMModuleFlagBehaviorError = 0,
+        LLVMModuleFlagBehaviorWarning = 1,
+        LLVMModuleFlagBehaviorRequire = 2,
+        LLVMModuleFlagBehaviorOverride = 3,
+        LLVMModuleFlagBehaviorAppend = 4,
+        LLVMModuleFlagBehaviorAppendUnique = 5,
+    }
+
     public enum LLVMAttributeIndex
     {
         LLVMAttributeReturnIndex = 0,
@@ -268,6 +336,152 @@ namespace LLVMSharp
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void LLVMYieldCallback(LLVMContextRef param0, IntPtr param1);
+
+    public partial struct ssize_t
+    {
+        public ssize_t(long value)
+        {
+            Value = value;
+        }
+
+        public long Value;
+    }
+
+    public enum LLVMDIFlags
+    {
+        LLVMDIFlagZero = 0,
+        LLVMDIFlagPrivate = 1,
+        LLVMDIFlagProtected = 2,
+        LLVMDIFlagPublic = 3,
+        LLVMDIFlagFwdDecl = 4,
+        LLVMDIFlagAppleBlock = 8,
+        LLVMDIFlagBlockByrefStruct = 16,
+        LLVMDIFlagVirtual = 32,
+        LLVMDIFlagArtificial = 64,
+        LLVMDIFlagExplicit = 128,
+        LLVMDIFlagPrototyped = 256,
+        LLVMDIFlagObjcClassComplete = 512,
+        LLVMDIFlagObjectPointer = 1024,
+        LLVMDIFlagVector = 2048,
+        LLVMDIFlagStaticMember = 4096,
+        LLVMDIFlagLValueReference = 8192,
+        LLVMDIFlagRValueReference = 16384,
+        LLVMDIFlagReserved = 32768,
+        LLVMDIFlagSingleInheritance = 65536,
+        LLVMDIFlagMultipleInheritance = 131072,
+        LLVMDIFlagVirtualInheritance = 196608,
+        LLVMDIFlagIntroducedVirtual = 262144,
+        LLVMDIFlagBitField = 524288,
+        LLVMDIFlagNoReturn = 1048576,
+        LLVMDIFlagMainSubprogram = 2097152,
+        LLVMDIFlagTypePassByValue = 4194304,
+        LLVMDIFlagTypePassByReference = 8388608,
+        LLVMDIFlagEnumClass = 16777216,
+        LLVMDIFlagFixedEnum = 16777216,
+        LLVMDIFlagThunk = 33554432,
+        LLVMDIFlagTrivial = 67108864,
+        LLVMDIFlagBigEndian = 134217728,
+        LLVMDIFlagLittleEndian = 268435456,
+        LLVMDIFlagIndirectVirtualBase = 36,
+        LLVMDIFlagAccessibility = 3,
+        LLVMDIFlagPtrToMemberRep = 196608,
+    }
+
+    public enum LLVMDWARFSourceLanguage
+    {
+        LLVMDWARFSourceLanguageC89 = 0,
+        LLVMDWARFSourceLanguageC = 1,
+        LLVMDWARFSourceLanguageAda83 = 2,
+        LLVMDWARFSourceLanguageC_plus_plus = 3,
+        LLVMDWARFSourceLanguageCobol74 = 4,
+        LLVMDWARFSourceLanguageCobol85 = 5,
+        LLVMDWARFSourceLanguageFortran77 = 6,
+        LLVMDWARFSourceLanguageFortran90 = 7,
+        LLVMDWARFSourceLanguagePascal83 = 8,
+        LLVMDWARFSourceLanguageModula2 = 9,
+        LLVMDWARFSourceLanguageJava = 10,
+        LLVMDWARFSourceLanguageC99 = 11,
+        LLVMDWARFSourceLanguageAda95 = 12,
+        LLVMDWARFSourceLanguageFortran95 = 13,
+        LLVMDWARFSourceLanguagePLI = 14,
+        LLVMDWARFSourceLanguageObjC = 15,
+        LLVMDWARFSourceLanguageObjC_plus_plus = 16,
+        LLVMDWARFSourceLanguageUPC = 17,
+        LLVMDWARFSourceLanguageD = 18,
+        LLVMDWARFSourceLanguagePython = 19,
+        LLVMDWARFSourceLanguageOpenCL = 20,
+        LLVMDWARFSourceLanguageGo = 21,
+        LLVMDWARFSourceLanguageModula3 = 22,
+        LLVMDWARFSourceLanguageHaskell = 23,
+        LLVMDWARFSourceLanguageC_plus_plus_03 = 24,
+        LLVMDWARFSourceLanguageC_plus_plus_11 = 25,
+        LLVMDWARFSourceLanguageOCaml = 26,
+        LLVMDWARFSourceLanguageRust = 27,
+        LLVMDWARFSourceLanguageC11 = 28,
+        LLVMDWARFSourceLanguageSwift = 29,
+        LLVMDWARFSourceLanguageJulia = 30,
+        LLVMDWARFSourceLanguageDylan = 31,
+        LLVMDWARFSourceLanguageC_plus_plus_14 = 32,
+        LLVMDWARFSourceLanguageFortran03 = 33,
+        LLVMDWARFSourceLanguageFortran08 = 34,
+        LLVMDWARFSourceLanguageRenderScript = 35,
+        LLVMDWARFSourceLanguageBLISS = 36,
+        LLVMDWARFSourceLanguageMips_Assembler = 37,
+        LLVMDWARFSourceLanguageGOOGLE_RenderScript = 38,
+        LLVMDWARFSourceLanguageBORLAND_Delphi = 39,
+    }
+
+    public enum LLVMDWARFEmissionKind
+    {
+        LLVMDWARFEmissionNone = 0,
+        LLVMDWARFEmissionFull = 1,
+        LLVMDWARFEmissionLineTablesOnly = 2,
+    }
+
+    public enum LLVMMetadataKind
+    {
+        LLVMMDStringMetadataKind = 0,
+        LLVMConstantAsMetadataMetadataKind = 1,
+        LLVMLocalAsMetadataMetadataKind = 2,
+        LLVMDistinctMDOperandPlaceholderMetadataKind = 3,
+        LLVMMDTupleMetadataKind = 4,
+        LLVMDILocationMetadataKind = 5,
+        LLVMDIExpressionMetadataKind = 6,
+        LLVMDIGlobalVariableExpressionMetadataKind = 7,
+        LLVMGenericDINodeMetadataKind = 8,
+        LLVMDISubrangeMetadataKind = 9,
+        LLVMDIEnumeratorMetadataKind = 10,
+        LLVMDIBasicTypeMetadataKind = 11,
+        LLVMDIDerivedTypeMetadataKind = 12,
+        LLVMDICompositeTypeMetadataKind = 13,
+        LLVMDISubroutineTypeMetadataKind = 14,
+        LLVMDIFileMetadataKind = 15,
+        LLVMDICompileUnitMetadataKind = 16,
+        LLVMDISubprogramMetadataKind = 17,
+        LLVMDILexicalBlockMetadataKind = 18,
+        LLVMDILexicalBlockFileMetadataKind = 19,
+        LLVMDINamespaceMetadataKind = 20,
+        LLVMDIModuleMetadataKind = 21,
+        LLVMDITemplateTypeParameterMetadataKind = 22,
+        LLVMDITemplateValueParameterMetadataKind = 23,
+        LLVMDIGlobalVariableMetadataKind = 24,
+        LLVMDILocalVariableMetadataKind = 25,
+        LLVMDILabelMetadataKind = 26,
+        LLVMDIObjCPropertyMetadataKind = 27,
+        LLVMDIImportedEntityMetadataKind = 28,
+        LLVMDIMacroMetadataKind = 29,
+        LLVMDIMacroFileMetadataKind = 30,
+    }
+
+    public partial struct LLVMDWARFTypeEncoding
+    {
+        public LLVMDWARFTypeEncoding(uint value)
+        {
+            Value = value;
+        }
+
+        public uint Value;
+    }
 
     public partial struct LLVMDisasmContextRef
     {
@@ -299,6 +513,30 @@ namespace LLVMSharp
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate string LLVMSymbolLookupCallback(IntPtr DisInfo, ulong ReferenceValue, out ulong ReferenceType, ulong ReferencePC, out IntPtr ReferenceName);
+
+    public partial struct LLVMOpaqueError
+    {
+    }
+
+    public partial struct LLVMErrorRef
+    {
+        public LLVMErrorRef(IntPtr pointer)
+        {
+            Pointer = pointer;
+        }
+
+        public IntPtr Pointer;
+    }
+
+    public partial struct LLVMErrorTypeId
+    {
+        public LLVMErrorTypeId(IntPtr pointer)
+        {
+            Pointer = pointer;
+        }
+
+        public IntPtr Pointer;
+    }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void LLVMFatalErrorHandler([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Reason);
@@ -558,13 +796,45 @@ namespace LLVMSharp
         public IntPtr Pointer;
     }
 
-    public partial struct LLVMOpaqueSharedModule
+    public partial struct LLVMOptRemarkStringRef
+    {
+        [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] public string Str;
+        public uint Len;
+    }
+
+    public partial struct LLVMOptRemarkDebugLoc
+    {
+        public LLVMOptRemarkStringRef SourceFile;
+        public uint SourceLineNumber;
+        public uint SourceColumnNumber;
+    }
+
+    public partial struct LLVMOptRemarkArg
+    {
+        public LLVMOptRemarkStringRef Key;
+        public LLVMOptRemarkStringRef Value;
+        public LLVMOptRemarkDebugLoc DebugLoc;
+    }
+
+    public partial struct LLVMOptRemarkEntry
+    {
+        public LLVMOptRemarkStringRef RemarkType;
+        public LLVMOptRemarkStringRef PassName;
+        public LLVMOptRemarkStringRef RemarkName;
+        public LLVMOptRemarkStringRef FunctionName;
+        public LLVMOptRemarkDebugLoc DebugLoc;
+        public uint Hotness;
+        public uint NumArgs;
+        public IntPtr Args;
+    }
+
+    public partial struct LLVMOptRemarkOpaqueParser
     {
     }
 
-    public partial struct LLVMSharedModuleRef
+    public partial struct LLVMOptRemarkParserRef
     {
-        public LLVMSharedModuleRef(IntPtr pointer)
+        public LLVMOptRemarkParserRef(IntPtr pointer)
         {
             Pointer = pointer;
         }
@@ -588,12 +858,12 @@ namespace LLVMSharp
 
     public partial struct LLVMOrcModuleHandle
     {
-        public LLVMOrcModuleHandle(uint value)
+        public LLVMOrcModuleHandle(ulong value)
         {
             Value = value;
         }
 
-        public uint Value;
+        public ulong Value;
     }
 
     public partial struct LLVMOrcTargetAddress
@@ -611,12 +881,6 @@ namespace LLVMSharp
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate ulong LLVMOrcLazyCompileCallbackFn(LLVMOrcJITStackRef JITStack, IntPtr CallbackCtx);
-
-    public enum LLVMOrcErrorCode
-    {
-        LLVMOrcErrSuccess = 0,
-        LLVMOrcErrGeneric = 1,
-    }
 
     public enum LLVMByteOrdering
     {
@@ -694,16 +958,20 @@ namespace LLVMSharp
         LLVMRelocStatic = 1,
         LLVMRelocPIC = 2,
         LLVMRelocDynamicNoPic = 3,
+        LLVMRelocROPI = 4,
+        LLVMRelocRWPI = 5,
+        LLVMRelocROPI_RWPI = 6,
     }
 
     public enum LLVMCodeModel
     {
         LLVMCodeModelDefault = 0,
         LLVMCodeModelJITDefault = 1,
-        LLVMCodeModelSmall = 2,
-        LLVMCodeModelKernel = 3,
-        LLVMCodeModelMedium = 4,
-        LLVMCodeModelLarge = 5,
+        LLVMCodeModelTiny = 2,
+        LLVMCodeModelSmall = 3,
+        LLVMCodeModelKernel = 4,
+        LLVMCodeModelMedium = 5,
+        LLVMCodeModelLarge = 6,
     }
 
     public enum LLVMCodeGenFileType
@@ -820,6 +1088,24 @@ namespace LLVMSharp
         public IntPtr Pointer;
     }
 
+    public partial struct LLVMOpaqueNamedMDNode
+    {
+    }
+
+    public partial struct LLVMNamedMDNodeRef
+    {
+        public LLVMNamedMDNodeRef(IntPtr pointer)
+        {
+            Pointer = pointer;
+        }
+
+        public IntPtr Pointer;
+    }
+
+    public partial struct LLVMOpaqueValueMetadataEntry
+    {
+    }
+
     public partial struct LLVMOpaqueBuilder
     {
     }
@@ -932,6 +1218,38 @@ namespace LLVMSharp
         public IntPtr Pointer;
     }
 
+    public partial struct LLVMComdat
+    {
+    }
+
+    public partial struct LLVMComdatRef
+    {
+        public LLVMComdatRef(IntPtr pointer)
+        {
+            Pointer = pointer;
+        }
+
+        public IntPtr Pointer;
+    }
+
+    public partial struct LLVMOpaqueModuleFlagEntry
+    {
+    }
+
+    public partial struct LLVMOpaqueJITEventListener
+    {
+    }
+
+    public partial struct LLVMJITEventListenerRef
+    {
+        public LLVMJITEventListenerRef(IntPtr pointer)
+        {
+            Pointer = pointer;
+        }
+
+        public IntPtr Pointer;
+    }
+
     public partial struct LLVMOpaquePassManagerBuilder
     {
     }
@@ -998,6 +1316,21 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMWriteBitcodeToMemoryBuffer", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMMemoryBufferRef WriteBitcodeToMemoryBuffer(LLVMModuleRef M);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMGetOrInsertComdat", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMComdatRef GetOrInsertComdat(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetComdat", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMComdatRef GetComdat(LLVMValueRef V);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMSetComdat", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetComdat(LLVMValueRef V, LLVMComdatRef C);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetComdatSelectionKind", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMComdatSelectionKind GetComdatSelectionKind(LLVMComdatRef C);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMSetComdatSelectionKind", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetComdatSelectionKind(LLVMComdatRef C, LLVMComdatSelectionKind Kind);
+
         [DllImport(libraryPath, EntryPoint = "LLVMShutdown", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Shutdown();
 
@@ -1018,6 +1351,12 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMContextSetYieldCallback", CallingConvention = CallingConvention.Cdecl)]
         public static extern void ContextSetYieldCallback(LLVMContextRef C, LLVMYieldCallback Callback, IntPtr OpaqueHandle);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMContextShouldDiscardValueNames", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool ContextShouldDiscardValueNames(LLVMContextRef C);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMContextSetDiscardValueNames", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ContextSetDiscardValueNames(LLVMContextRef C, LLVMBool Discard);
 
         [DllImport(libraryPath, EntryPoint = "LLVMContextDispose", CallingConvention = CallingConvention.Cdecl)]
         public static extern void ContextDispose(LLVMContextRef C);
@@ -1082,6 +1421,13 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMSetModuleIdentifier", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetModuleIdentifier(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Ident, IntPtr Len);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMGetSourceFileName", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string GetSourceFileName(LLVMModuleRef M, out IntPtr Len);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMSetSourceFileName", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetSourceFileName(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr Len);
+
         [DllImport(libraryPath, EntryPoint = "LLVMGetDataLayoutStr", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
         public static extern string GetDataLayoutStr(LLVMModuleRef M);
@@ -1100,20 +1446,74 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMSetTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetTarget(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Triple);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMCopyModuleFlagsMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr CopyModuleFlagsMetadata(LLVMModuleRef M, out IntPtr Len);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDisposeModuleFlagsMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeModuleFlagsMetadata(out LLVMOpaqueModuleFlagEntry Entries);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMModuleFlagEntriesGetFlagBehavior", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMModuleFlagBehavior ModuleFlagEntriesGetFlagBehavior(out LLVMOpaqueModuleFlagEntry Entries, uint Index);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMModuleFlagEntriesGetKey", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string ModuleFlagEntriesGetKey(out LLVMOpaqueModuleFlagEntry Entries, uint Index, out IntPtr Len);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMModuleFlagEntriesGetMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef ModuleFlagEntriesGetMetadata(out LLVMOpaqueModuleFlagEntry Entries, uint Index);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetModuleFlag", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef GetModuleFlag(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Key, IntPtr KeyLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMAddModuleFlag", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddModuleFlag(LLVMModuleRef M, LLVMModuleFlagBehavior Behavior, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Key, IntPtr KeyLen, LLVMMetadataRef Val);
+
         [DllImport(libraryPath, EntryPoint = "LLVMDumpModule", CallingConvention = CallingConvention.Cdecl)]
         public static extern void DumpModule(LLVMModuleRef M);
 
         [DllImport(libraryPath, EntryPoint = "LLVMPrintModuleToFile", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool PrintModuleToFile(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Filename, out IntPtr ErrorMessage);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetModuleInlineAsm", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetModuleInlineAsm(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Asm);
+        [DllImport(libraryPath, EntryPoint = "LLVMGetModuleInlineAsm", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string GetModuleInlineAsm(LLVMModuleRef M, out IntPtr Len);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMSetModuleInlineAsm2", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetModuleInlineAsm2(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Asm, IntPtr Len);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMAppendModuleInlineAsm", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AppendModuleInlineAsm(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Asm, IntPtr Len);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetInlineAsm", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetInlineAsm(LLVMTypeRef Ty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string AsmString, IntPtr AsmStringSize, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Constraints, IntPtr ConstraintsSize, LLVMBool HasSideEffects, LLVMBool IsAlignStack, LLVMInlineAsmDialect Dialect);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetModuleContext", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMContextRef GetModuleContext(LLVMModuleRef M);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetTypeByName", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef GetTypeByName(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetFirstNamedMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMNamedMDNodeRef GetFirstNamedMetadata(LLVMModuleRef M);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetLastNamedMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMNamedMDNodeRef GetLastNamedMetadata(LLVMModuleRef M);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetNextNamedMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMNamedMDNodeRef GetNextNamedMetadata(LLVMNamedMDNodeRef NamedMDNode);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetPreviousNamedMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMNamedMDNodeRef GetPreviousNamedMetadata(LLVMNamedMDNodeRef NamedMDNode);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetNamedMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMNamedMDNodeRef GetNamedMetadata(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetOrInsertNamedMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMNamedMDNodeRef GetOrInsertNamedMetadata(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetNamedMetadataName", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string GetNamedMetadataName(LLVMNamedMDNodeRef NamedMD, out IntPtr NameLen);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetNamedMetadataNumOperands", CallingConvention = CallingConvention.Cdecl)]
         public static extern uint GetNamedMetadataNumOperands(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
@@ -1123,6 +1523,20 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMAddNamedMetadataOperand", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddNamedMetadataOperand(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, LLVMValueRef Val);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetDebugLocDirectory", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string GetDebugLocDirectory(LLVMValueRef Val, out uint Length);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetDebugLocFilename", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string GetDebugLocFilename(LLVMValueRef Val, out uint Length);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetDebugLocLine", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetDebugLocLine(LLVMValueRef Val);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetDebugLocColumn", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetDebugLocColumn(LLVMValueRef Val);
 
         [DllImport(libraryPath, EntryPoint = "LLVMAddFunction", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef AddFunction(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, LLVMTypeRef FunctionTy);
@@ -1141,6 +1555,9 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetPreviousFunction", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef GetPreviousFunction(LLVMValueRef Fn);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMSetModuleInlineAsm", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetModuleInlineAsm(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Asm);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetTypeKind", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeKind GetTypeKind(LLVMTypeRef Ty);
@@ -1281,6 +1698,9 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMIsOpaqueStruct", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool IsOpaqueStruct(LLVMTypeRef StructTy);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMIsLiteralStruct", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IsLiteralStruct(LLVMTypeRef StructTy);
+
         [DllImport(libraryPath, EntryPoint = "LLVMGetElementType", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTypeRef GetElementType(LLVMTypeRef Ty);
 
@@ -1338,12 +1758,12 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMGetValueKind", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueKind GetValueKind(LLVMValueRef Val);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMGetValueName", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libraryPath, EntryPoint = "LLVMGetValueName2", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
-        public static extern string GetValueName(LLVMValueRef Val);
+        public static extern string GetValueName2(LLVMValueRef Val, out IntPtr Length);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMSetValueName", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SetValueName(LLVMValueRef Val, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+        [DllImport(libraryPath, EntryPoint = "LLVMSetValueName2", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetValueName2(LLVMValueRef Val, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen);
 
         [DllImport(libraryPath, EntryPoint = "LLVMDumpValue", CallingConvention = CallingConvention.Cdecl)]
         public static extern void DumpValue(LLVMValueRef Val);
@@ -1417,6 +1837,9 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMIsAGlobalAlias", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef IsAGlobalAlias(LLVMValueRef Val);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMIsAGlobalIFunc", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsAGlobalIFunc(LLVMValueRef Val);
+
         [DllImport(libraryPath, EntryPoint = "LLVMIsAGlobalObject", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef IsAGlobalObject(LLVMValueRef Val);
 
@@ -1444,8 +1867,14 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMIsADbgInfoIntrinsic", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef IsADbgInfoIntrinsic(LLVMValueRef Val);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMIsADbgVariableIntrinsic", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsADbgVariableIntrinsic(LLVMValueRef Val);
+
         [DllImport(libraryPath, EntryPoint = "LLVMIsADbgDeclareInst", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef IsADbgDeclareInst(LLVMValueRef Val);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMIsADbgLabelInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsADbgLabelInst(LLVMValueRef Val);
 
         [DllImport(libraryPath, EntryPoint = "LLVMIsAMemIntrinsic", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef IsAMemIntrinsic(LLVMValueRef Val);
@@ -1494,9 +1923,6 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMIsAStoreInst", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef IsAStoreInst(LLVMValueRef Val);
-
-        [DllImport(libraryPath, EntryPoint = "LLVMIsATerminatorInst", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef IsATerminatorInst(LLVMValueRef Val);
 
         [DllImport(libraryPath, EntryPoint = "LLVMIsABranchInst", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef IsABranchInst(LLVMValueRef Val);
@@ -1596,6 +2022,13 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMIsAMDString", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef IsAMDString(LLVMValueRef Val);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetValueName", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string GetValueName(LLVMValueRef Val);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMSetValueName", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetValueName(LLVMValueRef Val, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetFirstUse", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMUseRef GetFirstUse(LLVMValueRef Val);
@@ -1808,8 +2241,14 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMConstGEP", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef ConstGEP(LLVMValueRef ConstantVal, out LLVMValueRef ConstantIndices, uint NumIndices);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMConstGEP2", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstGEP2(LLVMTypeRef Ty, LLVMValueRef ConstantVal, out LLVMValueRef ConstantIndices, uint NumIndices);
+
         [DllImport(libraryPath, EntryPoint = "LLVMConstInBoundsGEP", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef ConstInBoundsGEP(LLVMValueRef ConstantVal, out LLVMValueRef ConstantIndices, uint NumIndices);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMConstInBoundsGEP2", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstInBoundsGEP2(LLVMTypeRef Ty, LLVMValueRef ConstantVal, out LLVMValueRef ConstantIndices, uint NumIndices);
 
         [DllImport(libraryPath, EntryPoint = "LLVMConstTrunc", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef ConstTrunc(LLVMValueRef ConstantVal, LLVMTypeRef ToType);
@@ -1886,11 +2325,11 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMConstInsertValue", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef ConstInsertValue(LLVMValueRef AggConstant, LLVMValueRef ElementValueConstant, out uint IdxList, uint NumIdx);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMConstInlineAsm", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef ConstInlineAsm(LLVMTypeRef Ty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string AsmString, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Constraints, LLVMBool HasSideEffects, LLVMBool IsAlignStack);
-
         [DllImport(libraryPath, EntryPoint = "LLVMBlockAddress", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BlockAddress(LLVMValueRef F, LLVMBasicBlockRef BB);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMConstInlineAsm", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef ConstInlineAsm(LLVMTypeRef Ty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string AsmString, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Constraints, LLVMBool HasSideEffects, LLVMBool IsAlignStack);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetGlobalParent", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMModuleRef GetGlobalParent(LLVMValueRef Global);
@@ -1923,6 +2362,15 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMSetDLLStorageClass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetDLLStorageClass(LLVMValueRef Global, LLVMDLLStorageClass Class);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMGetUnnamedAddress", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMUnnamedAddr GetUnnamedAddress(LLVMValueRef Global);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMSetUnnamedAddress", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetUnnamedAddress(LLVMValueRef Global, LLVMUnnamedAddr UnnamedAddr);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGlobalGetValueType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef GlobalGetValueType(LLVMValueRef Global);
+
         [DllImport(libraryPath, EntryPoint = "LLVMHasUnnamedAddr", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool HasUnnamedAddr(LLVMValueRef Global);
 
@@ -1934,6 +2382,27 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMSetAlignment", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetAlignment(LLVMValueRef V, uint Bytes);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGlobalSetMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void GlobalSetMetadata(LLVMValueRef Global, uint Kind, LLVMMetadataRef MD);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGlobalEraseMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void GlobalEraseMetadata(LLVMValueRef Global, uint Kind);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGlobalClearMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void GlobalClearMetadata(LLVMValueRef Global);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGlobalCopyAllMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GlobalCopyAllMetadata(LLVMValueRef Value, out IntPtr NumEntries);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDisposeValueMetadataEntries", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeValueMetadataEntries(out LLVMOpaqueValueMetadataEntry Entries);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMValueMetadataEntriesGetKind", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint ValueMetadataEntriesGetKind(out LLVMOpaqueValueMetadataEntry Entries, uint Index);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMValueMetadataEntriesGetMetadata", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef ValueMetadataEntriesGetMetadata(out LLVMOpaqueValueMetadataEntry Entries, uint Index);
 
         [DllImport(libraryPath, EntryPoint = "LLVMAddGlobal", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef AddGlobal(LLVMModuleRef M, LLVMTypeRef Ty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
@@ -1992,6 +2461,27 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMAddAlias", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef AddAlias(LLVMModuleRef M, LLVMTypeRef Ty, LLVMValueRef Aliasee, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMGetNamedGlobalAlias", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetNamedGlobalAlias(LLVMModuleRef M, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetFirstGlobalAlias", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetFirstGlobalAlias(LLVMModuleRef M);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetLastGlobalAlias", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetLastGlobalAlias(LLVMModuleRef M);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetNextGlobalAlias", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetNextGlobalAlias(LLVMValueRef GA);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetPreviousGlobalAlias", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetPreviousGlobalAlias(LLVMValueRef GA);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMAliasGetAliasee", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef AliasGetAliasee(LLVMValueRef Alias);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMAliasSetAliasee", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AliasSetAliasee(LLVMValueRef Alias, LLVMValueRef Aliasee);
+
         [DllImport(libraryPath, EntryPoint = "LLVMDeleteFunction", CallingConvention = CallingConvention.Cdecl)]
         public static extern void DeleteFunction(LLVMValueRef Fn);
 
@@ -2006,6 +2496,23 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetIntrinsicID", CallingConvention = CallingConvention.Cdecl)]
         public static extern uint GetIntrinsicID(LLVMValueRef Fn);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetIntrinsicDeclaration", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetIntrinsicDeclaration(LLVMModuleRef Mod, uint ID, out LLVMTypeRef ParamTypes, IntPtr ParamCount);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMIntrinsicGetType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef IntrinsicGetType(LLVMContextRef Ctx, uint ID, out LLVMTypeRef ParamTypes, IntPtr ParamCount);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMIntrinsicGetName", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string IntrinsicGetName(uint ID, out IntPtr NameLength);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMIntrinsicCopyOverloadedName", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string IntrinsicCopyOverloadedName(uint ID, out LLVMTypeRef ParamTypes, IntPtr ParamCount, out IntPtr NameLength);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMIntrinsicIsOverloaded", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool IntrinsicIsOverloaded(uint ID);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetFunctionCallConv", CallingConvention = CallingConvention.Cdecl)]
         public static extern uint GetFunctionCallConv(LLVMValueRef Fn);
@@ -2139,6 +2646,9 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMGetEntryBasicBlock", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBasicBlockRef GetEntryBasicBlock(LLVMValueRef Fn);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMCreateBasicBlockInContext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBasicBlockRef CreateBasicBlockInContext(LLVMContextRef C, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+
         [DllImport(libraryPath, EntryPoint = "LLVMAppendBasicBlockInContext", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBasicBlockRef AppendBasicBlockInContext(LLVMContextRef C, LLVMValueRef Fn, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
 
@@ -2178,6 +2688,9 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMSetMetadata", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetMetadata(LLVMValueRef Val, uint KindID, LLVMValueRef Node);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMInstructionGetAllMetadataOtherThanDebugLoc", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr InstructionGetAllMetadataOtherThanDebugLoc(LLVMValueRef Instr, out IntPtr NumEntries);
+
         [DllImport(libraryPath, EntryPoint = "LLVMGetInstructionParent", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBasicBlockRef GetInstructionParent(LLVMValueRef Inst);
 
@@ -2204,6 +2717,9 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMInstructionClone", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef InstructionClone(LLVMValueRef Inst);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMIsATerminatorInst", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef IsATerminatorInst(LLVMValueRef Inst);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetNumArgOperands", CallingConvention = CallingConvention.Cdecl)]
         public static extern uint GetNumArgOperands(LLVMValueRef Instr);
@@ -2237,6 +2753,9 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMRemoveCallSiteStringAttribute", CallingConvention = CallingConvention.Cdecl)]
         public static extern void RemoveCallSiteStringAttribute(LLVMValueRef C, LLVMAttributeIndex Idx, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string K, uint KLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetCalledFunctionType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMTypeRef GetCalledFunctionType(LLVMValueRef C);
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetCalledValue", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef GetCalledValue(LLVMValueRef Instr);
@@ -2370,14 +2889,32 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMBuildInvoke", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildInvoke(LLVMBuilderRef param0, LLVMValueRef Fn, out LLVMValueRef Args, uint NumArgs, LLVMBasicBlockRef Then, LLVMBasicBlockRef Catch, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildLandingPad", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildLandingPad(LLVMBuilderRef B, LLVMTypeRef Ty, LLVMValueRef PersFn, uint NumClauses, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildInvoke2", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildInvoke2(LLVMBuilderRef param0, LLVMTypeRef Ty, LLVMValueRef Fn, out LLVMValueRef Args, uint NumArgs, LLVMBasicBlockRef Then, LLVMBasicBlockRef Catch, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildUnreachable", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildUnreachable(LLVMBuilderRef param0);
 
         [DllImport(libraryPath, EntryPoint = "LLVMBuildResume", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildResume(LLVMBuilderRef B, LLVMValueRef Exn);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildUnreachable", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildUnreachable(LLVMBuilderRef param0);
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildLandingPad", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildLandingPad(LLVMBuilderRef B, LLVMTypeRef Ty, LLVMValueRef PersFn, uint NumClauses, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildCleanupRet", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildCleanupRet(LLVMBuilderRef B, LLVMValueRef CatchPad, LLVMBasicBlockRef BB);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildCatchRet", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildCatchRet(LLVMBuilderRef B, LLVMValueRef CatchPad, LLVMBasicBlockRef BB);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildCatchPad", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildCatchPad(LLVMBuilderRef B, LLVMValueRef ParentPad, out LLVMValueRef Args, uint NumArgs, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildCleanupPad", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildCleanupPad(LLVMBuilderRef B, LLVMValueRef ParentPad, out LLVMValueRef Args, uint NumArgs, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildCatchSwitch", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildCatchSwitch(LLVMBuilderRef B, LLVMValueRef ParentPad, LLVMBasicBlockRef UnwindBB, uint NumHandlers, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
 
         [DllImport(libraryPath, EntryPoint = "LLVMAddCase", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddCase(LLVMValueRef Switch, LLVMValueRef OnVal, LLVMBasicBlockRef Dest);
@@ -2399,6 +2936,27 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMSetCleanup", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetCleanup(LLVMValueRef LandingPad, LLVMBool Val);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMAddHandler", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddHandler(LLVMValueRef CatchSwitch, LLVMBasicBlockRef Dest);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetNumHandlers", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetNumHandlers(LLVMValueRef CatchSwitch);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetHandlers", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void GetHandlers(LLVMValueRef CatchSwitch, out LLVMBasicBlockRef Handlers);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetArgOperand", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetArgOperand(LLVMValueRef Funclet, uint i);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMSetArgOperand", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetArgOperand(LLVMValueRef Funclet, uint i, LLVMValueRef value);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetParentCatchSwitch", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef GetParentCatchSwitch(LLVMValueRef CatchPad);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMSetParentCatchSwitch", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetParentCatchSwitch(LLVMValueRef CatchPad, LLVMValueRef CatchSwitch);
 
         [DllImport(libraryPath, EntryPoint = "LLVMBuildAdd", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildAdd(LLVMBuilderRef param0, LLVMValueRef LHS, LLVMValueRef RHS, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
@@ -2502,6 +3060,15 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMBuildArrayMalloc", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildArrayMalloc(LLVMBuilderRef param0, LLVMTypeRef Ty, LLVMValueRef Val, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildMemSet", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildMemSet(LLVMBuilderRef B, LLVMValueRef Ptr, LLVMValueRef Val, LLVMValueRef Len, uint Align);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildMemCpy", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildMemCpy(LLVMBuilderRef B, LLVMValueRef Dst, uint DstAlign, LLVMValueRef Src, uint SrcAlign, LLVMValueRef Size);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildMemMove", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildMemMove(LLVMBuilderRef B, LLVMValueRef Dst, uint DstAlign, LLVMValueRef Src, uint SrcAlign, LLVMValueRef Size);
+
         [DllImport(libraryPath, EntryPoint = "LLVMBuildAlloca", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildAlloca(LLVMBuilderRef param0, LLVMTypeRef Ty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
 
@@ -2514,6 +3081,9 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMBuildLoad", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildLoad(LLVMBuilderRef param0, LLVMValueRef PointerVal, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildLoad2", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildLoad2(LLVMBuilderRef param0, LLVMTypeRef Ty, LLVMValueRef PointerVal, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+
         [DllImport(libraryPath, EntryPoint = "LLVMBuildStore", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildStore(LLVMBuilderRef param0, LLVMValueRef Val, LLVMValueRef Ptr);
 
@@ -2525,6 +3095,15 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMBuildStructGEP", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildStructGEP(LLVMBuilderRef B, LLVMValueRef Pointer, uint Idx, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildGEP2", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildGEP2(LLVMBuilderRef B, LLVMTypeRef Ty, LLVMValueRef Pointer, out LLVMValueRef Indices, uint NumIndices, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildInBoundsGEP2", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildInBoundsGEP2(LLVMBuilderRef B, LLVMTypeRef Ty, LLVMValueRef Pointer, out LLVMValueRef Indices, uint NumIndices, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildStructGEP2", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildStructGEP2(LLVMBuilderRef B, LLVMTypeRef Ty, LLVMValueRef Pointer, uint Idx, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
 
         [DllImport(libraryPath, EntryPoint = "LLVMBuildGlobalString", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildGlobalString(LLVMBuilderRef B, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Str, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
@@ -2598,11 +3177,14 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMBuildPointerCast", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildPointerCast(LLVMBuilderRef param0, LLVMValueRef Val, LLVMTypeRef DestTy, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMBuildIntCast", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMValueRef BuildIntCast(LLVMBuilderRef param0, LLVMValueRef Val, LLVMTypeRef DestTy, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildIntCast2", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildIntCast2(LLVMBuilderRef param0, LLVMValueRef Val, LLVMTypeRef DestTy, LLVMBool IsSigned, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
 
         [DllImport(libraryPath, EntryPoint = "LLVMBuildFPCast", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildFPCast(LLVMBuilderRef param0, LLVMValueRef Val, LLVMTypeRef DestTy, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildIntCast", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildIntCast(LLVMBuilderRef param0, LLVMValueRef Val, LLVMTypeRef DestTy, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
 
         [DllImport(libraryPath, EntryPoint = "LLVMBuildICmp", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildICmp(LLVMBuilderRef param0, LLVMIntPredicate Op, LLVMValueRef LHS, LLVMValueRef RHS, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
@@ -2615,6 +3197,9 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMBuildCall", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildCall(LLVMBuilderRef param0, LLVMValueRef Fn, out LLVMValueRef Args, uint NumArgs, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMBuildCall2", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef BuildCall2(LLVMBuilderRef param0, LLVMTypeRef param1, LLVMValueRef Fn, out LLVMValueRef Args, uint NumArgs, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
 
         [DllImport(libraryPath, EntryPoint = "LLVMBuildSelect", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMValueRef BuildSelect(LLVMBuilderRef param0, LLVMValueRef If, LLVMValueRef Then, LLVMValueRef Else, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name);
@@ -2733,6 +3318,223 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMIsMultithreaded", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool IsMultithreaded();
 
+        [DllImport(libraryPath, EntryPoint = "LLVMDebugMetadataVersion", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint DebugMetadataVersion();
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetModuleDebugMetadataVersion", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint GetModuleDebugMetadataVersion(LLVMModuleRef Module);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMStripModuleDebugInfo", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool StripModuleDebugInfo(LLVMModuleRef Module);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMCreateDIBuilderDisallowUnresolved", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMDIBuilderRef CreateDIBuilderDisallowUnresolved(LLVMModuleRef M);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMCreateDIBuilder", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMDIBuilderRef CreateDIBuilder(LLVMModuleRef M);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDisposeDIBuilder", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeDIBuilder(LLVMDIBuilderRef Builder);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderFinalize", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DIBuilderFinalize(LLVMDIBuilderRef Builder);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateCompileUnit", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateCompileUnit(LLVMDIBuilderRef Builder, LLVMDWARFSourceLanguage Lang, LLVMMetadataRef FileRef, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Producer, IntPtr ProducerLen, LLVMBool isOptimized, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Flags, IntPtr FlagsLen, uint RuntimeVer, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string SplitName, IntPtr SplitNameLen, LLVMDWARFEmissionKind Kind, uint DWOId, LLVMBool SplitDebugInlining, LLVMBool DebugInfoForProfiling);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateFile", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateFile(LLVMDIBuilderRef Builder, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Filename, IntPtr FilenameLen, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Directory, IntPtr DirectoryLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateModule(LLVMDIBuilderRef Builder, LLVMMetadataRef ParentScope, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string ConfigMacros, IntPtr ConfigMacrosLen, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string IncludePath, IntPtr IncludePathLen, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string ISysRoot, IntPtr ISysRootLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateNameSpace", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateNameSpace(LLVMDIBuilderRef Builder, LLVMMetadataRef ParentScope, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, LLVMBool ExportSymbols);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateFunction", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateFunction(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string LinkageName, IntPtr LinkageNameLen, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Ty, LLVMBool IsLocalToUnit, LLVMBool IsDefinition, uint ScopeLine, LLVMDIFlags Flags, LLVMBool IsOptimized);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateLexicalBlock", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateLexicalBlock(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, LLVMMetadataRef File, uint Line, uint Column);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateLexicalBlockFile", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateLexicalBlockFile(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, LLVMMetadataRef File, uint Discriminator);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateImportedModuleFromNamespace", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateImportedModuleFromNamespace(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, LLVMMetadataRef NS, LLVMMetadataRef File, uint Line);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateImportedModuleFromAlias", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateImportedModuleFromAlias(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, LLVMMetadataRef ImportedEntity, LLVMMetadataRef File, uint Line);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateImportedModuleFromModule", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateImportedModuleFromModule(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, LLVMMetadataRef M, LLVMMetadataRef File, uint Line);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateImportedDeclaration", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateImportedDeclaration(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, LLVMMetadataRef Decl, LLVMMetadataRef File, uint Line, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateDebugLocation", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateDebugLocation(LLVMContextRef Ctx, uint Line, uint Column, LLVMMetadataRef Scope, LLVMMetadataRef InlinedAt);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDILocationGetLine", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint DILocationGetLine(LLVMMetadataRef Location);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDILocationGetColumn", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint DILocationGetColumn(LLVMMetadataRef Location);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDILocationGetScope", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DILocationGetScope(LLVMMetadataRef Location);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderGetOrCreateTypeArray", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderGetOrCreateTypeArray(LLVMDIBuilderRef Builder, out LLVMMetadataRef Data, IntPtr NumElements);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateSubroutineType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateSubroutineType(LLVMDIBuilderRef Builder, LLVMMetadataRef File, out LLVMMetadataRef ParameterTypes, uint NumParameterTypes, LLVMDIFlags Flags);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateEnumerationType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateEnumerationType(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, LLVMMetadataRef File, uint LineNumber, ulong SizeInBits, uint AlignInBits, out LLVMMetadataRef Elements, uint NumElements, LLVMMetadataRef ClassTy);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateUnionType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateUnionType(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, LLVMMetadataRef File, uint LineNumber, ulong SizeInBits, uint AlignInBits, LLVMDIFlags Flags, out LLVMMetadataRef Elements, uint NumElements, uint RunTimeLang, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string UniqueId, IntPtr UniqueIdLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateArrayType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateArrayType(LLVMDIBuilderRef Builder, ulong Size, uint AlignInBits, LLVMMetadataRef Ty, out LLVMMetadataRef Subscripts, uint NumSubscripts);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateVectorType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateVectorType(LLVMDIBuilderRef Builder, ulong Size, uint AlignInBits, LLVMMetadataRef Ty, out LLVMMetadataRef Subscripts, uint NumSubscripts);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateUnspecifiedType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateUnspecifiedType(LLVMDIBuilderRef Builder, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateBasicType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateBasicType(LLVMDIBuilderRef Builder, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, ulong SizeInBits, LLVMDWARFTypeEncoding Encoding, LLVMDIFlags Flags);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreatePointerType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreatePointerType(LLVMDIBuilderRef Builder, LLVMMetadataRef PointeeTy, ulong SizeInBits, uint AlignInBits, uint AddressSpace, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateStructType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateStructType(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, LLVMMetadataRef File, uint LineNumber, ulong SizeInBits, uint AlignInBits, LLVMDIFlags Flags, LLVMMetadataRef DerivedFrom, out LLVMMetadataRef Elements, uint NumElements, uint RunTimeLang, LLVMMetadataRef VTableHolder, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string UniqueId, IntPtr UniqueIdLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateMemberType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateMemberType(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, LLVMMetadataRef File, uint LineNo, ulong SizeInBits, uint AlignInBits, ulong OffsetInBits, LLVMDIFlags Flags, LLVMMetadataRef Ty);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateStaticMemberType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateStaticMemberType(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, LLVMMetadataRef File, uint LineNumber, LLVMMetadataRef Type, LLVMDIFlags Flags, LLVMValueRef ConstantVal, uint AlignInBits);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateMemberPointerType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateMemberPointerType(LLVMDIBuilderRef Builder, LLVMMetadataRef PointeeType, LLVMMetadataRef ClassType, ulong SizeInBits, uint AlignInBits, LLVMDIFlags Flags);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateObjCIVar", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateObjCIVar(LLVMDIBuilderRef Builder, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, LLVMMetadataRef File, uint LineNo, ulong SizeInBits, uint AlignInBits, ulong OffsetInBits, LLVMDIFlags Flags, LLVMMetadataRef Ty, LLVMMetadataRef PropertyNode);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateObjCProperty", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateObjCProperty(LLVMDIBuilderRef Builder, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, LLVMMetadataRef File, uint LineNo, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string GetterName, IntPtr GetterNameLen, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string SetterName, IntPtr SetterNameLen, uint PropertyAttributes, LLVMMetadataRef Ty);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateObjectPointerType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateObjectPointerType(LLVMDIBuilderRef Builder, LLVMMetadataRef Type);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateQualifiedType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateQualifiedType(LLVMDIBuilderRef Builder, uint Tag, LLVMMetadataRef Type);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateReferenceType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateReferenceType(LLVMDIBuilderRef Builder, uint Tag, LLVMMetadataRef Type);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateNullPtrType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateNullPtrType(LLVMDIBuilderRef Builder);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateTypedef", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateTypedef(LLVMDIBuilderRef Builder, LLVMMetadataRef Type, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Scope);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateInheritance", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateInheritance(LLVMDIBuilderRef Builder, LLVMMetadataRef Ty, LLVMMetadataRef BaseTy, ulong BaseOffset, uint VBPtrOffset, LLVMDIFlags Flags);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateForwardDecl", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateForwardDecl(LLVMDIBuilderRef Builder, uint Tag, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, LLVMMetadataRef Scope, LLVMMetadataRef File, uint Line, uint RuntimeLang, ulong SizeInBits, uint AlignInBits, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string UniqueIdentifier, IntPtr UniqueIdentifierLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateReplaceableCompositeType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateReplaceableCompositeType(LLVMDIBuilderRef Builder, uint Tag, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, LLVMMetadataRef Scope, LLVMMetadataRef File, uint Line, uint RuntimeLang, ulong SizeInBits, uint AlignInBits, LLVMDIFlags Flags, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string UniqueIdentifier, IntPtr UniqueIdentifierLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateBitFieldMemberType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateBitFieldMemberType(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, LLVMMetadataRef File, uint LineNumber, ulong SizeInBits, ulong OffsetInBits, ulong StorageOffsetInBits, LLVMDIFlags Flags, LLVMMetadataRef Type);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateClassType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateClassType(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, LLVMMetadataRef File, uint LineNumber, ulong SizeInBits, uint AlignInBits, ulong OffsetInBits, LLVMDIFlags Flags, LLVMMetadataRef DerivedFrom, out LLVMMetadataRef Elements, uint NumElements, LLVMMetadataRef VTableHolder, LLVMMetadataRef TemplateParamsNode, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string UniqueIdentifier, IntPtr UniqueIdentifierLen);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateArtificialType", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateArtificialType(LLVMDIBuilderRef Builder, LLVMMetadataRef Type);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDITypeGetName", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string DITypeGetName(LLVMMetadataRef DType, out IntPtr Length);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDITypeGetSizeInBits", CallingConvention = CallingConvention.Cdecl)]
+        public static extern ulong DITypeGetSizeInBits(LLVMMetadataRef DType);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDITypeGetOffsetInBits", CallingConvention = CallingConvention.Cdecl)]
+        public static extern ulong DITypeGetOffsetInBits(LLVMMetadataRef DType);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDITypeGetAlignInBits", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint DITypeGetAlignInBits(LLVMMetadataRef DType);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDITypeGetLine", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint DITypeGetLine(LLVMMetadataRef DType);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDITypeGetFlags", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMDIFlags DITypeGetFlags(LLVMMetadataRef DType);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderGetOrCreateSubrange", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderGetOrCreateSubrange(LLVMDIBuilderRef Builder, long LowerBound, long Count);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderGetOrCreateArray", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderGetOrCreateArray(LLVMDIBuilderRef Builder, out LLVMMetadataRef Data, IntPtr NumElements);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateExpression", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateExpression(LLVMDIBuilderRef Builder, out long Addr, IntPtr Length);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateConstantValueExpression", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateConstantValueExpression(LLVMDIBuilderRef Builder, long Value);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateGlobalVariableExpression", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateGlobalVariableExpression(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Linkage, IntPtr LinkLen, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Ty, LLVMBool LocalToUnit, LLVMMetadataRef Expr, LLVMMetadataRef Decl, uint AlignInBits);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMTemporaryMDNode", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef TemporaryMDNode(LLVMContextRef Ctx, out LLVMMetadataRef Data, IntPtr NumElements);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDisposeTemporaryMDNode", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeTemporaryMDNode(LLVMMetadataRef TempNode);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMMetadataReplaceAllUsesWith", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void MetadataReplaceAllUsesWith(LLVMMetadataRef TempTargetMetadata, LLVMMetadataRef Replacement);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateTempGlobalVariableFwdDecl", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateTempGlobalVariableFwdDecl(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Linkage, IntPtr LnkLen, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Ty, LLVMBool LocalToUnit, LLVMMetadataRef Decl, uint AlignInBits);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderInsertDeclareBefore", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef DIBuilderInsertDeclareBefore(LLVMDIBuilderRef Builder, LLVMValueRef Storage, LLVMMetadataRef VarInfo, LLVMMetadataRef Expr, LLVMMetadataRef DebugLoc, LLVMValueRef Instr);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderInsertDeclareAtEnd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef DIBuilderInsertDeclareAtEnd(LLVMDIBuilderRef Builder, LLVMValueRef Storage, LLVMMetadataRef VarInfo, LLVMMetadataRef Expr, LLVMMetadataRef DebugLoc, LLVMBasicBlockRef Block);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderInsertDbgValueBefore", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef DIBuilderInsertDbgValueBefore(LLVMDIBuilderRef Builder, LLVMValueRef Val, LLVMMetadataRef VarInfo, LLVMMetadataRef Expr, LLVMMetadataRef DebugLoc, LLVMValueRef Instr);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderInsertDbgValueAtEnd", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMValueRef DIBuilderInsertDbgValueAtEnd(LLVMDIBuilderRef Builder, LLVMValueRef Val, LLVMMetadataRef VarInfo, LLVMMetadataRef Expr, LLVMMetadataRef DebugLoc, LLVMBasicBlockRef Block);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateAutoVariable", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateAutoVariable(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Ty, LLVMBool AlwaysPreserve, LLVMDIFlags Flags, uint AlignInBits);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDIBuilderCreateParameterVariable", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef DIBuilderCreateParameterVariable(LLVMDIBuilderRef Builder, LLVMMetadataRef Scope, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr NameLen, uint ArgNo, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Ty, LLVMBool AlwaysPreserve, LLVMDIFlags Flags);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetSubprogram", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataRef GetSubprogram(LLVMValueRef Func);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMSetSubprogram", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetSubprogram(LLVMValueRef Func, LLVMMetadataRef SP);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetMetadataKind", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMMetadataKind GetMetadataKind(LLVMMetadataRef Metadata);
+
         [DllImport(libraryPath, EntryPoint = "LLVMCreateDisasm", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMDisasmContextRef CreateDisasm([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string TripleName, IntPtr DisInfo, int TagType, LLVMOpInfoCallback GetOpInfo, LLVMSymbolLookupCallback SymbolLookUp);
 
@@ -2747,6 +3549,22 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMDisasmDispose", CallingConvention = CallingConvention.Cdecl)]
         public static extern void DisasmDispose(LLVMDisasmContextRef DC);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetErrorTypeId", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMErrorTypeId GetErrorTypeId(LLVMErrorRef Err);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMConsumeError", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ConsumeError(LLVMErrorRef Err);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetErrorMessage", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string GetErrorMessage(LLVMErrorRef Err);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMDisposeErrorMessage", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DisposeErrorMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string ErrMsg);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetStringErrorTypeId", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMErrorTypeId GetStringErrorTypeId();
 
         [DllImport(libraryPath, EntryPoint = "LLVMInstallFatalErrorHandler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InstallFatalErrorHandler(LLVMFatalErrorHandler Handler);
@@ -2856,6 +3674,18 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMDisposeMCJITMemoryManager", CallingConvention = CallingConvention.Cdecl)]
         public static extern void DisposeMCJITMemoryManager(LLVMMCJITMemoryManagerRef MM);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMCreateGDBRegistrationListener", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMJITEventListenerRef CreateGDBRegistrationListener();
+
+        [DllImport(libraryPath, EntryPoint = "LLVMCreateIntelJITEventListener", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMJITEventListenerRef CreateIntelJITEventListener();
+
+        [DllImport(libraryPath, EntryPoint = "LLVMCreateOProfileJITEventListener", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMJITEventListenerRef CreateOProfileJITEventListener();
+
+        [DllImport(libraryPath, EntryPoint = "LLVMCreatePerfJITEventListener", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMJITEventListenerRef CreatePerfJITEventListener();
+
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeTransformUtils", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeTransformUtils(LLVMPassRegistryRef R);
 
@@ -2870,6 +3700,9 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeInstCombine", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeInstCombine(LLVMPassRegistryRef R);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAggressiveInstCombiner", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeAggressiveInstCombiner(LLVMPassRegistryRef R);
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeIPO", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeIPO(LLVMPassRegistryRef R);
@@ -3108,6 +3941,15 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "thinlto_codegen_set_cache_entry_expiration", CallingConvention = CallingConvention.Cdecl)]
         public static extern void thinlto_codegen_set_cache_entry_expiration(thinlto_code_gen_t cg, uint expiration);
 
+        [DllImport(libraryPath, EntryPoint = "thinlto_codegen_set_cache_size_bytes", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void thinlto_codegen_set_cache_size_bytes(thinlto_code_gen_t cg, uint max_size_bytes);
+
+        [DllImport(libraryPath, EntryPoint = "thinlto_codegen_set_cache_size_megabytes", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void thinlto_codegen_set_cache_size_megabytes(thinlto_code_gen_t cg, uint max_size_megabytes);
+
+        [DllImport(libraryPath, EntryPoint = "thinlto_codegen_set_cache_size_files", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void thinlto_codegen_set_cache_size_files(thinlto_code_gen_t cg, uint max_size_files);
+
         [DllImport(libraryPath, EntryPoint = "LLVMCreateObjectFile", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMObjectFileRef CreateObjectFile(LLVMMemoryBufferRef MemBuf);
 
@@ -3197,11 +4039,24 @@ namespace LLVMSharp
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
         public static extern string GetRelocationValueString(LLVMRelocationIteratorRef RI);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMOrcMakeSharedModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMSharedModuleRef OrcMakeSharedModule(LLVMModuleRef Mod);
+        [DllImport(libraryPath, EntryPoint = "LLVMOptRemarkParserCreate", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMOptRemarkParserRef OptRemarkParserCreate(IntPtr Buf, ulong Size);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMOrcDisposeSharedModuleRef", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void OrcDisposeSharedModuleRef(LLVMSharedModuleRef SharedMod);
+        [DllImport(libraryPath, EntryPoint = "LLVMOptRemarkParserGetNext", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr OptRemarkParserGetNext(LLVMOptRemarkParserRef Parser);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMOptRemarkParserHasError", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMBool OptRemarkParserHasError(LLVMOptRemarkParserRef Parser);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMOptRemarkParserGetErrorMessage", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string OptRemarkParserGetErrorMessage(LLVMOptRemarkParserRef Parser);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMOptRemarkParserDispose", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void OptRemarkParserDispose(LLVMOptRemarkParserRef Parser);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMOptRemarkVersion", CallingConvention = CallingConvention.Cdecl)]
+        public static extern uint OptRemarkVersion();
 
         [DllImport(libraryPath, EntryPoint = "LLVMOrcCreateInstance", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMOrcJITStackRef OrcCreateInstance(LLVMTargetMachineRef TM);
@@ -3214,31 +4069,40 @@ namespace LLVMSharp
         public static extern void OrcGetMangledSymbol(LLVMOrcJITStackRef JITStack, out IntPtr MangledSymbol, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Symbol);
 
         [DllImport(libraryPath, EntryPoint = "LLVMOrcCreateLazyCompileCallback", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMOrcErrorCode OrcCreateLazyCompileCallback(LLVMOrcJITStackRef JITStack, out LLVMOrcTargetAddress RetAddr, LLVMOrcLazyCompileCallbackFn Callback, IntPtr CallbackCtx);
+        public static extern LLVMErrorRef OrcCreateLazyCompileCallback(LLVMOrcJITStackRef JITStack, out LLVMOrcTargetAddress RetAddr, LLVMOrcLazyCompileCallbackFn Callback, IntPtr CallbackCtx);
 
         [DllImport(libraryPath, EntryPoint = "LLVMOrcCreateIndirectStub", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMOrcErrorCode OrcCreateIndirectStub(LLVMOrcJITStackRef JITStack, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string StubName, LLVMOrcTargetAddress InitAddr);
+        public static extern LLVMErrorRef OrcCreateIndirectStub(LLVMOrcJITStackRef JITStack, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string StubName, LLVMOrcTargetAddress InitAddr);
 
         [DllImport(libraryPath, EntryPoint = "LLVMOrcSetIndirectStubPointer", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMOrcErrorCode OrcSetIndirectStubPointer(LLVMOrcJITStackRef JITStack, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string StubName, LLVMOrcTargetAddress NewAddr);
+        public static extern LLVMErrorRef OrcSetIndirectStubPointer(LLVMOrcJITStackRef JITStack, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string StubName, LLVMOrcTargetAddress NewAddr);
 
         [DllImport(libraryPath, EntryPoint = "LLVMOrcAddEagerlyCompiledIR", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMOrcErrorCode OrcAddEagerlyCompiledIR(LLVMOrcJITStackRef JITStack, out LLVMOrcModuleHandle RetHandle, LLVMSharedModuleRef Mod, LLVMOrcSymbolResolverFn SymbolResolver, IntPtr SymbolResolverCtx);
+        public static extern LLVMErrorRef OrcAddEagerlyCompiledIR(LLVMOrcJITStackRef JITStack, out LLVMOrcModuleHandle RetHandle, LLVMModuleRef Mod, LLVMOrcSymbolResolverFn SymbolResolver, IntPtr SymbolResolverCtx);
 
         [DllImport(libraryPath, EntryPoint = "LLVMOrcAddLazilyCompiledIR", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMOrcErrorCode OrcAddLazilyCompiledIR(LLVMOrcJITStackRef JITStack, out LLVMOrcModuleHandle RetHandle, LLVMSharedModuleRef Mod, LLVMOrcSymbolResolverFn SymbolResolver, IntPtr SymbolResolverCtx);
+        public static extern LLVMErrorRef OrcAddLazilyCompiledIR(LLVMOrcJITStackRef JITStack, out LLVMOrcModuleHandle RetHandle, LLVMModuleRef Mod, LLVMOrcSymbolResolverFn SymbolResolver, IntPtr SymbolResolverCtx);
 
         [DllImport(libraryPath, EntryPoint = "LLVMOrcAddObjectFile", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMOrcErrorCode OrcAddObjectFile(LLVMOrcJITStackRef JITStack, out LLVMOrcModuleHandle RetHandle, LLVMMemoryBufferRef Obj, LLVMOrcSymbolResolverFn SymbolResolver, IntPtr SymbolResolverCtx);
+        public static extern LLVMErrorRef OrcAddObjectFile(LLVMOrcJITStackRef JITStack, out LLVMOrcModuleHandle RetHandle, LLVMMemoryBufferRef Obj, LLVMOrcSymbolResolverFn SymbolResolver, IntPtr SymbolResolverCtx);
 
         [DllImport(libraryPath, EntryPoint = "LLVMOrcRemoveModule", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMOrcErrorCode OrcRemoveModule(LLVMOrcJITStackRef JITStack, LLVMOrcModuleHandle H);
+        public static extern LLVMErrorRef OrcRemoveModule(LLVMOrcJITStackRef JITStack, LLVMOrcModuleHandle H);
 
         [DllImport(libraryPath, EntryPoint = "LLVMOrcGetSymbolAddress", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMOrcErrorCode OrcGetSymbolAddress(LLVMOrcJITStackRef JITStack, out LLVMOrcTargetAddress RetAddr, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string SymbolName);
+        public static extern LLVMErrorRef OrcGetSymbolAddress(LLVMOrcJITStackRef JITStack, out LLVMOrcTargetAddress RetAddr, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string SymbolName);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMOrcGetSymbolAddressIn", CallingConvention = CallingConvention.Cdecl)]
+        public static extern LLVMErrorRef OrcGetSymbolAddressIn(LLVMOrcJITStackRef JITStack, out LLVMOrcTargetAddress RetAddr, LLVMOrcModuleHandle H, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string SymbolName);
 
         [DllImport(libraryPath, EntryPoint = "LLVMOrcDisposeInstance", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMOrcErrorCode OrcDisposeInstance(LLVMOrcJITStackRef JITStack);
+        public static extern LLVMErrorRef OrcDisposeInstance(LLVMOrcJITStackRef JITStack);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMOrcRegisterJITEventListener", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void OrcRegisterJITEventListener(LLVMOrcJITStackRef JITStack, LLVMJITEventListenerRef L);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMOrcUnregisterJITEventListener", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void OrcUnregisterJITEventListener(LLVMOrcJITStackRef JITStack, LLVMJITEventListenerRef L);
 
         [DllImport(libraryPath, EntryPoint = "LLVMLoadLibraryPermanently", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool LoadLibraryPermanently([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Filename);
@@ -3288,6 +4152,9 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZTargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZTargetInfo();
 
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeWebAssemblyTargetInfo", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeWebAssemblyTargetInfo();
+
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86TargetInfo", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86TargetInfo();
 
@@ -3329,6 +4196,9 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZTarget", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZTarget();
+
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeWebAssemblyTarget", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeWebAssemblyTarget();
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86Target", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86Target();
@@ -3372,6 +4242,9 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZTargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZTargetMC();
 
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeWebAssemblyTargetMC", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeWebAssemblyTargetMC();
+
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86TargetMC", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86TargetMC();
 
@@ -3414,6 +4287,9 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZAsmPrinter();
 
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeWebAssemblyAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeWebAssemblyAsmPrinter();
+
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86AsmPrinter", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86AsmPrinter();
 
@@ -3441,6 +4317,9 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeMipsAsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeMipsAsmParser();
 
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeMSP430AsmParser", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeMSP430AsmParser();
+
         [DllImport(libraryPath, EntryPoint = "LLVMInitializePowerPCAsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializePowerPCAsmParser();
 
@@ -3449,6 +4328,9 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZAsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZAsmParser();
+
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeWebAssemblyAsmParser", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeWebAssemblyAsmParser();
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86AsmParser", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86AsmParser();
@@ -3474,6 +4356,9 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeMipsDisassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeMipsDisassembler();
 
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeMSP430Disassembler", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeMSP430Disassembler();
+
         [DllImport(libraryPath, EntryPoint = "LLVMInitializePowerPCDisassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializePowerPCDisassembler();
 
@@ -3482,6 +4367,9 @@ namespace LLVMSharp
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeSystemZDisassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeSystemZDisassembler();
+
+        [DllImport(libraryPath, EntryPoint = "LLVMInitializeWebAssemblyDisassembler", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void InitializeWebAssemblyDisassembler();
 
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeX86Disassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeX86Disassembler();
@@ -3629,8 +4517,35 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMTargetMachineEmitToMemoryBuffer", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMBool TargetMachineEmitToMemoryBuffer(LLVMTargetMachineRef T, LLVMModuleRef M, LLVMCodeGenFileType codegen, out IntPtr ErrorMessage, out LLVMMemoryBufferRef OutMemBuf);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMNormalizeTargetTriple", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string NormalizeTargetTriple([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string triple);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetHostCPUName", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string GetHostCPUName();
+
+        [DllImport(libraryPath, EntryPoint = "LLVMGetHostCPUFeatures", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))]
+        public static extern string GetHostCPUFeatures();
+
         [DllImport(libraryPath, EntryPoint = "LLVMAddAnalysisPasses", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddAnalysisPasses(LLVMTargetMachineRef T, LLVMPassManagerRef PM);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMAddAggressiveInstCombinerPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddAggressiveInstCombinerPass(LLVMPassManagerRef PM);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMAddCoroEarlyPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddCoroEarlyPass(LLVMPassManagerRef PM);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMAddCoroSplitPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddCoroSplitPass(LLVMPassManagerRef PM);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMAddCoroElidePass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddCoroElidePass(LLVMPassManagerRef PM);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMAddCoroCleanupPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddCoroCleanupPass(LLVMPassManagerRef PM);
 
         [DllImport(libraryPath, EntryPoint = "LLVMAddArgumentPromotionPass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddArgumentPromotionPass(LLVMPassManagerRef PM);
@@ -3740,9 +4655,6 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMAddIndVarSimplifyPass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddIndVarSimplifyPass(LLVMPassManagerRef PM);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddInstructionCombiningPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddInstructionCombiningPass(LLVMPassManagerRef PM);
-
         [DllImport(libraryPath, EntryPoint = "LLVMAddJumpThreadingPass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddJumpThreadingPass(LLVMPassManagerRef PM);
 
@@ -3764,20 +4676,20 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMAddLoopUnrollPass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddLoopUnrollPass(LLVMPassManagerRef PM);
 
+        [DllImport(libraryPath, EntryPoint = "LLVMAddLoopUnrollAndJamPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddLoopUnrollAndJamPass(LLVMPassManagerRef PM);
+
         [DllImport(libraryPath, EntryPoint = "LLVMAddLoopUnswitchPass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddLoopUnswitchPass(LLVMPassManagerRef PM);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMAddLowerAtomicPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddLowerAtomicPass(LLVMPassManagerRef PM);
 
         [DllImport(libraryPath, EntryPoint = "LLVMAddMemCpyOptPass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddMemCpyOptPass(LLVMPassManagerRef PM);
 
         [DllImport(libraryPath, EntryPoint = "LLVMAddPartiallyInlineLibCallsPass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddPartiallyInlineLibCallsPass(LLVMPassManagerRef PM);
-
-        [DllImport(libraryPath, EntryPoint = "LLVMAddLowerSwitchPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddLowerSwitchPass(LLVMPassManagerRef PM);
-
-        [DllImport(libraryPath, EntryPoint = "LLVMAddPromoteMemoryToRegisterPass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddPromoteMemoryToRegisterPass(LLVMPassManagerRef PM);
 
         [DllImport(libraryPath, EntryPoint = "LLVMAddReassociatePass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddReassociatePass(LLVMPassManagerRef PM);
@@ -3830,8 +4742,14 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMAddBasicAliasAnalysisPass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddBasicAliasAnalysisPass(LLVMPassManagerRef PM);
 
-        [DllImport(libraryPath, EntryPoint = "LLVMAddBBVectorizePass", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void AddBBVectorizePass(LLVMPassManagerRef PM);
+        [DllImport(libraryPath, EntryPoint = "LLVMAddUnifyFunctionExitNodesPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddUnifyFunctionExitNodesPass(LLVMPassManagerRef PM);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMAddLowerSwitchPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddLowerSwitchPass(LLVMPassManagerRef PM);
+
+        [DllImport(libraryPath, EntryPoint = "LLVMAddPromoteMemoryToRegisterPass", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void AddPromoteMemoryToRegisterPass(LLVMPassManagerRef PM);
 
         [DllImport(libraryPath, EntryPoint = "LLVMAddLoopVectorizePass", CallingConvention = CallingConvention.Cdecl)]
         public static extern void AddLoopVectorizePass(LLVMPassManagerRef PM);

@@ -340,11 +340,6 @@
             LLVM.AddBasicAliasAnalysisPass(this.instance);
         }
 
-        public void AddBBVectorizePass()
-        {
-            LLVM.AddBBVectorizePass(this.instance);
-        }
-
         public void AddLoopVectorizePass()
         {
             LLVM.AddLoopVectorizePass(this.instance);
