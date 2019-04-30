@@ -105,7 +105,6 @@
         public void AddTypeBasedAliasAnalysisPass() => LLVM.AddTypeBasedAliasAnalysisPass(this.Unwrap());
         public void AddScopedNoAliasAAPass() => LLVM.AddScopedNoAliasAAPass(this.Unwrap());
         public void AddBasicAliasAnalysisPass() => LLVM.AddBasicAliasAnalysisPass(this.Unwrap());
-        public void AddBBVectorizePass() => LLVM.AddBBVectorizePass(this.Unwrap());
         public void AddLoopVectorizePass() => LLVM.AddLoopVectorizePass(this.Unwrap());
         public void AddSLPVectorizePass() => LLVM.AddSLPVectorizePass(this.Unwrap());
 
