@@ -1,0 +1,37 @@
+namespace LLVMSharp
+{
+    public enum LLVMMetadataKind
+    {
+        LLVMMDStringMetadataKind = 0,
+        LLVMConstantAsMetadataMetadataKind = 1,
+        LLVMLocalAsMetadataMetadataKind = 2,
+        LLVMDistinctMDOperandPlaceholderMetadataKind = 3,
+        LLVMMDTupleMetadataKind = 4,
+        LLVMDILocationMetadataKind = 5,
+        LLVMDIExpressionMetadataKind = 6,
+        LLVMDIGlobalVariableExpressionMetadataKind = 7,
+        LLVMGenericDINodeMetadataKind = 8,
+        LLVMDISubrangeMetadataKind = 9,
+        LLVMDIEnumeratorMetadataKind = 10,
+        LLVMDIBasicTypeMetadataKind = 11,
+        LLVMDIDerivedTypeMetadataKind = 12,
+        LLVMDICompositeTypeMetadataKind = 13,
+        LLVMDISubroutineTypeMetadataKind = 14,
+        LLVMDIFileMetadataKind = 15,
+        LLVMDICompileUnitMetadataKind = 16,
+        LLVMDISubprogramMetadataKind = 17,
+        LLVMDILexicalBlockMetadataKind = 18,
+        LLVMDILexicalBlockFileMetadataKind = 19,
+        LLVMDINamespaceMetadataKind = 20,
+        LLVMDIModuleMetadataKind = 21,
+        LLVMDITemplateTypeParameterMetadataKind = 22,
+        LLVMDITemplateValueParameterMetadataKind = 23,
+        LLVMDIGlobalVariableMetadataKind = 24,
+        LLVMDILocalVariableMetadataKind = 25,
+        LLVMDILabelMetadataKind = 26,
+        LLVMDIObjCPropertyMetadataKind = 27,
+        LLVMDIImportedEntityMetadataKind = 28,
+        LLVMDIMacroMetadataKind = 29,
+        LLVMDIMacroFileMetadataKind = 30,
+    }
+}
