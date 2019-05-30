@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 
 namespace LLVMSharp
 {
-
     public static partial class LLVM
     {
         private const string libraryPath = "libLLVM";
@@ -3117,35 +3116,142 @@ namespace LLVMSharp
         [DllImport(libraryPath, EntryPoint = "LLVMInitializeXCoreDisassembler", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeXCoreDisassembler();
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAllTargetInfos", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeAllTargetInfos();
+        public static void InitializeAllTargetInfos()
+        {
+            InitializeAArch64TargetInfo();
+            InitializeAMDGPUTargetInfo();
+            InitializeARMTargetInfo();
+            InitializeBPFTargetInfo();
+            InitializeHexagonTargetInfo();
+            InitializeLanaiTargetInfo();
+            InitializeMipsTargetInfo();
+            InitializeMSP430TargetInfo();
+            InitializeNVPTXTargetInfo();
+            InitializePowerPCTargetInfo();
+            InitializeSparcTargetInfo();
+            InitializeSystemZTargetInfo();
+            InitializeWebAssemblyTargetInfo();
+            InitializeX86TargetInfo();
+            InitializeXCoreTargetInfo();
+        }
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAllTargets", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeAllTargets();
+        public static void InitializeAllTargets()
+        {
+            InitializeAArch64Target();
+            InitializeAMDGPUTarget();
+            InitializeARMTarget();
+            InitializeBPFTarget();
+            InitializeHexagonTarget();
+            InitializeLanaiTarget();
+            InitializeMipsTarget();
+            InitializeMSP430Target();
+            InitializeNVPTXTarget();
+            InitializePowerPCTarget();
+            InitializeSparcTarget();
+            InitializeSystemZTarget();
+            InitializeWebAssemblyTarget();
+            InitializeX86Target();
+            InitializeXCoreTarget();
+        }
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAllTargetMCs", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeAllTargetMCs();
+        public static void InitializeAllTargetMCs()
+        {
+            InitializeAArch64TargetMC();
+            InitializeAMDGPUTargetMC();
+            InitializeARMTargetMC();
+            InitializeBPFTargetMC();
+            InitializeHexagonTargetMC();
+            InitializeLanaiTargetMC();
+            InitializeMipsTargetMC();
+            InitializeMSP430TargetMC();
+            InitializeNVPTXTargetMC();
+            InitializePowerPCTargetMC();
+            InitializeSparcTargetMC();
+            InitializeSystemZTargetMC();
+            InitializeWebAssemblyTargetMC();
+            InitializeX86TargetMC();
+            InitializeXCoreTargetMC();
+        }
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAllAsmPrinters", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeAllAsmPrinters();
+        public static void InitializeAllAsmPrinters()
+        {
+            InitializeAArch64AsmPrinter();
+            InitializeAMDGPUAsmPrinter();
+            InitializeARMAsmPrinter();
+            InitializeBPFAsmPrinter();
+            InitializeHexagonAsmPrinter();
+            InitializeLanaiAsmPrinter();
+            InitializeMipsAsmPrinter();
+            InitializeMSP430AsmPrinter();
+            InitializeNVPTXAsmPrinter();
+            InitializePowerPCAsmPrinter();
+            InitializeSparcAsmPrinter();
+            InitializeSystemZAsmPrinter();
+            InitializeWebAssemblyAsmPrinter();
+            InitializeX86AsmPrinter();
+            InitializeXCoreAsmPrinter();
+        }
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAllAsmParsers", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeAllAsmParsers();
+        public static void InitializeAllAsmParsers()
+        {
+            InitializeAArch64AsmParser();
+            InitializeAMDGPUAsmParser();
+            InitializeARMAsmParser();
+            InitializeBPFAsmParser();
+            InitializeHexagonAsmParser();
+            InitializeLanaiAsmParser();
+            InitializeMipsAsmParser();
+            InitializeMSP430AsmParser();
+            InitializePowerPCAsmParser();
+            InitializeSparcAsmParser();
+            InitializeSystemZAsmParser();
+            InitializeWebAssemblyAsmParser();
+            InitializeX86AsmParser();
+        }
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeAllDisassemblers", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeAllDisassemblers();
+        public static void InitializeAllDisassemblers()
+        {
+            InitializeAArch64Disassembler();
+            InitializeAMDGPUDisassembler();
+            InitializeARMDisassembler();
+            InitializeBPFDisassembler();
+            InitializeHexagonDisassembler();
+            InitializeLanaiDisassembler();
+            InitializeMipsDisassembler();
+            InitializeMSP430Disassembler();
+            InitializePowerPCDisassembler();
+            InitializeSparcDisassembler();
+            InitializeSystemZDisassembler();
+            InitializeWebAssemblyDisassembler();
+            InitializeX86Disassembler();
+            InitializeXCoreDisassembler();
+        }
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeNativeTarget", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool InitializeNativeTarget();
+        public static LLVMBool InitializeNativeTarget()
+        {
+            InitializeX86TargetInfo();
+            InitializeX86Target();
+            InitializeX86TargetMC();
+            return 0;
+        }
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeNativeAsmParser", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool InitializeNativeAsmParser();
+        public static LLVMBool InitializeNativeAsmParser()
+        {
+            InitializeX86AsmParser();
+            return 0;
+        }
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeNativeAsmPrinter", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool InitializeNativeAsmPrinter();
+        public static LLVMBool InitializeNativeAsmPrinter()
+        {
+            InitializeX86AsmPrinter();
+            return 0;
+        }
 
-        [DllImport(libraryPath, EntryPoint = "LLVMInitializeNativeDisassembler", CallingConvention = CallingConvention.Cdecl)]
-        public static extern LLVMBool InitializeNativeDisassembler();
+        public static LLVMBool InitializeNativeDisassembler()
+        {
+            InitializeX86Disassembler();
+            return 0;
+        }
 
         [DllImport(libraryPath, EntryPoint = "LLVMGetModuleDataLayout", CallingConvention = CallingConvention.Cdecl)]
         public static extern LLVMTargetDataRef GetModuleDataLayout(LLVMModuleRef M);
