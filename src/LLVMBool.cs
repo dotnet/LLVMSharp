@@ -9,5 +9,10 @@
         {
             this.Value = value ? 1 : 0;
         }
+
+        public static implicit operator LLVMBool(int value)
+        {
+            return new LLVMBool(value);
+        }
     }
 }
