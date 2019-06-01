@@ -1,10 +1,10 @@
-﻿namespace Tests
-{
-    using LLVMSharp.API;
-    using LLVMSharp.API.TargetInitializers;
-    using NUnit.Framework;
-    using System.Linq;
+using System.Linq;
+using LLVMSharp.API;
+using LLVMSharp.API.TargetInitializers;
+using NUnit.Framework;
 
+namespace LLVMSharp.UnitTests
+{
     public class Targets
     {
         [Test]

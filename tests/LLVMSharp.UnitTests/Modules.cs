@@ -1,7 +1,6 @@
-﻿namespace Tests
+namespace LLVMSharp.UnitTests
 {
     using LLVMSharp.API;
-    using NUnit;
     using NUnit.Framework;
 
     public class Modules

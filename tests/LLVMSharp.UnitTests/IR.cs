@@ -1,4 +1,4 @@
-﻿namespace Tests
+namespace LLVMSharp.UnitTests
 {
     using LLVMSharp.API;
     using LLVMSharp.API.Types.Composite;

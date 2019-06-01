@@ -1,9 +1,9 @@
-﻿namespace Tests
-{
-    using LLVMSharp.API;
-    using NUnit.Framework;
-    using System.Collections.Generic;
+using LLVMSharp.API;
+using NUnit.Framework;
+using System.Collections.Generic;
 
+namespace LLVMSharp.UnitTests
+{
     public class Types
     {
         [Test]

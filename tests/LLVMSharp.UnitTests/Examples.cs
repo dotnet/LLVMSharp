@@ -1,7 +1,7 @@
-﻿namespace Tests
+namespace LLVMSharp.UnitTests
 {
-    using LLVMSharp.API;
     using System.Runtime.InteropServices;
+    using LLVMSharp.API;
     using NUnit.Framework;
 
     public class Examples
