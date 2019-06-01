@@ -17,7 +17,6 @@
 
   <!-- Package versions for package references across all projects -->
   <ItemGroup>
-    <PackageReference Update="libLLVM" Version="7.0.1" NoWarn="NU1701" />
     <PackageReference Update="Microsoft.Net.Compilers.Toolset" Version="3.2.0-beta1-final" />
     <PackageReference Update="Microsoft.NET.Test.Sdk" Version="15.7.2" />
     <PackageReference Update="NUnit" Version="3.10.1" />
