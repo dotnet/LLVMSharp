@@ -8,6 +8,4 @@ cache:
   apt: true
 
 script:
-  - dotnet restore
-  - dotnet build
-  - dotnet test
+  - scripts/cibuild.sh
