@@ -41,6 +41,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLVMSharp.UnitTests", "test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{9BF3ABB4-8193-4E44-AD0D-82F4C40887E6}"
 	ProjectSection(SolutionItems) = preProject
+		scripts\azure-pipelines.yml = scripts\azure-pipelines.yml
 		scripts\build.ps1 = scripts\build.ps1
 		scripts\build.sh = scripts\build.sh
 		scripts\cibuild.cmd = scripts\cibuild.cmd
