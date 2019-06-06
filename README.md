@@ -1,9 +1,14 @@
 # LLVMSharp
 
-[![Join the chat at https://gitter.im/mjsabby/LLVMSharp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mjsabby/LLVMSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/Microsoft/LLVMSharp.svg?branch=master)](https://travis-ci.org/Microsoft/LLVMSharp)
-
 LLVMSharp is a multi-platform .NET Standard library for accessing the LLVM infrastructure. The bindings are auto-generated using [ClangSharp](http://www.clangsharp.org) parsing LLVM-C header files.
+
+| Job | Debug Status | Release Status |
+| --- | ------------ | -------------- |
+| Windows x86 | [![Build Status](https://dev.azure.com/ms/LLVMSharp/_apis/build/status/microsoft.LLVMSharp?branchName=master&jobName=windows_debug_x86)](https://dev.azure.com/ms/LLVMSharp/_build/latest?definitionId=155&branchName=master) | [![Build Status](https://dev.azure.com/ms/LLVMSharp/_apis/build/status/microsoft.LLVMSharp?branchName=master&jobName=windows_release_x86)](https://dev.azure.com/ms/LLVMSharp/_build/latest?definitionId=155&branchName=master) |
+| Windows x64 | [![Build Status](https://dev.azure.com/ms/LLVMSharp/_apis/build/status/microsoft.LLVMSharp?branchName=master&jobName=windows_debug_x64)](https://dev.azure.com/ms/LLVMSharp/_build/latest?definitionId=155&branchName=master) | [![Build Status](https://dev.azure.com/ms/LLVMSharp/_apis/build/status/microsoft.LLVMSharp?branchName=master&jobName=windows_release_x64)](https://dev.azure.com/ms/LLVMSharp/_build/latest?definitionId=155&branchName=master) |
+| Ubuntu 16.04 x64 | [![Build Status](https://dev.azure.com/ms/LLVMSharp/_apis/build/status/microsoft.LLVMSharp?branchName=master&jobName=ubuntu_1604_debug_x64)](https://dev.azure.com/ms/LLVMSharp/_build/latest?definitionId=155&branchName=master) | [![Build Status](https://dev.azure.com/ms/LLVMSharp/_apis/build/status/microsoft.LLVMSharp?branchName=master&jobName=ubuntu_1604_release_x64)](https://dev.azure.com/ms/LLVMSharp/_build/latest?definitionId=155&branchName=master) |
+
+[![Join the chat at https://gitter.im/mjsabby/LLVMSharp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mjsabby/LLVMSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [**LLVMSharp 5.0 NuGet Package**](http://www.nuget.org/packages/LLVMSharp/5.0.0) for .NET Core 2.0+ (Linux, macOS, Windows) and .NET Framework 4+ - built from the LLVM 5.0.0 Release.
 
