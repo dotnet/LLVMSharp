@@ -48,6 +48,70 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{9BF3
 		scripts\cibuild.sh = scripts\cibuild.sh
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packages", "packages", "{CD611531-75EA-4328-8C25-8D0496E61EC2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM", "libLLVM", "{568A07AC-AF60-4A3E-ABD3-2B51D9DD4EBF}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM\libLLVM.nuspec = packages\libLLVM\libLLVM.nuspec
+		packages\libLLVM\LICENSE.TXT = packages\libLLVM\LICENSE.TXT
+		packages\libLLVM\runtime.json = packages\libLLVM\runtime.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.freebsd.11-x64", "libLLVM.runtime.freebsd.11-x64", "{7B8F6AD5-F16F-4605-BD50-6C4DAD69C792}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM.runtime.freebsd.11-x64\libLLVM.runtime.freebsd.11-x64.nuspec = packages\libLLVM.runtime.freebsd.11-x64\libLLVM.runtime.freebsd.11-x64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.freebsd.11-x86", "libLLVM.runtime.freebsd.11-x86", "{4D4A9DD2-00BB-4D9F-A20B-9926CE70C8C0}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM.runtime.freebsd.11-x86\libLLVM.runtime.freebsd.11-x86.nuspec = packages\libLLVM.runtime.freebsd.11-x86\libLLVM.runtime.freebsd.11-x86.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.linux-arm", "libLLVM.runtime.linux-arm", "{A7F2EA37-BFBA-4659-969D-E9A4A696E10A}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM.runtime.linux-arm\libLLVM.runtime.linux-arm.nuspec = packages\libLLVM.runtime.linux-arm\libLLVM.runtime.linux-arm.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.linux-arm64", "libLLVM.runtime.linux-arm64", "{16539CB8-8AC7-4AD0-9D54-8EE615B2FCF3}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM.runtime.linux-arm64\libLLVM.runtime.linux-arm64.nuspec = packages\libLLVM.runtime.linux-arm64\libLLVM.runtime.linux-arm64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.osx-x64", "libLLVM.runtime.osx-x64", "{D4550E5E-9485-4480-B2B6-9503EEC935BF}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM.runtime.osx-x64\libLLVM.runtime.osx-x64.nuspec = packages\libLLVM.runtime.osx-x64\libLLVM.runtime.osx-x64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.sles-x64", "libLLVM.runtime.sles-x64", "{8C0E6B8A-9FFD-43A1-9324-CA4B8DE997C8}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM.runtime.sles-x64\libLLVM.runtime.sles-x64.nuspec = packages\libLLVM.runtime.sles-x64\libLLVM.runtime.sles-x64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.14.04-x64", "libLLVM.runtime.ubuntu.14.04-x64", "{DC151BEE-774F-4032-8D2F-F3360F7F4D82}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM.runtime.ubuntu.14.04-x64\libLLVM.runtime.ubuntu.14.04-x64.nuspec = packages\libLLVM.runtime.ubuntu.14.04-x64\libLLVM.runtime.ubuntu.14.04-x64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.16.04-x64", "libLLVM.runtime.ubuntu.16.04-x64", "{9F3C3619-32D3-489E-BE7A-92FEE299DE34}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM.runtime.ubuntu.16.04-x64\libLLVM.runtime.ubuntu.16.04-x64.nuspec = packages\libLLVM.runtime.ubuntu.16.04-x64\libLLVM.runtime.ubuntu.16.04-x64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.18.04-x64", "libLLVM.runtime.ubuntu.18.04-x64", "{481409E0-F009-4583-B587-7D6915E9B16E}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM.runtime.ubuntu.18.04-x64\libLLVM.runtime.ubuntu.18.04-x64.nuspec = packages\libLLVM.runtime.ubuntu.18.04-x64\libLLVM.runtime.ubuntu.18.04-x64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.win-x64", "libLLVM.runtime.win-x64", "{E785DDD0-B9CD-4412-8A3C-4E65C601168C}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM.runtime.win-x64\libLLVM.runtime.win-x64.nuspec = packages\libLLVM.runtime.win-x64\libLLVM.runtime.win-x64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.win-x86", "libLLVM.runtime.win-x86", "{540AB7F4-29FD-462A-8791-259764FD4950}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM.runtime.win-x86\libLLVM.runtime.win-x86.nuspec = packages\libLLVM.runtime.win-x86\libLLVM.runtime.win-x86.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +133,18 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B4D577B6-47B7-494B-9590-80247F14F2E7} = {62B5C536-C224-4EE1-972F-05F732B5980B}
 		{293C5F55-2CB1-4398-946B-8AD8E37D7FEE} = {5E2DA015-A829-4304-9B2F-B868ECB77A95}
+		{568A07AC-AF60-4A3E-ABD3-2B51D9DD4EBF} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
+		{7B8F6AD5-F16F-4605-BD50-6C4DAD69C792} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
+		{4D4A9DD2-00BB-4D9F-A20B-9926CE70C8C0} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
+		{A7F2EA37-BFBA-4659-969D-E9A4A696E10A} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
+		{16539CB8-8AC7-4AD0-9D54-8EE615B2FCF3} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
+		{D4550E5E-9485-4480-B2B6-9503EEC935BF} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
+		{8C0E6B8A-9FFD-43A1-9324-CA4B8DE997C8} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
+		{DC151BEE-774F-4032-8D2F-F3360F7F4D82} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
+		{9F3C3619-32D3-489E-BE7A-92FEE299DE34} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
+		{481409E0-F009-4583-B587-7D6915E9B16E} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
+		{E785DDD0-B9CD-4412-8A3C-4E65C601168C} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
+		{540AB7F4-29FD-462A-8791-259764FD4950} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {75550D8C-A492-4ED3-8387-206830F8B21E}
