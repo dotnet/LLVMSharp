@@ -8,7 +8,7 @@
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>Kaleidoscope</RootNamespace>
 		<AssemblyName>Kaleidoscope</AssemblyName>
-		<TargetFramework>netcoreapp2.0</TargetFramework>
+		<TargetFramework>netcoreapp2.1</TargetFramework>
 		<NuGetPackageImportStamp>0e4b5d39</NuGetPackageImportStamp>
 	</PropertyGroup>
 </Project>
