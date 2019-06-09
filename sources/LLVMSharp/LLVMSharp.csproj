@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="libLLVM" Version="7.0.1" NoWarn="NU1701" PrivateAssets="all" />
+    <PackageReference Include="libLLVM" />
   </ItemGroup>
 
 </Project>
