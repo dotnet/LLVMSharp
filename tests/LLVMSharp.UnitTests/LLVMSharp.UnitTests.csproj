@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="libLLVM" Version="5.0.1" NoWarn="NU1701" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\sources\LLVMSharp\LLVMSharp.csproj" />
   </ItemGroup>
 
