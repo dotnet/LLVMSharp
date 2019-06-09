@@ -15,6 +15,11 @@
     <DefineConstants>$(DefineConstants);$(OS)</DefineConstants>
   </PropertyGroup>
 
+  <!-- Settings that allow testing to work by default -->
+  <PropertyGroup>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>
+  </PropertyGroup>
+
   <!-- Package versions for package references across all projects -->
   <ItemGroup>
     <PackageReference Update="Microsoft.Net.Compilers.Toolset" Version="3.2.0-beta1-final" />
