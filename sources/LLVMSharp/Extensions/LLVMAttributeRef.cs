@@ -1,18 +1,17 @@
-﻿namespace LLVMSharp
+using System;
+
+namespace LLVMSharp
 {
-    using System;
-    using Utilities;
-    using Attribute = LLVMSharp.API.Attribute;
-
-    partial struct LLVMAttributeRef : IEquatable<LLVMAttributeRef>, IHandle<Attribute>
+    public partial struct LLVMAttributeRef : IEquatable<LLVMAttributeRef>
     {
-        IntPtr IHandle<Attribute>.GetInternalPointer() => this.Pointer;
-        Attribute IHandle<Attribute>.ToWrapperType() => new Attribute(this);
+        public static bool operator ==(LLVMAttributeRef left, LLVMAttributeRef right) => left.Equals(right);
 
-        public override int GetHashCode() => this.Pointer.GetHashCode();
-        public override bool Equals(object obj) => obj is LLVMAttributeRef t && this.Equals(t);
-        public bool Equals(LLVMAttributeRef other) => this.Pointer == other.Pointer;
-        public static bool operator ==(LLVMAttributeRef op1, LLVMAttributeRef op2) => op1.Equals(op2);
-        public static bool operator !=(LLVMAttributeRef op1, LLVMAttributeRef op2) => !(op1 == op2);
+        public static bool operator !=(LLVMAttributeRef left, LLVMAttributeRef right) => !(left == right);
+
+        public override bool Equals(object obj) => obj is LLVMAttributeRef other && Equals(other);
+
+        public bool Equals(LLVMAttributeRef other) => Pointer == other.Pointer;
+
+        public override int GetHashCode() => Pointer.GetHashCode();
     }
 }

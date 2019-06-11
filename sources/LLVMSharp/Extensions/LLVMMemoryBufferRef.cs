@@ -1,18 +1,17 @@
-﻿namespace LLVMSharp
+using System;
+
+namespace LLVMSharp
 {
-    using System;
-    using API;
-    using Utilities;
-
-    partial struct LLVMMemoryBufferRef : IEquatable<LLVMMemoryBufferRef>, IHandle<MemoryBuffer>
+    public partial struct LLVMMemoryBufferRef : IEquatable<LLVMMemoryBufferRef>
     {
-        IntPtr IHandle<MemoryBuffer>.GetInternalPointer() => this.Pointer;
-        MemoryBuffer IHandle<MemoryBuffer>.ToWrapperType() => new MemoryBuffer(this);
+        public static bool operator ==(LLVMMemoryBufferRef left, LLVMMemoryBufferRef right) => left.Pointer == right.Pointer;
 
-        public override int GetHashCode() => this.Pointer.GetHashCode();
-        public override bool Equals(object obj) => obj is LLVMMemoryBufferRef t && this.Equals(t);
-        public bool Equals(LLVMMemoryBufferRef other) => this.Pointer == other.Pointer;
-        public static bool operator ==(LLVMMemoryBufferRef op1, LLVMMemoryBufferRef op2) => op1.Pointer == op2.Pointer;
-        public static bool operator !=(LLVMMemoryBufferRef op1, LLVMMemoryBufferRef op2) => !(op1 == op2);
+        public static bool operator !=(LLVMMemoryBufferRef left, LLVMMemoryBufferRef right) => !(left == right);
+
+        public override bool Equals(object obj) => obj is LLVMMemoryBufferRef other && Equals(other);
+
+        public bool Equals(LLVMMemoryBufferRef other) => Pointer == other.Pointer;
+
+        public override int GetHashCode() => Pointer.GetHashCode();
     }
 }

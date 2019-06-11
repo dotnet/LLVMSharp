@@ -1,18 +1,73 @@
-﻿namespace LLVMSharp
+using System;
+using System.Collections.Generic;
+
+namespace LLVMSharp
 {
-    using System;
-    using API;
-    using Utilities;
-
-    partial struct LLVMTargetRef : IEquatable<LLVMTargetRef>, IHandle<Target>
+    public unsafe partial struct LLVMTargetRef : IEquatable<LLVMTargetRef>
     {
-        IntPtr IHandle<Target>.GetInternalPointer() => this.Pointer;
-        Target IHandle<Target>.ToWrapperType() => new Target(this);
+        public static string DefaultTriple
+        {
+            get
+            {
+                var pDefaultTriple = LLVM.GetDefaultTargetTriple();
 
-        public override int GetHashCode() => this.Pointer.GetHashCode();
-        public override bool Equals(object obj) => obj is LLVMTargetRef t && this.Equals(t);
-        public bool Equals(LLVMTargetRef other) => this.Pointer == other.Pointer;
-        public static bool operator ==(LLVMTargetRef op1, LLVMTargetRef op2) => op1.Pointer == op2.Pointer;
-        public static bool operator !=(LLVMTargetRef op1, LLVMTargetRef op2) => !(op1 == op2);
+                if (pDefaultTriple is null)
+                {
+                    return string.Empty;
+                }
+
+                var span = new ReadOnlySpan<byte>(pDefaultTriple, int.MaxValue);
+                return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            }
+        }
+
+        public static LLVMTargetRef First => LLVM.GetFirstTarget();
+
+        public static IEnumerable<LLVMTargetRef> Targets
+        {
+            get
+            {
+                var target = First;
+
+                while (target != null)
+                {
+                    yield return target;
+                    target = target.GetNext();
+                }
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                if (Pointer == IntPtr.Zero)
+                {
+                    return string.Empty;
+                }
+
+                var pName = LLVM.GetTargetName(this);
+
+                if (pName is null)
+                {
+                    return string.Empty;
+                }
+
+                var span = new ReadOnlySpan<byte>(pName, int.MaxValue);
+                return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            }
+        }
+
+        public static bool operator ==(LLVMTargetRef left, LLVMTargetRef right) => left.Pointer == right.Pointer;
+
+        public static bool operator !=(LLVMTargetRef left, LLVMTargetRef right) => !(left == right);
+
+        public override bool Equals(object obj) => obj is LLVMTargetRef other && Equals(other);
+
+        public bool Equals(LLVMTargetRef other) => Pointer == other.Pointer;
+
+        public override int GetHashCode() => Pointer.GetHashCode();
+
+        public LLVMTargetRef GetNext() => LLVM.GetNextTarget(this);
     }
 }

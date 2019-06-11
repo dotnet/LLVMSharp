@@ -1,8 +1,7 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LLVMSharp
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void LLVMDiagnosticHandler(LLVMDiagnosticInfoRef param0, IntPtr param1);
+    public unsafe delegate void LLVMDiagnosticHandler([NativeTypeName("LLVMDiagnosticInfoRef")] LLVMOpaqueDiagnosticInfo* param0, [NativeTypeName("void *")] void* param1);
 }

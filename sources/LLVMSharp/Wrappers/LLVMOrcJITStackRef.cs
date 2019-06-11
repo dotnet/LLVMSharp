@@ -2,7 +2,7 @@ using System;
 
 namespace LLVMSharp
 {
-    public partial struct LLVMOrcJITStackRef
+    public unsafe partial struct LLVMOrcJITStackRef
     {
         public LLVMOrcJITStackRef(IntPtr pointer)
         {
@@ -10,5 +10,15 @@ namespace LLVMSharp
         }
 
         public IntPtr Pointer;
+
+        public static implicit operator LLVMOrcJITStackRef(LLVMOrcOpaqueJITStack* value)
+        {
+            return new LLVMOrcJITStackRef((IntPtr)value);
+        }
+
+        public static implicit operator LLVMOrcOpaqueJITStack*(LLVMOrcJITStackRef value)
+        {
+            return (LLVMOrcOpaqueJITStack*)value.Pointer;
+        }
     }
 }

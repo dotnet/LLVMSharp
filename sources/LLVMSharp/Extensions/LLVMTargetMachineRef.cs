@@ -1,18 +1,17 @@
-﻿namespace LLVMSharp
+using System;
+
+namespace LLVMSharp
 {
-    using System;
-    using API;
-    using Utilities;
-
-    partial struct LLVMTargetMachineRef : IEquatable<LLVMTargetMachineRef>, IHandle<TargetMachine>
+    public partial struct LLVMTargetMachineRef : IEquatable<LLVMTargetMachineRef>
     {
-        IntPtr IHandle<TargetMachine>.GetInternalPointer() => this.Pointer;
-        TargetMachine IHandle<TargetMachine>.ToWrapperType() => new TargetMachine(this);
+        public static bool operator ==(LLVMTargetMachineRef left, LLVMTargetMachineRef right) => left.Pointer == right.Pointer;
 
-        public override int GetHashCode() => this.Pointer.GetHashCode();
-        public override bool Equals(object obj) => obj is LLVMTargetMachineRef t && this.Equals(t);
-        public bool Equals(LLVMTargetMachineRef other) => this.Pointer == other.Pointer;
-        public static bool operator ==(LLVMTargetMachineRef op1, LLVMTargetMachineRef op2) => op1.Pointer == op2.Pointer;
-        public static bool operator !=(LLVMTargetMachineRef op1, LLVMTargetMachineRef op2) => !(op1 == op2);
+        public static bool operator !=(LLVMTargetMachineRef left, LLVMTargetMachineRef right) => !(left == right);
+
+        public override bool Equals(object obj) => obj is LLVMTargetMachineRef other && Equals(other);
+
+        public bool Equals(LLVMTargetMachineRef other) => Pointer == other.Pointer;
+
+        public override int GetHashCode() => Pointer.GetHashCode();
     }
 }

@@ -1,11 +1,13 @@
 using System;
-using System.Runtime.InteropServices;
 
 namespace LLVMSharp
 {
-    public partial struct LTOObjectBuffer
+    public unsafe partial struct LTOObjectBuffer
     {
-        [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] public string Buffer;
-        public IntPtr Size;
+        [NativeTypeName("const char *")]
+        public sbyte* Buffer;
+
+        [NativeTypeName("size_t")]
+        public UIntPtr Size;
     }
 }

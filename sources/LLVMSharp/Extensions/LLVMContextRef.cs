@@ -1,173 +1,256 @@
-﻿namespace LLVMSharp
+using System;
+using System.Runtime.InteropServices;
+
+namespace LLVMSharp
 {
-    using LLVMSharp.API;
-    using LLVMSharp.Utilities;
-    using System;
-
-    partial struct LLVMContextRef : IHandle<Context>, IEquatable<LLVMContextRef>
+    public unsafe partial struct LLVMContextRef : IDisposable, IEquatable<LLVMContextRef>
     {
-        IntPtr IHandle<Context>.GetInternalPointer() => this.Pointer;
-        Context IHandle<Context>.ToWrapperType() => new Context(this);
+        public static LLVMContextRef Global => LLVM.GetGlobalContext();
 
-        public override int GetHashCode() => this.Pointer.GetHashCode();
-        public override bool Equals(object obj) => obj is LLVMContextRef t && this.Equals(t);
-        public bool Equals(LLVMContextRef other) => this.Pointer == other.Pointer;
-        public static bool operator ==(LLVMContextRef op1, LLVMContextRef op2) => op1.Pointer == op2.Pointer;
-        public static bool operator !=(LLVMContextRef op1, LLVMContextRef op2) => !(op1 == op2);
+        public LLVMTypeRef DoubleType => (Pointer != IntPtr.Zero) ? LLVM.DoubleTypeInContext(this) : default;
 
-        public void ContextDispose()
+        public LLVMTypeRef FloatType => (Pointer != IntPtr.Zero) ? LLVM.FloatTypeInContext(this) : default;
+
+        public LLVMTypeRef HalfType => (Pointer != IntPtr.Zero) ? LLVM.HalfTypeInContext(this) : default;
+
+        public LLVMTypeRef Int1Type => (Pointer != IntPtr.Zero) ? LLVM.Int1TypeInContext(this) : default;
+
+        public LLVMTypeRef Int8Type => (Pointer != IntPtr.Zero) ? LLVM.Int8TypeInContext(this) : default;
+
+        public LLVMTypeRef Int16Type => (Pointer != IntPtr.Zero) ? LLVM.Int16TypeInContext(this) : default;
+
+        public LLVMTypeRef Int32Type => (Pointer != IntPtr.Zero) ? LLVM.Int32TypeInContext(this) : default;
+
+        public LLVMTypeRef Int64Type => (Pointer != IntPtr.Zero) ? LLVM.Int64TypeInContext(this) : default;
+
+        public LLVMTypeRef FP128Type => (Pointer != IntPtr.Zero) ? LLVM.FP128TypeInContext(this) : default;
+
+        public LLVMTypeRef LabelType => (Pointer != IntPtr.Zero) ? LLVM.LabelTypeInContext(this) : default;
+
+        public LLVMTypeRef PPCFP128Type => (Pointer != IntPtr.Zero) ? LLVM.PPCFP128TypeInContext(this) : default;
+
+        public LLVMTypeRef VoidType => (Pointer != IntPtr.Zero) ? LLVM.VoidTypeInContext(this) : default;
+
+        public LLVMTypeRef X86FP80Type => (Pointer != IntPtr.Zero) ? LLVM.X86FP80TypeInContext(this) : default;
+
+        public LLVMTypeRef X86MMXType => (Pointer != IntPtr.Zero) ? LLVM.X86MMXTypeInContext(this) : default;
+
+        public static bool operator ==(LLVMContextRef left, LLVMContextRef right) => left.Pointer == right.Pointer;
+
+        public static bool operator !=(LLVMContextRef left, LLVMContextRef right) => !(left == right);
+
+        public static LLVMContextRef Create() => LLVM.ContextCreate();
+
+        public LLVMBasicBlockRef AppendBasicBlock(LLVMValueRef Fn, string Name)
         {
-            LLVM.ContextDispose(this);
+            using (var marshaledName = new MarshaledString(Name))
+            {
+                return LLVM.AppendBasicBlockInContext(this, Fn, marshaledName);
+            }
         }
 
-        public uint GetMDKindIDInContext(string @Name, uint @SLen)
-        {
-            return LLVM.GetMDKindIDInContext(this, @Name, @SLen);
-        }
-
-        public LLVMTypeRef Int1TypeInContext()
-        {
-            return LLVM.Int1TypeInContext(this);
-        }
-
-        public LLVMTypeRef Int8TypeInContext()
-        {
-            return LLVM.Int8TypeInContext(this);
-        }
-
-        public LLVMTypeRef Int16TypeInContext()
-        {
-            return LLVM.Int16TypeInContext(this);
-        }
-
-        public LLVMTypeRef Int32TypeInContext()
-        {
-            return LLVM.Int32TypeInContext(this);
-        }
-
-        public LLVMTypeRef Int64TypeInContext()
-        {
-            return LLVM.Int64TypeInContext(this);
-        }
-
-        public LLVMTypeRef IntTypeInContext(uint @NumBits)
-        {
-            return LLVM.IntTypeInContext(this, @NumBits);
-        }
-
-        public LLVMTypeRef HalfTypeInContext()
-        {
-            return LLVM.HalfTypeInContext(this);
-        }
-
-        public LLVMTypeRef FloatTypeInContext()
-        {
-            return LLVM.FloatTypeInContext(this);
-        }
-
-        public LLVMTypeRef DoubleTypeInContext()
-        {
-            return LLVM.DoubleTypeInContext(this);
-        }
-
-        public LLVMTypeRef X86FP80TypeInContext()
-        {
-            return LLVM.X86FP80TypeInContext(this);
-        }
-
-        public LLVMTypeRef FP128TypeInContext()
-        {
-            return LLVM.FP128TypeInContext(this);
-        }
-
-        public LLVMTypeRef PPCFP128TypeInContext()
-        {
-            return LLVM.PPCFP128TypeInContext(this);
-        }
-
-        public LLVMTypeRef StructTypeInContext(LLVMTypeRef[] @ElementTypes, bool @Packed)
-        {
-            return LLVM.StructTypeInContext(this, @ElementTypes, @Packed);
-        }
-
-        public LLVMTypeRef StructCreateNamed(string @Name)
-        {
-            return LLVM.StructCreateNamed(this, @Name);
-        }
-
-        public LLVMTypeRef VoidTypeInContext()
-        {
-            return LLVM.VoidTypeInContext(this);
-        }
-
-        public LLVMTypeRef LabelTypeInContext()
-        {
-            return LLVM.LabelTypeInContext(this);
-        }
-
-        public LLVMTypeRef X86MMXTypeInContext()
-        {
-            return LLVM.X86MMXTypeInContext(this);
-        }
-
-        public LLVMValueRef ConstStringInContext(string @Str, uint @Length, bool @DontNullTerminate)
-        {
-            return LLVM.ConstStringInContext(this, @Str, @Length, @DontNullTerminate);
-        }
-
-        public LLVMValueRef ConstStructInContext(LLVMValueRef[] @ConstantVals, bool @Packed)
-        {
-            return LLVM.ConstStructInContext(this, @ConstantVals, @Packed);
-        }
-
-        public LLVMValueRef MDStringInContext(string @Str, uint @SLen)
-        {
-            return LLVM.MDStringInContext(this, @Str, @SLen);
-        }
-
-        public LLVMValueRef MDNodeInContext(LLVMValueRef[] @Vals)
-        {
-            return LLVM.MDNodeInContext(this, @Vals);
-        }
-
-        public LLVMBasicBlockRef AppendBasicBlockInContext(LLVMValueRef @Fn, string @Name)
-        {
-            return LLVM.AppendBasicBlockInContext(this, @Fn, @Name);
-        }
-
-        public LLVMBasicBlockRef InsertBasicBlockInContext(LLVMBasicBlockRef @BB, string @Name)
-        {
-            return LLVM.InsertBasicBlockInContext(this, @BB, @Name);
-        }
-
-        public LLVMBuilderRef CreateBuilderInContext()
+        public LLVMBuilderRef CreateBuilder()
         {
             return LLVM.CreateBuilderInContext(this);
         }
 
-        public bool ParseBitcodeInContext(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutModule, out IntPtr @OutMessage)
+        public LLVMModuleRef CreateModuleWithName(string ModuleID)
         {
-            return LLVM.ParseBitcodeInContext(this, @MemBuf, out @OutModule, out @OutMessage);
+            using (var marshaledModuleID = new MarshaledString(ModuleID))
+            {
+                return LLVM.ModuleCreateWithNameInContext(marshaledModuleID, this);
+            }
         }
 
-        public bool GetBitcodeModuleInContext(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage)
+        public LLVMTypeRef CreateNamedStruct(string Name)
         {
-            return LLVM.GetBitcodeModuleInContext(this, @MemBuf, out @OutM, out @OutMessage);
+            using (var marshaledName = new MarshaledString(Name))
+            {
+                return LLVM.StructCreateNamed(this, marshaledName);
+            }
         }
 
-        public LLVMTypeRef IntPtrTypeInContext(LLVMTargetDataRef @TD)
+        public void Dispose()
         {
-            return LLVM.IntPtrTypeInContext(this, @TD);
+            if (Pointer != IntPtr.Zero)
+            {
+                LLVM.ContextDispose(this);
+                Pointer = IntPtr.Zero;
+            }
         }
 
-        public LLVMTypeRef IntPtrTypeForASInContext(LLVMTargetDataRef @TD, uint @AS)
+        public override bool Equals(object obj) => obj is LLVMContextRef other && Equals(other);
+
+        public bool Equals(LLVMContextRef other) => Pointer == other.Pointer;
+
+        public LLVMModuleRef GetBitcodeModule(LLVMMemoryBufferRef MemBuf)
         {
-            return LLVM.IntPtrTypeForASInContext(this, @TD, @AS);
+            if (!TryGetBitcodeModule(MemBuf, out LLVMModuleRef M, out string Message))
+            {
+                throw new ExternalException(Message);
+            }
+
+            return M;
         }
 
-        public bool ParseIRInContext(LLVMMemoryBufferRef @MemBuf, out LLVMModuleRef @OutM, out IntPtr @OutMessage)
+        public LLVMValueRef GetConstString(string Str, uint Length, bool DontNullTerminate)
         {
-            return LLVM.ParseIRInContext(this, @MemBuf, out @OutM, out @OutMessage);
+            using (var marshaledStr = new MarshaledString(Str))
+            {
+                return LLVM.ConstStringInContext(this, marshaledStr, Length, DontNullTerminate ? 1 : 0);
+            }
+        }
+
+        public LLVMValueRef GetConstStruct(LLVMValueRef[] ConstantVals, bool Packed)
+        {
+            fixed (LLVMValueRef* pConstantVals = ConstantVals)
+            {
+                return LLVM.ConstStructInContext(this, (LLVMOpaqueValue**)pConstantVals, (uint)ConstantVals?.Length, Packed ? 1 : 0);
+            }
+        }
+
+        public override int GetHashCode() => Pointer.GetHashCode();
+
+        public LLVMTypeRef GetIntPtrType(LLVMTargetDataRef TD) => LLVM.IntPtrTypeInContext(this, TD);
+
+        public LLVMTypeRef GetIntPtrTypeForAS(LLVMTargetDataRef TD, uint AS) => LLVM.IntPtrTypeForASInContext(this, TD, AS);
+
+        public LLVMTypeRef GetIntType(uint NumBits) => LLVM.IntTypeInContext(this, NumBits);
+
+        public uint GetMDKindID(string Name, uint SLen)
+        {
+            using (var marshaledName = new MarshaledString(Name))
+            {
+                return LLVM.GetMDKindIDInContext(this, marshaledName, SLen);
+            }
+        }
+
+        public LLVMValueRef GetMDNode(LLVMValueRef[] Vals)
+        {
+            fixed (LLVMValueRef* pVals = Vals)
+            {
+                return LLVM.MDNodeInContext(this, (LLVMOpaqueValue**)pVals, (uint)Vals?.Length);
+            }
+        }
+
+        public LLVMValueRef GetMDString(string Str, uint SLen)
+        {
+            using (var marshaledStr = new MarshaledString(Str))
+            {
+                return LLVM.MDStringInContext(this, marshaledStr, SLen);
+            }
+        }
+
+        public LLVMTypeRef GetStructType(LLVMTypeRef[] ElementTypes, bool Packed)
+        {
+            fixed (LLVMTypeRef* pElementTypes = ElementTypes)
+            {
+                return LLVM.StructTypeInContext(this, (LLVMOpaqueType**)pElementTypes, (uint)ElementTypes?.Length, Packed ? 1 : 0);
+            }
+        }
+
+        public LLVMBasicBlockRef InsertBasicBlock(LLVMBasicBlockRef BB, string Name)
+        {
+            using (var marshaledName = new MarshaledString(Name))
+            {
+                return LLVM.InsertBasicBlockInContext(this, BB, marshaledName);
+            }
+        }
+
+        
+        public LLVMModuleRef ParseBitcode(LLVMMemoryBufferRef MemBuf)
+        {
+            if (!TryParseBitcode(MemBuf, out LLVMModuleRef M, out string Message))
+            {
+                throw new ExternalException(Message);
+            }
+
+            return M;
+        }
+
+        public LLVMModuleRef ParseIR(LLVMMemoryBufferRef MemBuf)
+        {
+            if (!TryParseIR(MemBuf, out LLVMModuleRef M, out string Message))
+            {
+                throw new ExternalException(Message);
+            }
+
+            return M;
+        }
+
+        public void SetDiagnosticHandler(LLVMDiagnosticHandler Handler, IntPtr DiagnosticContext)
+        {
+            var pHandler = Marshal.GetFunctionPointerForDelegate(Handler);
+            LLVM.ContextSetDiagnosticHandler(this, pHandler, (void*)DiagnosticContext);
+        }
+
+        public void SetYieldCallback(LLVMYieldCallback Callback, IntPtr OpaqueHandle)
+        {
+            var pCallback = Marshal.GetFunctionPointerForDelegate(Callback);
+            LLVM.ContextSetYieldCallback(this, pCallback, (void*)OpaqueHandle);
+        }
+
+        public bool TryGetBitcodeModule(LLVMMemoryBufferRef MemBuf, out LLVMModuleRef OutM, out string OutMessage)
+        {
+            fixed (LLVMModuleRef* pOutM = &OutM)
+            {
+                sbyte* pMessage;
+                var result = LLVM.GetBitcodeModuleInContext(this, MemBuf, (LLVMOpaqueModule**)pOutM, &pMessage);
+
+                if (pMessage is null)
+                {
+                    OutMessage = string.Empty;
+                }
+                else
+                {
+                    var span = new ReadOnlySpan<byte>(pMessage, int.MaxValue);
+                    OutMessage = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                }
+
+                return result == 0;
+            }
+        }
+
+        public bool TryParseBitcode(LLVMMemoryBufferRef MemBuf, out LLVMModuleRef OutModule, out string OutMessage)
+        {
+            fixed (LLVMModuleRef* pOutModule = &OutModule)
+            {
+                sbyte* pMessage;
+                var result = LLVM.ParseBitcodeInContext(this, MemBuf, (LLVMOpaqueModule**)pOutModule, &pMessage);
+
+                if (pMessage is null)
+                {
+                    OutMessage = string.Empty;
+                }
+                else
+                {
+                    var span = new ReadOnlySpan<byte>(pMessage, int.MaxValue);
+                    OutMessage = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                }
+
+                return result == 0;
+            }
+        }
+
+        public bool TryParseIR(LLVMMemoryBufferRef MemBuf, out LLVMModuleRef OutM, out string OutMessage)
+        {
+            fixed (LLVMModuleRef* pOutM = &OutM)
+            {
+                sbyte* pMessage;
+                var result = LLVM.ParseIRInContext(this, MemBuf, (LLVMOpaqueModule**)pOutM, &pMessage);
+
+                if (pMessage is null)
+                {
+                    OutMessage = string.Empty;
+                }
+                else
+                {
+                    var span = new ReadOnlySpan<byte>(pMessage, int.MaxValue);
+                    OutMessage = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                }
+
+                return result == 0;
+            }
         }
     }
 }

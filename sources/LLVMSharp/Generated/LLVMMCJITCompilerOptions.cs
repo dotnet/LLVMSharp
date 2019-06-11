@@ -1,11 +1,19 @@
 namespace LLVMSharp
 {
-    public partial struct LLVMMCJITCompilerOptions
+    public unsafe partial struct LLVMMCJITCompilerOptions
     {
+        [NativeTypeName("unsigned int")]
         public uint OptLevel;
+
         public LLVMCodeModel CodeModel;
-        public LLVMBool NoFramePointerElim;
-        public LLVMBool EnableFastISel;
-        public LLVMMCJITMemoryManagerRef MCJMM;
+
+        [NativeTypeName("LLVMBool")]
+        public int NoFramePointerElim;
+
+        [NativeTypeName("LLVMBool")]
+        public int EnableFastISel;
+
+        [NativeTypeName("LLVMMCJITMemoryManagerRef")]
+        public LLVMOpaqueMCJITMemoryManager* MCJMM;
     }
 }

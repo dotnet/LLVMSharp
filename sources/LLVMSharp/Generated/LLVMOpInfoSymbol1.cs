@@ -1,11 +1,14 @@
-using System.Runtime.InteropServices;
-
 namespace LLVMSharp
 {
-    public partial struct LLVMOpInfoSymbol1
+    public unsafe partial struct LLVMOpInfoSymbol1
     {
+        [NativeTypeName("uint64_t")]
         public ulong Present;
-        [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] public string Name;
+
+        [NativeTypeName("const char *")]
+        public sbyte* Name;
+
+        [NativeTypeName("uint64_t")]
         public ulong Value;
     }
 }

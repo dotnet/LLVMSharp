@@ -2,7 +2,7 @@ using System;
 
 namespace LLVMSharp
 {
-    public partial struct LLVMDIBuilderRef
+    public unsafe partial struct LLVMDIBuilderRef
     {
         public LLVMDIBuilderRef(IntPtr pointer)
         {
@@ -10,5 +10,15 @@ namespace LLVMSharp
         }
 
         public IntPtr Pointer;
+
+        public static implicit operator LLVMDIBuilderRef(LLVMOpaqueDIBuilder* value)
+        {
+            return new LLVMDIBuilderRef((IntPtr)value);
+        }
+
+        public static implicit operator LLVMOpaqueDIBuilder*(LLVMDIBuilderRef value)
+        {
+            return (LLVMOpaqueDIBuilder*)value.Pointer;
+        }
     }
 }

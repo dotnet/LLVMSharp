@@ -2,7 +2,7 @@ using System;
 
 namespace LLVMSharp
 {
-    public partial struct LLVMSectionIteratorRef
+    public unsafe partial struct LLVMSectionIteratorRef
     {
         public LLVMSectionIteratorRef(IntPtr pointer)
         {
@@ -10,5 +10,15 @@ namespace LLVMSharp
         }
 
         public IntPtr Pointer;
+
+        public static implicit operator LLVMSectionIteratorRef(LLVMOpaqueSectionIterator* value)
+        {
+            return new LLVMSectionIteratorRef((IntPtr)value);
+        }
+
+        public static implicit operator LLVMOpaqueSectionIterator*(LLVMSectionIteratorRef value)
+        {
+            return (LLVMOpaqueSectionIterator*)value.Pointer;
+        }
     }
 }

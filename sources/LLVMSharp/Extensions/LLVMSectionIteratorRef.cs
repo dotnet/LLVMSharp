@@ -1,18 +1,17 @@
-﻿namespace LLVMSharp
+using System;
+
+namespace LLVMSharp
 {
-    using System;
-    using API;
-    using Utilities;
-
-    partial struct LLVMSectionIteratorRef : IEquatable<LLVMSectionIteratorRef>, IHandle<SectionIterator>
+    public partial struct LLVMSectionIteratorRef : IEquatable<LLVMSectionIteratorRef>
     {
-        IntPtr IHandle<SectionIterator>.GetInternalPointer() => this.Pointer;
-        SectionIterator IHandle<SectionIterator>.ToWrapperType() => new SectionIterator(this);
+        public static bool operator ==(LLVMSectionIteratorRef left, LLVMSectionIteratorRef right) => left.Pointer == right.Pointer;
 
-        public override int GetHashCode() => this.Pointer.GetHashCode();
-        public override bool Equals(object obj) => obj is LLVMSectionIteratorRef t && this.Equals(t);
-        public bool Equals(LLVMSectionIteratorRef other) => this.Pointer == other.Pointer;
-        public static bool operator ==(LLVMSectionIteratorRef op1, LLVMSectionIteratorRef op2) => op1.Pointer == op2.Pointer;
-        public static bool operator !=(LLVMSectionIteratorRef op1, LLVMSectionIteratorRef op2) => !(op1 == op2);
+        public static bool operator !=(LLVMSectionIteratorRef left, LLVMSectionIteratorRef right) => !(left == right);
+
+        public override bool Equals(object obj) => obj is LLVMSectionIteratorRef other && Equals(other);
+
+        public bool Equals(LLVMSectionIteratorRef other) => Pointer == other.Pointer;
+
+        public override int GetHashCode() => Pointer.GetHashCode();
     }
 }

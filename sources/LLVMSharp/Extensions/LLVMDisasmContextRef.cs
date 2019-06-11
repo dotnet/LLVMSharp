@@ -1,18 +1,17 @@
-﻿namespace LLVMSharp
+using System;
+
+namespace LLVMSharp
 {
-    using System;
-    using API;
-    using Utilities;
-
-    partial struct LLVMDisasmContextRef : IEquatable<LLVMDisasmContextRef>, IHandle<DisasmContext>
+    public partial struct LLVMDisasmContextRef : IEquatable<LLVMDisasmContextRef>
     {
-        IntPtr IHandle<DisasmContext>.GetInternalPointer() => this.Pointer;
-        DisasmContext IHandle<DisasmContext>.ToWrapperType() => new DisasmContext(this);
+        public static bool operator ==(LLVMDisasmContextRef left, LLVMDisasmContextRef right) => left.Pointer == right.Pointer;
 
-        public override int GetHashCode() => this.Pointer.GetHashCode();
-        public override bool Equals(object obj) => obj is LLVMDisasmContextRef t && this.Equals(t);
-        public bool Equals(LLVMDisasmContextRef other) => this.Pointer == other.Pointer;
-        public static bool operator ==(LLVMDisasmContextRef op1, LLVMDisasmContextRef op2) => op1.Pointer == op2.Pointer;
-        public static bool operator !=(LLVMDisasmContextRef op1, LLVMDisasmContextRef op2) => !(op1 == op2);
+        public static bool operator !=(LLVMDisasmContextRef left, LLVMDisasmContextRef right) => !(left == right);
+
+        public override bool Equals(object obj) => obj is LLVMDisasmContextRef other && Equals(other);
+
+        public bool Equals(LLVMDisasmContextRef other) => Pointer == other.Pointer;
+
+        public override int GetHashCode() => Pointer.GetHashCode();
     }
 }

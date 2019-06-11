@@ -2,7 +2,7 @@ using System;
 
 namespace LLVMSharp
 {
-    public partial struct LLVMExecutionEngineRef
+    public unsafe partial struct LLVMExecutionEngineRef
     {
         public LLVMExecutionEngineRef(IntPtr pointer)
         {
@@ -10,5 +10,15 @@ namespace LLVMSharp
         }
 
         public IntPtr Pointer;
+
+        public static implicit operator LLVMExecutionEngineRef(LLVMOpaqueExecutionEngine* value)
+        {
+            return new LLVMExecutionEngineRef((IntPtr)value);
+        }
+
+        public static implicit operator LLVMOpaqueExecutionEngine*(LLVMExecutionEngineRef value)
+        {
+            return (LLVMOpaqueExecutionEngine*)value.Pointer;
+        }
     }
 }

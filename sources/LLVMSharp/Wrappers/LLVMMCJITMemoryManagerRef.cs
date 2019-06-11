@@ -2,7 +2,7 @@ using System;
 
 namespace LLVMSharp
 {
-    public partial struct LLVMMCJITMemoryManagerRef
+    public unsafe partial struct LLVMMCJITMemoryManagerRef
     {
         public LLVMMCJITMemoryManagerRef(IntPtr pointer)
         {
@@ -10,5 +10,15 @@ namespace LLVMSharp
         }
 
         public IntPtr Pointer;
+
+        public static implicit operator LLVMMCJITMemoryManagerRef(LLVMOpaqueMCJITMemoryManager* value)
+        {
+            return new LLVMMCJITMemoryManagerRef((IntPtr)value);
+        }
+
+        public static implicit operator LLVMOpaqueMCJITMemoryManager*(LLVMMCJITMemoryManagerRef value)
+        {
+            return (LLVMOpaqueMCJITMemoryManager*)value.Pointer;
+        }
     }
 }

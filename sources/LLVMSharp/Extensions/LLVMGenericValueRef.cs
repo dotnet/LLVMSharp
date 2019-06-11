@@ -1,18 +1,21 @@
-﻿namespace LLVMSharp
+using System;
+
+namespace LLVMSharp
 {
-    using System;
-    using API;
-    using Utilities;
-
-    partial struct LLVMGenericValueRef : IEquatable<LLVMGenericValueRef>, IHandle<GenericValue>
+    public unsafe partial struct LLVMGenericValueRef : IEquatable<LLVMGenericValueRef>
     {
-        IntPtr IHandle<GenericValue>.GetInternalPointer() => this.Pointer;
-        GenericValue IHandle<GenericValue>.ToWrapperType() => new GenericValue(this);
+        public static bool operator ==(LLVMGenericValueRef left, LLVMGenericValueRef right) => left.Pointer == right.Pointer;
 
-        public override int GetHashCode() => this.Pointer.GetHashCode();
-        public override bool Equals(object obj) => obj is LLVMGenericValueRef t && this.Equals(t);
-        public bool Equals(LLVMGenericValueRef other) => this.Pointer == other.Pointer;
-        public static bool operator ==(LLVMGenericValueRef op1, LLVMGenericValueRef op2) => op1.Pointer == op2.Pointer;
-        public static bool operator !=(LLVMGenericValueRef op1, LLVMGenericValueRef op2) => !(op1 == op2);
+        public static bool operator !=(LLVMGenericValueRef left, LLVMGenericValueRef right) => !(left == right);
+
+        public LLVMGenericValueRef CreateInt(LLVMTypeRef Ty, ulong N, bool IsSigned) => LLVM.CreateGenericValueOfInt(Ty, N, IsSigned ? 1 : 0);
+
+        public LLVMGenericValueRef CreateFloat(LLVMTypeRef Ty, double N) => LLVM.CreateGenericValueOfFloat(Ty, N);
+
+        public override bool Equals(object obj) => obj is LLVMGenericValueRef other && Equals(other);
+
+        public bool Equals(LLVMGenericValueRef other) => Pointer == other.Pointer;
+
+        public override int GetHashCode() => Pointer.GetHashCode();
     }
 }

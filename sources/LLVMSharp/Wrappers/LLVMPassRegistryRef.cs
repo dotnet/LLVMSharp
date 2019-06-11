@@ -2,7 +2,7 @@ using System;
 
 namespace LLVMSharp
 {
-    public partial struct LLVMPassRegistryRef
+    public unsafe partial struct LLVMPassRegistryRef
     {
         public LLVMPassRegistryRef(IntPtr pointer)
         {
@@ -10,5 +10,15 @@ namespace LLVMSharp
         }
 
         public IntPtr Pointer;
+
+        public static implicit operator LLVMPassRegistryRef(LLVMOpaquePassRegistry* value)
+        {
+            return new LLVMPassRegistryRef((IntPtr)value);
+        }
+
+        public static implicit operator LLVMOpaquePassRegistry*(LLVMPassRegistryRef value)
+        {
+            return (LLVMOpaquePassRegistry*)value.Pointer;
+        }
     }
 }

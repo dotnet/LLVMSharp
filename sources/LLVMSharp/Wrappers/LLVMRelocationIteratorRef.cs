@@ -2,7 +2,7 @@ using System;
 
 namespace LLVMSharp
 {
-    public partial struct LLVMRelocationIteratorRef
+    public unsafe partial struct LLVMRelocationIteratorRef
     {
         public LLVMRelocationIteratorRef(IntPtr pointer)
         {
@@ -10,5 +10,15 @@ namespace LLVMSharp
         }
 
         public IntPtr Pointer;
+
+        public static implicit operator LLVMRelocationIteratorRef(LLVMOpaqueRelocationIterator* value)
+        {
+            return new LLVMRelocationIteratorRef((IntPtr)value);
+        }
+
+        public static implicit operator LLVMOpaqueRelocationIterator*(LLVMRelocationIteratorRef value)
+        {
+            return (LLVMOpaqueRelocationIterator*)value.Pointer;
+        }
     }
 }

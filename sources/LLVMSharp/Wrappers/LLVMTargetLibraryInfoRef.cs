@@ -2,7 +2,7 @@ using System;
 
 namespace LLVMSharp
 {
-    public partial struct LLVMTargetLibraryInfoRef
+    public unsafe partial struct LLVMTargetLibraryInfoRef
     {
         public LLVMTargetLibraryInfoRef(IntPtr pointer)
         {
@@ -10,5 +10,15 @@ namespace LLVMSharp
         }
 
         public IntPtr Pointer;
+
+        public static implicit operator LLVMTargetLibraryInfoRef(LLVMOpaqueTargetLibraryInfotData* value)
+        {
+            return new LLVMTargetLibraryInfoRef((IntPtr)value);
+        }
+
+        public static implicit operator LLVMOpaqueTargetLibraryInfotData*(LLVMTargetLibraryInfoRef value)
+        {
+            return (LLVMOpaqueTargetLibraryInfotData*)value.Pointer;
+        }
     }
 }

@@ -1,18 +1,17 @@
-﻿namespace LLVMSharp
+using System;
+
+namespace LLVMSharp
 {
-    using System;
-    using API;
-    using Utilities;
-
-    partial struct LLVMRelocationIteratorRef : IEquatable<LLVMRelocationIteratorRef>, IHandle<RelocationIterator>
+    public partial struct LLVMRelocationIteratorRef : IEquatable<LLVMRelocationIteratorRef>
     {
-        IntPtr IHandle<RelocationIterator>.GetInternalPointer() => this.Pointer;
-        RelocationIterator IHandle<RelocationIterator>.ToWrapperType() => new RelocationIterator(this);
+        public static bool operator ==(LLVMRelocationIteratorRef left, LLVMRelocationIteratorRef right) => left.Pointer == right.Pointer;
 
-        public override int GetHashCode() => this.Pointer.GetHashCode();
-        public override bool Equals(object obj) => obj is LLVMRelocationIteratorRef t && this.Equals(t);
-        public bool Equals(LLVMRelocationIteratorRef other) => this.Pointer == other.Pointer;
-        public static bool operator ==(LLVMRelocationIteratorRef op1, LLVMRelocationIteratorRef op2) => op1.Pointer == op2.Pointer;
-        public static bool operator !=(LLVMRelocationIteratorRef op1, LLVMRelocationIteratorRef op2) => !(op1 == op2);
+        public static bool operator !=(LLVMRelocationIteratorRef left, LLVMRelocationIteratorRef right) => !(left == right);
+
+        public override bool Equals(object obj) => obj is LLVMRelocationIteratorRef other && Equals(other);
+
+        public bool Equals(LLVMRelocationIteratorRef other) => Pointer == other.Pointer;
+
+        public override int GetHashCode() => Pointer.GetHashCode();
     }
 }

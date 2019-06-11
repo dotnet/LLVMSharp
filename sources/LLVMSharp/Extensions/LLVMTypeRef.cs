@@ -1,157 +1,221 @@
-﻿namespace LLVMSharp
+using System;
+
+namespace LLVMSharp
 {
-    using LLVMSharp.Utilities;
-    using System;
-    using System.Runtime.InteropServices;
-    using Type = API.Type;
-
-    partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>, IHandle<Type>
+    public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
     {
-        IntPtr IHandle<Type>.GetInternalPointer() => this.Pointer;
-        Type IHandle<Type>.ToWrapperType() => Type.Create(this);
+        public static LLVMTypeRef Double => LLVM.DoubleType();
 
-        public override int GetHashCode() => this.Pointer.GetHashCode();
-        public override bool Equals(object obj) => obj is LLVMTypeRef t && this.Equals(t);
-        public bool Equals(LLVMTypeRef other) => this.Pointer == other.Pointer;
-        public static bool operator ==(LLVMTypeRef op1, LLVMTypeRef op2) => op1.Pointer == op2.Pointer;
-        public static bool operator !=(LLVMTypeRef op1, LLVMTypeRef op2) => !(op1 == op2);
+        public static LLVMTypeRef Float => LLVM.FloatType();
 
-        public LLVMTypeKind TypeKind
+        public static LLVMTypeRef FP128 => LLVM.FP128Type();
+
+        public static LLVMTypeRef Half => LLVM.HalfType();
+
+        public static LLVMTypeRef Int1 => LLVM.Int1Type();
+
+        public static LLVMTypeRef Int8 => LLVM.Int8Type();
+
+        public static LLVMTypeRef Int16 => LLVM.Int16Type();
+
+        public static LLVMTypeRef Int32 => LLVM.Int32Type();
+
+        public static LLVMTypeRef Int64 => LLVM.Int64Type();
+
+        public static LLVMTypeRef Label => LLVM.LabelType();
+
+        public static LLVMTypeRef PPCFP128 => LLVM.PPCFP128Type();
+
+        public static LLVMTypeRef Void => LLVM.VoidType();
+
+        public static LLVMTypeRef X86FP80 => LLVM.X86FP80Type();
+
+        public static LLVMTypeRef X86MMX => LLVM.X86MMXType();
+
+        public LLVMValueRef AlignOf => (Pointer != IntPtr.Zero) ? LLVM.AlignOf(this) : default;
+
+        public uint ArrayLength => (Pointer != IntPtr.Zero) ? LLVM.GetArrayLength(this) : default;
+
+        public LLVMContextRef Context => (Pointer != IntPtr.Zero) ? LLVM.GetTypeContext(this) : default;
+
+        public LLVMTypeRef ElementType => (Pointer != IntPtr.Zero) ? LLVM.GetElementType(this) : default;
+
+        public uint IntWidth => (Pointer != IntPtr.Zero) ? LLVM.GetIntTypeWidth(this) : default;
+
+        public bool IsFunctionVarArg => (Pointer != IntPtr.Zero) ? LLVM.IsFunctionVarArg(this) != 0 : default;
+
+        public bool IsOpaqueStruct => (Pointer != IntPtr.Zero) ? LLVM.IsOpaqueStruct(this) != 0 : default;
+
+        public bool IsPackedStruct => (Pointer != IntPtr.Zero) ? LLVM.IsPackedStruct(this) != 0 : default;
+
+        public bool IsSized => (Pointer != IntPtr.Zero) ? LLVM.TypeIsSized(this) != 0 : default;
+
+        public LLVMTypeKind Kind => (Pointer != IntPtr.Zero) ? LLVM.GetTypeKind(this) : default;
+
+        public LLVMTypeRef[] ParamTypes
         {
-            get { return LLVM.GetTypeKind(this); }
+            get
+            {
+                if (Pointer == IntPtr.Zero)
+                {
+                    return Array.Empty<LLVMTypeRef>();
+                }
+
+                var Dest = new LLVMTypeRef[ParamTypesCount];
+
+                fixed (LLVMTypeRef* pDest = Dest)
+                {
+                    LLVM.GetParamTypes(this, (LLVMOpaqueType**)&pDest);
+                }
+
+                return Dest;
+            }
         }
 
-        public bool TypeIsSized
+        public uint ParamTypesCount => (Pointer != IntPtr.Zero) ? LLVM.CountParamTypes(this) : default;
+
+        public uint PointerAddressSpace => (Pointer != IntPtr.Zero) ? LLVM.GetPointerAddressSpace(this) : default;
+
+        public LLVMTypeRef ReturnType => (Pointer != IntPtr.Zero) ? LLVM.GetReturnType(this) : default;
+
+        public LLVMValueRef SizeOf => (Pointer != IntPtr.Zero) ? LLVM.SizeOf(this) : default;
+
+        public LLVMTypeRef[] StructElementTypes
         {
-            get { return LLVM.TypeIsSized(this); }
+            get
+            {
+                if (Pointer == IntPtr.Zero)
+                {
+                    return Array.Empty<LLVMTypeRef>();
+                }
+
+                var Dest = new LLVMTypeRef[StructElementTypesCount];
+
+                fixed (LLVMTypeRef* pDest = Dest)
+                {
+                    LLVM.GetStructElementTypes(this, (LLVMOpaqueType**)&pDest);
+                }
+
+                return Dest;
+            }
         }
 
-        public LLVMContextRef GetTypeContext()
+        public uint StructElementTypesCount => (Pointer != IntPtr.Zero) ? LLVM.CountStructElementTypes(this) : default;
+
+        public string StructName
         {
-            return LLVM.GetTypeContext(this);
+            get
+            {
+                if (Pointer == IntPtr.Zero)
+                {
+                    return string.Empty;
+                }
+
+                var pStructName = LLVM.GetStructName(this);
+
+                if (pStructName is null)
+                {
+                    return string.Empty;
+                }
+
+                var span = new ReadOnlySpan<byte>(pStructName, int.MaxValue);
+                return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            }
         }
 
-        public void Dump()
+        public LLVMTypeRef[] Subtypes
         {
-            LLVM.DumpType(this);
+            get
+            {
+                if (Pointer == IntPtr.Zero)
+                {
+                    return Array.Empty<LLVMTypeRef>();
+                }
+
+                var Arr = new LLVMTypeRef[SubtypesCount];
+
+                fixed (LLVMTypeRef* pArr = Arr)
+                {
+                    LLVM.GetSubtypes(this, (LLVMOpaqueType**)&pArr);
+                }
+
+                return Arr;
+            }
         }
 
-        public string PrintTypeToString()
+        public uint SubtypesCount => (Pointer != IntPtr.Zero) ? LLVM.GetNumContainedTypes(this) : default;
+
+        public LLVMValueRef Undef => (Pointer != IntPtr.Zero) ? LLVM.GetUndef(this) : default;
+
+        public uint VectorSize => (Pointer != IntPtr.Zero) ? LLVM.GetVectorSize(this) : default;
+
+        public static bool operator ==(LLVMTypeRef left, LLVMTypeRef right) => left.Pointer == right.Pointer;
+
+        public static bool operator !=(LLVMTypeRef left, LLVMTypeRef right) => !(left == right);
+
+        public static LLVMTypeRef CreateFunction(LLVMTypeRef ReturnType, LLVMTypeRef[] ParamTypes, bool IsVarArg = false)
         {
-            IntPtr ptr = LLVM.PrintTypeToString(this);
-            string retval = Marshal.PtrToStringAnsi(ptr) ?? "";
-            LLVM.DisposeMessage(ptr);
-            return retval;
+            fixed (LLVMTypeRef* pParamTypes = ParamTypes)
+            {
+                return LLVM.FunctionType(ReturnType, (LLVMOpaqueType**)pParamTypes, (uint)ParamTypes?.Length, IsVarArg ? 1 : 0);
+            }
         }
 
-        public uint GetIntTypeWidth()
+        public static LLVMTypeRef CreateArray(LLVMTypeRef ElementType, uint ElementCount) => LLVM.ArrayType(ElementType, ElementCount);
+
+        public static LLVMTypeRef CreateInt(uint NumBits) => LLVM.IntType(NumBits);
+
+        public static LLVMTypeRef CreateIntPtr(LLVMTargetDataRef TD) => LLVM.IntPtrType(TD);
+
+        public static LLVMTypeRef CreateIntPtrForAS(LLVMTargetDataRef TD, uint AS) => LLVM.IntPtrTypeForAS(TD, AS);
+
+        public static LLVMTypeRef CreatePointer(LLVMTypeRef ElementType, uint AddressSpace) => LLVM.PointerType(ElementType, AddressSpace);
+
+        public static LLVMTypeRef CreateStruct(LLVMTypeRef[] ElementTypes, bool Packed)
         {
-            return LLVM.GetIntTypeWidth(this);
+            fixed (LLVMTypeRef* pElementTypes = ElementTypes)
+            {
+                return LLVM.StructType((LLVMOpaqueType**)pElementTypes, (uint)ElementTypes?.Length, Packed ? 1 : 0);
+            }
         }
 
-        public bool IsFunctionVarArg
+        public static LLVMTypeRef CreateVector(LLVMTypeRef ElementType, uint ElementCount) => LLVM.VectorType(ElementType, ElementCount);
+
+        public void Dump() => LLVM.DumpType(this);
+
+        public override bool Equals(object obj) => obj is LLVMTypeRef other && Equals(other);
+
+        public bool Equals(LLVMTypeRef other) => Pointer == other.Pointer;
+
+        public double GenericValueToFloat(LLVMGenericValueRef GenVal) => LLVM.GenericValueToFloat(this, GenVal);
+
+        public override int GetHashCode() => Pointer.GetHashCode();
+
+        public string PrintToString()
         {
-            get { return LLVM.IsFunctionVarArg(this); }
+            var pStr = LLVM.PrintTypeToString(this);
+
+            if (pStr is null)
+            {
+                return string.Empty;
+            }
+            var span = new ReadOnlySpan<byte>(pStr, int.MaxValue);
+
+            var result = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            LLVM.DisposeMessage(pStr);
+            return result;
         }
 
-        public LLVMTypeRef GetReturnType()
+        public LLVMTypeRef StructGetTypeAtIndex(uint index) => LLVM.StructGetTypeAtIndex(this, index);
+
+        public void StructSetBody(LLVMTypeRef[] ElementTypes, bool Packed)
         {
-            return LLVM.GetReturnType(this);
+            fixed (LLVMTypeRef* pElementTypes = ElementTypes)
+            {
+                LLVM.StructSetBody(this, (LLVMOpaqueType**)pElementTypes, (uint)ElementTypes?.Length, Packed ? 1 : 0);
+            }
         }
 
-        public uint CountParamTypes()
-        {
-            return LLVM.CountParamTypes(this);
-        }
-
-        public LLVMTypeRef[] GetParamTypes()
-        {
-            return LLVM.GetParamTypes(this);
-        }
-
-        public LLVMTypeRef[] GetSubtypes()
-        {
-            return LLVM.GetSubtypes(this);
-        }
-
-        public string GetStructName()
-        {
-            return LLVM.GetStructName(this);
-        }
-
-        public void StructSetBody(LLVMTypeRef[] @ElementTypes, bool @Packed)
-        {
-            LLVM.StructSetBody(this, @ElementTypes, @Packed);
-        }
-
-        public uint CountStructElementTypes()
-        {
-            return LLVM.CountStructElementTypes(this);
-        }
-
-        public LLVMTypeRef[] GetStructElementTypes() 
-        {
-            return LLVM.GetStructElementTypes(this);
-        }
-
-        public LLVMTypeRef StructGetTypeAtIndex(uint @index)
-        {
-            return LLVM.StructGetTypeAtIndex(this, @index);
-        }
-
-        public bool IsPackedStruct
-        {
-            get { return LLVM.IsPackedStruct(this); }
-        }
-
-        public bool IsOpaqueStruct
-        {
-            get { return LLVM.IsOpaqueStruct(this); }
-        }
-
-        public LLVMTypeRef GetElementType()
-        {
-            return LLVM.GetElementType(this);
-        }
-
-        public uint GetArrayLength()
-        {
-            return LLVM.GetArrayLength(this);
-        }
-
-        public uint GetPointerAddressSpace()
-        {
-            return LLVM.GetPointerAddressSpace(this);
-        }
-
-        public uint GetVectorSize()
-        {
-            return LLVM.GetVectorSize(this);
-        }
-
-        public LLVMValueRef GetUndef()
-        {
-            return LLVM.GetUndef(this);
-        }
-
-        public LLVMValueRef AlignOf()
-        {
-            return LLVM.AlignOf(this);
-        }
-
-        public LLVMValueRef SizeOf()
-        {
-            return LLVM.SizeOf(this);
-        }
-
-        public double GenericValueToFloat(LLVMGenericValueRef @GenVal)
-        {
-            return LLVM.GenericValueToFloat(this, @GenVal);
-        }
-
-        public override string ToString()
-        {
-            return this.PrintTypeToString();
-        }
+        public override string ToString() => (Pointer != IntPtr.Zero) ? PrintToString() : string.Empty;
     }
 }

@@ -1,18 +1,17 @@
-﻿namespace LLVMSharp
+using System;
+
+namespace LLVMSharp
 {
-    using System;
-    using API;
-    using Utilities;
-
-    partial struct LLVMPassManagerBuilderRef : IEquatable<LLVMPassManagerBuilderRef>, IHandle<PassManagerBuilder>
+    public partial struct LLVMPassManagerBuilderRef : IEquatable<LLVMPassManagerBuilderRef>
     {
-        IntPtr IHandle<PassManagerBuilder>.GetInternalPointer() => this.Pointer;
-        PassManagerBuilder IHandle<PassManagerBuilder>.ToWrapperType() => new PassManagerBuilder(this);
+        public static bool operator ==(LLVMPassManagerBuilderRef left, LLVMPassManagerBuilderRef right) => left.Pointer == right.Pointer;
 
-        public override int GetHashCode() => this.Pointer.GetHashCode();
-        public override bool Equals(object obj) => obj is LLVMPassManagerBuilderRef t && this.Equals(t);
-        public bool Equals(LLVMPassManagerBuilderRef other) => this.Pointer == other.Pointer;
-        public static bool operator ==(LLVMPassManagerBuilderRef op1, LLVMPassManagerBuilderRef op2) => op1.Pointer == op2.Pointer;
-        public static bool operator !=(LLVMPassManagerBuilderRef op1, LLVMPassManagerBuilderRef op2) => !(op1 == op2);
+        public static bool operator !=(LLVMPassManagerBuilderRef left, LLVMPassManagerBuilderRef right) => !(left == right);
+
+        public override bool Equals(object obj) => obj is LLVMPassManagerBuilderRef other && Equals(other);
+
+        public bool Equals(LLVMPassManagerBuilderRef other) => Pointer == other.Pointer;
+
+        public override int GetHashCode() => Pointer.GetHashCode();
     }
 }
