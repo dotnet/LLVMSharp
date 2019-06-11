@@ -1,14 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+
 namespace LLVMSharp.UnitTests
 {
-    using LLVMSharp.API;
-    using LLVMSharp.API.Types;
-    using LLVMSharp.API.Values.Constants.GlobalValues.GlobalObjects;
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using Module = LLVMSharp.API.Module;
-    using Type = LLVMSharp.API.Type;
-
     public static class Utilities
     {
         public static void EnsurePropertiesWork(this object obj)
@@ -20,13 +15,13 @@ namespace LLVMSharp.UnitTests
             }
         }
 
-        public static Function AddFunction(this Module module, Type returnType, string name, Type[] parameterTypes, Action<Function, IRBuilder> action)
+        public static LLVMValueRef AddFunction(this LLVMModuleRef module, LLVMTypeRef returnType, string name, LLVMTypeRef[] parameterTypes, Action<LLVMValueRef, LLVMBuilderRef> action)
         {
-            var type = FunctionType.Create(returnType, parameterTypes);
+            var type = LLVMTypeRef.CreateFunction(returnType, parameterTypes);
             var func = module.AddFunction(name, type);
             var block = func.AppendBasicBlock(string.Empty);
-            var builder = IRBuilder.Create(module.Context);
-            builder.PositionBuilderAtEnd(block);
+            var builder = module.Context.CreateBuilder();
+            builder.PositionAtEnd(block);
             action(func, builder);
             return func;
         }

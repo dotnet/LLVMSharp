@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="libLLVM" />
+    <PackageReference Include="System.Memory" />
   </ItemGroup>
 
 </Project>
