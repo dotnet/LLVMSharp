@@ -1,6 +1,5 @@
-using LLVMSharp.API;
-using NUnit.Framework;
 using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace LLVMSharp.UnitTests
 {
@@ -10,30 +9,30 @@ namespace LLVMSharp.UnitTests
         public void IntSizes([Values(1, 8, 16, 32, 64)] int width)
         {
             var uWidth = (uint)width;
-            var t = Context.Global.IntType(uWidth);
-            Assert.AreEqual(uWidth, t.BitWidth);
+            var t = LLVMContextRef.Global.GetIntType(uWidth);
+            Assert.AreEqual(uWidth, t.IntWidth);
         }
 
         [Test]
         public void FloatingTypes()
         {
-            var dic = new Dictionary<Type, bool>
+            var dic = new Dictionary<LLVMTypeRef, LLVMTypeKind>
             {
-                { Context.Global.VoidType, false },
-                { Context.Global.Int32Type, false },
-                { Context.Global.X86MMXType, false },
-                { Context.Global.LabelType, false },
+                { LLVMContextRef.Global.VoidType, LLVMTypeKind.LLVMVoidTypeKind },
+                { LLVMContextRef.Global.Int32Type, LLVMTypeKind.LLVMIntegerTypeKind },
+                { LLVMContextRef.Global.X86MMXType, LLVMTypeKind.LLVMX86_MMXTypeKind },
+                { LLVMContextRef.Global.LabelType, LLVMTypeKind.LLVMLabelTypeKind },
 
-                { Context.Global.HalfType, true },
-                { Context.Global.FloatType, true },
-                { Context.Global.DoubleType, true },
-                { Context.Global.FP128Type, true },
-                { Context.Global.X86FP80Type, true },
-                { Context.Global.PPCFP128Type, true },
+                { LLVMContextRef.Global.HalfType, LLVMTypeKind.LLVMHalfTypeKind },
+                { LLVMContextRef.Global.FloatType, LLVMTypeKind.LLVMFloatTypeKind },
+                { LLVMContextRef.Global.DoubleType, LLVMTypeKind.LLVMDoubleTypeKind },
+                { LLVMContextRef.Global.FP128Type, LLVMTypeKind.LLVMFP128TypeKind },
+                { LLVMContextRef.Global.X86FP80Type, LLVMTypeKind.LLVMX86_FP80TypeKind},
+                { LLVMContextRef.Global.PPCFP128Type, LLVMTypeKind.LLVMPPC_FP128TypeKind },
             };
             foreach (var p in dic.Keys)
             {
-                Assert.AreEqual(dic[p], p.IsFloatingPoint);
+                Assert.AreEqual(dic[p], p.Kind);
             }
         }
     }

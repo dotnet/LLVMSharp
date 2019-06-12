@@ -1,6 +1,5 @@
+using System;
 using System.Linq;
-using LLVMSharp.API;
-using LLVMSharp.API.TargetInitializers;
 using NUnit.Framework;
 
 namespace LLVMSharp.UnitTests
@@ -8,28 +7,43 @@ namespace LLVMSharp.UnitTests
     public class Targets
     {
         [Test]
-        public void InitializeX86Targets() => this.InitializeTargets(Initialize.X86, new[] { "x86" });
+        public void InitializeX86Targets() => this.InitializeTargets(() =>
+        {
+            LLVM.InitializeX86TargetInfo();
+            LLVM.InitializeX86Target();
+            LLVM.InitializeX86TargetMC();
+            LLVM.InitializeX86AsmParser();
+            LLVM.InitializeX86AsmPrinter();
+        }, new[] { "x86" });
 
         [Test]
-        public void InitializeARMTargets() => this.InitializeTargets(Initialize.ARM, new[] { "arm" });
-       
-        private void InitializeTargets(TargetInitializer init, string[] expectedTargets)
+        public void InitializeARMTargets() => this.InitializeTargets(() =>
         {
-            init.All();
-            foreach (var u in Target.Targets)
+            LLVM.InitializeARMTargetInfo();
+            LLVM.InitializeARMTarget();
+            LLVM.InitializeARMTargetMC();
+            LLVM.InitializeARMAsmParser();
+            LLVM.InitializeARMAsmPrinter();
+        }, new[] { "arm" });
+       
+        private void InitializeTargets(Action init, string[] expectedTargets)
+        {
+            init();
+
+            foreach (var u in LLVMTargetRef.Targets)
             {
                 u.EnsurePropertiesWork();
             }
             foreach (var t in expectedTargets)
             {
-                Assert.IsTrue(Target.Targets.Any(x => x.Name == t));
+                Assert.IsTrue(LLVMTargetRef.Targets.Any(x => x.Name == t));
             }
         }
 
         [Test]
         public void DefaultTargetTriple()
         {
-            var str = Target.DefaultTriple;
+            var str = LLVMTargetRef.DefaultTriple;
             Assert.Greater(str.Length, 0);
         }
     }

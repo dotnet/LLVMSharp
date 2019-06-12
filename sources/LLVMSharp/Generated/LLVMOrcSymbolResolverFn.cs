@@ -1,8 +1,8 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LLVMSharp
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate ulong LLVMOrcSymbolResolverFn([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] string Name, IntPtr LookupCtx);
+    [return: NativeTypeName("uint64_t")]
+    public unsafe delegate ulong LLVMOrcSymbolResolverFn([NativeTypeName("const char *")] sbyte* Name, [NativeTypeName("void *")] void* LookupCtx);
 }

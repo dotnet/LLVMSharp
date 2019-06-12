@@ -1,10 +1,11 @@
-using System.Runtime.InteropServices;
-
 namespace LLVMSharp
 {
-    public partial struct LLVMOptRemarkStringRef
+    public unsafe partial struct LLVMOptRemarkStringRef
     {
-        [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(StringMarshaler))] public string Str;
+        [NativeTypeName("const char *")]
+        public sbyte* Str;
+
+        [NativeTypeName("uint32_t")]
         public uint Len;
     }
 }

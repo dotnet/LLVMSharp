@@ -1,8 +1,8 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace LLVMSharp
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate string LLVMSymbolLookupCallback(IntPtr DisInfo, ulong ReferenceValue, out ulong ReferenceType, ulong ReferencePC, out IntPtr ReferenceName);
+    [return: NativeTypeName("const char *")]
+    public unsafe delegate sbyte* LLVMSymbolLookupCallback([NativeTypeName("void *")] void* DisInfo, [NativeTypeName("uint64_t")] ulong ReferenceValue, [NativeTypeName("uint64_t *")] ulong* ReferenceType, [NativeTypeName("uint64_t")] ulong ReferencePC, [NativeTypeName("const char **")] sbyte** ReferenceName);
 }
