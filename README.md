@@ -46,11 +46,11 @@ Much of the tutorial is already implemented here, and has some nice improvements
 
 The tutorials have been tested to run on Windows and Linux, however the build (using MSBuild) uses the Nuget packages, hence require some editing to run on Linux.
 
-[Chapter 3](https://github.com/mjsabby/LLVMSharp/tree/master/KaleidoscopeTutorial/Chapter3)
+[Chapter 3](samples/KaleidoscopeTutorial/Chapter3)
 
-[Chapter 4](https://github.com/mjsabby/LLVMSharp/tree/master/KaleidoscopeTutorial/Chapter4)
+[Chapter 4](samples/KaleidoscopeTutorial/Chapter4)
 
-[Chapter 5](https://github.com/mjsabby/LLVMSharp/tree/master/KaleidoscopeTutorial/Chapter5)
+[Chapter 5](samples/KaleidoscopeTutorial/Chapter5)
 
 ## Conventions
 
