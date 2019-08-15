@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 
 namespace LLVMSharp
 {
@@ -34,7 +35,7 @@ namespace LLVMSharp
             return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
         }
 
-        public bool EmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen, out string message)
+        public bool TryEmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen, out string message)
         {
             using (var marshaledFileName = new MarshaledString(fileName))
             {
@@ -53,6 +54,14 @@ namespace LLVMSharp
                 }
 
                 return result == 0;
+            }
+        }
+
+        public void EmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen)
+        {
+            if (!TryEmitToFile(module, fileName, codegen, out string Error))
+            {
+                throw new ExternalException(Error);
             }
         }
     }
