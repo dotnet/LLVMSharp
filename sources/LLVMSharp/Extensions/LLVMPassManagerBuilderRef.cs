@@ -14,8 +14,10 @@ namespace LLVMSharp
 
         public override int GetHashCode() => Pointer.GetHashCode();
 
-        public void Dispose() {
-            if (Pointer != IntPtr.Zero) {
+        public void Dispose()
+        {
+            if (Pointer != IntPtr.Zero)
+            {
                 LLVM.PassManagerBuilderDispose(this);
                 Pointer = IntPtr.Zero;
             }
@@ -37,7 +39,8 @@ namespace LLVMSharp
 
         public void PopulateModulePassManager(LLVMPassManagerRef PM) => LLVM.PassManagerBuilderPopulateModulePassManager(this, PM);
 
-        public void PopulateLTOPassManager(LLVMPassManagerRef PM, int Internalize, int RunInliner) {
+        public void PopulateLTOPassManager(LLVMPassManagerRef PM, int Internalize, int RunInliner)
+        {
             LLVM.PassManagerBuilderPopulateLTOPassManager(this, PM, Internalize, RunInliner);
         }
     }
