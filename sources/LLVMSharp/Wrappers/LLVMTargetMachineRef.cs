@@ -39,18 +39,19 @@ namespace LLVMSharp
         {
             using (var marshaledFileName = new MarshaledString(fileName))
             {
-                sbyte* pMessage;
+                sbyte* errorMessage;
 
-                int result = LLVM.TargetMachineEmitToFile(this, module, marshaledFileName, codegen, &pMessage);
+                int result = LLVM.TargetMachineEmitToFile(this, module, marshaledFileName, codegen, &errorMessage);
 
-                if (pMessage is null)
+                if (errorMessage is null)
                 {
                     message = string.Empty;
                 }
                 else
                 {
-                    var span = new ReadOnlySpan<byte>(pMessage, int.MaxValue);
+                    var span = new ReadOnlySpan<byte>(errorMessage, int.MaxValue);
                     message = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                    LLVM.DisposeErrorMessage(errorMessage);
                 }
 
                 return result == 0;
