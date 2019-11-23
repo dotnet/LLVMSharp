@@ -6,7 +6,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public static unsafe partial class LLVM
     {

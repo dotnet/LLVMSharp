@@ -6,7 +6,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [return: NativeTypeName("uint8_t *")]

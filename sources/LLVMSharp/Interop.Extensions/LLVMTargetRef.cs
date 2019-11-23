@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMTargetRef : IEquatable<LLVMTargetRef>
     {

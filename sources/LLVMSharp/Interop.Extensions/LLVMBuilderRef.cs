@@ -2,7 +2,7 @@
 
 using System;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMBuilderRef : IDisposable, IEquatable<LLVMBuilderRef>
     {

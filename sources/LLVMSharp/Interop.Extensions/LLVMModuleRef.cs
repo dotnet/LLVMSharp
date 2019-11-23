@@ -3,7 +3,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleRef>
     {
