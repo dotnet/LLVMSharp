@@ -5,12 +5,7 @@
 
 namespace LLVMSharp
 {
-    public unsafe partial struct LLVMOptRemarkStringRef
+    public partial struct LLVMOpaqueLTOInput
     {
-        [NativeTypeName("const char *")]
-        public sbyte* Str;
-
-        [NativeTypeName("uint32_t")]
-        public uint Len;
     }
 }

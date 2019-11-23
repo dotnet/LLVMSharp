@@ -13,6 +13,7 @@ namespace LLVMSharp
         LLVMIndirectBr = 4,
         LLVMInvoke = 5,
         LLVMUnreachable = 7,
+        LLVMCallBr = 67,
         LLVMFNeg = 66,
         LLVMAdd = 8,
         LLVMFAdd = 9,

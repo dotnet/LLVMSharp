@@ -5,7 +5,14 @@
 
 namespace LLVMSharp
 {
-    public partial struct LLVMOptRemarkOpaqueParser
+    public enum LLVMRemarkType
     {
+        LLVMRemarkTypeUnknown,
+        LLVMRemarkTypePassed,
+        LLVMRemarkTypeMissed,
+        LLVMRemarkTypeAnalysis,
+        LLVMRemarkTypeAnalysisFPCommute,
+        LLVMRemarkTypeAnalysisAliasing,
+        LLVMRemarkTypeFailure,
     }
 }

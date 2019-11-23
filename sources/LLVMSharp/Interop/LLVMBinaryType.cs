@@ -5,12 +5,22 @@
 
 namespace LLVMSharp
 {
-    public partial struct LLVMOptRemarkArg
+    public enum LLVMBinaryType
     {
-        public LLVMOptRemarkStringRef Key;
-
-        public LLVMOptRemarkStringRef Value;
-
-        public LLVMOptRemarkDebugLoc DebugLoc;
+        LLVMBinaryTypeArchive,
+        LLVMBinaryTypeMachOUniversalBinary,
+        LLVMBinaryTypeCOFFImportFile,
+        LLVMBinaryTypeIR,
+        LLVMBinaryTypeWinRes,
+        LLVMBinaryTypeCOFF,
+        LLVMBinaryTypeELF32L,
+        LLVMBinaryTypeELF32B,
+        LLVMBinaryTypeELF64L,
+        LLVMBinaryTypeELF64B,
+        LLVMBinaryTypeMachO32L,
+        LLVMBinaryTypeMachO32B,
+        LLVMBinaryTypeMachO64L,
+        LLVMBinaryTypeMachO64B,
+        LLVMBinaryTypeWasm,
     }
 }

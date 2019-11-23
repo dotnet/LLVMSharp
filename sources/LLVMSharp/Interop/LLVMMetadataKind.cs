@@ -38,5 +38,6 @@ namespace LLVMSharp
         LLVMDIImportedEntityMetadataKind,
         LLVMDIMacroMetadataKind,
         LLVMDIMacroFileMetadataKind,
+        LLVMDICommonBlockMetadataKind,
     }
 }
