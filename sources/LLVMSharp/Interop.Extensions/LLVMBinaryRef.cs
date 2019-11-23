@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMBinaryRef
     {
-        public LLVMBinaryRef(IntPtr pointer)
+        public LLVMBinaryRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMBinaryRef(LLVMOpaqueBinary* Comdat)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueBinary*(LLVMBinaryRef Comdat)
         {
-            return (LLVMOpaqueBinary*)Comdat.Pointer;
+            return (LLVMOpaqueBinary*)Comdat.Handle;
         }
     }
 }

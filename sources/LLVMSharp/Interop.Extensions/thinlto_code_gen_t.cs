@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct thinlto_code_gen_t
     {
-        public thinlto_code_gen_t(IntPtr pointer)
+        public thinlto_code_gen_t(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator thinlto_code_gen_t(LLVMOpaqueThinLTOCodeGenerator* Comdat)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueThinLTOCodeGenerator*(thinlto_code_gen_t Comdat)
         {
-            return (LLVMOpaqueThinLTOCodeGenerator*)Comdat.Pointer;
+            return (LLVMOpaqueThinLTOCodeGenerator*)Comdat.Handle;
         }
     }
 }

@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMOrcJITStackRef
     {
-        public LLVMOrcJITStackRef(IntPtr pointer)
+        public LLVMOrcJITStackRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMOrcJITStackRef(LLVMOrcOpaqueJITStack* value)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOrcOpaqueJITStack*(LLVMOrcJITStackRef value)
         {
-            return (LLVMOrcOpaqueJITStack*)value.Pointer;
+            return (LLVMOrcOpaqueJITStack*)value.Handle;
         }
     }
 }

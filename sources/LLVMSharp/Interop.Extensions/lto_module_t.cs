@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct lto_module_t
     {
-        public lto_module_t(IntPtr pointer)
+        public lto_module_t(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator lto_module_t(LLVMOpaqueLTOModule* Comdat)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueLTOModule*(lto_module_t Comdat)
         {
-            return (LLVMOpaqueLTOModule*)Comdat.Pointer;
+            return (LLVMOpaqueLTOModule*)Comdat.Handle;
         }
     }
 }

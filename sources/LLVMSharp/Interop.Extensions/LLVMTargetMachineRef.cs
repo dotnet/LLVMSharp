@@ -7,12 +7,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMTargetMachineRef : IEquatable<LLVMTargetMachineRef>
     {
-        public LLVMTargetMachineRef(IntPtr pointer)
+        public LLVMTargetMachineRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMTargetMachineRef(LLVMOpaqueTargetMachine* value)
         {
@@ -21,10 +21,10 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueTargetMachine*(LLVMTargetMachineRef value)
         {
-            return (LLVMOpaqueTargetMachine*)value.Pointer;
+            return (LLVMOpaqueTargetMachine*)value.Handle;
         }
 
-        public static bool operator ==(LLVMTargetMachineRef left, LLVMTargetMachineRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMTargetMachineRef left, LLVMTargetMachineRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMTargetMachineRef left, LLVMTargetMachineRef right) => !(left == right);
 
@@ -51,9 +51,9 @@ namespace LLVMSharp.Interop
 
         public override bool Equals(object obj) => obj is LLVMTargetMachineRef other && Equals(other);
 
-        public bool Equals(LLVMTargetMachineRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMTargetMachineRef other) => Handle == other.Handle;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
 
         public bool TryEmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen, out string message)
         {

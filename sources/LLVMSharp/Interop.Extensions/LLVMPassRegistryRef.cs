@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMPassRegistryRef : IEquatable<LLVMPassRegistryRef>
     {
-        public LLVMPassRegistryRef(IntPtr pointer)
+        public LLVMPassRegistryRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMPassRegistryRef(LLVMOpaquePassRegistry* value)
         {
@@ -20,17 +20,17 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaquePassRegistry*(LLVMPassRegistryRef value)
         {
-            return (LLVMOpaquePassRegistry*)value.Pointer;
+            return (LLVMOpaquePassRegistry*)value.Handle;
         }
 
-        public static bool operator ==(LLVMPassRegistryRef left, LLVMPassRegistryRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMPassRegistryRef left, LLVMPassRegistryRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMPassRegistryRef left, LLVMPassRegistryRef right) => !(left == right);
 
         public override bool Equals(object obj) => obj is LLVMPassRegistryRef other && Equals(other);
 
-        public bool Equals(LLVMPassRegistryRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMPassRegistryRef other) => Handle == other.Handle;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
     }
 }

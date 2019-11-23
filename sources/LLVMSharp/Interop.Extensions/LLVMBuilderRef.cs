@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMBuilderRef : IDisposable, IEquatable<LLVMBuilderRef>
     {
-        public LLVMBuilderRef(IntPtr pointer)
+        public LLVMBuilderRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMBuilderRef(LLVMOpaqueBuilder* Builder)
         {
@@ -20,16 +20,16 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueBuilder*(LLVMBuilderRef Builder)
         {
-            return (LLVMOpaqueBuilder*)Builder.Pointer;
+            return (LLVMOpaqueBuilder*)Builder.Handle;
         }
 
         public LLVMValueRef CurrentDebugLocation
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.GetCurrentDebugLocation(this) : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.GetCurrentDebugLocation(this) : default;
             set => LLVM.SetCurrentDebugLocation(this, value);
         }
 
-        public LLVMBasicBlockRef InsertBlock => (Pointer != IntPtr.Zero) ? LLVM.GetInsertBlock(this) : default;
+        public LLVMBasicBlockRef InsertBlock => (Handle != IntPtr.Zero) ? LLVM.GetInsertBlock(this) : default;
 
         public static bool operator ==(LLVMBuilderRef left, LLVMBuilderRef right) => left.Equals(right);
 
@@ -550,18 +550,18 @@ namespace LLVMSharp.Interop
 
         public void Dispose()
         {
-            if (Pointer != IntPtr.Zero)
+            if (Handle != IntPtr.Zero)
             {
                 LLVM.DisposeBuilder(this);
-                Pointer = IntPtr.Zero;
+                Handle = IntPtr.Zero;
             }
         }
 
         public override bool Equals(object obj) => obj is LLVMBuilderRef other && Equals(other);
 
-        public bool Equals(LLVMBuilderRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMBuilderRef other) => Handle == other.Handle;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
 
         public void Insert(LLVMValueRef Instr) => LLVM.InsertIntoBuilder(this, Instr);
 

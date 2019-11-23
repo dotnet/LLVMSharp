@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMBasicBlockRef : IEquatable<LLVMBasicBlockRef>
     {
-        public LLVMBasicBlockRef(IntPtr pointer)
+        public LLVMBasicBlockRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static explicit operator LLVMBasicBlockRef(LLVMOpaqueValue* value)
         {
@@ -25,27 +25,27 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueBasicBlock*(LLVMBasicBlockRef value)
         {
-            return (LLVMOpaqueBasicBlock*)value.Pointer;
+            return (LLVMOpaqueBasicBlock*)value.Handle;
         }
 
         public static implicit operator LLVMOpaqueValue*(LLVMBasicBlockRef value)
         {
-            return (LLVMOpaqueValue*)value.Pointer;
+            return (LLVMOpaqueValue*)value.Handle;
         }
 
-        public LLVMValueRef FirstInstruction => (Pointer != IntPtr.Zero) ? LLVM.GetFirstInstruction(this) : default;
+        public LLVMValueRef FirstInstruction => (Handle != IntPtr.Zero) ? LLVM.GetFirstInstruction(this) : default;
 
-        public LLVMValueRef LastInstruction => (Pointer != IntPtr.Zero) ? LLVM.GetLastInstruction(this) : default;
+        public LLVMValueRef LastInstruction => (Handle != IntPtr.Zero) ? LLVM.GetLastInstruction(this) : default;
 
-        public LLVMBasicBlockRef Next => (Pointer != IntPtr.Zero) ? LLVM.GetNextBasicBlock(this) : default;
+        public LLVMBasicBlockRef Next => (Handle != IntPtr.Zero) ? LLVM.GetNextBasicBlock(this) : default;
 
-        public LLVMValueRef Parent => (Pointer != IntPtr.Zero) ? LLVM.GetBasicBlockParent(this) : default;
+        public LLVMValueRef Parent => (Handle != IntPtr.Zero) ? LLVM.GetBasicBlockParent(this) : default;
 
-        public LLVMBasicBlockRef Previous => (Pointer != IntPtr.Zero) ? LLVM.GetPreviousBasicBlock(this) : default;
+        public LLVMBasicBlockRef Previous => (Handle != IntPtr.Zero) ? LLVM.GetPreviousBasicBlock(this) : default;
 
-        public LLVMValueRef Terminator => (Pointer != IntPtr.Zero) ? LLVM.GetBasicBlockTerminator(this) : default;
+        public LLVMValueRef Terminator => (Handle != IntPtr.Zero) ? LLVM.GetBasicBlockTerminator(this) : default;
 
-        public static bool operator ==(LLVMBasicBlockRef left, LLVMBasicBlockRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMBasicBlockRef left, LLVMBasicBlockRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMBasicBlockRef left, LLVMBasicBlockRef right) => !(left == right);
 
@@ -57,9 +57,9 @@ namespace LLVMSharp.Interop
 
         public override bool Equals(object obj) => obj is LLVMBasicBlockRef other && Equals(other);
 
-        public bool Equals(LLVMBasicBlockRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMBasicBlockRef other) => Handle == other.Handle;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
 
         public LLVMBasicBlockRef InsertBasicBlock(string Name)
         {
@@ -88,6 +88,6 @@ namespace LLVMSharp.Interop
 
         public void RemoveFromParent() => LLVM.RemoveBasicBlockFromParent(this);
 
-        public override string ToString() => (Pointer != IntPtr.Zero) ? PrintToString() : string.Empty;
+        public override string ToString() => (Handle != IntPtr.Zero) ? PrintToString() : string.Empty;
     }
 }

@@ -7,12 +7,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMTargetRef : IEquatable<LLVMTargetRef>
     {
-        public LLVMTargetRef(IntPtr pointer)
+        public LLVMTargetRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMTargetRef(LLVMTarget* value)
         {
@@ -21,7 +21,7 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMTarget*(LLVMTargetRef value)
         {
-            return (LLVMTarget*)value.Pointer;
+            return (LLVMTarget*)value.Handle;
         }
 
         public static string DefaultTriple
@@ -60,7 +60,7 @@ namespace LLVMSharp.Interop
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return string.Empty;
                 }
@@ -77,15 +77,15 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public static bool operator ==(LLVMTargetRef left, LLVMTargetRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMTargetRef left, LLVMTargetRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMTargetRef left, LLVMTargetRef right) => !(left == right);
 
         public override bool Equals(object obj) => obj is LLVMTargetRef other && Equals(other);
 
-        public bool Equals(LLVMTargetRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMTargetRef other) => Handle == other.Handle;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
 
         public LLVMTargetRef GetNext() => LLVM.GetNextTarget(this);
 

@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMErrorRef
     {
-        public LLVMErrorRef(IntPtr pointer)
+        public LLVMErrorRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMErrorRef(LLVMOpaqueError* value)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueError*(LLVMErrorRef value)
         {
-            return (LLVMOpaqueError*)value.Pointer;
+            return (LLVMOpaqueError*)value.Handle;
         }
     }
 }

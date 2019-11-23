@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMModuleFlagEntry
     {
-        public LLVMModuleFlagEntry(IntPtr pointer)
+        public LLVMModuleFlagEntry(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMModuleFlagEntry(LLVMOpaqueModuleFlagEntry* Comdat)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueModuleFlagEntry*(LLVMModuleFlagEntry Comdat)
         {
-            return (LLVMOpaqueModuleFlagEntry*)Comdat.Pointer;
+            return (LLVMOpaqueModuleFlagEntry*)Comdat.Handle;
         }
     }
 }

@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMDIBuilderRef
     {
-        public LLVMDIBuilderRef(IntPtr pointer)
+        public LLVMDIBuilderRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMDIBuilderRef(LLVMOpaqueDIBuilder* value)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueDIBuilder*(LLVMDIBuilderRef value)
         {
-            return (LLVMOpaqueDIBuilder*)value.Pointer;
+            return (LLVMOpaqueDIBuilder*)value.Handle;
         }
     }
 }

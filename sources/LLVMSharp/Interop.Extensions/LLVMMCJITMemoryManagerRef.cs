@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMMCJITMemoryManagerRef : IEquatable<LLVMMCJITMemoryManagerRef>
     {
-        public LLVMMCJITMemoryManagerRef(IntPtr pointer)
+        public LLVMMCJITMemoryManagerRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMMCJITMemoryManagerRef(LLVMOpaqueMCJITMemoryManager* value)
         {
@@ -20,17 +20,17 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueMCJITMemoryManager*(LLVMMCJITMemoryManagerRef value)
         {
-            return (LLVMOpaqueMCJITMemoryManager*)value.Pointer;
+            return (LLVMOpaqueMCJITMemoryManager*)value.Handle;
         }
 
-        public static bool operator ==(LLVMMCJITMemoryManagerRef left, LLVMMCJITMemoryManagerRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMMCJITMemoryManagerRef left, LLVMMCJITMemoryManagerRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMMCJITMemoryManagerRef left, LLVMMCJITMemoryManagerRef right) => !(left == right);
 
         public override bool Equals(object obj) => obj is LLVMMCJITMemoryManagerRef other && Equals(other);
 
-        public bool Equals(LLVMMCJITMemoryManagerRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMMCJITMemoryManagerRef other) => Handle == other.Handle;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
     }
 }

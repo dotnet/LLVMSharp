@@ -7,12 +7,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleRef>
     {
-        public LLVMModuleRef(IntPtr pointer)
+        public LLVMModuleRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMModuleRef(LLVMOpaqueModule* value)
         {
@@ -21,16 +21,16 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueModule*(LLVMModuleRef value)
         {
-            return (LLVMOpaqueModule*)value.Pointer;
+            return (LLVMOpaqueModule*)value.Handle;
         }
 
-        public LLVMContextRef Context => (Pointer != IntPtr.Zero) ? LLVM.GetModuleContext(this) : default;
+        public LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetModuleContext(this) : default;
 
         public string DataLayout
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return string.Empty;
                 }
@@ -53,19 +53,19 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public LLVMValueRef FirstFunction => (Pointer != IntPtr.Zero) ? LLVM.GetFirstFunction(this) : default;
+        public LLVMValueRef FirstFunction => (Handle != IntPtr.Zero) ? LLVM.GetFirstFunction(this) : default;
 
-        public LLVMValueRef FirstGlobal => (Pointer != IntPtr.Zero) ? LLVM.GetFirstGlobal(this) : default;
+        public LLVMValueRef FirstGlobal => (Handle != IntPtr.Zero) ? LLVM.GetFirstGlobal(this) : default;
 
-        public LLVMValueRef LastFunction => (Pointer != IntPtr.Zero) ? LLVM.GetLastFunction(this) : default;
+        public LLVMValueRef LastFunction => (Handle != IntPtr.Zero) ? LLVM.GetLastFunction(this) : default;
 
-        public LLVMValueRef LastGlobal => (Pointer != IntPtr.Zero) ? LLVM.GetLastGlobal(this) : default;
+        public LLVMValueRef LastGlobal => (Handle != IntPtr.Zero) ? LLVM.GetLastGlobal(this) : default;
 
         public string Target
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return string.Empty;
                 }
@@ -88,7 +88,7 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public static bool operator ==(LLVMModuleRef left, LLVMModuleRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMModuleRef left, LLVMModuleRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMModuleRef left, LLVMModuleRef right) => !(left == right);
 
@@ -176,10 +176,10 @@ namespace LLVMSharp.Interop
 
         public void Dispose()
         {
-            if (Pointer != IntPtr.Zero)
+            if (Handle != IntPtr.Zero)
             {
                 LLVM.DisposeModule(this);
-                Pointer = IntPtr.Zero;
+                Handle = IntPtr.Zero;
             }
         }
 
@@ -187,7 +187,7 @@ namespace LLVMSharp.Interop
 
         public override bool Equals(object obj) => obj is LLVMModuleRef other && Equals(other);
 
-        public bool Equals(LLVMModuleRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMModuleRef other) => Handle == other.Handle;
 
         public LLVMValueRef GetNamedFunction(string Name)
         {
@@ -195,7 +195,7 @@ namespace LLVMSharp.Interop
             return LLVM.GetNamedFunction(this, marshaledName);
         }
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
 
         public LLVMValueRef GetNamedGlobal(string Name)
         {
@@ -257,7 +257,7 @@ namespace LLVMSharp.Interop
             LLVM.SetModuleInlineAsm(this, marshaledAsm);
         }
 
-        public override string ToString() => (Pointer != IntPtr.Zero) ? PrintToString() : string.Empty;
+        public override string ToString() => (Handle != IntPtr.Zero) ? PrintToString() : string.Empty;
 
         public bool TryCreateExecutionEngine(out LLVMExecutionEngineRef OutEE, out string OutError)
         {

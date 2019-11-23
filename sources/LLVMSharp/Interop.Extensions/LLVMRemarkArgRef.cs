@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMRemarkArgRef
     {
-        public LLVMRemarkArgRef(IntPtr pointer)
+        public LLVMRemarkArgRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMRemarkArgRef(LLVMRemarkOpaqueArg* value)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMRemarkOpaqueArg*(LLVMRemarkArgRef value)
         {
-            return (LLVMRemarkOpaqueArg*)value.Pointer;
+            return (LLVMRemarkOpaqueArg*)value.Handle;
         }
     }
 }

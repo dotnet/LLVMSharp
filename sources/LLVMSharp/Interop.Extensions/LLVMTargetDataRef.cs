@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMTargetDataRef : IEquatable<LLVMTargetDataRef>
     {
-        public LLVMTargetDataRef(IntPtr pointer)
+        public LLVMTargetDataRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMTargetDataRef(LLVMOpaqueTargetData* TargetData)
         {
@@ -20,17 +20,17 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueTargetData*(LLVMTargetDataRef TargetData)
         {
-            return (LLVMOpaqueTargetData*)TargetData.Pointer;
+            return (LLVMOpaqueTargetData*)TargetData.Handle;
         }
 
-        public static bool operator ==(LLVMTargetDataRef left, LLVMTargetDataRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMTargetDataRef left, LLVMTargetDataRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMTargetDataRef left, LLVMTargetDataRef right) => !(left == right);
 
         public override bool Equals(object obj) => obj is LLVMTargetDataRef other && Equals(other);
 
-        public bool Equals(LLVMTargetDataRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMTargetDataRef other) => Handle == other.Handle;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
     }
 }

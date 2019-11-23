@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
     {
-        public LLVMTypeRef(IntPtr pointer)
+        public LLVMTypeRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMTypeRef(LLVMOpaqueType* value)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueType*(LLVMTypeRef value)
         {
-            return (LLVMOpaqueType*)value.Pointer;
+            return (LLVMOpaqueType*)value.Handle;
         }
 
         public static LLVMTypeRef Double => LLVM.DoubleType();
@@ -51,31 +51,31 @@ namespace LLVMSharp.Interop
 
         public static LLVMTypeRef X86MMX => LLVM.X86MMXType();
 
-        public LLVMValueRef AlignOf => (Pointer != IntPtr.Zero) ? LLVM.AlignOf(this) : default;
+        public LLVMValueRef AlignOf => (Handle != IntPtr.Zero) ? LLVM.AlignOf(this) : default;
 
-        public uint ArrayLength => (Pointer != IntPtr.Zero) ? LLVM.GetArrayLength(this) : default;
+        public uint ArrayLength => (Handle != IntPtr.Zero) ? LLVM.GetArrayLength(this) : default;
 
-        public LLVMContextRef Context => (Pointer != IntPtr.Zero) ? LLVM.GetTypeContext(this) : default;
+        public LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetTypeContext(this) : default;
 
-        public LLVMTypeRef ElementType => (Pointer != IntPtr.Zero) ? LLVM.GetElementType(this) : default;
+        public LLVMTypeRef ElementType => (Handle != IntPtr.Zero) ? LLVM.GetElementType(this) : default;
 
-        public uint IntWidth => (Pointer != IntPtr.Zero) ? LLVM.GetIntTypeWidth(this) : default;
+        public uint IntWidth => (Handle != IntPtr.Zero) ? LLVM.GetIntTypeWidth(this) : default;
 
-        public bool IsFunctionVarArg => (Pointer != IntPtr.Zero) ? LLVM.IsFunctionVarArg(this) != 0 : default;
+        public bool IsFunctionVarArg => (Handle != IntPtr.Zero) ? LLVM.IsFunctionVarArg(this) != 0 : default;
 
-        public bool IsOpaqueStruct => (Pointer != IntPtr.Zero) ? LLVM.IsOpaqueStruct(this) != 0 : default;
+        public bool IsOpaqueStruct => (Handle != IntPtr.Zero) ? LLVM.IsOpaqueStruct(this) != 0 : default;
 
-        public bool IsPackedStruct => (Pointer != IntPtr.Zero) ? LLVM.IsPackedStruct(this) != 0 : default;
+        public bool IsPackedStruct => (Handle != IntPtr.Zero) ? LLVM.IsPackedStruct(this) != 0 : default;
 
-        public bool IsSized => (Pointer != IntPtr.Zero) ? LLVM.TypeIsSized(this) != 0 : default;
+        public bool IsSized => (Handle != IntPtr.Zero) ? LLVM.TypeIsSized(this) != 0 : default;
 
-        public LLVMTypeKind Kind => (Pointer != IntPtr.Zero) ? LLVM.GetTypeKind(this) : default;
+        public LLVMTypeKind Kind => (Handle != IntPtr.Zero) ? LLVM.GetTypeKind(this) : default;
 
         public LLVMTypeRef[] ParamTypes
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return Array.Empty<LLVMTypeRef>();
                 }
@@ -91,19 +91,19 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public uint ParamTypesCount => (Pointer != IntPtr.Zero) ? LLVM.CountParamTypes(this) : default;
+        public uint ParamTypesCount => (Handle != IntPtr.Zero) ? LLVM.CountParamTypes(this) : default;
 
-        public uint PointerAddressSpace => (Pointer != IntPtr.Zero) ? LLVM.GetPointerAddressSpace(this) : default;
+        public uint PointerAddressSpace => (Handle != IntPtr.Zero) ? LLVM.GetPointerAddressSpace(this) : default;
 
-        public LLVMTypeRef ReturnType => (Pointer != IntPtr.Zero) ? LLVM.GetReturnType(this) : default;
+        public LLVMTypeRef ReturnType => (Handle != IntPtr.Zero) ? LLVM.GetReturnType(this) : default;
 
-        public LLVMValueRef SizeOf => (Pointer != IntPtr.Zero) ? LLVM.SizeOf(this) : default;
+        public LLVMValueRef SizeOf => (Handle != IntPtr.Zero) ? LLVM.SizeOf(this) : default;
 
         public LLVMTypeRef[] StructElementTypes
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return Array.Empty<LLVMTypeRef>();
                 }
@@ -119,13 +119,13 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public uint StructElementTypesCount => (Pointer != IntPtr.Zero) ? LLVM.CountStructElementTypes(this) : default;
+        public uint StructElementTypesCount => (Handle != IntPtr.Zero) ? LLVM.CountStructElementTypes(this) : default;
 
         public string StructName
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return string.Empty;
                 }
@@ -146,7 +146,7 @@ namespace LLVMSharp.Interop
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return Array.Empty<LLVMTypeRef>();
                 }
@@ -162,13 +162,13 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public uint SubtypesCount => (Pointer != IntPtr.Zero) ? LLVM.GetNumContainedTypes(this) : default;
+        public uint SubtypesCount => (Handle != IntPtr.Zero) ? LLVM.GetNumContainedTypes(this) : default;
 
-        public LLVMValueRef Undef => (Pointer != IntPtr.Zero) ? LLVM.GetUndef(this) : default;
+        public LLVMValueRef Undef => (Handle != IntPtr.Zero) ? LLVM.GetUndef(this) : default;
 
-        public uint VectorSize => (Pointer != IntPtr.Zero) ? LLVM.GetVectorSize(this) : default;
+        public uint VectorSize => (Handle != IntPtr.Zero) ? LLVM.GetVectorSize(this) : default;
 
-        public static bool operator ==(LLVMTypeRef left, LLVMTypeRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMTypeRef left, LLVMTypeRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMTypeRef left, LLVMTypeRef right) => !(left == right);
 
@@ -204,11 +204,11 @@ namespace LLVMSharp.Interop
 
         public override bool Equals(object obj) => obj is LLVMTypeRef other && Equals(other);
 
-        public bool Equals(LLVMTypeRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMTypeRef other) => Handle == other.Handle;
 
         public double GenericValueToFloat(LLVMGenericValueRef GenVal) => LLVM.GenericValueToFloat(this, GenVal);
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
 
         public string PrintToString()
         {
@@ -235,6 +235,6 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public override string ToString() => (Pointer != IntPtr.Zero) ? PrintToString() : string.Empty;
+        public override string ToString() => (Handle != IntPtr.Zero) ? PrintToString() : string.Empty;
     }
 }

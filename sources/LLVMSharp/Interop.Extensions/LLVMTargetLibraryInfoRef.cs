@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMTargetLibraryInfoRef : IEquatable<LLVMTargetLibraryInfoRef>
     {
-        public LLVMTargetLibraryInfoRef(IntPtr pointer)
+        public LLVMTargetLibraryInfoRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMTargetLibraryInfoRef(LLVMOpaqueTargetLibraryInfotData* value)
         {
@@ -20,17 +20,17 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueTargetLibraryInfotData*(LLVMTargetLibraryInfoRef value)
         {
-            return (LLVMOpaqueTargetLibraryInfotData*)value.Pointer;
+            return (LLVMOpaqueTargetLibraryInfotData*)value.Handle;
         }
 
-        public static bool operator ==(LLVMTargetLibraryInfoRef left, LLVMTargetLibraryInfoRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMTargetLibraryInfoRef left, LLVMTargetLibraryInfoRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMTargetLibraryInfoRef left, LLVMTargetLibraryInfoRef right) => !(left == right);
 
         public override bool Equals(object obj) => obj is LLVMTargetLibraryInfoRef other && Equals(other);
 
-        public bool Equals(LLVMTargetLibraryInfoRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMTargetLibraryInfoRef other) => Handle == other.Handle;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
     }
 }

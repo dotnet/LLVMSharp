@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
     {
-        public LLVMValueRef(IntPtr pointer)
+        public LLVMValueRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMValueRef(LLVMOpaqueValue* value)
         {
@@ -20,22 +20,22 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueValue*(LLVMValueRef value)
         {
-            return (LLVMOpaqueValue*)value.Pointer;
+            return (LLVMOpaqueValue*)value.Handle;
         }
 
         public uint Alignment
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.GetAlignment(this) : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.GetAlignment(this) : default;
             set => LLVM.SetAlignment(this, value);
         }
 
-        public LLVMBasicBlockRef AsBasicBlock => (Pointer != IntPtr.Zero) ? LLVM.ValueAsBasicBlock(this) : default;
+        public LLVMBasicBlockRef AsBasicBlock => (Handle != IntPtr.Zero) ? LLVM.ValueAsBasicBlock(this) : default;
 
         public LLVMBasicBlockRef[] BasicBlocks
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return Array.Empty<LLVMBasicBlockRef>();
                 }
@@ -51,39 +51,39 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public uint BasicBlocksCount => (Pointer != IntPtr.Zero) ? LLVM.CountBasicBlocks(this) : default;
+        public uint BasicBlocksCount => (Handle != IntPtr.Zero) ? LLVM.CountBasicBlocks(this) : default;
 
         public LLVMValueRef Condition
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.GetCondition(this) : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.GetCondition(this) : default;
             set => LLVM.SetCondition(this, value);
         }
 
-        public ulong ConstIntZExt => (Pointer != IntPtr.Zero) ? LLVM.ConstIntGetZExtValue(this) : default;
+        public ulong ConstIntZExt => (Handle != IntPtr.Zero) ? LLVM.ConstIntGetZExtValue(this) : default;
 
-        public long ConstIntSExt => (Pointer != IntPtr.Zero) ? LLVM.ConstIntGetSExtValue(this) : default;
+        public long ConstIntSExt => (Handle != IntPtr.Zero) ? LLVM.ConstIntGetSExtValue(this) : default;
 
-        public LLVMOpcode ConstOpcode => (Pointer != IntPtr.Zero) ? LLVM.GetConstOpcode(this) : default;
+        public LLVMOpcode ConstOpcode => (Handle != IntPtr.Zero) ? LLVM.GetConstOpcode(this) : default;
 
         public LLVMDLLStorageClass DLLStorageClass
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.GetDLLStorageClass(this) : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.GetDLLStorageClass(this) : default;
             set => LLVM.SetDLLStorageClass(this, value);
         }
 
-        public LLVMBasicBlockRef EntryBasicBlock => (Pointer != IntPtr.Zero) ? LLVM.GetEntryBasicBlock(this) : default;
+        public LLVMBasicBlockRef EntryBasicBlock => (Handle != IntPtr.Zero) ? LLVM.GetEntryBasicBlock(this) : default;
 
-        public LLVMRealPredicate FCmpPredicate => (Pointer != IntPtr.Zero) ? LLVM.GetFCmpPredicate(this) : default;
+        public LLVMRealPredicate FCmpPredicate => (Handle != IntPtr.Zero) ? LLVM.GetFCmpPredicate(this) : default;
 
-        public LLVMBasicBlockRef FirstBasicBlock => (Pointer != IntPtr.Zero) ? LLVM.GetFirstBasicBlock(this) : default;
+        public LLVMBasicBlockRef FirstBasicBlock => (Handle != IntPtr.Zero) ? LLVM.GetFirstBasicBlock(this) : default;
 
-        public LLVMValueRef FirstParam => (Pointer != IntPtr.Zero) ? LLVM.GetFirstParam(this) : default;
+        public LLVMValueRef FirstParam => (Handle != IntPtr.Zero) ? LLVM.GetFirstParam(this) : default;
 
-        public LLVMUseRef FirstUse => (Pointer != IntPtr.Zero) ? LLVM.GetFirstUse(this) : default;
+        public LLVMUseRef FirstUse => (Handle != IntPtr.Zero) ? LLVM.GetFirstUse(this) : default;
 
         public uint FunctionCallConv
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.GetFunctionCallConv(this) : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.GetFunctionCallConv(this) : default;
             set => LLVM.SetFunctionCallConv(this, value);
         }
 
@@ -91,7 +91,7 @@ namespace LLVMSharp.Interop
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return string.Empty;
                 }
@@ -114,240 +114,240 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public LLVMModuleRef GlobalParent => (Pointer != IntPtr.Zero) ? LLVM.GetGlobalParent(this) : default;
+        public LLVMModuleRef GlobalParent => (Handle != IntPtr.Zero) ? LLVM.GetGlobalParent(this) : default;
 
-        public bool HasMetadata => (Pointer != IntPtr.Zero) ? LLVM.HasMetadata(this) != 0 : default;
+        public bool HasMetadata => (Handle != IntPtr.Zero) ? LLVM.HasMetadata(this) != 0 : default;
 
         public bool HasUnnamedAddr
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.HasUnnamedAddr(this) != 0 : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.HasUnnamedAddr(this) != 0 : default;
             set => LLVM.SetUnnamedAddr(this, value ? 1 : 0);
         }
 
-        public LLVMIntPredicate ICmpPredicate => (Pointer != IntPtr.Zero) ? LLVM.GetICmpPredicate(this) : default;
+        public LLVMIntPredicate ICmpPredicate => (Handle != IntPtr.Zero) ? LLVM.GetICmpPredicate(this) : default;
 
-        public uint IncomingCount => (Pointer != IntPtr.Zero) ? LLVM.CountIncoming(this) : default;
+        public uint IncomingCount => (Handle != IntPtr.Zero) ? LLVM.CountIncoming(this) : default;
 
         public LLVMValueRef Initializer
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.GetInitializer(this) : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.GetInitializer(this) : default;
             set => LLVM.SetInitializer(this, value);
         }
 
         public uint InstructionCallConv
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.GetInstructionCallConv(this) : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.GetInstructionCallConv(this) : default;
             set => LLVM.SetInstructionCallConv(this, value);
         }
 
-        public LLVMValueRef InstructionClone => (Pointer != IntPtr.Zero) ? LLVM.InstructionClone(this) : default;
+        public LLVMValueRef InstructionClone => (Handle != IntPtr.Zero) ? LLVM.InstructionClone(this) : default;
 
-        public LLVMOpcode InstructionOpcode => (Pointer != IntPtr.Zero) ? LLVM.GetInstructionOpcode(this) : default;
+        public LLVMOpcode InstructionOpcode => (Handle != IntPtr.Zero) ? LLVM.GetInstructionOpcode(this) : default;
 
-        public LLVMBasicBlockRef InstructionParent => (Pointer != IntPtr.Zero) ? LLVM.GetInstructionParent(this) : default;
+        public LLVMBasicBlockRef InstructionParent => (Handle != IntPtr.Zero) ? LLVM.GetInstructionParent(this) : default;
 
-        public uint IntrinsicID => (Pointer != IntPtr.Zero) ? LLVM.GetIntrinsicID(this) : default;
+        public uint IntrinsicID => (Handle != IntPtr.Zero) ? LLVM.GetIntrinsicID(this) : default;
 
-        public LLVMValueRef IsAAddrSpaceCastInst => (Pointer != IntPtr.Zero) ? LLVM.IsAAddrSpaceCastInst(this) : default;
+        public LLVMValueRef IsAAddrSpaceCastInst => (Handle != IntPtr.Zero) ? LLVM.IsAAddrSpaceCastInst(this) : default;
 
-        public LLVMValueRef IsAAllocaInst => (Pointer != IntPtr.Zero) ? LLVM.IsAAllocaInst(this) : default;
+        public LLVMValueRef IsAAllocaInst => (Handle != IntPtr.Zero) ? LLVM.IsAAllocaInst(this) : default;
 
-        public LLVMValueRef IsAArgument => (Pointer != IntPtr.Zero) ? LLVM.IsAArgument(this) : default;
+        public LLVMValueRef IsAArgument => (Handle != IntPtr.Zero) ? LLVM.IsAArgument(this) : default;
 
-        public LLVMValueRef IsABasicBlock => (Pointer != IntPtr.Zero) ? LLVM.IsABasicBlock(this) : default;
+        public LLVMValueRef IsABasicBlock => (Handle != IntPtr.Zero) ? LLVM.IsABasicBlock(this) : default;
 
-        public LLVMValueRef IsABinaryOperator => (Pointer != IntPtr.Zero) ? LLVM.IsABinaryOperator(this) : default;
+        public LLVMValueRef IsABinaryOperator => (Handle != IntPtr.Zero) ? LLVM.IsABinaryOperator(this) : default;
 
-        public LLVMValueRef IsABitCastInst => (Pointer != IntPtr.Zero) ? LLVM.IsABitCastInst(this) : default;
+        public LLVMValueRef IsABitCastInst => (Handle != IntPtr.Zero) ? LLVM.IsABitCastInst(this) : default;
 
-        public LLVMValueRef IsABlockAddress => (Pointer != IntPtr.Zero) ? LLVM.IsABlockAddress(this) : default;
+        public LLVMValueRef IsABlockAddress => (Handle != IntPtr.Zero) ? LLVM.IsABlockAddress(this) : default;
 
-        public LLVMValueRef IsABranchInst => (Pointer != IntPtr.Zero) ? LLVM.IsABranchInst(this) : default;
+        public LLVMValueRef IsABranchInst => (Handle != IntPtr.Zero) ? LLVM.IsABranchInst(this) : default;
 
-        public LLVMValueRef IsACallInst => (Pointer != IntPtr.Zero) ? LLVM.IsACallInst(this) : default;
+        public LLVMValueRef IsACallInst => (Handle != IntPtr.Zero) ? LLVM.IsACallInst(this) : default;
 
-        public LLVMValueRef IsACastInst => (Pointer != IntPtr.Zero) ? LLVM.IsACastInst(this) : default;
+        public LLVMValueRef IsACastInst => (Handle != IntPtr.Zero) ? LLVM.IsACastInst(this) : default;
 
-        public LLVMValueRef IsACmpInst => (Pointer != IntPtr.Zero) ? LLVM.IsACmpInst(this) : default;
+        public LLVMValueRef IsACmpInst => (Handle != IntPtr.Zero) ? LLVM.IsACmpInst(this) : default;
 
-        public LLVMValueRef IsAConstant => (Pointer != IntPtr.Zero) ? LLVM.IsAConstant(this) : default;
+        public LLVMValueRef IsAConstant => (Handle != IntPtr.Zero) ? LLVM.IsAConstant(this) : default;
 
-        public LLVMValueRef IsAConstantAggregateZero => (Pointer != IntPtr.Zero) ? LLVM.IsAConstantAggregateZero(this) : default;
+        public LLVMValueRef IsAConstantAggregateZero => (Handle != IntPtr.Zero) ? LLVM.IsAConstantAggregateZero(this) : default;
 
-        public LLVMValueRef IsAConstantArray => (Pointer != IntPtr.Zero) ? LLVM.IsAConstantArray(this) : default;
+        public LLVMValueRef IsAConstantArray => (Handle != IntPtr.Zero) ? LLVM.IsAConstantArray(this) : default;
 
-        public LLVMValueRef IsAConstantDataArray => (Pointer != IntPtr.Zero) ? LLVM.IsAConstantDataArray(this) : default;
+        public LLVMValueRef IsAConstantDataArray => (Handle != IntPtr.Zero) ? LLVM.IsAConstantDataArray(this) : default;
 
-        public LLVMValueRef IsAConstantDataSequential => (Pointer != IntPtr.Zero) ? LLVM.IsAConstantDataSequential(this) : default;
+        public LLVMValueRef IsAConstantDataSequential => (Handle != IntPtr.Zero) ? LLVM.IsAConstantDataSequential(this) : default;
 
-        public LLVMValueRef IsAConstantDataVector => (Pointer != IntPtr.Zero) ? LLVM.IsAConstantDataVector(this) : default;
+        public LLVMValueRef IsAConstantDataVector => (Handle != IntPtr.Zero) ? LLVM.IsAConstantDataVector(this) : default;
 
-        public LLVMValueRef IsAConstantExpr => (Pointer != IntPtr.Zero) ? LLVM.IsAConstantExpr(this) : default;
+        public LLVMValueRef IsAConstantExpr => (Handle != IntPtr.Zero) ? LLVM.IsAConstantExpr(this) : default;
 
-        public LLVMValueRef IsAConstantFP => (Pointer != IntPtr.Zero) ? LLVM.IsAConstantFP(this) : default;
+        public LLVMValueRef IsAConstantFP => (Handle != IntPtr.Zero) ? LLVM.IsAConstantFP(this) : default;
 
-        public LLVMValueRef IsAConstantInt => (Pointer != IntPtr.Zero) ? LLVM.IsAConstantInt(this) : default;
+        public LLVMValueRef IsAConstantInt => (Handle != IntPtr.Zero) ? LLVM.IsAConstantInt(this) : default;
 
-        public LLVMValueRef IsAConstantPointerNull => (Pointer != IntPtr.Zero) ? LLVM.IsAConstantPointerNull(this) : default;
+        public LLVMValueRef IsAConstantPointerNull => (Handle != IntPtr.Zero) ? LLVM.IsAConstantPointerNull(this) : default;
 
-        public LLVMValueRef IsAConstantStruct => (Pointer != IntPtr.Zero) ? LLVM.IsAConstantStruct(this) : default;
+        public LLVMValueRef IsAConstantStruct => (Handle != IntPtr.Zero) ? LLVM.IsAConstantStruct(this) : default;
 
-        public LLVMValueRef IsAConstantVector => (Pointer != IntPtr.Zero) ? LLVM.IsAConstantVector(this) : default;
+        public LLVMValueRef IsAConstantVector => (Handle != IntPtr.Zero) ? LLVM.IsAConstantVector(this) : default;
 
-        public LLVMValueRef IsADbgDeclareInst => (Pointer != IntPtr.Zero) ? LLVM.IsADbgDeclareInst(this) : default;
+        public LLVMValueRef IsADbgDeclareInst => (Handle != IntPtr.Zero) ? LLVM.IsADbgDeclareInst(this) : default;
 
-        public LLVMValueRef IsADbgInfoIntrinsic => (Pointer != IntPtr.Zero) ? LLVM.IsADbgInfoIntrinsic(this) : default;
+        public LLVMValueRef IsADbgInfoIntrinsic => (Handle != IntPtr.Zero) ? LLVM.IsADbgInfoIntrinsic(this) : default;
 
-        public LLVMValueRef IsAExtractElementInst => (Pointer != IntPtr.Zero) ? LLVM.IsAExtractElementInst(this) : default;
+        public LLVMValueRef IsAExtractElementInst => (Handle != IntPtr.Zero) ? LLVM.IsAExtractElementInst(this) : default;
 
-        public LLVMValueRef IsAExtractValueInst => (Pointer != IntPtr.Zero) ? LLVM.IsAExtractValueInst(this) : default;
+        public LLVMValueRef IsAExtractValueInst => (Handle != IntPtr.Zero) ? LLVM.IsAExtractValueInst(this) : default;
 
-        public LLVMValueRef IsAFCmpInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAFCmpInst(this) : default;
+        public LLVMValueRef IsAFCmpInst => (Handle != IntPtr.Zero) ?  LLVM.IsAFCmpInst(this) : default;
 
-        public LLVMValueRef IsAFPExtInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAFPExtInst(this) : default;
+        public LLVMValueRef IsAFPExtInst => (Handle != IntPtr.Zero) ?  LLVM.IsAFPExtInst(this) : default;
 
-        public LLVMValueRef IsAFPToSIInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAFPToSIInst(this) : default;
+        public LLVMValueRef IsAFPToSIInst => (Handle != IntPtr.Zero) ?  LLVM.IsAFPToSIInst(this) : default;
 
-        public LLVMValueRef IsAFPToUIInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAFPToUIInst(this) : default;
+        public LLVMValueRef IsAFPToUIInst => (Handle != IntPtr.Zero) ?  LLVM.IsAFPToUIInst(this) : default;
 
-        public LLVMValueRef IsAFPTruncInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAFPTruncInst(this) : default;
+        public LLVMValueRef IsAFPTruncInst => (Handle != IntPtr.Zero) ?  LLVM.IsAFPTruncInst(this) : default;
 
-        public LLVMValueRef IsAFunction => (Pointer != IntPtr.Zero) ?  LLVM.IsAFunction(this) : default;
+        public LLVMValueRef IsAFunction => (Handle != IntPtr.Zero) ?  LLVM.IsAFunction(this) : default;
 
-        public LLVMValueRef IsAGetElementPtrInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAGetElementPtrInst(this) : default;
+        public LLVMValueRef IsAGetElementPtrInst => (Handle != IntPtr.Zero) ?  LLVM.IsAGetElementPtrInst(this) : default;
 
-        public LLVMValueRef IsAGlobalAlias => (Pointer != IntPtr.Zero) ?  LLVM.IsAGlobalAlias(this) : default;
+        public LLVMValueRef IsAGlobalAlias => (Handle != IntPtr.Zero) ?  LLVM.IsAGlobalAlias(this) : default;
 
-        public LLVMValueRef IsAGlobalObject => (Pointer != IntPtr.Zero) ?  LLVM.IsAGlobalObject(this) : default;
+        public LLVMValueRef IsAGlobalObject => (Handle != IntPtr.Zero) ?  LLVM.IsAGlobalObject(this) : default;
 
-        public LLVMValueRef IsAGlobalValue => (Pointer != IntPtr.Zero) ?  LLVM.IsAGlobalValue(this) : default;
+        public LLVMValueRef IsAGlobalValue => (Handle != IntPtr.Zero) ?  LLVM.IsAGlobalValue(this) : default;
 
-        public LLVMValueRef IsAGlobalVariable => (Pointer != IntPtr.Zero) ?  LLVM.IsAGlobalVariable(this) : default;
+        public LLVMValueRef IsAGlobalVariable => (Handle != IntPtr.Zero) ?  LLVM.IsAGlobalVariable(this) : default;
 
-        public LLVMValueRef IsAICmpInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAICmpInst(this) : default;
+        public LLVMValueRef IsAICmpInst => (Handle != IntPtr.Zero) ?  LLVM.IsAICmpInst(this) : default;
 
-        public LLVMValueRef IsAIndirectBrInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAIndirectBrInst(this) : default;
+        public LLVMValueRef IsAIndirectBrInst => (Handle != IntPtr.Zero) ?  LLVM.IsAIndirectBrInst(this) : default;
 
-        public LLVMValueRef IsAInlineAsm => (Pointer != IntPtr.Zero) ?  LLVM.IsAInlineAsm(this) : default;
+        public LLVMValueRef IsAInlineAsm => (Handle != IntPtr.Zero) ?  LLVM.IsAInlineAsm(this) : default;
 
-        public LLVMValueRef IsAInsertElementInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAInsertElementInst(this) : default;
+        public LLVMValueRef IsAInsertElementInst => (Handle != IntPtr.Zero) ?  LLVM.IsAInsertElementInst(this) : default;
 
-        public LLVMValueRef IsAInsertValueInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAInsertValueInst(this) : default;
+        public LLVMValueRef IsAInsertValueInst => (Handle != IntPtr.Zero) ?  LLVM.IsAInsertValueInst(this) : default;
 
-        public LLVMValueRef IsAInstruction => (Pointer != IntPtr.Zero) ?  LLVM.IsAInstruction(this) : default;
+        public LLVMValueRef IsAInstruction => (Handle != IntPtr.Zero) ?  LLVM.IsAInstruction(this) : default;
 
-        public LLVMValueRef IsAIntrinsicInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAIntrinsicInst(this) : default;
+        public LLVMValueRef IsAIntrinsicInst => (Handle != IntPtr.Zero) ?  LLVM.IsAIntrinsicInst(this) : default;
 
-        public LLVMValueRef IsAIntToPtrInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAIntToPtrInst(this) : default;
+        public LLVMValueRef IsAIntToPtrInst => (Handle != IntPtr.Zero) ?  LLVM.IsAIntToPtrInst(this) : default;
 
-        public LLVMValueRef IsAInvokeInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAInvokeInst(this) : default;
+        public LLVMValueRef IsAInvokeInst => (Handle != IntPtr.Zero) ?  LLVM.IsAInvokeInst(this) : default;
 
-        public LLVMValueRef IsALandingPadInst => (Pointer != IntPtr.Zero) ?  LLVM.IsALandingPadInst(this) : default;
+        public LLVMValueRef IsALandingPadInst => (Handle != IntPtr.Zero) ?  LLVM.IsALandingPadInst(this) : default;
 
-        public LLVMValueRef IsALoadInst => (Pointer != IntPtr.Zero) ?  LLVM.IsALoadInst(this) : default;
+        public LLVMValueRef IsALoadInst => (Handle != IntPtr.Zero) ?  LLVM.IsALoadInst(this) : default;
 
-        public LLVMValueRef IsAMDNode => (Pointer != IntPtr.Zero) ?  LLVM.IsAMDNode(this) : default;
+        public LLVMValueRef IsAMDNode => (Handle != IntPtr.Zero) ?  LLVM.IsAMDNode(this) : default;
 
-        public LLVMValueRef IsAMDString => (Pointer != IntPtr.Zero) ?  LLVM.IsAMDString(this) : default;
+        public LLVMValueRef IsAMDString => (Handle != IntPtr.Zero) ?  LLVM.IsAMDString(this) : default;
 
-        public LLVMValueRef IsAMemCpyInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAMemCpyInst(this) : default;
+        public LLVMValueRef IsAMemCpyInst => (Handle != IntPtr.Zero) ?  LLVM.IsAMemCpyInst(this) : default;
 
-        public LLVMValueRef IsAMemIntrinsic => (Pointer != IntPtr.Zero) ?  LLVM.IsAMemIntrinsic(this) : default;
+        public LLVMValueRef IsAMemIntrinsic => (Handle != IntPtr.Zero) ?  LLVM.IsAMemIntrinsic(this) : default;
 
-        public LLVMValueRef IsAMemMoveInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAMemMoveInst(this) : default;
+        public LLVMValueRef IsAMemMoveInst => (Handle != IntPtr.Zero) ?  LLVM.IsAMemMoveInst(this) : default;
 
-        public LLVMValueRef IsAMemSetInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAMemSetInst(this) : default;
+        public LLVMValueRef IsAMemSetInst => (Handle != IntPtr.Zero) ?  LLVM.IsAMemSetInst(this) : default;
 
-        public LLVMValueRef IsAPHINode => (Pointer != IntPtr.Zero) ?  LLVM.IsAPHINode(this) : default;
+        public LLVMValueRef IsAPHINode => (Handle != IntPtr.Zero) ?  LLVM.IsAPHINode(this) : default;
 
-        public LLVMValueRef IsAPtrToIntInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAPtrToIntInst(this) : default;
+        public LLVMValueRef IsAPtrToIntInst => (Handle != IntPtr.Zero) ?  LLVM.IsAPtrToIntInst(this) : default;
 
-        public LLVMValueRef IsAResumeInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAResumeInst(this) : default;
+        public LLVMValueRef IsAResumeInst => (Handle != IntPtr.Zero) ?  LLVM.IsAResumeInst(this) : default;
 
-        public LLVMValueRef IsAReturnInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAReturnInst(this) : default;
+        public LLVMValueRef IsAReturnInst => (Handle != IntPtr.Zero) ?  LLVM.IsAReturnInst(this) : default;
 
-        public LLVMValueRef IsASelectInst => (Pointer != IntPtr.Zero) ?  LLVM.IsASelectInst(this) : default;
+        public LLVMValueRef IsASelectInst => (Handle != IntPtr.Zero) ?  LLVM.IsASelectInst(this) : default;
 
-        public LLVMValueRef IsASExtInst => (Pointer != IntPtr.Zero) ?  LLVM.IsASExtInst(this) : default;
+        public LLVMValueRef IsASExtInst => (Handle != IntPtr.Zero) ?  LLVM.IsASExtInst(this) : default;
 
-        public LLVMValueRef IsAShuffleVectorInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAShuffleVectorInst(this) : default;
+        public LLVMValueRef IsAShuffleVectorInst => (Handle != IntPtr.Zero) ?  LLVM.IsAShuffleVectorInst(this) : default;
 
-        public LLVMValueRef IsASIToFPInst => (Pointer != IntPtr.Zero) ?  LLVM.IsASIToFPInst(this) : default;
+        public LLVMValueRef IsASIToFPInst => (Handle != IntPtr.Zero) ?  LLVM.IsASIToFPInst(this) : default;
 
-        public LLVMValueRef IsAStoreInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAStoreInst(this) : default;
+        public LLVMValueRef IsAStoreInst => (Handle != IntPtr.Zero) ?  LLVM.IsAStoreInst(this) : default;
 
-        public LLVMValueRef IsASwitchInst => (Pointer != IntPtr.Zero) ?  LLVM.IsASwitchInst(this) : default;
+        public LLVMValueRef IsASwitchInst => (Handle != IntPtr.Zero) ?  LLVM.IsASwitchInst(this) : default;
 
-        public LLVMValueRef IsATerminatorInst => (Pointer != IntPtr.Zero) ?  LLVM.IsATerminatorInst(this) : default;
+        public LLVMValueRef IsATerminatorInst => (Handle != IntPtr.Zero) ?  LLVM.IsATerminatorInst(this) : default;
 
-        public LLVMValueRef IsATruncInst => (Pointer != IntPtr.Zero) ?  LLVM.IsATruncInst(this) : default;
+        public LLVMValueRef IsATruncInst => (Handle != IntPtr.Zero) ?  LLVM.IsATruncInst(this) : default;
 
-        public LLVMValueRef IsAUIToFPInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAUIToFPInst(this) : default;
+        public LLVMValueRef IsAUIToFPInst => (Handle != IntPtr.Zero) ?  LLVM.IsAUIToFPInst(this) : default;
 
-        public LLVMValueRef IsAUnaryInstruction => (Pointer != IntPtr.Zero) ?  LLVM.IsAUnaryInstruction(this) : default;
+        public LLVMValueRef IsAUnaryInstruction => (Handle != IntPtr.Zero) ?  LLVM.IsAUnaryInstruction(this) : default;
 
-        public LLVMValueRef IsAUndefValue => (Pointer != IntPtr.Zero) ?  LLVM.IsAUndefValue(this) : default;
+        public LLVMValueRef IsAUndefValue => (Handle != IntPtr.Zero) ?  LLVM.IsAUndefValue(this) : default;
 
-        public LLVMValueRef IsAUnreachableInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAUnreachableInst(this) : default;
+        public LLVMValueRef IsAUnreachableInst => (Handle != IntPtr.Zero) ?  LLVM.IsAUnreachableInst(this) : default;
 
-        public LLVMValueRef IsAUser => (Pointer != IntPtr.Zero) ?  LLVM.IsAUser(this) : default;
+        public LLVMValueRef IsAUser => (Handle != IntPtr.Zero) ?  LLVM.IsAUser(this) : default;
 
-        public LLVMValueRef IsAVAArgInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAVAArgInst(this) : default;
+        public LLVMValueRef IsAVAArgInst => (Handle != IntPtr.Zero) ?  LLVM.IsAVAArgInst(this) : default;
 
-        public LLVMValueRef IsAZExtInst => (Pointer != IntPtr.Zero) ?  LLVM.IsAZExtInst(this) : default;
+        public LLVMValueRef IsAZExtInst => (Handle != IntPtr.Zero) ?  LLVM.IsAZExtInst(this) : default;
 
-        public bool IsBasicBlock => (Pointer != IntPtr.Zero) ?  LLVM.ValueIsBasicBlock(this) != 0 : default;
+        public bool IsBasicBlock => (Handle != IntPtr.Zero) ?  LLVM.ValueIsBasicBlock(this) != 0 : default;
 
         public bool IsCleanup
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.IsCleanup(this) != 0 : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.IsCleanup(this) != 0 : default;
             set => LLVM.SetCleanup(this, value ? 1 : 0);
         }
 
-        public bool IsConditional => (Pointer != IntPtr.Zero) ? LLVM.IsConditional(this) != 0 : default;
+        public bool IsConditional => (Handle != IntPtr.Zero) ? LLVM.IsConditional(this) != 0 : default;
 
-        public bool IsConstant => (Pointer != IntPtr.Zero) ? LLVM.IsConstant(this) != 0 : default;
+        public bool IsConstant => (Handle != IntPtr.Zero) ? LLVM.IsConstant(this) != 0 : default;
 
-        public bool IsConstantString => (Pointer != IntPtr.Zero) ? LLVM.IsConstantString(this) != 0 : default;
+        public bool IsConstantString => (Handle != IntPtr.Zero) ? LLVM.IsConstantString(this) != 0 : default;
 
-        public bool IsDeclaration => (Pointer != IntPtr.Zero) ? LLVM.IsDeclaration(this) != 0 : default;
+        public bool IsDeclaration => (Handle != IntPtr.Zero) ? LLVM.IsDeclaration(this) != 0 : default;
 
         public bool IsExternallyInitialized
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.IsExternallyInitialized(this) != 0 : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.IsExternallyInitialized(this) != 0 : default;
             set => LLVM.SetExternallyInitialized(this, value ? 1 : 0);
         }
 
         public bool IsGlobalConstant
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.IsGlobalConstant(this) != 0 : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.IsGlobalConstant(this) != 0 : default;
             set => LLVM.SetGlobalConstant(this, value ? 1 : 0);
 
         }
 
-        public bool IsNull => (Pointer != IntPtr.Zero) ? LLVM.IsNull(this) != 0 : default;
+        public bool IsNull => (Handle != IntPtr.Zero) ? LLVM.IsNull(this) != 0 : default;
 
         public bool IsTailCall
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.IsTailCall(this) != 0 : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.IsTailCall(this) != 0 : default;
             set => LLVM.SetTailCall(this, IsTailCall ? 1 : 0);
         }
 
         public bool IsThreadLocal
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.IsThreadLocal(this) != 0 : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.IsThreadLocal(this) != 0 : default;
             set => LLVM.SetThreadLocal(this, value ? 1 : 0);
         }
 
-        public bool IsUndef => (Pointer != IntPtr.Zero) ? LLVM.IsUndef(this) != 0 : default;
+        public bool IsUndef => (Handle != IntPtr.Zero) ? LLVM.IsUndef(this) != 0 : default;
 
-        public LLVMBasicBlockRef LastBasicBlock => (Pointer != IntPtr.Zero) ? LLVM.GetLastBasicBlock(this) : default;
+        public LLVMBasicBlockRef LastBasicBlock => (Handle != IntPtr.Zero) ? LLVM.GetLastBasicBlock(this) : default;
 
-        public LLVMValueRef LastParam => (Pointer != IntPtr.Zero) ? LLVM.GetLastParam(this) : default;
+        public LLVMValueRef LastParam => (Handle != IntPtr.Zero) ? LLVM.GetLastParam(this) : default;
 
         public LLVMLinkage Linkage
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.GetLinkage(this) : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.GetLinkage(this) : default;
             set => LLVM.SetLinkage(this, value);
         }
 
@@ -355,7 +355,7 @@ namespace LLVMSharp.Interop
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return Array.Empty<LLVMValueRef>();
                 }
@@ -371,13 +371,13 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public uint MDNodeOperandsCount => (Pointer != IntPtr.Zero) ? LLVM.GetMDNodeNumOperands(this) : default;
+        public uint MDNodeOperandsCount => (Handle != IntPtr.Zero) ? LLVM.GetMDNodeNumOperands(this) : default;
 
         public string Name
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return string.Empty;
                 }
@@ -400,21 +400,21 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public LLVMValueRef NextFunction => (Pointer != IntPtr.Zero) ? LLVM.GetNextFunction(this) : default;
+        public LLVMValueRef NextFunction => (Handle != IntPtr.Zero) ? LLVM.GetNextFunction(this) : default;
 
-        public LLVMValueRef NextGlobal => (Pointer != IntPtr.Zero) ? LLVM.GetNextGlobal(this) : default;
+        public LLVMValueRef NextGlobal => (Handle != IntPtr.Zero) ? LLVM.GetNextGlobal(this) : default;
 
-        public LLVMValueRef NextInstruction => (Pointer != IntPtr.Zero) ? LLVM.GetNextInstruction(this) : default;
+        public LLVMValueRef NextInstruction => (Handle != IntPtr.Zero) ? LLVM.GetNextInstruction(this) : default;
 
-        public LLVMValueRef NextParam => (Pointer != IntPtr.Zero) ? LLVM.GetNextParam(this) : default;
+        public LLVMValueRef NextParam => (Handle != IntPtr.Zero) ? LLVM.GetNextParam(this) : default;
 
-        public int OperandCount => (Pointer != IntPtr.Zero) ? LLVM.GetNumOperands(this) : default;
+        public int OperandCount => (Handle != IntPtr.Zero) ? LLVM.GetNumOperands(this) : default;
 
         public LLVMValueRef[] Params
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return Array.Empty<LLVMValueRef>();
                 }
@@ -430,29 +430,29 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public uint ParamsCount => (Pointer != IntPtr.Zero) ? LLVM.CountParams(this) : default;
+        public uint ParamsCount => (Handle != IntPtr.Zero) ? LLVM.CountParams(this) : default;
 
-        public LLVMValueRef ParamParent => (Pointer != IntPtr.Zero) ? LLVM.GetParamParent(this) : default;
+        public LLVMValueRef ParamParent => (Handle != IntPtr.Zero) ? LLVM.GetParamParent(this) : default;
 
         public LLVMValueRef PersonalityFn
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.GetPersonalityFn(this) : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.GetPersonalityFn(this) : default;
             set => LLVM.SetPersonalityFn(this, value);
         }
 
-        public LLVMValueRef PreviousGlobal => (Pointer != IntPtr.Zero) ? LLVM.GetPreviousGlobal(this) : default;
+        public LLVMValueRef PreviousGlobal => (Handle != IntPtr.Zero) ? LLVM.GetPreviousGlobal(this) : default;
 
-        public LLVMValueRef PreviousInstruction => (Pointer != IntPtr.Zero) ? LLVM.GetPreviousInstruction(this) : default;
+        public LLVMValueRef PreviousInstruction => (Handle != IntPtr.Zero) ? LLVM.GetPreviousInstruction(this) : default;
 
-        public LLVMValueRef PreviousParam => (Pointer != IntPtr.Zero) ? LLVM.GetPreviousParam(this) : default;
+        public LLVMValueRef PreviousParam => (Handle != IntPtr.Zero) ? LLVM.GetPreviousParam(this) : default;
 
-        public LLVMValueRef PreviousFunction => (Pointer != IntPtr.Zero) ? LLVM.GetPreviousFunction(this) : default;
+        public LLVMValueRef PreviousFunction => (Handle != IntPtr.Zero) ? LLVM.GetPreviousFunction(this) : default;
 
         public string Section
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return string.Empty;
                 }
@@ -475,31 +475,31 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public uint SuccessorsCount => (Pointer != IntPtr.Zero) ? LLVM.GetNumSuccessors(this) : default;
+        public uint SuccessorsCount => (Handle != IntPtr.Zero) ? LLVM.GetNumSuccessors(this) : default;
 
-        public LLVMBasicBlockRef SwitchDefaultDest => (Pointer != IntPtr.Zero) ? LLVM.GetSwitchDefaultDest(this) : default;
+        public LLVMBasicBlockRef SwitchDefaultDest => (Handle != IntPtr.Zero) ? LLVM.GetSwitchDefaultDest(this) : default;
 
         public LLVMThreadLocalMode ThreadLocalMode
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.GetThreadLocalMode(this) : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.GetThreadLocalMode(this) : default;
             set => LLVM.SetThreadLocalMode(this, value);
         }
 
-        public LLVMTypeRef TypeOf => (Pointer != IntPtr.Zero) ? LLVM.TypeOf(this) : default;
+        public LLVMTypeRef TypeOf => (Handle != IntPtr.Zero) ? LLVM.TypeOf(this) : default;
 
         public LLVMVisibility Visibility
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.GetVisibility(this) : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.GetVisibility(this) : default;
             set => LLVM.SetVisibility(this, value);
         }
 
         public bool Volatile
         {
-            get => (Pointer != IntPtr.Zero) ? LLVM.GetVolatile(this) != 0 : default;
+            get => (Handle != IntPtr.Zero) ? LLVM.GetVolatile(this) != 0 : default;
             set => LLVM.SetVolatile(this, value ? 1 : 0);
         }
 
-        public static bool operator ==(LLVMValueRef left, LLVMValueRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMValueRef left, LLVMValueRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMValueRef left, LLVMValueRef right) => !(left == right);
 
@@ -768,7 +768,7 @@ namespace LLVMSharp.Interop
 
         public override bool Equals(object obj) => obj is LLVMValueRef other && Equals(other);
 
-        public bool Equals(LLVMValueRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMValueRef other) => Handle == other.Handle;
 
         public string GetAsString(out UIntPtr Length)
         {
@@ -827,7 +827,7 @@ namespace LLVMSharp.Interop
 
         public LLVMValueRef GetElementAsConstant(uint idx) => LLVM.GetElementAsConstant(this, idx);
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
 
         public LLVMBasicBlockRef GetIncomingBlock(uint Index) => LLVM.GetIncomingBlock(this, Index);
 
@@ -888,7 +888,7 @@ namespace LLVMSharp.Interop
 
         public void SetSuccessor(uint i, LLVMBasicBlockRef block) => LLVM.SetSuccessor(this, i, block);
 
-        public override string ToString() => (Pointer != IntPtr.Zero) ? PrintToString() : string.Empty;
+        public override string ToString() => (Handle != IntPtr.Zero) ? PrintToString() : string.Empty;
 
         public bool VerifyFunction(LLVMVerifierFailureAction Action) => LLVM.VerifyFunction(this, Action) == 0;
 

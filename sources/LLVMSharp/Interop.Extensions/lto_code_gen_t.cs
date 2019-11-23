@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct lto_code_gen_t
     {
-        public lto_code_gen_t(IntPtr pointer)
+        public lto_code_gen_t(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator lto_code_gen_t(LLVMOpaqueLTOCodeGenerator* Comdat)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaqueLTOCodeGenerator*(lto_code_gen_t Comdat)
         {
-            return (LLVMOpaqueLTOCodeGenerator*)Comdat.Pointer;
+            return (LLVMOpaqueLTOCodeGenerator*)Comdat.Handle;
         }
     }
 }

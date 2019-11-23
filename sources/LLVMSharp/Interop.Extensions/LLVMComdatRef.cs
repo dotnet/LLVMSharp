@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMComdatRef
     {
-        public LLVMComdatRef(IntPtr pointer)
+        public LLVMComdatRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMComdatRef(LLVMComdat* Comdat)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMComdat*(LLVMComdatRef Comdat)
         {
-            return (LLVMComdat*)Comdat.Pointer;
+            return (LLVMComdat*)Comdat.Handle;
         }
     }
 }

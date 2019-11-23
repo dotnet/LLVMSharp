@@ -6,12 +6,12 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMPassManagerRef : IDisposable, IEquatable<LLVMPassManagerRef>
     {
-        public LLVMPassManagerRef(IntPtr pointer)
+        public LLVMPassManagerRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMPassManagerRef(LLVMOpaquePassManager* value)
         {
@@ -20,10 +20,10 @@ namespace LLVMSharp.Interop
 
         public static implicit operator LLVMOpaquePassManager*(LLVMPassManagerRef value)
         {
-            return (LLVMOpaquePassManager*)value.Pointer;
+            return (LLVMOpaquePassManager*)value.Handle;
         }
 
-        public static bool operator ==(LLVMPassManagerRef left, LLVMPassManagerRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMPassManagerRef left, LLVMPassManagerRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMPassManagerRef left, LLVMPassManagerRef right) => !(left == right);
 
@@ -145,20 +145,20 @@ namespace LLVMSharp.Interop
 
         public void Dispose()
         {
-            if (Pointer != IntPtr.Zero)
+            if (Handle != IntPtr.Zero)
             {
                 LLVM.DisposePassManager(this);
-                Pointer = IntPtr.Zero;
+                Handle = IntPtr.Zero;
             }
         }
 
         public override bool Equals(object obj) => obj is LLVMPassManagerRef other && Equals(other);
 
-        public bool Equals(LLVMPassManagerRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMPassManagerRef other) => Handle == other.Handle;
 
         public bool FinalizeFunctionPassManager() => LLVM.FinalizeFunctionPassManager(this) != 0;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
 
         public bool InitializeFunctionPassManager() => LLVM.InitializeFunctionPassManager(this) != 0;
 
