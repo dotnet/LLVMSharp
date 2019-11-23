@@ -57,25 +57,23 @@ namespace LLVMSharp.Interop
 
         public bool TryEmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen, out string message)
         {
-            using (var marshaledFileName = new MarshaledString(fileName))
+            using var marshaledFileName = new MarshaledString(fileName);
+
+            sbyte* errorMessage;
+            int result = LLVM.TargetMachineEmitToFile(this, module, marshaledFileName, codegen, &errorMessage);
+
+            if (errorMessage is null)
             {
-                sbyte* errorMessage;
-
-                int result = LLVM.TargetMachineEmitToFile(this, module, marshaledFileName, codegen, &errorMessage);
-
-                if (errorMessage is null)
-                {
-                    message = string.Empty;
-                }
-                else
-                {
-                    var span = new ReadOnlySpan<byte>(errorMessage, int.MaxValue);
-                    message = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
-                    LLVM.DisposeErrorMessage(errorMessage);
-                }
-
-                return result == 0;
+                message = string.Empty;
             }
+            else
+            {
+                var span = new ReadOnlySpan<byte>(errorMessage, int.MaxValue);
+                message = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                LLVM.DisposeErrorMessage(errorMessage);
+            }
+
+            return result == 0;
         }
     }
 }

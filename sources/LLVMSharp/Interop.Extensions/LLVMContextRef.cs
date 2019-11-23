@@ -62,10 +62,8 @@ namespace LLVMSharp.Interop
 
         public LLVMBasicBlockRef AppendBasicBlock(LLVMValueRef Fn, string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.AppendBasicBlockInContext(this, Fn, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.AppendBasicBlockInContext(this, Fn, marshaledName);
         }
 
         public LLVMBuilderRef CreateBuilder()
@@ -75,18 +73,14 @@ namespace LLVMSharp.Interop
 
         public LLVMModuleRef CreateModuleWithName(string ModuleID)
         {
-            using (var marshaledModuleID = new MarshaledString(ModuleID))
-            {
-                return LLVM.ModuleCreateWithNameInContext(marshaledModuleID, this);
-            }
+            using var marshaledModuleID = new MarshaledString(ModuleID);
+            return LLVM.ModuleCreateWithNameInContext(marshaledModuleID, this);
         }
 
         public LLVMTypeRef CreateNamedStruct(string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.StructCreateNamed(this, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.StructCreateNamed(this, marshaledName);
         }
 
         public void Dispose()
@@ -114,10 +108,8 @@ namespace LLVMSharp.Interop
 
         public LLVMValueRef GetConstString(string Str, uint Length, bool DontNullTerminate)
         {
-            using (var marshaledStr = new MarshaledString(Str))
-            {
-                return LLVM.ConstStringInContext(this, marshaledStr, Length, DontNullTerminate ? 1 : 0);
-            }
+            using var marshaledStr = new MarshaledString(Str);
+            return LLVM.ConstStringInContext(this, marshaledStr, Length, DontNullTerminate ? 1 : 0);
         }
 
         public LLVMValueRef GetConstStruct(LLVMValueRef[] ConstantVals, bool Packed)
@@ -138,10 +130,8 @@ namespace LLVMSharp.Interop
 
         public uint GetMDKindID(string Name, uint SLen)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.GetMDKindIDInContext(this, marshaledName, SLen);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.GetMDKindIDInContext(this, marshaledName, SLen);
         }
 
         public LLVMValueRef GetMDNode(LLVMValueRef[] Vals)
@@ -154,10 +144,8 @@ namespace LLVMSharp.Interop
 
         public LLVMValueRef GetMDString(string Str, uint SLen)
         {
-            using (var marshaledStr = new MarshaledString(Str))
-            {
-                return LLVM.MDStringInContext(this, marshaledStr, SLen);
-            }
+            using var marshaledStr = new MarshaledString(Str);
+            return LLVM.MDStringInContext(this, marshaledStr, SLen);
         }
 
         public LLVMTypeRef GetStructType(LLVMTypeRef[] ElementTypes, bool Packed)
@@ -170,10 +158,8 @@ namespace LLVMSharp.Interop
 
         public LLVMBasicBlockRef InsertBasicBlock(LLVMBasicBlockRef BB, string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.InsertBasicBlockInContext(this, BB, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.InsertBasicBlockInContext(this, BB, marshaledName);
         }
 
         

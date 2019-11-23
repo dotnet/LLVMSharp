@@ -63,10 +63,8 @@ namespace LLVMSharp.Interop
 
         public LLVMBasicBlockRef InsertBasicBlock(string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.InsertBasicBlock(this, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.InsertBasicBlock(this, marshaledName);
         }
 
         public void MoveAfter(LLVMBasicBlockRef MovePos) => LLVM.MoveBasicBlockAfter(this, MovePos);

@@ -63,18 +63,14 @@ namespace LLVMSharp.Interop
 
         public ulong GetFunctionAddress(string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.GetFunctionAddress(this, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.GetFunctionAddress(this, marshaledName);
         }
 
         public ulong GetGlobalValueAddress(string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.GetGlobalValueAddress(this, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.GetGlobalValueAddress(this, marshaledName);
         }
 
         public override int GetHashCode() => Pointer.GetHashCode();
@@ -107,17 +103,16 @@ namespace LLVMSharp.Interop
 
         public int RunFunctionAsMain(LLVMValueRef F, uint ArgC, string[] ArgV, string[] EnvP)
         {
-            using (var marshaledArgV = new MarshaledStringArray(ArgV))
-            using (var marshaledEnvP = new MarshaledStringArray(EnvP))
-            {
-                var pArgV = stackalloc sbyte*[marshaledArgV.Count];
-                marshaledArgV.Fill(pArgV);
+            using var marshaledArgV = new MarshaledStringArray(ArgV);
+            using var marshaledEnvP = new MarshaledStringArray(EnvP);
 
-                var pEnvP = stackalloc sbyte*[marshaledEnvP.Count];
-                marshaledEnvP.Fill(pEnvP);
+            var pArgV = stackalloc sbyte*[marshaledArgV.Count];
+            marshaledArgV.Fill(pArgV);
 
-                return LLVM.RunFunctionAsMain(this, F, ArgC, pArgV, pEnvP);
-            }
+            var pEnvP = stackalloc sbyte*[marshaledEnvP.Count];
+            marshaledEnvP.Fill(pEnvP);
+
+            return LLVM.RunFunctionAsMain(this, F, ArgC, pArgV, pEnvP);
         }
 
         public void RunStaticConstructors() => LLVM.RunStaticConstructors(this);
@@ -128,9 +123,9 @@ namespace LLVMSharp.Interop
 
         public bool TryFindFunction(string Name, out LLVMValueRef OutFn)
         {
-            using (var marshaledName = new MarshaledString(Name))
             fixed (LLVMValueRef* pOutFn = &OutFn)
             {
+                using var marshaledName = new MarshaledString(Name);
                 return LLVM.FindFunction(this, marshaledName, (LLVMOpaqueValue**)pOutFn) == 0;
             }
         }

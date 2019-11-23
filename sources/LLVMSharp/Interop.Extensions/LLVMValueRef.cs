@@ -109,10 +109,8 @@ namespace LLVMSharp.Interop
 
             set
             {
-                using (var marshaledName = new MarshaledString(value))
-                {
-                    LLVM.SetGC(this, marshaledName);
-                }
+                using var marshaledName = new MarshaledString(value);
+                LLVM.SetGC(this, marshaledName);
             }
         }
 
@@ -397,10 +395,8 @@ namespace LLVMSharp.Interop
 
             set
             {
-                using (var marshaledName = new MarshaledString(value))
-                {
-                    LLVM.SetValueName(this, marshaledName);
-                }
+                using var marshaledName = new MarshaledString(value);
+                LLVM.SetValueName(this, marshaledName);
             }
         }
 
@@ -474,10 +470,8 @@ namespace LLVMSharp.Interop
 
             set
             {
-                using (var marshaledSection = new MarshaledString(value))
-                {
-                    LLVM.SetSection(this, marshaledSection);
-                }
+                using var marshaledSection = new MarshaledString(value);
+                LLVM.SetSection(this, marshaledSection);
             }
         }
 
@@ -583,11 +577,9 @@ namespace LLVMSharp.Interop
 
         public static LLVMValueRef CreateConstInlineAsm(LLVMTypeRef Ty, string AsmString, string Constraints, bool HasSideEffects, bool IsAlignStack)
         {
-            using (var marshaledAsmString = new MarshaledString(AsmString))
-            using (var marshaledConstraints = new MarshaledString(Constraints))
-            {
-                return LLVM.ConstInlineAsm(Ty, marshaledAsmString, marshaledConstraints, HasSideEffects ? 1 : 0, IsAlignStack ? 1 : 0);
-            }
+            using var marshaledAsmString = new MarshaledString(AsmString);
+            using var marshaledConstraints = new MarshaledString(Constraints);
+            return LLVM.ConstInlineAsm(Ty, marshaledAsmString, marshaledConstraints, HasSideEffects ? 1 : 0, IsAlignStack ? 1 : 0);
         }
 
         public static LLVMValueRef CreateConstInsertElement(LLVMValueRef VectorConstant, LLVMValueRef ElementValueConstant, LLVMValueRef IndexConstant) => LLVM.ConstInsertElement(VectorConstant, ElementValueConstant, IndexConstant);
@@ -614,18 +606,14 @@ namespace LLVMSharp.Interop
 
         public static LLVMValueRef CreateConstIntOfString(LLVMTypeRef IntTy, string Text, byte Radix)
         {
-            using (var marshaledText = new MarshaledString(Text))
-            {
-                return LLVM.ConstIntOfString(IntTy, marshaledText, Radix);
-            }
+            using var marshaledText = new MarshaledString(Text);
+            return LLVM.ConstIntOfString(IntTy, marshaledText, Radix);
         }
 
         public static LLVMValueRef CreateConstIntOfStringAndSize(LLVMTypeRef IntTy, string Text, uint SLen, byte Radix)
         {
-            using (var marshaledText = new MarshaledString(Text))
-            {
-                return LLVM.ConstIntOfStringAndSize(IntTy, marshaledText, SLen, Radix);
-            }
+            using var marshaledText = new MarshaledString(Text);
+            return LLVM.ConstIntOfStringAndSize(IntTy, marshaledText, SLen, Radix);
         }
 
         public static LLVMValueRef CreateConstIntToPtr(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstIntToPtr(ConstantVal, ToType);
@@ -676,18 +664,14 @@ namespace LLVMSharp.Interop
 
         public static LLVMValueRef CreateConstRealOfString(LLVMTypeRef RealTy, string Text)
         {
-            using (var marshaledText = new MarshaledString(Text))
-            {
-                return LLVM.ConstRealOfString(RealTy, marshaledText);
-            }
+            using var marshaledText = new MarshaledString(Text);
+            return LLVM.ConstRealOfString(RealTy, marshaledText);
         }
 
         public static LLVMValueRef CreateConstRealOfStringAndSize(LLVMTypeRef RealTy, string Text, uint SLen)
         {
-            using (var marshaledText = new MarshaledString(Text))
-            {
-                return LLVM.ConstRealOfStringAndSize(RealTy, marshaledText, SLen);
-            }
+            using var marshaledText = new MarshaledString(Text);
+            return LLVM.ConstRealOfStringAndSize(RealTy, marshaledText, SLen);
         }
 
         public static LLVMValueRef CreateConstSDiv(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstSDiv(LHSConstant, RHSConstant);
@@ -765,19 +749,15 @@ namespace LLVMSharp.Interop
 
         public void AddTargetDependentFunctionAttr(string A, string V)
         {
-            using (var marshaledA = new MarshaledString(A))
-            using (var marshaledV = new MarshaledString(V))
-            {
-                LLVM.AddTargetDependentFunctionAttr(this, marshaledA, marshaledV);
-            }
+            using var marshaledA = new MarshaledString(A);
+            using var marshaledV = new MarshaledString(V);
+            LLVM.AddTargetDependentFunctionAttr(this, marshaledA, marshaledV);
         }
 
         public LLVMBasicBlockRef AppendBasicBlock(string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.AppendBasicBlock(this, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.AppendBasicBlock(this, marshaledName);
         }
 
         public void DeleteFunction() => LLVM.DeleteFunction(this);

@@ -91,12 +91,10 @@ namespace LLVMSharp.Interop
 
         public LLVMTargetMachineRef CreateTargetMachine(string triple, string cpu, string features, LLVMCodeGenOptLevel level, LLVMRelocMode reloc, LLVMCodeModel codeModel)
         {
-            using (var marshaledTriple = new MarshaledString(triple))
-            using (var marshaledCPU = new MarshaledString(cpu))
-            using (var marshaledFeatures = new MarshaledString(features))
-            {
-                return LLVM.CreateTargetMachine(this, marshaledTriple, marshaledCPU, marshaledFeatures, level, reloc, codeModel);
-            }
+            using var marshaledTriple = new MarshaledString(triple);
+            using var marshaledCPU = new MarshaledString(cpu);
+            using var marshaledFeatures = new MarshaledString(features);
+            return LLVM.CreateTargetMachine(this, marshaledTriple, marshaledCPU, marshaledFeatures, level, reloc, codeModel);
         }
     }
 }
