@@ -71,8 +71,7 @@ namespace LLVMSharp.UnitTests
                 var p1 = f.Params[0];
                 var p2 = f.Params[1];
                 var cmp = b.BuildICmp(LLVMIntPredicate.LLVMIntSGT, p1, p2);
-                var r = b.BuildBitCast(cmp, f.TypeOf.ReturnType.ReturnType);
-                var ret = b.BuildRet(r);
+                var ret = b.BuildRet(cmp);
                 });
             module.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
 
