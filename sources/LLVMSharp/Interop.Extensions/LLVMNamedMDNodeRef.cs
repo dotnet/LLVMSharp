@@ -2,16 +2,16 @@
 
 using System;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMNamedMDNodeRef
     {
-        public LLVMNamedMDNodeRef(IntPtr pointer)
+        public LLVMNamedMDNodeRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMNamedMDNodeRef(LLVMOpaqueNamedMDNode* value)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp
 
         public static implicit operator LLVMOpaqueNamedMDNode*(LLVMNamedMDNodeRef value)
         {
-            return (LLVMOpaqueNamedMDNode*)value.Pointer;
+            return (LLVMOpaqueNamedMDNode*)value.Handle;
         }
     }
 }

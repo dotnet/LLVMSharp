@@ -2,16 +2,16 @@
 
 using System;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMSymbolIteratorRef : IEquatable<LLVMSymbolIteratorRef>
     {
-        public LLVMSymbolIteratorRef(IntPtr pointer)
+        public LLVMSymbolIteratorRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMSymbolIteratorRef(LLVMOpaqueSymbolIterator* value)
         {
@@ -20,17 +20,17 @@ namespace LLVMSharp
 
         public static implicit operator LLVMOpaqueSymbolIterator*(LLVMSymbolIteratorRef value)
         {
-            return (LLVMOpaqueSymbolIterator*)value.Pointer;
+            return (LLVMOpaqueSymbolIterator*)value.Handle;
         }
 
-        public static bool operator ==(LLVMSymbolIteratorRef left, LLVMSymbolIteratorRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMSymbolIteratorRef left, LLVMSymbolIteratorRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMSymbolIteratorRef left, LLVMSymbolIteratorRef right) => !(left == right);
 
         public override bool Equals(object obj) => obj is LLVMSymbolIteratorRef other && Equals(other);
 
-        public bool Equals(LLVMSymbolIteratorRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMSymbolIteratorRef other) => Handle == other.Handle;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
     }
 }

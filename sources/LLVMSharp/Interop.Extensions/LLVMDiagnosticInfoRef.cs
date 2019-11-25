@@ -2,16 +2,16 @@
 
 using System;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMDiagnosticInfoRef : IEquatable<LLVMDiagnosticInfoRef>
     {
-        public LLVMDiagnosticInfoRef(IntPtr pointer)
+        public LLVMDiagnosticInfoRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMDiagnosticInfoRef(LLVMOpaqueDiagnosticInfo* value)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp
 
         public static implicit operator LLVMOpaqueDiagnosticInfo*(LLVMDiagnosticInfoRef value)
         {
-            return (LLVMOpaqueDiagnosticInfo*)value.Pointer;
+            return (LLVMOpaqueDiagnosticInfo*)value.Handle;
         }
 
         public static bool operator ==(LLVMDiagnosticInfoRef left, LLVMDiagnosticInfoRef right) => left.Equals(right);
@@ -29,8 +29,8 @@ namespace LLVMSharp
 
         public override bool Equals(object obj) => obj is LLVMDiagnosticInfoRef other && Equals(other);
 
-        public bool Equals(LLVMDiagnosticInfoRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMDiagnosticInfoRef other) => Handle == other.Handle;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
     }
 }

@@ -2,16 +2,16 @@
 
 using System;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMUseRef : IEquatable<LLVMUseRef>
     {
-        public LLVMUseRef(IntPtr pointer)
+        public LLVMUseRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMUseRef(LLVMOpaqueUse* Use)
         {
@@ -20,17 +20,17 @@ namespace LLVMSharp
 
         public static implicit operator LLVMOpaqueUse*(LLVMUseRef Use)
         {
-            return (LLVMOpaqueUse*)Use.Pointer;
+            return (LLVMOpaqueUse*)Use.Handle;
         }
 
-        public static bool operator ==(LLVMUseRef left, LLVMUseRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMUseRef left, LLVMUseRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMUseRef left, LLVMUseRef right) => !(left == right);
 
         public override bool Equals(object obj) => obj is LLVMUseRef other && Equals(other);
 
-        public bool Equals(LLVMUseRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMUseRef other) => Handle == other.Handle;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
     }
 }

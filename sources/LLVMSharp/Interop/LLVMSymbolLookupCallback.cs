@@ -5,7 +5,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [return: NativeTypeName("const char *")]

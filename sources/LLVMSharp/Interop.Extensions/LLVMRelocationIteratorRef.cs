@@ -2,16 +2,16 @@
 
 using System;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMRelocationIteratorRef : IEquatable<LLVMRelocationIteratorRef>
     {
-        public LLVMRelocationIteratorRef(IntPtr pointer)
+        public LLVMRelocationIteratorRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMRelocationIteratorRef(LLVMOpaqueRelocationIterator* value)
         {
@@ -20,17 +20,17 @@ namespace LLVMSharp
 
         public static implicit operator LLVMOpaqueRelocationIterator*(LLVMRelocationIteratorRef value)
         {
-            return (LLVMOpaqueRelocationIterator*)value.Pointer;
+            return (LLVMOpaqueRelocationIterator*)value.Handle;
         }
 
-        public static bool operator ==(LLVMRelocationIteratorRef left, LLVMRelocationIteratorRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMRelocationIteratorRef left, LLVMRelocationIteratorRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMRelocationIteratorRef left, LLVMRelocationIteratorRef right) => !(left == right);
 
         public override bool Equals(object obj) => obj is LLVMRelocationIteratorRef other && Equals(other);
 
-        public bool Equals(LLVMRelocationIteratorRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMRelocationIteratorRef other) => Handle == other.Handle;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
     }
 }

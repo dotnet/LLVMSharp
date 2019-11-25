@@ -3,7 +3,7 @@
 // Ported from https://github.com/llvm/llvm-project/tree/llvmorg-9.0.0/llvm/include/llvm-c
 // Original source is Copyright (c) the LLVM Project and Contributors. Licensed under the Apache License v2.0 with LLVM Exceptions. See NOTICE.txt in the project root for license information.
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public enum LLVMDIFlags
     {
@@ -31,13 +31,12 @@ namespace LLVMSharp
         LLVMDIFlagIntroducedVirtual = 1 << 18,
         LLVMDIFlagBitField = 1 << 19,
         LLVMDIFlagNoReturn = 1 << 20,
-        LLVMDIFlagMainSubprogram = 1 << 21,
         LLVMDIFlagTypePassByValue = 1 << 22,
         LLVMDIFlagTypePassByReference = 1 << 23,
         LLVMDIFlagEnumClass = 1 << 24,
         LLVMDIFlagFixedEnum = LLVMDIFlagEnumClass,
         LLVMDIFlagThunk = 1 << 25,
-        LLVMDIFlagTrivial = 1 << 26,
+        LLVMDIFlagNonTrivial = 1 << 26,
         LLVMDIFlagBigEndian = 1 << 27,
         LLVMDIFlagLittleEndian = 1 << 28,
         LLVMDIFlagIndirectVirtualBase = (1 << 2) | (1 << 5),

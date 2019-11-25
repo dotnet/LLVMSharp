@@ -2,16 +2,16 @@
 
 using System;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMMetadataRef
     {
-        public LLVMMetadataRef(IntPtr pointer)
+        public LLVMMetadataRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMMetadataRef(LLVMOpaqueMetadata* value)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp
 
         public static implicit operator LLVMOpaqueMetadata*(LLVMMetadataRef value)
         {
-            return (LLVMOpaqueMetadata*)value.Pointer;
+            return (LLVMOpaqueMetadata*)value.Handle;
         }
     }
 }

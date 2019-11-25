@@ -2,6 +2,7 @@
 
 using System;
 using System.Linq;
+using LLVMSharp.Interop;
 using NUnit.Framework;
 
 namespace LLVMSharp.UnitTests

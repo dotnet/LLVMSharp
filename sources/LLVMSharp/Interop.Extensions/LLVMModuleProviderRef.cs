@@ -2,16 +2,16 @@
 
 using System;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMModuleProviderRef : IEquatable<LLVMModuleProviderRef>
     {
-        public LLVMModuleProviderRef(IntPtr pointer)
+        public LLVMModuleProviderRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMModuleProviderRef(LLVMOpaqueModuleProvider* value)
         {
@@ -20,10 +20,10 @@ namespace LLVMSharp
 
         public static implicit operator LLVMOpaqueModuleProvider*(LLVMModuleProviderRef value)
         {
-            return (LLVMOpaqueModuleProvider*)value.Pointer;
+            return (LLVMOpaqueModuleProvider*)value.Handle;
         }
 
-        public static bool operator ==(LLVMModuleProviderRef left, LLVMModuleProviderRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMModuleProviderRef left, LLVMModuleProviderRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMModuleProviderRef left, LLVMModuleProviderRef right) => !(left == right);
 
@@ -31,8 +31,8 @@ namespace LLVMSharp
 
         public override bool Equals(object obj) => obj is LLVMModuleProviderRef other && Equals(other);
 
-        public bool Equals(LLVMModuleProviderRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMModuleProviderRef other) => Handle == other.Handle;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
     }
 }

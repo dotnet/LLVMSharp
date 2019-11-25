@@ -2,16 +2,16 @@
 
 using System;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMGenericValueRef : IEquatable<LLVMGenericValueRef>
     {
-        public LLVMGenericValueRef(IntPtr pointer)
+        public LLVMGenericValueRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMGenericValueRef(LLVMOpaqueGenericValue* GenericValue)
         {
@@ -20,10 +20,10 @@ namespace LLVMSharp
 
         public static implicit operator LLVMOpaqueGenericValue*(LLVMGenericValueRef GenericValue)
         {
-            return (LLVMOpaqueGenericValue*)GenericValue.Pointer;
+            return (LLVMOpaqueGenericValue*)GenericValue.Handle;
         }
 
-        public static bool operator ==(LLVMGenericValueRef left, LLVMGenericValueRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMGenericValueRef left, LLVMGenericValueRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMGenericValueRef left, LLVMGenericValueRef right) => !(left == right);
 
@@ -33,8 +33,8 @@ namespace LLVMSharp
 
         public override bool Equals(object obj) => obj is LLVMGenericValueRef other && Equals(other);
 
-        public bool Equals(LLVMGenericValueRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMGenericValueRef other) => Handle == other.Handle;
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
     }
 }

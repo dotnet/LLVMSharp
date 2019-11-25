@@ -5,7 +5,7 @@
 
 using System;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LTOObjectBuffer
     {

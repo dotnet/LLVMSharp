@@ -3,16 +3,16 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMExecutionEngineRef : IDisposable, IEquatable<LLVMExecutionEngineRef>
     {
-        public LLVMExecutionEngineRef(IntPtr pointer)
+        public LLVMExecutionEngineRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMExecutionEngineRef(LLVMOpaqueExecutionEngine* value)
         {
@@ -21,14 +21,14 @@ namespace LLVMSharp
 
         public static implicit operator LLVMOpaqueExecutionEngine*(LLVMExecutionEngineRef value)
         {
-            return (LLVMOpaqueExecutionEngine*)value.Pointer;
+            return (LLVMOpaqueExecutionEngine*)value.Handle;
         }
 
-        public LLVMTargetDataRef TargetData => (Pointer != IntPtr.Zero) ? LLVM.GetExecutionEngineTargetData(this) : default;
+        public LLVMTargetDataRef TargetData => (Handle != IntPtr.Zero) ? LLVM.GetExecutionEngineTargetData(this) : default;
 
-        public LLVMTargetMachineRef TargetMachine => (Pointer != IntPtr.Zero) ? LLVM.GetExecutionEngineTargetMachine(this) : default;
+        public LLVMTargetMachineRef TargetMachine => (Handle != IntPtr.Zero) ? LLVM.GetExecutionEngineTargetMachine(this) : default;
 
-        public static bool operator ==(LLVMExecutionEngineRef left, LLVMExecutionEngineRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMExecutionEngineRef left, LLVMExecutionEngineRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMExecutionEngineRef left, LLVMExecutionEngineRef right) => !(left == right);
 
@@ -38,16 +38,16 @@ namespace LLVMSharp
 
         public void Dispose()
         {
-            if (Pointer != IntPtr.Zero)
+            if (Handle != IntPtr.Zero)
             {
                 LLVM.DisposeExecutionEngine(this);
-                Pointer = IntPtr.Zero;
+                Handle = IntPtr.Zero;
             }
         }
 
         public override bool Equals(object obj) => obj is LLVMExecutionEngineRef other && Equals(other);
 
-        public bool Equals(LLVMExecutionEngineRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMExecutionEngineRef other) => Handle == other.Handle;
 
         public LLVMValueRef FindFunction(string Name)
         {
@@ -63,21 +63,17 @@ namespace LLVMSharp
 
         public ulong GetFunctionAddress(string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.GetFunctionAddress(this, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.GetFunctionAddress(this, marshaledName);
         }
 
         public ulong GetGlobalValueAddress(string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.GetGlobalValueAddress(this, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.GetGlobalValueAddress(this, marshaledName);
         }
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
 
         public IntPtr GetPointerToGlobal(LLVMValueRef Global) => (IntPtr)LLVM.GetPointerToGlobal(this, Global);
 
@@ -107,17 +103,16 @@ namespace LLVMSharp
 
         public int RunFunctionAsMain(LLVMValueRef F, uint ArgC, string[] ArgV, string[] EnvP)
         {
-            using (var marshaledArgV = new MarshaledStringArray(ArgV))
-            using (var marshaledEnvP = new MarshaledStringArray(EnvP))
-            {
-                var pArgV = stackalloc sbyte*[marshaledArgV.Count];
-                marshaledArgV.Fill(pArgV);
+            using var marshaledArgV = new MarshaledStringArray(ArgV);
+            using var marshaledEnvP = new MarshaledStringArray(EnvP);
 
-                var pEnvP = stackalloc sbyte*[marshaledEnvP.Count];
-                marshaledEnvP.Fill(pEnvP);
+            var pArgV = stackalloc sbyte*[marshaledArgV.Count];
+            marshaledArgV.Fill(pArgV);
 
-                return LLVM.RunFunctionAsMain(this, F, ArgC, pArgV, pEnvP);
-            }
+            var pEnvP = stackalloc sbyte*[marshaledEnvP.Count];
+            marshaledEnvP.Fill(pEnvP);
+
+            return LLVM.RunFunctionAsMain(this, F, ArgC, pArgV, pEnvP);
         }
 
         public void RunStaticConstructors() => LLVM.RunStaticConstructors(this);
@@ -128,9 +123,9 @@ namespace LLVMSharp
 
         public bool TryFindFunction(string Name, out LLVMValueRef OutFn)
         {
-            using (var marshaledName = new MarshaledString(Name))
             fixed (LLVMValueRef* pOutFn = &OutFn)
             {
+                using var marshaledName = new MarshaledString(Name);
                 return LLVM.FindFunction(this, marshaledName, (LLVMOpaqueValue**)pOutFn) == 0;
             }
         }

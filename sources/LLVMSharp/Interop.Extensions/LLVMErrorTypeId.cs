@@ -2,16 +2,16 @@
 
 using System;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMErrorTypeId
     {
-        public LLVMErrorTypeId(IntPtr pointer)
+        public LLVMErrorTypeId(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static explicit operator LLVMErrorTypeId(void* value)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp
 
         public static implicit operator void*(LLVMErrorTypeId value)
         {
-            return (void*)value.Pointer;
+            return (void*)value.Handle;
         }
     }
 }

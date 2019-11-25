@@ -3,16 +3,16 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleRef>
     {
-        public LLVMModuleRef(IntPtr pointer)
+        public LLVMModuleRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMModuleRef(LLVMOpaqueModule* value)
         {
@@ -21,16 +21,16 @@ namespace LLVMSharp
 
         public static implicit operator LLVMOpaqueModule*(LLVMModuleRef value)
         {
-            return (LLVMOpaqueModule*)value.Pointer;
+            return (LLVMOpaqueModule*)value.Handle;
         }
 
-        public LLVMContextRef Context => (Pointer != IntPtr.Zero) ? LLVM.GetModuleContext(this) : default;
+        public LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetModuleContext(this) : default;
 
         public string DataLayout
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return string.Empty;
                 }
@@ -48,26 +48,24 @@ namespace LLVMSharp
 
             set
             {
-                using (var marshaledDataLayoutStr = new MarshaledString(value))
-                {
-                    LLVM.SetDataLayout(this, marshaledDataLayoutStr);
-                }
+                using var marshaledDataLayoutStr = new MarshaledString(value);
+                LLVM.SetDataLayout(this, marshaledDataLayoutStr);
             }
         }
 
-        public LLVMValueRef FirstFunction => (Pointer != IntPtr.Zero) ? LLVM.GetFirstFunction(this) : default;
+        public LLVMValueRef FirstFunction => (Handle != IntPtr.Zero) ? LLVM.GetFirstFunction(this) : default;
 
-        public LLVMValueRef FirstGlobal => (Pointer != IntPtr.Zero) ? LLVM.GetFirstGlobal(this) : default;
+        public LLVMValueRef FirstGlobal => (Handle != IntPtr.Zero) ? LLVM.GetFirstGlobal(this) : default;
 
-        public LLVMValueRef LastFunction => (Pointer != IntPtr.Zero) ? LLVM.GetLastFunction(this) : default;
+        public LLVMValueRef LastFunction => (Handle != IntPtr.Zero) ? LLVM.GetLastFunction(this) : default;
 
-        public LLVMValueRef LastGlobal => (Pointer != IntPtr.Zero) ? LLVM.GetLastGlobal(this) : default;
+        public LLVMValueRef LastGlobal => (Handle != IntPtr.Zero) ? LLVM.GetLastGlobal(this) : default;
 
         public string Target
         {
             get
             {
-                if (Pointer == IntPtr.Zero)
+                if (Handle == IntPtr.Zero)
                 {
                     return string.Empty;
                 }
@@ -85,63 +83,49 @@ namespace LLVMSharp
 
             set
             {
-                using (var marshaledTriple = new MarshaledString(value))
-                {
-                    LLVM.SetTarget(this, marshaledTriple);
-                }
+                using var marshaledTriple = new MarshaledString(value);
+                LLVM.SetTarget(this, marshaledTriple);
             }
         }
 
-        public static bool operator ==(LLVMModuleRef left, LLVMModuleRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMModuleRef left, LLVMModuleRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMModuleRef left, LLVMModuleRef right) => !(left == right);
 
         public static LLVMModuleRef CreateWithName(string ModuleID)
         {
-            using (var marshaledModuleID = new MarshaledString(ModuleID))
-            {
-                return LLVM.ModuleCreateWithName(marshaledModuleID);
-            }
+            using var marshaledModuleID = new MarshaledString(ModuleID);
+            return LLVM.ModuleCreateWithName(marshaledModuleID);
         }
 
         public LLVMValueRef AddAlias(LLVMTypeRef Ty, LLVMValueRef Aliasee, string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.AddAlias(this, Ty, Aliasee, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.AddAlias(this, Ty, Aliasee, marshaledName);
         }
 
         public LLVMValueRef AddFunction(string Name, LLVMTypeRef FunctionTy)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.AddFunction(this, marshaledName, FunctionTy);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.AddFunction(this, marshaledName, FunctionTy);
         }
 
         public LLVMValueRef AddGlobal(LLVMTypeRef Ty, string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.AddGlobal(this, Ty, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.AddGlobal(this, Ty, marshaledName);
         }
 
         public LLVMValueRef AddGlobalInAddressSpace(LLVMTypeRef Ty, string Name, uint AddressSpace)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.AddGlobalInAddressSpace(this, Ty, marshaledName, AddressSpace);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.AddGlobalInAddressSpace(this, Ty, marshaledName, AddressSpace);
         }
 
         public void AddNamedMetadataOperand(string Name, LLVMValueRef Val)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                LLVM.AddNamedMetadataOperand(this, marshaledName, Val);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            LLVM.AddNamedMetadataOperand(this, marshaledName, Val);
         }
 
         public LLVMExecutionEngineRef CreateExecutionEngine()
@@ -192,10 +176,10 @@ namespace LLVMSharp
 
         public void Dispose()
         {
-            if (Pointer != IntPtr.Zero)
+            if (Handle != IntPtr.Zero)
             {
                 LLVM.DisposeModule(this);
-                Pointer = IntPtr.Zero;
+                Handle = IntPtr.Zero;
             }
         }
 
@@ -203,55 +187,45 @@ namespace LLVMSharp
 
         public override bool Equals(object obj) => obj is LLVMModuleRef other && Equals(other);
 
-        public bool Equals(LLVMModuleRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMModuleRef other) => Handle == other.Handle;
 
         public LLVMValueRef GetNamedFunction(string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.GetNamedFunction(this, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.GetNamedFunction(this, marshaledName);
         }
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
 
         public LLVMValueRef GetNamedGlobal(string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.GetNamedGlobal(this, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.GetNamedGlobal(this, marshaledName);
         }
 
         public LLVMValueRef[] GetNamedMetadataOperands(string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
+            using var marshaledName = new MarshaledString(Name);
+            var Dest = new LLVMValueRef[LLVM.GetNamedMetadataNumOperands(this, marshaledName)];
+
+            fixed (LLVMValueRef* pDest = Dest)
             {
-                var Dest = new LLVMValueRef[LLVM.GetNamedMetadataNumOperands(this, marshaledName)];
-
-                fixed (LLVMValueRef* pDest = Dest)
-                {
-                    LLVM.GetNamedMetadataOperands(this, marshaledName, (LLVMOpaqueValue**)pDest);
-                }
-
-                return Dest;
+                LLVM.GetNamedMetadataOperands(this, marshaledName, (LLVMOpaqueValue**)pDest);
             }
+
+            return Dest;
         }
 
         public uint GetNamedMetadataOperandsCount(string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.GetNamedMetadataNumOperands(this, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.GetNamedMetadataNumOperands(this, marshaledName);
         }
 
         public LLVMTypeRef GetTypeByName(string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.GetTypeByName(this, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.GetTypeByName(this, marshaledName);
         }
 
         public void PrintToFile(string Filename)
@@ -279,13 +253,11 @@ namespace LLVMSharp
 
         public void SetModuleInlineAsm(string Asm)
         {
-            using (var marshaledAsm = new MarshaledString(Asm))
-            {
-                LLVM.SetModuleInlineAsm(this, marshaledAsm);
-            }
+            using var marshaledAsm = new MarshaledString(Asm);
+            LLVM.SetModuleInlineAsm(this, marshaledAsm);
         }
 
-        public override string ToString() => (Pointer != IntPtr.Zero) ? PrintToString() : string.Empty;
+        public override string ToString() => (Handle != IntPtr.Zero) ? PrintToString() : string.Empty;
 
         public bool TryCreateExecutionEngine(out LLVMExecutionEngineRef OutEE, out string OutError)
         {
@@ -359,24 +331,23 @@ namespace LLVMSharp
 
         public bool TryPrintToFile(string Filename, out string ErrorMessage)
         {
-            using (var marshaledFilename = new MarshaledString(Filename))
+            using var marshaledFilename = new MarshaledString(Filename);
+
+            sbyte* pErrorMessage;
+            var result = LLVM.PrintModuleToFile(this, marshaledFilename, &pErrorMessage);
+
+
+            if (pErrorMessage is null)
             {
-                sbyte* pErrorMessage;
-                var result = LLVM.PrintModuleToFile(this, marshaledFilename, &pErrorMessage);
-
-
-                if (pErrorMessage is null)
-                {
-                    ErrorMessage = string.Empty;
-                }
-                else
-                {
-                    var span = new ReadOnlySpan<byte>(pErrorMessage, int.MaxValue);
-                    ErrorMessage = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
-                }
-
-                return result == 0;
+                ErrorMessage = string.Empty;
             }
+            else
+            {
+                var span = new ReadOnlySpan<byte>(pErrorMessage, int.MaxValue);
+                ErrorMessage = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            }
+
+            return result == 0;
         }
 
         public bool TryVerify(LLVMVerifierFailureAction Action, out string OutMessage)
@@ -407,10 +378,8 @@ namespace LLVMSharp
 
         public int WriteBitcodeToFile(string Path)
         {
-            using (var marshaledPath = new MarshaledString(Path))
-            {
-                return LLVM.WriteBitcodeToFile(this, marshaledPath);
-            }
+            using var marshaledPath = new MarshaledString(Path);
+            return LLVM.WriteBitcodeToFile(this, marshaledPath);
         }
 
         public int WriteBitcodeToFD(int FD, int ShouldClose, int Unbuffered) => LLVM.WriteBitcodeToFD(this, FD, ShouldClose, Unbuffered);

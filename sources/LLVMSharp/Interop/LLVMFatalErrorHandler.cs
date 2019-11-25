@@ -5,7 +5,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public unsafe delegate void LLVMFatalErrorHandler([NativeTypeName("const char *")] sbyte* Reason);

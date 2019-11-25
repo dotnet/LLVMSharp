@@ -2,16 +2,16 @@
 
 using System;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMJITEventListenerRef
     {
-        public LLVMJITEventListenerRef(IntPtr pointer)
+        public LLVMJITEventListenerRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMJITEventListenerRef(LLVMOpaqueJITEventListener* value)
         {
@@ -20,7 +20,7 @@ namespace LLVMSharp
 
         public static implicit operator LLVMOpaqueJITEventListener*(LLVMJITEventListenerRef value)
         {
-            return (LLVMOpaqueJITEventListener*)value.Pointer;
+            return (LLVMOpaqueJITEventListener*)value.Handle;
         }
     }
 }

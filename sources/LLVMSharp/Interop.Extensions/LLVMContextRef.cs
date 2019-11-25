@@ -3,16 +3,16 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMContextRef : IDisposable, IEquatable<LLVMContextRef>
     {
-        public LLVMContextRef(IntPtr pointer)
+        public LLVMContextRef(IntPtr handle)
         {
-            Pointer = pointer;
+            Handle = handle;
         }
 
-        public IntPtr Pointer;
+        public IntPtr Handle;
 
         public static implicit operator LLVMContextRef(LLVMOpaqueContext* value)
         {
@@ -21,40 +21,40 @@ namespace LLVMSharp
 
         public static implicit operator LLVMOpaqueContext*(LLVMContextRef value)
         {
-            return (LLVMOpaqueContext*)value.Pointer;
+            return (LLVMOpaqueContext*)value.Handle;
         }
 
         public static LLVMContextRef Global => LLVM.GetGlobalContext();
 
-        public LLVMTypeRef DoubleType => (Pointer != IntPtr.Zero) ? LLVM.DoubleTypeInContext(this) : default;
+        public LLVMTypeRef DoubleType => (Handle != IntPtr.Zero) ? LLVM.DoubleTypeInContext(this) : default;
 
-        public LLVMTypeRef FloatType => (Pointer != IntPtr.Zero) ? LLVM.FloatTypeInContext(this) : default;
+        public LLVMTypeRef FloatType => (Handle != IntPtr.Zero) ? LLVM.FloatTypeInContext(this) : default;
 
-        public LLVMTypeRef HalfType => (Pointer != IntPtr.Zero) ? LLVM.HalfTypeInContext(this) : default;
+        public LLVMTypeRef HalfType => (Handle != IntPtr.Zero) ? LLVM.HalfTypeInContext(this) : default;
 
-        public LLVMTypeRef Int1Type => (Pointer != IntPtr.Zero) ? LLVM.Int1TypeInContext(this) : default;
+        public LLVMTypeRef Int1Type => (Handle != IntPtr.Zero) ? LLVM.Int1TypeInContext(this) : default;
 
-        public LLVMTypeRef Int8Type => (Pointer != IntPtr.Zero) ? LLVM.Int8TypeInContext(this) : default;
+        public LLVMTypeRef Int8Type => (Handle != IntPtr.Zero) ? LLVM.Int8TypeInContext(this) : default;
 
-        public LLVMTypeRef Int16Type => (Pointer != IntPtr.Zero) ? LLVM.Int16TypeInContext(this) : default;
+        public LLVMTypeRef Int16Type => (Handle != IntPtr.Zero) ? LLVM.Int16TypeInContext(this) : default;
 
-        public LLVMTypeRef Int32Type => (Pointer != IntPtr.Zero) ? LLVM.Int32TypeInContext(this) : default;
+        public LLVMTypeRef Int32Type => (Handle != IntPtr.Zero) ? LLVM.Int32TypeInContext(this) : default;
 
-        public LLVMTypeRef Int64Type => (Pointer != IntPtr.Zero) ? LLVM.Int64TypeInContext(this) : default;
+        public LLVMTypeRef Int64Type => (Handle != IntPtr.Zero) ? LLVM.Int64TypeInContext(this) : default;
 
-        public LLVMTypeRef FP128Type => (Pointer != IntPtr.Zero) ? LLVM.FP128TypeInContext(this) : default;
+        public LLVMTypeRef FP128Type => (Handle != IntPtr.Zero) ? LLVM.FP128TypeInContext(this) : default;
 
-        public LLVMTypeRef LabelType => (Pointer != IntPtr.Zero) ? LLVM.LabelTypeInContext(this) : default;
+        public LLVMTypeRef LabelType => (Handle != IntPtr.Zero) ? LLVM.LabelTypeInContext(this) : default;
 
-        public LLVMTypeRef PPCFP128Type => (Pointer != IntPtr.Zero) ? LLVM.PPCFP128TypeInContext(this) : default;
+        public LLVMTypeRef PPCFP128Type => (Handle != IntPtr.Zero) ? LLVM.PPCFP128TypeInContext(this) : default;
 
-        public LLVMTypeRef VoidType => (Pointer != IntPtr.Zero) ? LLVM.VoidTypeInContext(this) : default;
+        public LLVMTypeRef VoidType => (Handle != IntPtr.Zero) ? LLVM.VoidTypeInContext(this) : default;
 
-        public LLVMTypeRef X86FP80Type => (Pointer != IntPtr.Zero) ? LLVM.X86FP80TypeInContext(this) : default;
+        public LLVMTypeRef X86FP80Type => (Handle != IntPtr.Zero) ? LLVM.X86FP80TypeInContext(this) : default;
 
-        public LLVMTypeRef X86MMXType => (Pointer != IntPtr.Zero) ? LLVM.X86MMXTypeInContext(this) : default;
+        public LLVMTypeRef X86MMXType => (Handle != IntPtr.Zero) ? LLVM.X86MMXTypeInContext(this) : default;
 
-        public static bool operator ==(LLVMContextRef left, LLVMContextRef right) => left.Pointer == right.Pointer;
+        public static bool operator ==(LLVMContextRef left, LLVMContextRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMContextRef left, LLVMContextRef right) => !(left == right);
 
@@ -62,10 +62,8 @@ namespace LLVMSharp
 
         public LLVMBasicBlockRef AppendBasicBlock(LLVMValueRef Fn, string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.AppendBasicBlockInContext(this, Fn, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.AppendBasicBlockInContext(this, Fn, marshaledName);
         }
 
         public LLVMBuilderRef CreateBuilder()
@@ -75,32 +73,28 @@ namespace LLVMSharp
 
         public LLVMModuleRef CreateModuleWithName(string ModuleID)
         {
-            using (var marshaledModuleID = new MarshaledString(ModuleID))
-            {
-                return LLVM.ModuleCreateWithNameInContext(marshaledModuleID, this);
-            }
+            using var marshaledModuleID = new MarshaledString(ModuleID);
+            return LLVM.ModuleCreateWithNameInContext(marshaledModuleID, this);
         }
 
         public LLVMTypeRef CreateNamedStruct(string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.StructCreateNamed(this, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.StructCreateNamed(this, marshaledName);
         }
 
         public void Dispose()
         {
-            if (Pointer != IntPtr.Zero)
+            if (Handle != IntPtr.Zero)
             {
                 LLVM.ContextDispose(this);
-                Pointer = IntPtr.Zero;
+                Handle = IntPtr.Zero;
             }
         }
 
         public override bool Equals(object obj) => obj is LLVMContextRef other && Equals(other);
 
-        public bool Equals(LLVMContextRef other) => Pointer == other.Pointer;
+        public bool Equals(LLVMContextRef other) => Handle == other.Handle;
 
         public LLVMModuleRef GetBitcodeModule(LLVMMemoryBufferRef MemBuf)
         {
@@ -114,10 +108,8 @@ namespace LLVMSharp
 
         public LLVMValueRef GetConstString(string Str, uint Length, bool DontNullTerminate)
         {
-            using (var marshaledStr = new MarshaledString(Str))
-            {
-                return LLVM.ConstStringInContext(this, marshaledStr, Length, DontNullTerminate ? 1 : 0);
-            }
+            using var marshaledStr = new MarshaledString(Str);
+            return LLVM.ConstStringInContext(this, marshaledStr, Length, DontNullTerminate ? 1 : 0);
         }
 
         public LLVMValueRef GetConstStruct(LLVMValueRef[] ConstantVals, bool Packed)
@@ -128,7 +120,7 @@ namespace LLVMSharp
             }
         }
 
-        public override int GetHashCode() => Pointer.GetHashCode();
+        public override int GetHashCode() => Handle.GetHashCode();
 
         public LLVMTypeRef GetIntPtrType(LLVMTargetDataRef TD) => LLVM.IntPtrTypeInContext(this, TD);
 
@@ -138,10 +130,8 @@ namespace LLVMSharp
 
         public uint GetMDKindID(string Name, uint SLen)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.GetMDKindIDInContext(this, marshaledName, SLen);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.GetMDKindIDInContext(this, marshaledName, SLen);
         }
 
         public LLVMValueRef GetMDNode(LLVMValueRef[] Vals)
@@ -154,10 +144,8 @@ namespace LLVMSharp
 
         public LLVMValueRef GetMDString(string Str, uint SLen)
         {
-            using (var marshaledStr = new MarshaledString(Str))
-            {
-                return LLVM.MDStringInContext(this, marshaledStr, SLen);
-            }
+            using var marshaledStr = new MarshaledString(Str);
+            return LLVM.MDStringInContext(this, marshaledStr, SLen);
         }
 
         public LLVMTypeRef GetStructType(LLVMTypeRef[] ElementTypes, bool Packed)
@@ -170,10 +158,8 @@ namespace LLVMSharp
 
         public LLVMBasicBlockRef InsertBasicBlock(LLVMBasicBlockRef BB, string Name)
         {
-            using (var marshaledName = new MarshaledString(Name))
-            {
-                return LLVM.InsertBasicBlockInContext(this, BB, marshaledName);
-            }
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.InsertBasicBlockInContext(this, BB, marshaledName);
         }
 
         
