@@ -151,7 +151,7 @@ namespace LLVMSharp.UnitTests
                 LLVMTypeRef.Int32, "structure", Array.Empty<LLVMTypeRef>(), (f, b) =>
                 {
                     var sz = str.SizeOf;
-                    var sz32 = b.BuildBitCast(sz, LLVMTypeRef.Int32);
+                    var sz32 = b.BuildIntCast(sz, LLVMTypeRef.Int32);
                     var ret = b.BuildRet(sz32);
                 });
             module.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
