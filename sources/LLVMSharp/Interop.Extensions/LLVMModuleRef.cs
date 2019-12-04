@@ -344,9 +344,16 @@ namespace LLVMSharp.Interop
         {
             using var marshaledFilename = new MarshaledString(Filename);
 
-            sbyte* pErrorMessage;
-            var result = LLVM.PrintModuleToFile(this, marshaledFilename, &pErrorMessage);
+            sbyte* pErrorMessage = null;
+            int result = 0;
+            try
+            {
+                result = LLVM.PrintModuleToFile(this, marshaledFilename, &pErrorMessage);
+            }
+            catch (Exception)
+            {
 
+            }
 
             if (pErrorMessage is null)
             {
