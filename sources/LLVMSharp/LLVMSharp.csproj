@@ -6,10 +6,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="libLLVM" />
     <PackageReference Include="System.Memory" />

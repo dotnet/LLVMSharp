@@ -36,8 +36,10 @@ namespace LLVMSharp.Interop
         {
             using var marshaledName = new MarshaledString(Name);
             using var marshaledLinkageName = new MarshaledString(LinkageName);
+            var methodNameLength = (uint)marshaledName.Length;
+            var linkageNameLength = (uint)marshaledLinkageName.Length;
 
-            return LLVM.DIBuilderCreateFunction(this, Scope, marshaledName, (UIntPtr)marshaledName.Length, marshaledLinkageName, (UIntPtr)marshaledLinkageName.Length, File,
+            return LLVM.DIBuilderCreateFunction(this, Scope, marshaledName, (UIntPtr)(&methodNameLength), marshaledLinkageName, (UIntPtr)(&linkageNameLength), File,
                 LineNo, Type, IsLocalToUnit, IsDefinition, ScopeLine, Flags, IsOptimized);
         }
 
