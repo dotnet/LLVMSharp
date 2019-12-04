@@ -128,6 +128,11 @@ namespace LLVMSharp.Interop
             LLVM.AddNamedMetadataOperand(this, marshaledName, Val);
         }
 
+        public LLVMDIBuilderRef CreateDIBuilder()
+        {
+            return new LLVMDIBuilderRef((IntPtr)LLVM.CreateDIBuilder(this));
+        }
+
         public LLVMExecutionEngineRef CreateExecutionEngine()
         {
             if (!TryCreateExecutionEngine(out LLVMExecutionEngineRef EE, out string Error))
@@ -173,6 +178,12 @@ namespace LLVMSharp.Interop
         public LLVMPassManagerRef CreateFunctionPassManager() => LLVM.CreateFunctionPassManagerForModule(this);
 
         public LLVMModuleProviderRef CreateModuleProvider() => LLVM.CreateModuleProviderForExistingModule(this);
+
+        public void AddNamedMetadataOperand(string Name, LLVMMetadataRef CompileUnitMetadata)
+        {
+            using var marshaledName = new MarshaledString(Name);
+            LLVM.AddNamedMetadataOperand(this, marshaledName, LLVM.MetadataAsValue(Context, CompileUnitMetadata));
+        }
 
         public void Dispose()
         {
