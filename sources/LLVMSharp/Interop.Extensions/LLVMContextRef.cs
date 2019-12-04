@@ -71,11 +71,22 @@ namespace LLVMSharp.Interop
             return LLVM.CreateBuilderInContext(this);
         }
 
+        public LLVMMetadataRef CreateDebugLocation(uint Line, uint Column, LLVMMetadataRef Scope, LLVMMetadataRef InlinedAt)
+        {
+            return LLVM.DIBuilderCreateDebugLocation(this, Line, Column, Scope, InlinedAt);
+        }
+
         public LLVMModuleRef CreateModuleWithName(string ModuleID)
         {
             using var marshaledModuleID = new MarshaledString(ModuleID);
             return LLVM.ModuleCreateWithNameInContext(marshaledModuleID, this);
         }
+
+        public LLVMValueRef MetadataAsValue(LLVMMetadataRef MD)
+        {
+            return LLVM.MetadataAsValue(this, MD);
+        }
+
 
         public LLVMTypeRef CreateNamedStruct(string Name)
         {
