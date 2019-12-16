@@ -128,6 +128,11 @@ namespace LLVMSharp.Interop
             LLVM.AddNamedMetadataOperand(this, marshaledName, Val);
         }
 
+        public LLVMDIBuilderRef CreateDIBuilder()
+        {
+            return new LLVMDIBuilderRef((IntPtr)LLVM.CreateDIBuilder(this));
+        }
+
         public LLVMExecutionEngineRef CreateExecutionEngine()
         {
             if (!TryCreateExecutionEngine(out LLVMExecutionEngineRef EE, out string Error))
@@ -173,6 +178,12 @@ namespace LLVMSharp.Interop
         public LLVMPassManagerRef CreateFunctionPassManager() => LLVM.CreateFunctionPassManagerForModule(this);
 
         public LLVMModuleProviderRef CreateModuleProvider() => LLVM.CreateModuleProviderForExistingModule(this);
+
+        public void AddNamedMetadataOperand(string Name, LLVMMetadataRef CompileUnitMetadata)
+        {
+            using var marshaledName = new MarshaledString(Name);
+            LLVM.AddNamedMetadataOperand(this, marshaledName, LLVM.MetadataAsValue(Context, CompileUnitMetadata));
+        }
 
         public void Dispose()
         {
@@ -333,9 +344,16 @@ namespace LLVMSharp.Interop
         {
             using var marshaledFilename = new MarshaledString(Filename);
 
-            sbyte* pErrorMessage;
-            var result = LLVM.PrintModuleToFile(this, marshaledFilename, &pErrorMessage);
+            sbyte* pErrorMessage = null;
+            int result = 0;
+            try
+            {
+                result = LLVM.PrintModuleToFile(this, marshaledFilename, &pErrorMessage);
+            }
+            catch (Exception)
+            {
 
+            }
 
             if (pErrorMessage is null)
             {
