@@ -91,11 +91,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.sles-x64", 
 		packages\libLLVM\libLLVM.runtime.sles-x64\libLLVM.runtime.sles-x64.nuspec = packages\libLLVM\libLLVM.runtime.sles-x64\libLLVM.runtime.sles-x64.nuspec
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.14.04-x64", "libLLVM.runtime.ubuntu.14.04-x64", "{DC151BEE-774F-4032-8D2F-F3360F7F4D82}"
-	ProjectSection(SolutionItems) = preProject
-		packages\libLLVM\libLLVM.runtime.ubuntu.14.04-x64\libLLVM.runtime.ubuntu.14.04-x64.nuspec = packages\libLLVM\libLLVM.runtime.ubuntu.14.04-x64\libLLVM.runtime.ubuntu.14.04-x64.nuspec
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.16.04-x64", "libLLVM.runtime.ubuntu.16.04-x64", "{9F3C3619-32D3-489E-BE7A-92FEE299DE34}"
 	ProjectSection(SolutionItems) = preProject
 		packages\libLLVM\libLLVM.runtime.ubuntu.16.04-x64\libLLVM.runtime.ubuntu.16.04-x64.nuspec = packages\libLLVM\libLLVM.runtime.ubuntu.16.04-x64\libLLVM.runtime.ubuntu.16.04-x64.nuspec
@@ -104,6 +99,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.18.04-x64", "libLLVM.runtime.ubuntu.18.04-x64", "{481409E0-F009-4583-B587-7D6915E9B16E}"
 	ProjectSection(SolutionItems) = preProject
 		packages\libLLVM\libLLVM.runtime.ubuntu.18.04-x64\libLLVM.runtime.ubuntu.18.04-x64.nuspec = packages\libLLVM\libLLVM.runtime.ubuntu.18.04-x64\libLLVM.runtime.ubuntu.18.04-x64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.20.04-x64", "libLLVM.runtime.ubuntu.20.04-x64", "{DC151BEE-774F-4032-8D2F-F3360F7F4D82}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM\libLLVM.runtime.ubuntu.20.04-x64\libLLVM.runtime.ubuntu.20.04-x64.nuspec = packages\libLLVM\libLLVM.runtime.ubuntu.20.04-x64\libLLVM.runtime.ubuntu.20.04-x64.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.win-x64", "libLLVM.runtime.win-x64", "{E785DDD0-B9CD-4412-8A3C-4E65C601168C}"
