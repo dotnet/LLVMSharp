@@ -51,6 +51,8 @@ namespace LLVMSharp.Interop
 
         public void AddCorrelatedValuePropagationPass() => LLVM.AddCorrelatedValuePropagationPass(this);
 
+        public void AddDCEPass() => LLVM.AddDCEPass(this);
+
         public void AddDeadArgEliminationPass() => LLVM.AddDeadArgEliminationPass(this);
 
         public void AddDeadStoreEliminationPass() => LLVM.AddDeadStoreEliminationPass(this);
@@ -99,6 +101,8 @@ namespace LLVMSharp.Interop
 
         public void AddLoopVectorizePass() => LLVM.AddLoopVectorizePass(this);
 
+        public void AddLowerConstantIntrinsicsPass() => LLVM.AddLowerConstantIntrinsicsPass(this);
+
         public void AddLowerExpectIntrinsicPass() => LLVM.AddLowerExpectIntrinsicPass(this);
 
         public void AddLowerSwitchPass() => LLVM.AddLowerSwitchPass(this);
@@ -106,6 +110,8 @@ namespace LLVMSharp.Interop
         public void AddMemCpyOptPass() => LLVM.AddMemCpyOptPass(this);
 
         public void AddMergedLoadStoreMotionPass() => LLVM.AddMergedLoadStoreMotionPass(this);
+
+        public void AddMergeFunctionsPass() => LLVM.AddMergeFunctionsPass(this);
 
         public void AddNewGVNPass() => LLVM.AddNewGVNPass(this);
 

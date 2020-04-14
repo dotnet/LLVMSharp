@@ -31,6 +31,12 @@ namespace LLVMSharp.Interop
 
         public LLVMBasicBlockRef AsBasicBlock => (Handle != IntPtr.Zero) ? LLVM.ValueAsBasicBlock(this) : default;
 
+        public LLVMAtomicRMWBinOp AtomicRMWBinOp
+        {
+            get => (Handle != IntPtr.Zero) ? LLVM.GetAtomicRMWBinOp(this) : default;
+            set => LLVM.SetAtomicRMWBinOp(this, value);
+        }
+
         public LLVMBasicBlockRef[] BasicBlocks
         {
             get
@@ -154,6 +160,10 @@ namespace LLVMSharp.Interop
 
         public LLVMValueRef IsAArgument => (Handle != IntPtr.Zero) ? LLVM.IsAArgument(this) : default;
 
+        public LLVMValueRef IsAAtomicCmpXchgInst => (Handle != IntPtr.Zero) ? LLVM.IsAAtomicCmpXchgInst(this) : default;
+
+        public LLVMValueRef IsAAtomicRMWInst => (Handle != IntPtr.Zero) ? LLVM.IsAAtomicRMWInst(this) : default;
+
         public LLVMValueRef IsABasicBlock => (Handle != IntPtr.Zero) ? LLVM.IsABasicBlock(this) : default;
 
         public LLVMValueRef IsABinaryOperator => (Handle != IntPtr.Zero) ? LLVM.IsABinaryOperator(this) : default;
@@ -164,9 +174,13 @@ namespace LLVMSharp.Interop
 
         public LLVMValueRef IsABranchInst => (Handle != IntPtr.Zero) ? LLVM.IsABranchInst(this) : default;
 
+        public LLVMValueRef IsACallBrInst => (Handle != IntPtr.Zero) ? LLVM.IsACallBrInst(this) : default;
+
         public LLVMValueRef IsACallInst => (Handle != IntPtr.Zero) ? LLVM.IsACallInst(this) : default;
 
         public LLVMValueRef IsACastInst => (Handle != IntPtr.Zero) ? LLVM.IsACastInst(this) : default;
+
+        public LLVMValueRef IsACatchSwitchInst => (Handle != IntPtr.Zero) ? LLVM.IsACatchSwitchInst(this) : default;
 
         public LLVMValueRef IsACmpInst => (Handle != IntPtr.Zero) ? LLVM.IsACmpInst(this) : default;
 
@@ -204,6 +218,8 @@ namespace LLVMSharp.Interop
 
         public LLVMValueRef IsAFCmpInst => (Handle != IntPtr.Zero) ?  LLVM.IsAFCmpInst(this) : default;
 
+        public LLVMValueRef IsAFenceInst => (Handle != IntPtr.Zero) ? LLVM.IsAFenceInst(this) : default;
+
         public LLVMValueRef IsAFPExtInst => (Handle != IntPtr.Zero) ?  LLVM.IsAFPExtInst(this) : default;
 
         public LLVMValueRef IsAFPToSIInst => (Handle != IntPtr.Zero) ?  LLVM.IsAFPToSIInst(this) : default;
@@ -211,6 +227,8 @@ namespace LLVMSharp.Interop
         public LLVMValueRef IsAFPToUIInst => (Handle != IntPtr.Zero) ?  LLVM.IsAFPToUIInst(this) : default;
 
         public LLVMValueRef IsAFPTruncInst => (Handle != IntPtr.Zero) ?  LLVM.IsAFPTruncInst(this) : default;
+
+        public LLVMValueRef IsAFreezeInst => (Handle != IntPtr.Zero) ? LLVM.IsAFreezeInst(this) : default;
 
         public LLVMValueRef IsAFunction => (Handle != IntPtr.Zero) ?  LLVM.IsAFunction(this) : default;
 
@@ -285,6 +303,8 @@ namespace LLVMSharp.Interop
         public LLVMValueRef IsAUIToFPInst => (Handle != IntPtr.Zero) ?  LLVM.IsAUIToFPInst(this) : default;
 
         public LLVMValueRef IsAUnaryInstruction => (Handle != IntPtr.Zero) ?  LLVM.IsAUnaryInstruction(this) : default;
+
+        public LLVMValueRef IsAUnaryOperator => (Handle != IntPtr.Zero) ? LLVM.IsAUnaryOperator(this) : default;
 
         public LLVMValueRef IsAUndefValue => (Handle != IntPtr.Zero) ?  LLVM.IsAUndefValue(this) : default;
 
@@ -497,6 +517,12 @@ namespace LLVMSharp.Interop
         {
             get => (Handle != IntPtr.Zero) ? LLVM.GetVolatile(this) != 0 : default;
             set => LLVM.SetVolatile(this, value ? 1 : 0);
+        }
+
+        public bool Weak
+        {
+            get => (Handle != IntPtr.Zero) ? LLVM.GetWeak(this) != 0 : default;
+            set => LLVM.SetWeak(this, value ? 1 : 0);
         }
 
         public static bool operator ==(LLVMValueRef left, LLVMValueRef right) => left.Handle == right.Handle;

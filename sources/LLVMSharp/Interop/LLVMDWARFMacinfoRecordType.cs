@@ -5,9 +5,12 @@
 
 namespace LLVMSharp.Interop
 {
-    public enum LLVMLandingPadClauseTy
+    public enum LLVMDWARFMacinfoRecordType
     {
-        LLVMLandingPadCatch,
-        LLVMLandingPadFilter,
+        LLVMDWARFMacinfoRecordTypeDefine = 0x01,
+        LLVMDWARFMacinfoRecordTypeMacro = 0x02,
+        LLVMDWARFMacinfoRecordTypeStartFile = 0x03,
+        LLVMDWARFMacinfoRecordTypeEndFile = 0x04,
+        LLVMDWARFMacinfoRecordTypeVendorExt = 0xff,
     }
 }
