@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft and Contributors. All rights reserved. Licensed under the University of Illinois/NCSA Open Source License. See LICENSE.txt in the project root for license information.
 
-// Ported from https://github.com/llvm/llvm-project/tree/llvmorg-9.0.0/llvm/include/llvm-c
+// Ported from https://github.com/llvm/llvm-project/tree/llvmorg-10.0.0/llvm/include/llvm-c
 // Original source is Copyright (c) the LLVM Project and Contributors. Licensed under the Apache License v2.0 with LLVM Exceptions. See NOTICE.txt in the project root for license information.
 
 using System;
@@ -764,6 +764,10 @@ namespace LLVMSharp.Interop
         [return: NativeTypeName("LLVMValueRef")]
         public static extern LLVMOpaqueValue* IsAInstruction([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* Val);
 
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMIsAUnaryOperator", ExactSpelling = true)]
+        [return: NativeTypeName("LLVMValueRef")]
+        public static extern LLVMOpaqueValue* IsAUnaryOperator([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* Val);
+
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMIsABinaryOperator", ExactSpelling = true)]
         [return: NativeTypeName("LLVMValueRef")]
         public static extern LLVMOpaqueValue* IsABinaryOperator([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* Val);
@@ -892,6 +896,14 @@ namespace LLVMSharp.Interop
         [return: NativeTypeName("LLVMValueRef")]
         public static extern LLVMOpaqueValue* IsACatchReturnInst([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* Val);
 
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMIsACatchSwitchInst", ExactSpelling = true)]
+        [return: NativeTypeName("LLVMValueRef")]
+        public static extern LLVMOpaqueValue* IsACatchSwitchInst([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* Val);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMIsACallBrInst", ExactSpelling = true)]
+        [return: NativeTypeName("LLVMValueRef")]
+        public static extern LLVMOpaqueValue* IsACallBrInst([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* Val);
+
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMIsAFuncletPadInst", ExactSpelling = true)]
         [return: NativeTypeName("LLVMValueRef")]
         public static extern LLVMOpaqueValue* IsAFuncletPadInst([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* Val);
@@ -979,6 +991,22 @@ namespace LLVMSharp.Interop
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMIsAVAArgInst", ExactSpelling = true)]
         [return: NativeTypeName("LLVMValueRef")]
         public static extern LLVMOpaqueValue* IsAVAArgInst([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* Val);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMIsAFreezeInst", ExactSpelling = true)]
+        [return: NativeTypeName("LLVMValueRef")]
+        public static extern LLVMOpaqueValue* IsAFreezeInst([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* Val);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMIsAAtomicCmpXchgInst", ExactSpelling = true)]
+        [return: NativeTypeName("LLVMValueRef")]
+        public static extern LLVMOpaqueValue* IsAAtomicCmpXchgInst([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* Val);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMIsAAtomicRMWInst", ExactSpelling = true)]
+        [return: NativeTypeName("LLVMValueRef")]
+        public static extern LLVMOpaqueValue* IsAAtomicRMWInst([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* Val);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMIsAFenceInst", ExactSpelling = true)]
+        [return: NativeTypeName("LLVMValueRef")]
+        public static extern LLVMOpaqueValue* IsAFenceInst([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* Val);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMIsAMDNode", ExactSpelling = true)]
         [return: NativeTypeName("LLVMValueRef")]
@@ -2422,11 +2450,24 @@ namespace LLVMSharp.Interop
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMSetVolatile", ExactSpelling = true)]
         public static extern void SetVolatile([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* MemoryAccessInst, [NativeTypeName("LLVMBool")] int IsVolatile);
 
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMGetWeak", ExactSpelling = true)]
+        [return: NativeTypeName("LLVMBool")]
+        public static extern int GetWeak([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* CmpXchgInst);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMSetWeak", ExactSpelling = true)]
+        public static extern void SetWeak([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* CmpXchgInst, [NativeTypeName("LLVMBool")] int IsWeak);
+
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMGetOrdering", ExactSpelling = true)]
         public static extern LLVMAtomicOrdering GetOrdering([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* MemoryAccessInst);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMSetOrdering", ExactSpelling = true)]
         public static extern void SetOrdering([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* MemoryAccessInst, LLVMAtomicOrdering Ordering);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMGetAtomicRMWBinOp", ExactSpelling = true)]
+        public static extern LLVMAtomicRMWBinOp GetAtomicRMWBinOp([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* AtomicRMWInst);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMSetAtomicRMWBinOp", ExactSpelling = true)]
+        public static extern void SetAtomicRMWBinOp([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* AtomicRMWInst, LLVMAtomicRMWBinOp BinOp);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMBuildTrunc", ExactSpelling = true)]
         [return: NativeTypeName("LLVMValueRef")]
@@ -2559,6 +2600,10 @@ namespace LLVMSharp.Interop
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMBuildInsertValue", ExactSpelling = true)]
         [return: NativeTypeName("LLVMValueRef")]
         public static extern LLVMOpaqueValue* BuildInsertValue([NativeTypeName("LLVMBuilderRef")] LLVMOpaqueBuilder* param0, [NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* AggVal, [NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* EltVal, [NativeTypeName("unsigned int")] uint Index, [NativeTypeName("const char *")] sbyte* Name);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMBuildFreeze", ExactSpelling = true)]
+        [return: NativeTypeName("LLVMValueRef")]
+        public static extern LLVMOpaqueValue* BuildFreeze([NativeTypeName("LLVMBuilderRef")] LLVMOpaqueBuilder* param0, [NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* Val, [NativeTypeName("const char *")] sbyte* Name);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMBuildIsNull", ExactSpelling = true)]
         [return: NativeTypeName("LLVMValueRef")]
@@ -2719,7 +2764,7 @@ namespace LLVMSharp.Interop
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMDIBuilderCreateModule", ExactSpelling = true)]
         [return: NativeTypeName("LLVMMetadataRef")]
-        public static extern LLVMOpaqueMetadata* DIBuilderCreateModule([NativeTypeName("LLVMDIBuilderRef")] LLVMOpaqueDIBuilder* Builder, [NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* ParentScope, [NativeTypeName("const char *")] sbyte* Name, [NativeTypeName("size_t")] UIntPtr NameLen, [NativeTypeName("const char *")] sbyte* ConfigMacros, [NativeTypeName("size_t")] UIntPtr ConfigMacrosLen, [NativeTypeName("const char *")] sbyte* IncludePath, [NativeTypeName("size_t")] UIntPtr IncludePathLen, [NativeTypeName("const char *")] sbyte* ISysRoot, [NativeTypeName("size_t")] UIntPtr ISysRootLen);
+        public static extern LLVMOpaqueMetadata* DIBuilderCreateModule([NativeTypeName("LLVMDIBuilderRef")] LLVMOpaqueDIBuilder* Builder, [NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* ParentScope, [NativeTypeName("const char *")] sbyte* Name, [NativeTypeName("size_t")] UIntPtr NameLen, [NativeTypeName("const char *")] sbyte* ConfigMacros, [NativeTypeName("size_t")] UIntPtr ConfigMacrosLen, [NativeTypeName("const char *")] sbyte* IncludePath, [NativeTypeName("size_t")] UIntPtr IncludePathLen, [NativeTypeName("const char *")] sbyte* SysRoot, [NativeTypeName("size_t")] UIntPtr SysRootLen);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMDIBuilderCreateNameSpace", ExactSpelling = true)]
         [return: NativeTypeName("LLVMMetadataRef")]
@@ -2797,6 +2842,14 @@ namespace LLVMSharp.Interop
         [return: NativeTypeName("LLVMMetadataRef")]
         public static extern LLVMOpaqueMetadata* DIBuilderCreateSubroutineType([NativeTypeName("LLVMDIBuilderRef")] LLVMOpaqueDIBuilder* Builder, [NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* File, [NativeTypeName("LLVMMetadataRef *")] LLVMOpaqueMetadata** ParameterTypes, [NativeTypeName("unsigned int")] uint NumParameterTypes, LLVMDIFlags Flags);
 
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMDIBuilderCreateMacro", ExactSpelling = true)]
+        [return: NativeTypeName("LLVMMetadataRef")]
+        public static extern LLVMOpaqueMetadata* DIBuilderCreateMacro([NativeTypeName("LLVMDIBuilderRef")] LLVMOpaqueDIBuilder* Builder, [NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* ParentMacroFile, [NativeTypeName("unsigned int")] uint Line, LLVMDWARFMacinfoRecordType RecordType, [NativeTypeName("const char *")] sbyte* Name, [NativeTypeName("size_t")] UIntPtr NameLen, [NativeTypeName("const char *")] sbyte* Value, [NativeTypeName("size_t")] UIntPtr ValueLen);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMDIBuilderCreateTempMacroFile", ExactSpelling = true)]
+        [return: NativeTypeName("LLVMMetadataRef")]
+        public static extern LLVMOpaqueMetadata* DIBuilderCreateTempMacroFile([NativeTypeName("LLVMDIBuilderRef")] LLVMOpaqueDIBuilder* Builder, [NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* ParentMacroFile, [NativeTypeName("unsigned int")] uint Line, [NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* File);
+
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMDIBuilderCreateEnumerator", ExactSpelling = true)]
         [return: NativeTypeName("LLVMMetadataRef")]
         public static extern LLVMOpaqueMetadata* DIBuilderCreateEnumerator([NativeTypeName("LLVMDIBuilderRef")] LLVMOpaqueDIBuilder* Builder, [NativeTypeName("const char *")] sbyte* Name, [NativeTypeName("size_t")] UIntPtr NameLen, [NativeTypeName("int64_t")] long Value, [NativeTypeName("LLVMBool")] int IsUnsigned);
@@ -2871,7 +2924,7 @@ namespace LLVMSharp.Interop
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMDIBuilderCreateTypedef", ExactSpelling = true)]
         [return: NativeTypeName("LLVMMetadataRef")]
-        public static extern LLVMOpaqueMetadata* DIBuilderCreateTypedef([NativeTypeName("LLVMDIBuilderRef")] LLVMOpaqueDIBuilder* Builder, [NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* Type, [NativeTypeName("const char *")] sbyte* Name, [NativeTypeName("size_t")] UIntPtr NameLen, [NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* File, [NativeTypeName("unsigned int")] uint LineNo, [NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* Scope);
+        public static extern LLVMOpaqueMetadata* DIBuilderCreateTypedef([NativeTypeName("LLVMDIBuilderRef")] LLVMOpaqueDIBuilder* Builder, [NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* Type, [NativeTypeName("const char *")] sbyte* Name, [NativeTypeName("size_t")] UIntPtr NameLen, [NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* File, [NativeTypeName("unsigned int")] uint LineNo, [NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* Scope, [NativeTypeName("uint32_t")] uint AlignInBits);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMDIBuilderCreateInheritance", ExactSpelling = true)]
         [return: NativeTypeName("LLVMMetadataRef")]
@@ -3412,6 +3465,9 @@ namespace LLVMSharp.Interop
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lto_codegen_debug_options", ExactSpelling = true)]
         public static extern void lto_codegen_debug_options([NativeTypeName("lto_code_gen_t")] LLVMOpaqueLTOCodeGenerator* cg, [NativeTypeName("const char *")] sbyte* param1);
 
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lto_codegen_debug_options_array", ExactSpelling = true)]
+        public static extern void lto_codegen_debug_options_array([NativeTypeName("lto_code_gen_t")] LLVMOpaqueLTOCodeGenerator* cg, [NativeTypeName("const char *const *")] sbyte** param1, int number);
+
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lto_initialize_disassembler", ExactSpelling = true)]
         public static extern void lto_initialize_disassembler();
 
@@ -3420,6 +3476,25 @@ namespace LLVMSharp.Interop
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lto_codegen_set_should_embed_uselists", ExactSpelling = true)]
         public static extern void lto_codegen_set_should_embed_uselists([NativeTypeName("lto_code_gen_t")] LLVMOpaqueLTOCodeGenerator* cg, [NativeTypeName("lto_bool_t")] bool ShouldEmbedUselists);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lto_input_create", ExactSpelling = true)]
+        [return: NativeTypeName("lto_input_t")]
+        public static extern LLVMOpaqueLTOInput* lto_input_create([NativeTypeName("const void *")] void* buffer, [NativeTypeName("size_t")] UIntPtr buffer_size, [NativeTypeName("const char *")] sbyte* path);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lto_input_dispose", ExactSpelling = true)]
+        public static extern void lto_input_dispose([NativeTypeName("lto_input_t")] LLVMOpaqueLTOInput* input);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lto_input_get_num_dependent_libraries", ExactSpelling = true)]
+        [return: NativeTypeName("unsigned int")]
+        public static extern uint lto_input_get_num_dependent_libraries([NativeTypeName("lto_input_t")] LLVMOpaqueLTOInput* input);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lto_input_get_dependent_library", ExactSpelling = true)]
+        [return: NativeTypeName("const char *")]
+        public static extern sbyte* lto_input_get_dependent_library([NativeTypeName("lto_input_t")] LLVMOpaqueLTOInput* input, [NativeTypeName("size_t")] UIntPtr index, [NativeTypeName("size_t *")] UIntPtr* size);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lto_runtime_lib_symbols_list", ExactSpelling = true)]
+        [return: NativeTypeName("const char *const *")]
+        public static extern sbyte** lto_runtime_lib_symbols_list([NativeTypeName("size_t *")] UIntPtr* size);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "thinlto_create_codegen", ExactSpelling = true)]
         [return: NativeTypeName("thinlto_code_gen_t")]
@@ -3501,21 +3576,6 @@ namespace LLVMSharp.Interop
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "thinlto_codegen_set_cache_size_files", ExactSpelling = true)]
         public static extern void thinlto_codegen_set_cache_size_files([NativeTypeName("thinlto_code_gen_t")] LLVMOpaqueThinLTOCodeGenerator* cg, [NativeTypeName("unsigned int")] uint max_size_files);
-
-        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lto_input_create", ExactSpelling = true)]
-        [return: NativeTypeName("lto_input_t")]
-        public static extern LLVMOpaqueLTOInput* lto_input_create([NativeTypeName("const void *")] void* buffer, [NativeTypeName("size_t")] UIntPtr buffer_size, [NativeTypeName("const char *")] sbyte* path);
-
-        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lto_input_dispose", ExactSpelling = true)]
-        public static extern void lto_input_dispose([NativeTypeName("lto_input_t")] LLVMOpaqueLTOInput* input);
-
-        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lto_input_get_num_dependent_libraries", ExactSpelling = true)]
-        [return: NativeTypeName("unsigned int")]
-        public static extern uint lto_input_get_num_dependent_libraries([NativeTypeName("lto_input_t")] LLVMOpaqueLTOInput* input);
-
-        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lto_input_get_dependent_library", ExactSpelling = true)]
-        [return: NativeTypeName("const char *")]
-        public static extern sbyte* lto_input_get_dependent_library([NativeTypeName("lto_input_t")] LLVMOpaqueLTOInput* input, [NativeTypeName("size_t")] UIntPtr index, [NativeTypeName("size_t *")] UIntPtr* size);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMCreateBinary", ExactSpelling = true)]
         [return: NativeTypeName("LLVMBinaryRef")]
@@ -3789,6 +3849,10 @@ namespace LLVMSharp.Interop
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMRemarkParserCreateYAML", ExactSpelling = true)]
         [return: NativeTypeName("LLVMRemarkParserRef")]
         public static extern LLVMRemarkOpaqueParser* RemarkParserCreateYAML([NativeTypeName("const void *")] void* Buf, [NativeTypeName("uint64_t")] ulong Size);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMRemarkParserCreateBitstream", ExactSpelling = true)]
+        [return: NativeTypeName("LLVMRemarkParserRef")]
+        public static extern LLVMRemarkOpaqueParser* RemarkParserCreateBitstream([NativeTypeName("const void *")] void* Buf, [NativeTypeName("uint64_t")] ulong Size);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMRemarkParserGetNext", ExactSpelling = true)]
         [return: NativeTypeName("LLVMRemarkEntryRef")]
@@ -4451,6 +4515,9 @@ namespace LLVMSharp.Interop
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMAddConstantMergePass", ExactSpelling = true)]
         public static extern void AddConstantMergePass([NativeTypeName("LLVMPassManagerRef")] LLVMOpaquePassManager* PM);
 
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMAddMergeFunctionsPass", ExactSpelling = true)]
+        public static extern void AddMergeFunctionsPass([NativeTypeName("LLVMPassManagerRef")] LLVMOpaquePassManager* PM);
+
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMAddCalledValuePropagationPass", ExactSpelling = true)]
         public static extern void AddCalledValuePropagationPass([NativeTypeName("LLVMPassManagerRef")] LLVMOpaquePassManager* PM);
 
@@ -4483,6 +4550,9 @@ namespace LLVMSharp.Interop
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMAddInternalizePass", ExactSpelling = true)]
         public static extern void AddInternalizePass([NativeTypeName("LLVMPassManagerRef")] LLVMOpaquePassManager* param0, [NativeTypeName("unsigned int")] uint AllButMain);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMAddInternalizePassWithMustPreservePredicate", ExactSpelling = true)]
+        public static extern void AddInternalizePassWithMustPreservePredicate([NativeTypeName("LLVMPassManagerRef")] LLVMOpaquePassManager* PM, [NativeTypeName("void *")] void* Context, [NativeTypeName("LLVMBool (*)(LLVMValueRef, void *)")] IntPtr MustPreserve);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMAddStripDeadPrototypesPass", ExactSpelling = true)]
         public static extern void AddStripDeadPrototypesPass([NativeTypeName("LLVMPassManagerRef")] LLVMOpaquePassManager* PM);
@@ -4526,6 +4596,9 @@ namespace LLVMSharp.Interop
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMAddAggressiveDCEPass", ExactSpelling = true)]
         public static extern void AddAggressiveDCEPass([NativeTypeName("LLVMPassManagerRef")] LLVMOpaquePassManager* PM);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMAddDCEPass", ExactSpelling = true)]
+        public static extern void AddDCEPass([NativeTypeName("LLVMPassManagerRef")] LLVMOpaquePassManager* PM);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMAddBitTrackingDCEPass", ExactSpelling = true)]
         public static extern void AddBitTrackingDCEPass([NativeTypeName("LLVMPassManagerRef")] LLVMOpaquePassManager* PM);
@@ -4631,6 +4704,9 @@ namespace LLVMSharp.Interop
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMAddLowerExpectIntrinsicPass", ExactSpelling = true)]
         public static extern void AddLowerExpectIntrinsicPass([NativeTypeName("LLVMPassManagerRef")] LLVMOpaquePassManager* PM);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMAddLowerConstantIntrinsicsPass", ExactSpelling = true)]
+        public static extern void AddLowerConstantIntrinsicsPass([NativeTypeName("LLVMPassManagerRef")] LLVMOpaquePassManager* PM);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMAddTypeBasedAliasAnalysisPass", ExactSpelling = true)]
         public static extern void AddTypeBasedAliasAnalysisPass([NativeTypeName("LLVMPassManagerRef")] LLVMOpaquePassManager* PM);
