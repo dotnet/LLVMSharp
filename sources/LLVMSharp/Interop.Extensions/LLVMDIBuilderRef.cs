@@ -43,6 +43,30 @@ namespace LLVMSharp.Interop
                 LineNo, Type, IsLocalToUnit, IsDefinition, ScopeLine, Flags, IsOptimized);
         }
 
+        public LLVMMetadataRef CreateMacro(LLVMMetadataRef ParentMacroFile, uint Line, LLVMDWARFMacinfoRecordType RecordType, string Name, string Value)
+        {
+            using var marshaledName = new MarshaledString(Name);
+            using var marshaledValue = new MarshaledString(Value);
+            var nameLength = (uint)marshaledName.Length;
+            var valueLength = (uint)marshaledValue.Length;
+
+            return LLVM.DIBuilderCreateMacro(this, ParentMacroFile, Line, RecordType, marshaledName, (UIntPtr)nameLength, marshaledValue, (UIntPtr)valueLength);
+        }
+
+        public LLVMMetadataRef CreateModule(LLVMMetadataRef ParentScope, string Name, string ConfigMacros, string IncludePath, string SysRoot)
+        {
+            using var marshaledName = new MarshaledString(Name);
+            using var marshaledConfigMacros = new MarshaledString(ConfigMacros);
+            using var marshaledIncludePath = new MarshaledString(IncludePath);
+            using var marshaledSysRoot = new MarshaledString(SysRoot);
+            var nameLength = (uint)marshaledName.Length;
+            var configMacrosLength = (uint)marshaledConfigMacros.Length;
+            var includePathLength = (uint)marshaledIncludePath.Length;
+            var sysRootLength = (uint)marshaledSysRoot.Length;
+
+            return LLVM.DIBuilderCreateModule(this, ParentScope, marshaledName, (UIntPtr)nameLength, marshaledConfigMacros, (UIntPtr)configMacrosLength, marshaledIncludePath, (UIntPtr)includePathLength, marshaledSysRoot, (UIntPtr)sysRootLength);
+        }
+
         public LLVMMetadataRef CreateSubroutineType(LLVMMetadataRef File, ReadOnlySpan<LLVMMetadataRef> ParameterTypes, LLVMDIFlags Flags)
         {
             fixed (LLVMMetadataRef* pParameterTypes = ParameterTypes)
@@ -51,11 +75,20 @@ namespace LLVMSharp.Interop
             }
         }
 
+        public LLVMMetadataRef CreateTempMacroFile(LLVMMetadataRef ParentMacroFile, uint Line, LLVMMetadataRef File) => LLVM.DIBuilderCreateTempMacroFile(this, ParentMacroFile, Line, File);
+
+        public LLVMMetadataRef CreateTypedef(LLVMMetadataRef Type, string Name, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Scope, uint AlignInBits)
+        {
+            using var marshaledName = new MarshaledString(Name);
+            var nameLength = (uint)marshaledName.Length;
+
+            return LLVM.DIBuilderCreateTypedef(this, Type, marshaledName, (UIntPtr)nameLength, File, LineNo, Scope, AlignInBits);
+        }
+
         public void DIBuilderFinalize()
         {
             LLVM.DIBuilderFinalize(this);
         }
-
 
         public static implicit operator LLVMDIBuilderRef(LLVMOpaqueDIBuilder* value)
         {

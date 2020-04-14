@@ -204,6 +204,12 @@ namespace LLVMSharp.Interop
 
         public LLVMValueRef BuildFree(LLVMValueRef PointerVal) => LLVM.BuildFree(this, PointerVal);
 
+        public LLVMValueRef BuildFreeze(LLVMValueRef Val, string Name = "")
+        {
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.BuildFreeze(this, Val, marshaledName);
+        }
+
         public LLVMValueRef BuildFRem(LLVMValueRef LHS, LLVMValueRef RHS, string Name = "")
         {
             using var marshaledName = new MarshaledString(Name);
