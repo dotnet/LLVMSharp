@@ -84,7 +84,7 @@ namespace LLVMSharp.Interop
 
                 fixed (LLVMTypeRef* pDest = Dest)
                 {
-                    LLVM.GetParamTypes(this, (LLVMOpaqueType**)&pDest);
+                    LLVM.GetParamTypes(this, (LLVMOpaqueType**)pDest);
                 }
 
                 return Dest;
@@ -112,7 +112,7 @@ namespace LLVMSharp.Interop
 
                 fixed (LLVMTypeRef* pDest = Dest)
                 {
-                    LLVM.GetStructElementTypes(this, (LLVMOpaqueType**)&pDest);
+                    LLVM.GetStructElementTypes(this, (LLVMOpaqueType**)pDest);
                 }
 
                 return Dest;
@@ -155,7 +155,7 @@ namespace LLVMSharp.Interop
 
                 fixed (LLVMTypeRef* pArr = Arr)
                 {
-                    LLVM.GetSubtypes(this, (LLVMOpaqueType**)&pArr);
+                    LLVM.GetSubtypes(this, (LLVMOpaqueType**)pArr);
                 }
 
                 return Arr;
