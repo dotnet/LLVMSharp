@@ -960,6 +960,11 @@ namespace LLVMSharp.Interop
 
         public void ReplaceAllUsesWith(LLVMValueRef NewVal) => LLVM.ReplaceAllUsesWith(this, NewVal);
 
+        public void SetAlignment(uint Bytes)
+        {
+            Alignment = Bytes;
+        }
+
         public void SetInstrParamAlignment(uint index, uint align) => LLVM.SetInstrParamAlignment(this, index, align);
 
         public void SetMetadata(uint KindID, LLVMValueRef Node) => LLVM.SetMetadata(this, KindID, Node);
