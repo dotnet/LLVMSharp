@@ -53,19 +53,19 @@ namespace LLVMSharp.Interop
 
         public LLVMValueRef AlignOf => (Handle != IntPtr.Zero) ? LLVM.AlignOf(this) : default;
 
-        public uint ArrayLength => (Handle != IntPtr.Zero) ? LLVM.GetArrayLength(this) : default;
+        public uint ArrayLength => (Kind == LLVMTypeKind.LLVMArrayTypeKind) ? LLVM.GetArrayLength(this) : default;
 
         public LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetTypeContext(this) : default;
 
-        public LLVMTypeRef ElementType => (Handle != IntPtr.Zero) ? LLVM.GetElementType(this) : default;
+        public LLVMTypeRef ElementType => ((Kind == LLVMTypeKind.LLVMPointerTypeKind) || (Kind == LLVMTypeKind.LLVMArrayTypeKind) || (Kind == LLVMTypeKind.LLVMVectorTypeKind)) ? LLVM.GetElementType(this) : default;
 
-        public uint IntWidth => (Handle != IntPtr.Zero) ? LLVM.GetIntTypeWidth(this) : default;
+        public uint IntWidth => (Kind == LLVMTypeKind.LLVMIntegerTypeKind) ? LLVM.GetIntTypeWidth(this) : default;
 
-        public bool IsFunctionVarArg => (Handle != IntPtr.Zero) ? LLVM.IsFunctionVarArg(this) != 0 : default;
+        public bool IsFunctionVarArg => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) ? LLVM.IsFunctionVarArg(this) != 0 : default;
 
-        public bool IsOpaqueStruct => (Handle != IntPtr.Zero) ? LLVM.IsOpaqueStruct(this) != 0 : default;
+        public bool IsOpaqueStruct => (Kind == LLVMTypeKind.LLVMStructTypeKind) ? LLVM.IsOpaqueStruct(this) != 0 : default;
 
-        public bool IsPackedStruct => (Handle != IntPtr.Zero) ? LLVM.IsPackedStruct(this) != 0 : default;
+        public bool IsPackedStruct => (Kind == LLVMTypeKind.LLVMStructTypeKind) ? LLVM.IsPackedStruct(this) != 0 : default;
 
         public bool IsSized => (Handle != IntPtr.Zero) ? LLVM.TypeIsSized(this) != 0 : default;
 
@@ -75,7 +75,7 @@ namespace LLVMSharp.Interop
         {
             get
             {
-                if (Handle == IntPtr.Zero)
+                if (Kind != LLVMTypeKind.LLVMFunctionTypeKind)
                 {
                     return Array.Empty<LLVMTypeRef>();
                 }
@@ -91,11 +91,11 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public uint ParamTypesCount => (Handle != IntPtr.Zero) ? LLVM.CountParamTypes(this) : default;
+        public uint ParamTypesCount => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) ? LLVM.CountParamTypes(this) : default;
 
-        public uint PointerAddressSpace => (Handle != IntPtr.Zero) ? LLVM.GetPointerAddressSpace(this) : default;
+        public uint PointerAddressSpace => (Kind == LLVMTypeKind.LLVMPointerTypeKind) ? LLVM.GetPointerAddressSpace(this) : default;
 
-        public LLVMTypeRef ReturnType => (Handle != IntPtr.Zero) ? LLVM.GetReturnType(this) : default;
+        public LLVMTypeRef ReturnType => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) ? LLVM.GetReturnType(this) : default;
 
         public LLVMValueRef SizeOf => (Handle != IntPtr.Zero) ? LLVM.SizeOf(this) : default;
 
@@ -103,7 +103,7 @@ namespace LLVMSharp.Interop
         {
             get
             {
-                if (Handle == IntPtr.Zero)
+                if (Kind != LLVMTypeKind.LLVMStructTypeKind)
                 {
                     return Array.Empty<LLVMTypeRef>();
                 }
@@ -119,13 +119,13 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public uint StructElementTypesCount => (Handle != IntPtr.Zero) ? LLVM.CountStructElementTypes(this) : default;
+        public uint StructElementTypesCount => (Kind == LLVMTypeKind.LLVMStructTypeKind) ? LLVM.CountStructElementTypes(this) : default;
 
         public string StructName
         {
             get
             {
-                if (Handle == IntPtr.Zero)
+                if (Kind != LLVMTypeKind.LLVMStructTypeKind)
                 {
                     return string.Empty;
                 }
@@ -166,17 +166,19 @@ namespace LLVMSharp.Interop
 
         public LLVMValueRef Undef => (Handle != IntPtr.Zero) ? LLVM.GetUndef(this) : default;
 
-        public uint VectorSize => (Handle != IntPtr.Zero) ? LLVM.GetVectorSize(this) : default;
+        public uint VectorSize => (Kind == LLVMTypeKind.LLVMVectorTypeKind) ? LLVM.GetVectorSize(this) : default;
 
         public static bool operator ==(LLVMTypeRef left, LLVMTypeRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMTypeRef left, LLVMTypeRef right) => !(left == right);
 
-        public static LLVMTypeRef CreateFunction(LLVMTypeRef ReturnType, LLVMTypeRef[] ParamTypes, bool IsVarArg = false)
+        public static LLVMTypeRef CreateFunction(LLVMTypeRef ReturnType, LLVMTypeRef[] ParamTypes, bool IsVarArg = false) => CreateFunction(ReturnType, ParamTypes.AsSpan(), IsVarArg);
+
+        public static LLVMTypeRef CreateFunction(LLVMTypeRef ReturnType, ReadOnlySpan<LLVMTypeRef> ParamTypes, bool IsVarArg)
         {
             fixed (LLVMTypeRef* pParamTypes = ParamTypes)
             {
-                return LLVM.FunctionType(ReturnType, (LLVMOpaqueType**)pParamTypes, (uint)ParamTypes?.Length, IsVarArg ? 1 : 0);
+                return LLVM.FunctionType(ReturnType, (LLVMOpaqueType**)pParamTypes, (uint)ParamTypes.Length, IsVarArg ? 1 : 0);
             }
         }
 
@@ -190,11 +192,13 @@ namespace LLVMSharp.Interop
 
         public static LLVMTypeRef CreatePointer(LLVMTypeRef ElementType, uint AddressSpace) => LLVM.PointerType(ElementType, AddressSpace);
 
-        public static LLVMTypeRef CreateStruct(LLVMTypeRef[] ElementTypes, bool Packed)
+        public static LLVMTypeRef CreateStruct(LLVMTypeRef[] ElementTypes, bool Packed) => CreateStruct(ElementTypes.AsSpan(), Packed);
+
+        public static LLVMTypeRef CreateStruct(ReadOnlySpan<LLVMTypeRef> ElementTypes, bool Packed)
         {
             fixed (LLVMTypeRef* pElementTypes = ElementTypes)
             {
-                return LLVM.StructType((LLVMOpaqueType**)pElementTypes, (uint)ElementTypes?.Length, Packed ? 1 : 0);
+                return LLVM.StructType((LLVMOpaqueType**)pElementTypes, (uint)ElementTypes.Length, Packed ? 1 : 0);
             }
         }
 
@@ -227,11 +231,13 @@ namespace LLVMSharp.Interop
 
         public LLVMTypeRef StructGetTypeAtIndex(uint index) => LLVM.StructGetTypeAtIndex(this, index);
 
-        public void StructSetBody(LLVMTypeRef[] ElementTypes, bool Packed)
+        public void StructSetBody(LLVMTypeRef[] ElementTypes, bool Packed) => StructSetBody(ElementTypes.AsSpan(), Packed);
+
+        public void StructSetBody(ReadOnlySpan<LLVMTypeRef> ElementTypes, bool Packed)
         {
             fixed (LLVMTypeRef* pElementTypes = ElementTypes)
             {
-                LLVM.StructSetBody(this, (LLVMOpaqueType**)pElementTypes, (uint)ElementTypes?.Length, Packed ? 1 : 0);
+                LLVM.StructSetBody(this, (LLVMOpaqueType**)pElementTypes, (uint)ElementTypes.Length, Packed ? 1 : 0);
             }
         }
 

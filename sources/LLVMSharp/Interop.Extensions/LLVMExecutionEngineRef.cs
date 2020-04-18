@@ -49,7 +49,9 @@ namespace LLVMSharp.Interop
 
         public bool Equals(LLVMExecutionEngineRef other) => Handle == other.Handle;
 
-        public LLVMValueRef FindFunction(string Name)
+        public LLVMValueRef FindFunction(string Name) => FindFunction(Name.AsSpan());
+
+        public LLVMValueRef FindFunction(ReadOnlySpan<char> Name)
         {
             if (!TryFindFunction(Name, out var Fn))
             {
@@ -61,13 +63,17 @@ namespace LLVMSharp.Interop
 
         public void FreeMachineCodeForFunction(LLVMValueRef F) => LLVM.FreeMachineCodeForFunction(this, F);
 
-        public ulong GetFunctionAddress(string Name)
+        public ulong GetFunctionAddress(string Name) => GetFunctionAddress(Name.AsSpan());
+
+        public ulong GetFunctionAddress(ReadOnlySpan<char> Name)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.GetFunctionAddress(this, marshaledName);
         }
 
-        public ulong GetGlobalValueAddress(string Name)
+        public ulong GetGlobalValueAddress(string Name) => GetGlobalValueAddress(Name.AsSpan()); 
+
+        public ulong GetGlobalValueAddress(ReadOnlySpan<char> Name)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.GetGlobalValueAddress(this, marshaledName);
@@ -93,15 +99,19 @@ namespace LLVMSharp.Interop
             return Mod;
         }
 
-        public LLVMGenericValueRef RunFunction(LLVMValueRef F, LLVMGenericValueRef[] Args)
+        public LLVMGenericValueRef RunFunction(LLVMValueRef F, LLVMGenericValueRef[] Args) => RunFunction(F, Args.AsSpan());
+
+        public LLVMGenericValueRef RunFunction(LLVMValueRef F, ReadOnlySpan<LLVMGenericValueRef> Args)
         {
             fixed (LLVMGenericValueRef* pArgs = Args)
             {
-                return LLVM.RunFunction(this, F, (uint)Args?.Length, (LLVMOpaqueGenericValue**)pArgs);
+                return LLVM.RunFunction(this, F, (uint)Args.Length, (LLVMOpaqueGenericValue**)pArgs);
             }
         }
 
-        public int RunFunctionAsMain(LLVMValueRef F, uint ArgC, string[] ArgV, string[] EnvP)
+        public int RunFunctionAsMain(LLVMValueRef F, uint ArgC, string[] ArgV, string[] EnvP) => RunFunctionAsMain(F, ArgC, ArgV.AsSpan(), EnvP.AsSpan());
+
+        public int RunFunctionAsMain(LLVMValueRef F, uint ArgC, ReadOnlySpan<string> ArgV, ReadOnlySpan<string> EnvP)
         {
             using var marshaledArgV = new MarshaledStringArray(ArgV);
             using var marshaledEnvP = new MarshaledStringArray(EnvP);
@@ -121,7 +131,9 @@ namespace LLVMSharp.Interop
 
         public IntPtr RecompileAndRelinkFunction(LLVMValueRef Fn) => (IntPtr)LLVM.RecompileAndRelinkFunction(this, Fn);
 
-        public bool TryFindFunction(string Name, out LLVMValueRef OutFn)
+        public bool TryFindFunction(string Name, out LLVMValueRef OutFn) => TryFindFunction(Name.AsSpan(), out OutFn);
+
+        public bool TryFindFunction(ReadOnlySpan<char> Name, out LLVMValueRef OutFn)
         {
             fixed (LLVMValueRef* pOutFn = &OutFn)
             {
