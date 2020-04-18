@@ -60,35 +60,38 @@ namespace LLVMSharp.Interop
 
         public static LLVMContextRef Create() => LLVM.ContextCreate();
 
-        public LLVMBasicBlockRef AppendBasicBlock(LLVMValueRef Fn, string Name)
+        public LLVMBasicBlockRef AppendBasicBlock(LLVMValueRef Fn, string Name) => AppendBasicBlock(Fn, Name.AsSpan());
+
+        public LLVMBasicBlockRef AppendBasicBlock(LLVMValueRef Fn, ReadOnlySpan<char> Name)
         {
-            using var marshaledName = new MarshaledString(Name);
-            return LLVM.AppendBasicBlockInContext(this, Fn, marshaledName);
+            return LLVMBasicBlockRef.AppendInContext(this, Fn, Name);
         }
 
-        public LLVMBuilderRef CreateBuilder()
+        public LLVMBasicBlockRef CreateBasicBlock(string Name) => CreateBasicBlock(Name.AsSpan());
+
+        public LLVMBasicBlockRef CreateBasicBlock(ReadOnlySpan<char> Name)
         {
-            return LLVM.CreateBuilderInContext(this);
+            return LLVMBasicBlockRef.CreateInContext(this, Name);
         }
+
+        public LLVMBuilderRef CreateBuilder() => LLVMBuilderRef.Create(this);
 
         public LLVMMetadataRef CreateDebugLocation(uint Line, uint Column, LLVMMetadataRef Scope, LLVMMetadataRef InlinedAt)
         {
             return LLVM.DIBuilderCreateDebugLocation(this, Line, Column, Scope, InlinedAt);
         }
 
-        public LLVMModuleRef CreateModuleWithName(string ModuleID)
+        public LLVMModuleRef CreateModuleWithName(string ModuleID) => CreateModuleWithName(ModuleID.AsSpan());
+
+        public LLVMModuleRef CreateModuleWithName(ReadOnlySpan<char> ModuleID)
         {
             using var marshaledModuleID = new MarshaledString(ModuleID);
             return LLVM.ModuleCreateWithNameInContext(marshaledModuleID, this);
         }
 
-        public LLVMValueRef MetadataAsValue(LLVMMetadataRef MD)
-        {
-            return LLVM.MetadataAsValue(this, MD);
-        }
+        public LLVMTypeRef CreateNamedStruct(string Name) => CreateNamedStruct(Name.AsSpan());
 
-
-        public LLVMTypeRef CreateNamedStruct(string Name)
+        public LLVMTypeRef CreateNamedStruct(ReadOnlySpan<char> Name)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.StructCreateNamed(this, marshaledName);
@@ -117,17 +120,21 @@ namespace LLVMSharp.Interop
             return M;
         }
 
-        public LLVMValueRef GetConstString(string Str, uint Length, bool DontNullTerminate)
+        public LLVMValueRef GetConstString(string Str, bool DontNullTerminate) => GetConstString(Str.AsSpan(), DontNullTerminate);
+
+        public LLVMValueRef GetConstString(ReadOnlySpan<char> Str, bool DontNullTerminate)
         {
             using var marshaledStr = new MarshaledString(Str);
-            return LLVM.ConstStringInContext(this, marshaledStr, Length, DontNullTerminate ? 1 : 0);
+            return LLVM.ConstStringInContext(this, marshaledStr, (uint)marshaledStr.Length, DontNullTerminate ? 1 : 0);
         }
 
-        public LLVMValueRef GetConstStruct(LLVMValueRef[] ConstantVals, bool Packed)
+        public LLVMValueRef GetConstStruct(LLVMValueRef[] ConstantVals, bool Packed) => GetConstStruct(ConstantVals.AsSpan(), Packed);
+
+        public LLVMValueRef GetConstStruct(ReadOnlySpan<LLVMValueRef> ConstantVals, bool Packed)
         {
             fixed (LLVMValueRef* pConstantVals = ConstantVals)
             {
-                return LLVM.ConstStructInContext(this, (LLVMOpaqueValue**)pConstantVals, (uint)ConstantVals?.Length, Packed ? 1 : 0);
+                return LLVM.ConstStructInContext(this, (LLVMOpaqueValue**)pConstantVals, (uint)ConstantVals.Length, Packed ? 1 : 0);
             }
         }
 
@@ -139,41 +146,52 @@ namespace LLVMSharp.Interop
 
         public LLVMTypeRef GetIntType(uint NumBits) => LLVM.IntTypeInContext(this, NumBits);
 
-        public uint GetMDKindID(string Name, uint SLen)
+        public uint GetMDKindID(string Name, uint SLen) => GetMDKindID(Name.AsSpan(0, (int)SLen));
+
+        public uint GetMDKindID(ReadOnlySpan<char> Name)
         {
             using var marshaledName = new MarshaledString(Name);
-            return LLVM.GetMDKindIDInContext(this, marshaledName, SLen);
+            return LLVM.GetMDKindIDInContext(this, marshaledName, (uint)marshaledName.Length);
         }
 
-        public LLVMValueRef GetMDNode(LLVMValueRef[] Vals)
+        public LLVMValueRef GetMDNode(LLVMValueRef[] Vals) => GetMDNode(Vals.AsSpan());
+
+        public LLVMValueRef GetMDNode(ReadOnlySpan<LLVMValueRef> Vals)
         {
             fixed (LLVMValueRef* pVals = Vals)
             {
-                return LLVM.MDNodeInContext(this, (LLVMOpaqueValue**)pVals, (uint)Vals?.Length);
+                return LLVM.MDNodeInContext(this, (LLVMOpaqueValue**)pVals, (uint)Vals.Length);
             }
         }
 
-        public LLVMValueRef GetMDString(string Str, uint SLen)
+        public LLVMValueRef GetMDString(string Str, uint SLen) => GetMDString(Str.AsSpan(0, (int)SLen));
+
+        public LLVMValueRef GetMDString(ReadOnlySpan<char> Str)
         {
             using var marshaledStr = new MarshaledString(Str);
-            return LLVM.MDStringInContext(this, marshaledStr, SLen);
+            return LLVM.MDStringInContext(this, marshaledStr, (uint)marshaledStr.Length);
         }
 
-        public LLVMTypeRef GetStructType(LLVMTypeRef[] ElementTypes, bool Packed)
+        public LLVMTypeRef GetStructType(LLVMTypeRef[] ElementTypes, bool Packed) => GetStructType(ElementTypes.AsSpan(), Packed);
+
+        public LLVMTypeRef GetStructType(ReadOnlySpan<LLVMTypeRef> ElementTypes, bool Packed)
         {
             fixed (LLVMTypeRef* pElementTypes = ElementTypes)
             {
-                return LLVM.StructTypeInContext(this, (LLVMOpaqueType**)pElementTypes, (uint)ElementTypes?.Length, Packed ? 1 : 0);
+                return LLVM.StructTypeInContext(this, (LLVMOpaqueType**)pElementTypes, (uint)ElementTypes.Length, Packed ? 1 : 0);
             }
         }
 
         public LLVMBasicBlockRef InsertBasicBlock(LLVMBasicBlockRef BB, string Name)
         {
-            using var marshaledName = new MarshaledString(Name);
-            return LLVM.InsertBasicBlockInContext(this, BB, marshaledName);
+            return LLVMBasicBlockRef.InsertInContext(this, BB, Name);
         }
 
-        
+        public LLVMValueRef MetadataAsValue(LLVMMetadataRef MD)
+        {
+            return LLVM.MetadataAsValue(this, MD);
+        }
+
         public LLVMModuleRef ParseBitcode(LLVMMemoryBufferRef MemBuf)
         {
             if (!TryParseBitcode(MemBuf, out LLVMModuleRef M, out string Message))

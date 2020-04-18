@@ -49,6 +49,30 @@ namespace LLVMSharp.Interop
 
         public static bool operator !=(LLVMBasicBlockRef left, LLVMBasicBlockRef right) => !(left == right);
 
+        public static LLVMBasicBlockRef AppendInContext(LLVMContextRef C, LLVMValueRef Fn, string Name) => AppendInContext(C, Fn, Name.AsSpan());
+
+        public static LLVMBasicBlockRef AppendInContext(LLVMContextRef C, LLVMValueRef Fn, ReadOnlySpan<char> Name)
+        {
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.AppendBasicBlockInContext(C, Fn, marshaledName);
+        }
+
+        public static LLVMBasicBlockRef CreateInContext(LLVMContextRef C, string Name) => CreateInContext(C, Name.AsSpan());
+
+        public static LLVMBasicBlockRef CreateInContext(LLVMContextRef C, ReadOnlySpan<char> Name)
+        {
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.CreateBasicBlockInContext(C, marshaledName);
+        }
+
+        public static LLVMBasicBlockRef InsertInContext(LLVMContextRef C, LLVMBasicBlockRef BB, string Name) => InsertInContext(C, BB, Name.AsSpan());
+
+        public static LLVMBasicBlockRef InsertInContext(LLVMContextRef C, LLVMBasicBlockRef BB, ReadOnlySpan<char> Name)
+        {
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.InsertBasicBlockInContext(C, BB, marshaledName);
+        }
+
         public LLVMValueRef AsValue() => LLVM.BasicBlockAsValue(this);
 
         public void Delete() => LLVM.DeleteBasicBlock(this);
@@ -61,7 +85,9 @@ namespace LLVMSharp.Interop
 
         public override int GetHashCode() => Handle.GetHashCode();
 
-        public LLVMBasicBlockRef InsertBasicBlock(string Name)
+        public LLVMBasicBlockRef InsertBasicBlock(string Name) => InsertBasicBlock(Name.AsSpan());
+
+        public LLVMBasicBlockRef InsertBasicBlock(ReadOnlySpan<char> Name)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.InsertBasicBlock(this, marshaledName);

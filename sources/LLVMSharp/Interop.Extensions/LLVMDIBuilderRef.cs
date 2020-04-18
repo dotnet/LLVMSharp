@@ -14,7 +14,10 @@ namespace LLVMSharp.Interop
         public IntPtr Handle;
 
         public LLVMMetadataRef CreateCompileUnit(LLVMDWARFSourceLanguage SourceLanguage, LLVMMetadataRef FileMetadata, string Producer, int IsOptimized, string Flags, uint RuntimeVersion,
-            string SplitName, LLVMDWARFEmissionKind DwarfEmissionKind, uint DWOld, int SplitDebugInlining, int DebugInfoForProfiling)
+            string SplitName, LLVMDWARFEmissionKind DwarfEmissionKind, uint DWOld, int SplitDebugInlining, int DebugInfoForProfiling) => CreateCompileUnit(SourceLanguage, FileMetadata, Producer.AsSpan(), IsOptimized, Flags.AsSpan(), RuntimeVersion, SplitName.AsSpan(), DwarfEmissionKind, DWOld, SplitDebugInlining, DebugInfoForProfiling);
+
+        public LLVMMetadataRef CreateCompileUnit(LLVMDWARFSourceLanguage SourceLanguage, LLVMMetadataRef FileMetadata, ReadOnlySpan<char> Producer, int IsOptimized, ReadOnlySpan<char> Flags, uint RuntimeVersion,
+            ReadOnlySpan<char> SplitName, LLVMDWARFEmissionKind DwarfEmissionKind, uint DWOld, int SplitDebugInlining, int DebugInfoForProfiling)
         {
             using var marshaledProducer= new MarshaledString(Producer);
             using var marshaledFlags = new MarshaledString(Flags);
@@ -24,7 +27,9 @@ namespace LLVMSharp.Interop
                 RuntimeVersion, marshaledSplitNameFlags, (UIntPtr)marshaledSplitNameFlags.Length, DwarfEmissionKind, DWOld, SplitDebugInlining, DebugInfoForProfiling);
         }
 
-        public LLVMMetadataRef CreateFile(string FullPath, string Directory)
+        public LLVMMetadataRef CreateFile(string FullPath, string Directory) => CreateFile(FullPath.AsSpan(), Directory.AsSpan());
+
+        public LLVMMetadataRef CreateFile(ReadOnlySpan<char> FullPath, ReadOnlySpan<char> Directory)
         {
             using var marshaledFullPath = new MarshaledString(FullPath);
             using var marshaledDirectory = new MarshaledString(Directory);
@@ -32,6 +37,9 @@ namespace LLVMSharp.Interop
         }
 
         public LLVMMetadataRef CreateFunction(LLVMMetadataRef Scope, string Name, string LinkageName, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Type, int IsLocalToUnit, int IsDefinition,
+            uint ScopeLine, LLVMDIFlags Flags, int IsOptimized) => CreateFunction(Scope, Name.AsSpan(), LinkageName.AsSpan(), File, LineNo, Type, IsLocalToUnit, IsDefinition, ScopeLine, Flags, IsOptimized);
+
+        public LLVMMetadataRef CreateFunction(LLVMMetadataRef Scope, ReadOnlySpan<char> Name, ReadOnlySpan<char> LinkageName, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Type, int IsLocalToUnit, int IsDefinition,
             uint ScopeLine, LLVMDIFlags Flags, int IsOptimized)
         {
             using var marshaledName = new MarshaledString(Name);
@@ -43,7 +51,9 @@ namespace LLVMSharp.Interop
                 LineNo, Type, IsLocalToUnit, IsDefinition, ScopeLine, Flags, IsOptimized);
         }
 
-        public LLVMMetadataRef CreateMacro(LLVMMetadataRef ParentMacroFile, uint Line, LLVMDWARFMacinfoRecordType RecordType, string Name, string Value)
+        public LLVMMetadataRef CreateMacro(LLVMMetadataRef ParentMacroFile, uint Line, LLVMDWARFMacinfoRecordType RecordType, string Name, string Value) => CreateMacro(ParentMacroFile, Line, RecordType, Name.AsSpan(), Value.AsSpan());
+
+        public LLVMMetadataRef CreateMacro(LLVMMetadataRef ParentMacroFile, uint Line, LLVMDWARFMacinfoRecordType RecordType, ReadOnlySpan<char> Name, ReadOnlySpan<char> Value)
         {
             using var marshaledName = new MarshaledString(Name);
             using var marshaledValue = new MarshaledString(Value);
@@ -53,7 +63,9 @@ namespace LLVMSharp.Interop
             return LLVM.DIBuilderCreateMacro(this, ParentMacroFile, Line, RecordType, marshaledName, (UIntPtr)nameLength, marshaledValue, (UIntPtr)valueLength);
         }
 
-        public LLVMMetadataRef CreateModule(LLVMMetadataRef ParentScope, string Name, string ConfigMacros, string IncludePath, string SysRoot)
+        public LLVMMetadataRef CreateModule(LLVMMetadataRef ParentScope, string Name, string ConfigMacros, string IncludePath, string SysRoot) => CreateModule(ParentScope, Name.AsSpan(), ConfigMacros.AsSpan(), IncludePath.AsSpan(), SysRoot.AsSpan());
+
+        public LLVMMetadataRef CreateModule(LLVMMetadataRef ParentScope, ReadOnlySpan<char> Name, ReadOnlySpan<char> ConfigMacros, ReadOnlySpan<char> IncludePath, ReadOnlySpan<char> SysRoot)
         {
             using var marshaledName = new MarshaledString(Name);
             using var marshaledConfigMacros = new MarshaledString(ConfigMacros);
@@ -67,6 +79,8 @@ namespace LLVMSharp.Interop
             return LLVM.DIBuilderCreateModule(this, ParentScope, marshaledName, (UIntPtr)nameLength, marshaledConfigMacros, (UIntPtr)configMacrosLength, marshaledIncludePath, (UIntPtr)includePathLength, marshaledSysRoot, (UIntPtr)sysRootLength);
         }
 
+        public LLVMMetadataRef CreateSubroutineType(LLVMMetadataRef File, LLVMMetadataRef[] ParameterTypes, LLVMDIFlags Flags) => CreateSubroutineType(File, ParameterTypes.AsSpan(), Flags);
+
         public LLVMMetadataRef CreateSubroutineType(LLVMMetadataRef File, ReadOnlySpan<LLVMMetadataRef> ParameterTypes, LLVMDIFlags Flags)
         {
             fixed (LLVMMetadataRef* pParameterTypes = ParameterTypes)
@@ -77,7 +91,9 @@ namespace LLVMSharp.Interop
 
         public LLVMMetadataRef CreateTempMacroFile(LLVMMetadataRef ParentMacroFile, uint Line, LLVMMetadataRef File) => LLVM.DIBuilderCreateTempMacroFile(this, ParentMacroFile, Line, File);
 
-        public LLVMMetadataRef CreateTypedef(LLVMMetadataRef Type, string Name, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Scope, uint AlignInBits)
+        public LLVMMetadataRef CreateTypedef(LLVMMetadataRef Type, string Name, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Scope, uint AlignInBits) => CreateTypedef(Type, Name.AsSpan(), File, LineNo, Scope, AlignInBits);
+
+        public LLVMMetadataRef CreateTypedef(LLVMMetadataRef Type, ReadOnlySpan<char> Name, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Scope, uint AlignInBits)
         {
             using var marshaledName = new MarshaledString(Name);
             var nameLength = (uint)marshaledName.Length;

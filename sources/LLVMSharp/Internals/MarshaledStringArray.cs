@@ -6,9 +6,9 @@ namespace LLVMSharp
 {
     internal unsafe struct MarshaledStringArray : IDisposable
     {
-        public MarshaledStringArray(string[] inputs)
+        public MarshaledStringArray(ReadOnlySpan<string> inputs)
         {
-            if ((inputs is null) || (inputs.Length == 0))
+            if (inputs.IsEmpty)
             {
                 Count = 0;
                 Values = null;
@@ -20,7 +20,7 @@ namespace LLVMSharp
 
                 for (int i = 0; i < Count; i++)
                 {
-                    Values[i] = new MarshaledString(inputs[i]);
+                    Values[i] = new MarshaledString(inputs[i].AsSpan());
                 }
             }
         }

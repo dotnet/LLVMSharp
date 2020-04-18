@@ -41,7 +41,9 @@ namespace LLVMSharp.Interop
             return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
         }
 
-        public void EmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen)
+        public void EmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen) => EmitToFile(module, fileName.AsSpan(), codegen);
+
+        public void EmitToFile(LLVMModuleRef module, ReadOnlySpan<char> fileName, LLVMCodeGenFileType codegen)
         {
             if (!TryEmitToFile(module, fileName, codegen, out string Error))
             {
@@ -55,7 +57,9 @@ namespace LLVMSharp.Interop
 
         public override int GetHashCode() => Handle.GetHashCode();
 
-        public bool TryEmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen, out string message)
+        public bool TryEmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen, out string message) => TryEmitToFile(module, fileName.AsSpan(), codegen, out message);
+
+        public bool TryEmitToFile(LLVMModuleRef module, ReadOnlySpan<char> fileName, LLVMCodeGenFileType codegen, out string message)
         {
             using var marshaledFileName = new MarshaledString(fileName);
 

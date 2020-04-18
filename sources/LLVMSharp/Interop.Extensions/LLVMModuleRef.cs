@@ -48,7 +48,7 @@ namespace LLVMSharp.Interop
 
             set
             {
-                using var marshaledDataLayoutStr = new MarshaledString(value);
+                using var marshaledDataLayoutStr = new MarshaledString(value.AsSpan());
                 LLVM.SetDataLayout(this, marshaledDataLayoutStr);
             }
         }
@@ -83,7 +83,7 @@ namespace LLVMSharp.Interop
 
             set
             {
-                using var marshaledTriple = new MarshaledString(value);
+                using var marshaledTriple = new MarshaledString(value.AsSpan());
                 LLVM.SetTarget(this, marshaledTriple);
             }
         }
@@ -92,37 +92,49 @@ namespace LLVMSharp.Interop
 
         public static bool operator !=(LLVMModuleRef left, LLVMModuleRef right) => !(left == right);
 
-        public static LLVMModuleRef CreateWithName(string ModuleID)
+        public static LLVMModuleRef CreateWithName(string ModuleID) => CreateWithName(ModuleID.AsSpan());
+
+        public static LLVMModuleRef CreateWithName(ReadOnlySpan<char> ModuleID)
         {
             using var marshaledModuleID = new MarshaledString(ModuleID);
             return LLVM.ModuleCreateWithName(marshaledModuleID);
         }
 
-        public LLVMValueRef AddAlias(LLVMTypeRef Ty, LLVMValueRef Aliasee, string Name)
+        public LLVMValueRef AddAlias(LLVMTypeRef Ty, LLVMValueRef Aliasee, string Name) => AddAlias(Ty, Aliasee, Name.AsSpan());
+
+        public LLVMValueRef AddAlias(LLVMTypeRef Ty, LLVMValueRef Aliasee, ReadOnlySpan<char> Name)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.AddAlias(this, Ty, Aliasee, marshaledName);
         }
 
-        public LLVMValueRef AddFunction(string Name, LLVMTypeRef FunctionTy)
+        public LLVMValueRef AddFunction(string Name, LLVMTypeRef FunctionTy) => AddFunction(Name.AsSpan(), FunctionTy);
+
+        public LLVMValueRef AddFunction(ReadOnlySpan<char> Name, LLVMTypeRef FunctionTy)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.AddFunction(this, marshaledName, FunctionTy);
         }
 
-        public LLVMValueRef AddGlobal(LLVMTypeRef Ty, string Name)
+        public LLVMValueRef AddGlobal(LLVMTypeRef Ty, string Name) => AddGlobal(Ty, Name.AsSpan());
+
+        public LLVMValueRef AddGlobal(LLVMTypeRef Ty, ReadOnlySpan<char> Name)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.AddGlobal(this, Ty, marshaledName);
         }
 
-        public LLVMValueRef AddGlobalInAddressSpace(LLVMTypeRef Ty, string Name, uint AddressSpace)
+        public LLVMValueRef AddGlobalInAddressSpace(LLVMTypeRef Ty, string Name, uint AddressSpace) => AddGlobalInAddressSpace(Ty, Name.AsSpan(), AddressSpace);
+
+        public LLVMValueRef AddGlobalInAddressSpace(LLVMTypeRef Ty, ReadOnlySpan<char> Name, uint AddressSpace)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.AddGlobalInAddressSpace(this, Ty, marshaledName, AddressSpace);
         }
 
-        public void AddNamedMetadataOperand(string Name, LLVMValueRef Val)
+        public void AddNamedMetadataOperand(string Name, LLVMValueRef Val) => AddNamedMetadataOperand(Name.AsSpan(), Val);
+
+        public void AddNamedMetadataOperand(ReadOnlySpan<char> Name, LLVMValueRef Val)
         {
             using var marshaledName = new MarshaledString(Name);
             LLVM.AddNamedMetadataOperand(this, marshaledName, Val);
@@ -179,7 +191,9 @@ namespace LLVMSharp.Interop
 
         public LLVMModuleProviderRef CreateModuleProvider() => LLVM.CreateModuleProviderForExistingModule(this);
 
-        public void AddNamedMetadataOperand(string Name, LLVMMetadataRef CompileUnitMetadata)
+        public void AddNamedMetadataOperand(string Name, LLVMMetadataRef CompileUnitMetadata) => AddNamedMetadataOperand(Name.AsSpan(), CompileUnitMetadata);
+
+        public void AddNamedMetadataOperand(ReadOnlySpan<char> Name, LLVMMetadataRef CompileUnitMetadata)
         {
             using var marshaledName = new MarshaledString(Name);
             LLVM.AddNamedMetadataOperand(this, marshaledName, LLVM.MetadataAsValue(Context, CompileUnitMetadata));
@@ -200,7 +214,9 @@ namespace LLVMSharp.Interop
 
         public bool Equals(LLVMModuleRef other) => Handle == other.Handle;
 
-        public LLVMValueRef GetNamedFunction(string Name)
+        public LLVMValueRef GetNamedFunction(string Name) => GetNamedFunction(Name.AsSpan());
+
+        public LLVMValueRef GetNamedFunction(ReadOnlySpan<char> Name)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.GetNamedFunction(this, marshaledName);
@@ -208,13 +224,17 @@ namespace LLVMSharp.Interop
 
         public override int GetHashCode() => Handle.GetHashCode();
 
-        public LLVMValueRef GetNamedGlobal(string Name)
+        public LLVMValueRef GetNamedGlobal(string Name) => GetNamedGlobal(Name.AsSpan());
+
+        public LLVMValueRef GetNamedGlobal(ReadOnlySpan<char> Name)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.GetNamedGlobal(this, marshaledName);
         }
 
-        public LLVMValueRef[] GetNamedMetadataOperands(string Name)
+        public LLVMValueRef[] GetNamedMetadataOperands(string Name) => GetNamedMetadataOperands(Name.AsSpan());
+
+        public LLVMValueRef[] GetNamedMetadataOperands(ReadOnlySpan<char> Name)
         {
             using var marshaledName = new MarshaledString(Name);
             var Dest = new LLVMValueRef[LLVM.GetNamedMetadataNumOperands(this, marshaledName)];
@@ -227,19 +247,25 @@ namespace LLVMSharp.Interop
             return Dest;
         }
 
-        public uint GetNamedMetadataOperandsCount(string Name)
+        public uint GetNamedMetadataOperandsCount(string Name) => GetNamedMetadataOperandsCount(Name.AsSpan());
+
+        public uint GetNamedMetadataOperandsCount(ReadOnlySpan<char> Name)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.GetNamedMetadataNumOperands(this, marshaledName);
         }
 
-        public LLVMTypeRef GetTypeByName(string Name)
+        public LLVMTypeRef GetTypeByName(string Name) => GetTypeByName(Name.AsSpan());
+
+        public LLVMTypeRef GetTypeByName(ReadOnlySpan<char> Name)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.GetTypeByName(this, marshaledName);
         }
 
-        public void PrintToFile(string Filename)
+        public void PrintToFile(string Filename) => PrintToFile(Filename.AsSpan());
+
+        public void PrintToFile(ReadOnlySpan<char> Filename)
         {
             if (!TryPrintToFile(Filename, out string ErrorMessage))
             {
@@ -262,7 +288,9 @@ namespace LLVMSharp.Interop
             return result;
         }
 
-        public void SetModuleInlineAsm(string Asm)
+        public void SetModuleInlineAsm(string Asm) => SetModuleInlineAsm(Asm.AsSpan());
+
+        public void SetModuleInlineAsm(ReadOnlySpan<char> Asm)
         {
             using var marshaledAsm = new MarshaledString(Asm);
             LLVM.SetModuleInlineAsm(this, marshaledAsm);
@@ -340,7 +368,9 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public bool TryPrintToFile(string Filename, out string ErrorMessage)
+        public bool TryPrintToFile(string Filename, out string ErrorMessage) => TryPrintToFile(Filename.AsSpan(), out ErrorMessage);
+
+        public bool TryPrintToFile(ReadOnlySpan<char> Filename, out string ErrorMessage)
         {
             using var marshaledFilename = new MarshaledString(Filename);
 
@@ -394,7 +424,9 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public int WriteBitcodeToFile(string Path)
+        public int WriteBitcodeToFile(string Path) => WriteBitcodeToFile(Path.AsSpan());
+
+        public int WriteBitcodeToFile(ReadOnlySpan<char> Path)
         {
             using var marshaledPath = new MarshaledString(Path);
             return LLVM.WriteBitcodeToFile(this, marshaledPath);

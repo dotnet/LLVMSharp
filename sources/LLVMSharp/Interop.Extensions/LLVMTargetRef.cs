@@ -89,7 +89,9 @@ namespace LLVMSharp.Interop
 
         public LLVMTargetRef GetNext() => LLVM.GetNextTarget(this);
 
-        public LLVMTargetMachineRef CreateTargetMachine(string triple, string cpu, string features, LLVMCodeGenOptLevel level, LLVMRelocMode reloc, LLVMCodeModel codeModel)
+        public LLVMTargetMachineRef CreateTargetMachine(string triple, string cpu, string features, LLVMCodeGenOptLevel level, LLVMRelocMode reloc, LLVMCodeModel codeModel) => CreateTargetMachine(triple.AsSpan(), cpu.AsSpan(), features.AsSpan(), level, reloc, codeModel);
+
+        public LLVMTargetMachineRef CreateTargetMachine(ReadOnlySpan<char> triple, ReadOnlySpan<char> cpu, ReadOnlySpan<char> features, LLVMCodeGenOptLevel level, LLVMRelocMode reloc, LLVMCodeModel codeModel)
         {
             using var marshaledTriple = new MarshaledString(triple);
             using var marshaledCPU = new MarshaledString(cpu);

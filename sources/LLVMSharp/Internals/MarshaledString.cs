@@ -8,9 +8,9 @@ namespace LLVMSharp
 {
     internal unsafe struct MarshaledString : IDisposable
     {
-        public MarshaledString(string input)
+        public MarshaledString(ReadOnlySpan<char> input)
         {
-            if ((input is null) || (input.Length == 0))
+            if (input.IsEmpty)
             {
                 var value = Marshal.AllocHGlobal(1);
                 Marshal.WriteByte(value, 0, 0);
@@ -20,7 +20,7 @@ namespace LLVMSharp
             }
             else
             {
-                var valueBytes = Encoding.UTF8.GetBytes(input);
+                var valueBytes = Encoding.UTF8.GetBytes(input.ToString());
                 var length = valueBytes.Length;
                 var value = Marshal.AllocHGlobal(length + 1);
                 Marshal.Copy(valueBytes, 0, value, length);
