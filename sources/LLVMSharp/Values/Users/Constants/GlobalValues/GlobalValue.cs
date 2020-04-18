@@ -4,7 +4,7 @@ using LLVMSharp.Interop;
 
 namespace LLVMSharp
 {
-    public unsafe class GlobalValue : Constant
+    public class GlobalValue : Constant
     {
         private protected GlobalValue(LLVMValueRef handle, LLVMValueKind expectedValueKind) : base(handle.IsAGlobalValue, expectedValueKind)
         {

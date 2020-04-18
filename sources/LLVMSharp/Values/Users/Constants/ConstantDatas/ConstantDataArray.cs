@@ -10,5 +10,13 @@ namespace LLVMSharp
         internal ConstantDataArray(LLVMValueRef handle) : base(handle.IsAConstantDataArray, LLVMValueKind.LLVMConstantDataArrayValueKind)
         {
         }
+
+        public static Constant GetString(LLVMContext Context, string Initializer, bool AddNull = true) => GetString(Context, Initializer.AsSpan(), AddNull);
+
+        public static Constant GetString(LLVMContext Context, ReadOnlySpan<char> Initializer, bool AddNull)
+        {
+            var handle = Context.Handle.GetConstString(Initializer, !AddNull);
+            return Context.GetOrCreate<Constant>(handle);
+        }
     }
 }

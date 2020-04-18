@@ -22,6 +22,90 @@ namespace LLVMSharp
 
         public static bool operator !=(Type left, Type right) => (left is object) ? ((right is null) || (left.Handle != right.Handle)) : (right is object);
 
+        public static Type GetDoubleTy(LLVMContext C)
+        {
+            var handle = C.Handle.DoubleType;
+            return C.GetOrCreate(handle);
+        }
+
+        public static Type GetFloatTy(LLVMContext C)
+        {
+            var handle = C.Handle.FloatType;
+            return C.GetOrCreate(handle);
+        }
+
+        public static Type GetHalfTy(LLVMContext C)
+        {
+            var handle = C.Handle.HalfType;
+            return C.GetOrCreate(handle);
+        }
+
+        public static IntegerType GetInt1Ty(LLVMContext C)
+        {
+            var handle = C.Handle.Int1Type;
+            return C.GetOrCreate<IntegerType>(handle);
+        }
+
+        public static IntegerType GetInt8Ty(LLVMContext C)
+        {
+            var handle = C.Handle.Int8Type;
+            return C.GetOrCreate<IntegerType>(handle);
+        }
+
+        public static IntegerType GetInt16Ty(LLVMContext C)
+        {
+            var handle = C.Handle.Int16Type;
+            return C.GetOrCreate<IntegerType>(handle);
+        }
+
+        public static IntegerType GetInt32Ty(LLVMContext C)
+        {
+            var handle = C.Handle.Int32Type;
+            return C.GetOrCreate<IntegerType>(handle);
+        }
+
+        public static IntegerType GetInt64Ty(LLVMContext C)
+        {
+            var handle = C.Handle.Int64Type;
+            return C.GetOrCreate<IntegerType>(handle);
+        }
+
+        public static Type GetFP128Ty(LLVMContext C)
+        {
+            var handle = C.Handle.FP128Type;
+            return C.GetOrCreate(handle);
+        }
+
+        public static Type GetLabelTy(LLVMContext C)
+        {
+            var handle = C.Handle.LabelType;
+            return C.GetOrCreate(handle);
+        }
+
+        public static Type GetPPC_FP128Ty(LLVMContext C)
+        {
+            var handle = C.Handle.PPCFP128Type;
+            return C.GetOrCreate(handle);
+        }
+
+        public static Type GetVoidTy(LLVMContext C)
+        {
+            var handle = C.Handle.VoidType;
+            return C.GetOrCreate(handle);
+        }
+
+        public static Type GetX86_FP80Ty(LLVMContext C)
+        {
+            var handle = C.Handle.X86FP80Type;
+            return C.GetOrCreate(handle);
+        }
+
+        public static Type GetX86_MMXTy(LLVMContext C)
+        {
+            var handle = C.Handle.X86MMXType;
+            return C.GetOrCreate(handle);
+        }
+
         public override bool Equals(object obj) => (obj is Type other) && Equals(other);
 
         public bool Equals(Type other) => this == other;
