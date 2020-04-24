@@ -423,7 +423,7 @@ namespace LLVMSharp.Interop
             return LLVM.BuildMalloc(this, Ty, marshaledName);
         }
 
-        public LLVMValueRef BuildMul(LLVMValueRef LHS, LLVMValueRef RHS, string Name = "") => BuildMul(LHS, RHS, Name);
+        public LLVMValueRef BuildMul(LLVMValueRef LHS, LLVMValueRef RHS, string Name = "") => BuildMul(LHS, RHS, Name.AsSpan());
 
         public LLVMValueRef BuildMul(LLVMValueRef LHS, LLVMValueRef RHS, ReadOnlySpan<char> Name)
         {
