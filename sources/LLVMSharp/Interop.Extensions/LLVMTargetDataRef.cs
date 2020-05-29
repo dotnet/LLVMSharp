@@ -32,5 +32,50 @@ namespace LLVMSharp.Interop
         public bool Equals(LLVMTargetDataRef other) => Handle == other.Handle;
 
         public override int GetHashCode() => Handle.GetHashCode();
+
+        public ulong OffsetOfElement(LLVMTypeRef type, uint element)
+        {
+            return LLVM.OffsetOfElement(this, type, element);
+        }
+
+        public ulong ElementAtOffset(LLVMTypeRef type, ulong offset)
+        {
+            return LLVM.ElementAtOffset(this, type, offset);
+        }
+
+        public ulong SizeOfTypeInBits(LLVMTypeRef type)
+        {
+            return LLVM.SizeOfTypeInBits(this, type);
+        }
+
+        public ulong StoreSizeOfType(LLVMTypeRef type)
+        {
+            return LLVM.StoreSizeOfType(this, type);
+        }
+
+        public ulong ABISizeOfType(LLVMTypeRef type)
+        {
+            return LLVM.ABISizeOfType(this, type);
+        }
+
+        public uint ABIAlignmentOfType(LLVMTypeRef type)
+        {
+            return LLVM.ABIAlignmentOfType(this, type);
+        }
+
+        public uint CallFrameAlignmentOfType(LLVMTypeRef type)
+        {
+            return LLVM.CallFrameAlignmentOfType(this, type);
+        }
+
+        public uint PreferredAlignmentOfType(LLVMTypeRef type)
+        {
+            return LLVM.PreferredAlignmentOfType(this, type);
+        }
+
+        public uint PreferredAlignmentOfGlobal(LLVMValueRef globalVar)
+        {
+            return LLVM.PreferredAlignmentOfGlobal(this, globalVar);
+        }
     }
 }
