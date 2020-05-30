@@ -47,6 +47,8 @@ namespace LLVMSharp.UnitTests
         public void AlignmentTest()
         {
             LLVMModuleRef m = LLVMModuleRef.CreateWithName("netscripten");
+            m.Target = "wasm32-unknown-unknown-wasm";
+            m.DataLayout = "e-m:e-p:32:32-i64:64-n32:64-S128";
             LLVMExecutionEngineRef engineRef = m.CreateExecutionEngine();
             LLVMTargetDataRef target = engineRef.TargetData;
             LLVMTypeRef testStruct = LLVMTypeRef.CreateStruct(
@@ -61,7 +63,7 @@ namespace LLVMSharp.UnitTests
             Assert.AreEqual(8, target.PreferredAlignmentOfType(testStruct));
 
             LLVMValueRef global = m.AddGlobal(LLVMTypeRef.CreatePointer(LLVMTypeRef.Int8, 0), "someGlobal");
-            Assert.AreEqual(8, target.PreferredAlignmentOfGlobal(global));
+            Assert.AreEqual(4, target.PreferredAlignmentOfGlobal(global));
         }
     }
 }
