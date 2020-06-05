@@ -11,6 +11,11 @@ namespace LLVMSharp.Interop
             Handle = handle;
         }
 
+        public static LLVMTargetDataRef FromStringRepresentation(ReadOnlySpan<char> stringRep)
+        {
+            return LLVM.CreateTargetData(new MarshaledString(stringRep));
+        }
+
         public IntPtr Handle;
 
         public static implicit operator LLVMTargetDataRef(LLVMOpaqueTargetData* TargetData)
