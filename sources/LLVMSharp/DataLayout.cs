@@ -14,7 +14,7 @@ namespace LLVMSharp
 
         public LLVMTargetDataRef Handle { get; }
 
-        public StructLayout CreateStructLayout(StructType structType)
+        public StructLayout GetStructLayout(StructType structType)
         {
             return new StructLayout(this, structType);
         }
