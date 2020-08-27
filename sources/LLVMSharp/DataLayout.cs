@@ -19,7 +19,7 @@ namespace LLVMSharp
             return new StructLayout(this, structType);
         }
 
-        public ulong TypeSizeInBits(Type type)
+        public ulong GetTypeSizeInBits(Type type)
         {
             return Handle.SizeOfTypeInBits(type.Handle);
         }
