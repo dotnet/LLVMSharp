@@ -24,27 +24,27 @@ namespace LLVMSharp
             return Handle.SizeOfTypeInBits(type.Handle);
         }
 
-        public ulong TypeStoreSize(Type type)
+        public ulong GetTypeStoreSize(Type type)
         {
             return Handle.StoreSizeOfType(type.Handle);
         }
 
-        public ulong TypeAllocSize(Type type)
+        public ulong GetTypeAllocSize(Type type)
         {
             return Handle.ABISizeOfType(type.Handle);
         }
 
-        public uint ABITypeAlignment(Type type)
+        public uint GetABITypeAlignment(Type type)
         {
             return Handle.ABIAlignmentOfType(type.Handle);
         }
 
-        public uint PreferredTypeAlignment(Type type)
+        public uint GetPrefTypeAlignment(Type type)
         {
             return Handle.PreferredAlignmentOfType(type.Handle);
         }
 
-        public uint PreferredAlignment(Value value)
+        public uint GetPreferredAlign(Value value)
         {
             return Handle.PreferredAlignmentOfGlobal(value.Handle);
         }
