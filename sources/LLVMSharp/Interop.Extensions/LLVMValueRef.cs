@@ -6,21 +6,11 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
     {
+        public IntPtr Handle;
+
         public LLVMValueRef(IntPtr handle)
         {
             Handle = handle;
-        }
-
-        public IntPtr Handle;
-
-        public static implicit operator LLVMValueRef(LLVMOpaqueValue* value)
-        {
-            return new LLVMValueRef((IntPtr)value);
-        }
-
-        public static implicit operator LLVMOpaqueValue*(LLVMValueRef value)
-        {
-            return (LLVMOpaqueValue*)value.Handle;
         }
  
         public uint Alignment
@@ -543,6 +533,10 @@ namespace LLVMSharp.Interop
             set => LLVM.SetWeak(this, value ? 1 : 0);
         }
 
+        public static implicit operator LLVMValueRef(LLVMOpaqueValue* value) => new LLVMValueRef((IntPtr)value);
+
+        public static implicit operator LLVMOpaqueValue*(LLVMValueRef value) => (LLVMOpaqueValue*)value.Handle;
+
         public static bool operator ==(LLVMValueRef left, LLVMValueRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMValueRef left, LLVMValueRef right) => !(left == right);
@@ -848,9 +842,9 @@ namespace LLVMSharp.Interop
 
         public void Dump() => LLVM.DumpValue(this);
 
-        public override bool Equals(object obj) => obj is LLVMValueRef other && Equals(other);
+        public override bool Equals(object obj) => (obj is LLVMValueRef other) && Equals(other);
 
-        public bool Equals(LLVMValueRef other) => Handle == other.Handle;
+        public bool Equals(LLVMValueRef other) => this == other;
 
         public string GetAsString(out UIntPtr Length)
         {

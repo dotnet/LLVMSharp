@@ -6,31 +6,11 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMBasicBlockRef : IEquatable<LLVMBasicBlockRef>
     {
+        public IntPtr Handle;
+
         public LLVMBasicBlockRef(IntPtr handle)
         {
             Handle = handle;
-        }
-
-        public IntPtr Handle;
-
-        public static explicit operator LLVMBasicBlockRef(LLVMOpaqueValue* value)
-        {
-            return new LLVMBasicBlockRef((IntPtr)value);
-        }
-
-        public static implicit operator LLVMBasicBlockRef(LLVMOpaqueBasicBlock* value)
-        {
-            return new LLVMBasicBlockRef((IntPtr)value);
-        }
-
-        public static implicit operator LLVMOpaqueBasicBlock*(LLVMBasicBlockRef value)
-        {
-            return (LLVMOpaqueBasicBlock*)value.Handle;
-        }
-
-        public static implicit operator LLVMOpaqueValue*(LLVMBasicBlockRef value)
-        {
-            return (LLVMOpaqueValue*)value.Handle;
         }
 
         public LLVMValueRef FirstInstruction => (Handle != IntPtr.Zero) ? LLVM.GetFirstInstruction(this) : default;
@@ -44,6 +24,14 @@ namespace LLVMSharp.Interop
         public LLVMBasicBlockRef Previous => (Handle != IntPtr.Zero) ? LLVM.GetPreviousBasicBlock(this) : default;
 
         public LLVMValueRef Terminator => (Handle != IntPtr.Zero) ? LLVM.GetBasicBlockTerminator(this) : default;
+
+        public static explicit operator LLVMBasicBlockRef(LLVMOpaqueValue* value) => new LLVMBasicBlockRef((IntPtr)value);
+
+        public static implicit operator LLVMBasicBlockRef(LLVMOpaqueBasicBlock* value) => new LLVMBasicBlockRef((IntPtr)value);
+
+        public static implicit operator LLVMOpaqueBasicBlock*(LLVMBasicBlockRef value) => (LLVMOpaqueBasicBlock*)value.Handle;
+
+        public static implicit operator LLVMOpaqueValue*(LLVMBasicBlockRef value) => (LLVMOpaqueValue*)value.Handle;
 
         public static bool operator ==(LLVMBasicBlockRef left, LLVMBasicBlockRef right) => left.Handle == right.Handle;
 
@@ -79,9 +67,9 @@ namespace LLVMSharp.Interop
 
         public void Dump() => LLVM.DumpValue(this);
 
-        public override bool Equals(object obj) => obj is LLVMBasicBlockRef other && Equals(other);
+        public override bool Equals(object obj) => (obj is LLVMBasicBlockRef other) && Equals(other);
 
-        public bool Equals(LLVMBasicBlockRef other) => Handle == other.Handle;
+        public bool Equals(LLVMBasicBlockRef other) => this == other;
 
         public override int GetHashCode() => Handle.GetHashCode();
 

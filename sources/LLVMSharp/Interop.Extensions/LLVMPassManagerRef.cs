@@ -6,22 +6,16 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMPassManagerRef : IDisposable, IEquatable<LLVMPassManagerRef>
     {
+        public IntPtr Handle;
+
         public LLVMPassManagerRef(IntPtr handle)
         {
             Handle = handle;
         }
 
-        public IntPtr Handle;
+        public static implicit operator LLVMPassManagerRef(LLVMOpaquePassManager* value) => new LLVMPassManagerRef((IntPtr)value);
 
-        public static implicit operator LLVMPassManagerRef(LLVMOpaquePassManager* value)
-        {
-            return new LLVMPassManagerRef((IntPtr)value);
-        }
-
-        public static implicit operator LLVMOpaquePassManager*(LLVMPassManagerRef value)
-        {
-            return (LLVMOpaquePassManager*)value.Handle;
-        }
+        public static implicit operator LLVMOpaquePassManager*(LLVMPassManagerRef value) => (LLVMOpaquePassManager*)value.Handle;
 
         public static bool operator ==(LLVMPassManagerRef left, LLVMPassManagerRef right) => left.Handle == right.Handle;
 
@@ -158,9 +152,9 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public override bool Equals(object obj) => obj is LLVMPassManagerRef other && Equals(other);
+        public override bool Equals(object obj) => (obj is LLVMPassManagerRef other) && Equals(other);
 
-        public bool Equals(LLVMPassManagerRef other) => Handle == other.Handle;
+        public bool Equals(LLVMPassManagerRef other) => this == other;
 
         public bool FinalizeFunctionPassManager() => LLVM.FinalizeFunctionPassManager(this) != 0;
 
@@ -172,5 +166,6 @@ namespace LLVMSharp.Interop
 
         public bool RunFunctionPassManager(LLVMValueRef F) => LLVM.RunFunctionPassManager(this, F) != 0;
 
+        public override string ToString() => $"{nameof(LLVMPassManagerRef)}: {Handle:X}";
     }
 }

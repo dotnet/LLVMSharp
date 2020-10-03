@@ -6,31 +6,27 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMSymbolIteratorRef : IEquatable<LLVMSymbolIteratorRef>
     {
+        public IntPtr Handle;
+
         public LLVMSymbolIteratorRef(IntPtr handle)
         {
             Handle = handle;
         }
 
-        public IntPtr Handle;
+        public static implicit operator LLVMSymbolIteratorRef(LLVMOpaqueSymbolIterator* value) => new LLVMSymbolIteratorRef((IntPtr)value);
 
-        public static implicit operator LLVMSymbolIteratorRef(LLVMOpaqueSymbolIterator* value)
-        {
-            return new LLVMSymbolIteratorRef((IntPtr)value);
-        }
-
-        public static implicit operator LLVMOpaqueSymbolIterator*(LLVMSymbolIteratorRef value)
-        {
-            return (LLVMOpaqueSymbolIterator*)value.Handle;
-        }
+        public static implicit operator LLVMOpaqueSymbolIterator*(LLVMSymbolIteratorRef value) => (LLVMOpaqueSymbolIterator*)value.Handle;
 
         public static bool operator ==(LLVMSymbolIteratorRef left, LLVMSymbolIteratorRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMSymbolIteratorRef left, LLVMSymbolIteratorRef right) => !(left == right);
 
-        public override bool Equals(object obj) => obj is LLVMSymbolIteratorRef other && Equals(other);
+        public override bool Equals(object obj) => (obj is LLVMSymbolIteratorRef other) && Equals(other);
 
-        public bool Equals(LLVMSymbolIteratorRef other) => Handle == other.Handle;
+        public bool Equals(LLVMSymbolIteratorRef other) => this == other;
 
         public override int GetHashCode() => Handle.GetHashCode();
+
+        public override string ToString() => $"{nameof(LLVMSymbolIteratorRef)}: {Handle:X}";
     }
 }

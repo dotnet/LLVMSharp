@@ -6,21 +6,11 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
     {
+        public IntPtr Handle;
+
         public LLVMTypeRef(IntPtr handle)
         {
             Handle = handle;
-        }
-
-        public IntPtr Handle;
-
-        public static implicit operator LLVMTypeRef(LLVMOpaqueType* value)
-        {
-            return new LLVMTypeRef((IntPtr)value);
-        }
-
-        public static implicit operator LLVMOpaqueType*(LLVMTypeRef value)
-        {
-            return (LLVMOpaqueType*)value.Handle;
         }
 
         public static LLVMTypeRef Double => LLVM.DoubleType();
@@ -168,6 +158,10 @@ namespace LLVMSharp.Interop
 
         public uint VectorSize => (Kind == LLVMTypeKind.LLVMVectorTypeKind) ? LLVM.GetVectorSize(this) : default;
 
+        public static implicit operator LLVMTypeRef(LLVMOpaqueType* value) => new LLVMTypeRef((IntPtr)value);
+
+        public static implicit operator LLVMOpaqueType*(LLVMTypeRef value) => (LLVMOpaqueType*)value.Handle;
+
         public static bool operator ==(LLVMTypeRef left, LLVMTypeRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMTypeRef left, LLVMTypeRef right) => !(left == right);
@@ -206,9 +200,9 @@ namespace LLVMSharp.Interop
 
         public void Dump() => LLVM.DumpType(this);
 
-        public override bool Equals(object obj) => obj is LLVMTypeRef other && Equals(other);
+        public override bool Equals(object obj) => (obj is LLVMTypeRef other) && Equals(other);
 
-        public bool Equals(LLVMTypeRef other) => Handle == other.Handle;
+        public bool Equals(LLVMTypeRef other) => this == other;
 
         public double GenericValueToFloat(LLVMGenericValueRef GenVal) => LLVM.GenericValueToFloat(this, GenVal);
 

@@ -4,14 +4,22 @@ using System;
 
 namespace LLVMSharp.Interop
 {
-    public unsafe partial struct LLVMDIBuilderRef
+    public unsafe partial struct LLVMDIBuilderRef : IEquatable<LLVMDIBuilderRef>
     {
+        public IntPtr Handle;
+
         public LLVMDIBuilderRef(IntPtr handle)
         {
             Handle = handle;
         }
 
-        public IntPtr Handle;
+        public static implicit operator LLVMDIBuilderRef(LLVMOpaqueDIBuilder* value) => new LLVMDIBuilderRef((IntPtr)value);
+
+        public static implicit operator LLVMOpaqueDIBuilder*(LLVMDIBuilderRef value) => (LLVMOpaqueDIBuilder*)value.Handle;
+
+        public static bool operator ==(LLVMDIBuilderRef left, LLVMDIBuilderRef right) => left.Handle == right.Handle;
+
+        public static bool operator !=(LLVMDIBuilderRef left, LLVMDIBuilderRef right) => !(left == right);
 
         public LLVMMetadataRef CreateCompileUnit(LLVMDWARFSourceLanguage SourceLanguage, LLVMMetadataRef FileMetadata, string Producer, int IsOptimized, string Flags, uint RuntimeVersion,
             string SplitName, LLVMDWARFEmissionKind DwarfEmissionKind, uint DWOld, int SplitDebugInlining, int DebugInfoForProfiling) => CreateCompileUnit(SourceLanguage, FileMetadata, Producer.AsSpan(), IsOptimized, Flags.AsSpan(), RuntimeVersion, SplitName.AsSpan(), DwarfEmissionKind, DWOld, SplitDebugInlining, DebugInfoForProfiling);
@@ -101,19 +109,14 @@ namespace LLVMSharp.Interop
             return LLVM.DIBuilderCreateTypedef(this, Type, marshaledName, (UIntPtr)nameLength, File, LineNo, Scope, AlignInBits);
         }
 
-        public void DIBuilderFinalize()
-        {
-            LLVM.DIBuilderFinalize(this);
-        }
+        public void DIBuilderFinalize() => LLVM.DIBuilderFinalize(this);
 
-        public static implicit operator LLVMDIBuilderRef(LLVMOpaqueDIBuilder* value)
-        {
-            return new LLVMDIBuilderRef((IntPtr)value);
-        }
+        public override bool Equals(object obj) => (obj is LLVMDIBuilderRef other) && Equals(other);
 
-        public static implicit operator LLVMOpaqueDIBuilder*(LLVMDIBuilderRef value)
-        {
-            return (LLVMOpaqueDIBuilder*)value.Handle;
-        }
+        public bool Equals(LLVMDIBuilderRef other) => this == other;
+
+        public override int GetHashCode() => Handle.GetHashCode();
+
+        public override string ToString() => $"{nameof(LLVMDIBuilderRef)}: {Handle:X}";
     }
 }

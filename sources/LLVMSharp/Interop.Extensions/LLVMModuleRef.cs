@@ -7,21 +7,11 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleRef>
     {
+        public IntPtr Handle;
+
         public LLVMModuleRef(IntPtr handle)
         {
             Handle = handle;
-        }
-
-        public IntPtr Handle;
-
-        public static implicit operator LLVMModuleRef(LLVMOpaqueModule* value)
-        {
-            return new LLVMModuleRef((IntPtr)value);
-        }
-
-        public static implicit operator LLVMOpaqueModule*(LLVMModuleRef value)
-        {
-            return (LLVMOpaqueModule*)value.Handle;
         }
 
         public LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetModuleContext(this) : default;
@@ -87,6 +77,10 @@ namespace LLVMSharp.Interop
                 LLVM.SetTarget(this, marshaledTriple);
             }
         }
+
+        public static implicit operator LLVMModuleRef(LLVMOpaqueModule* value) => new LLVMModuleRef((IntPtr)value);
+
+        public static implicit operator LLVMOpaqueModule*(LLVMModuleRef value) => (LLVMOpaqueModule*)value.Handle;
 
         public static bool operator ==(LLVMModuleRef left, LLVMModuleRef right) => left.Handle == right.Handle;
 
@@ -210,9 +204,9 @@ namespace LLVMSharp.Interop
 
         public void Dump() => LLVM.DumpModule(this);
 
-        public override bool Equals(object obj) => obj is LLVMModuleRef other && Equals(other);
+        public override bool Equals(object obj) => (obj is LLVMModuleRef other) && Equals(other);
 
-        public bool Equals(LLVMModuleRef other) => Handle == other.Handle;
+        public bool Equals(LLVMModuleRef other) => this == other;
 
         public LLVMValueRef GetNamedFunction(string Name) => GetNamedFunction(Name.AsSpan());
 
