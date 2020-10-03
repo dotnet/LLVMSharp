@@ -26,9 +26,9 @@ namespace LLVMSharp
             }
         }
 
-        public static bool operator ==(IRBuilderBase left, IRBuilderBase right) => (left is object) ? ((right is object) && (left.Handle == right.Handle)) : (right is null);
+        public static bool operator ==(IRBuilderBase left, IRBuilderBase right) => ReferenceEquals(left, right) || (left.Handle == right.Handle);
 
-        public static bool operator !=(IRBuilderBase left, IRBuilderBase right) => (left is object) ? ((right is null) || (left.Handle != right.Handle)) : (right is object);
+        public static bool operator !=(IRBuilderBase left, IRBuilderBase right) => !(left == right);
 
         public void ClearInsertionPoint() => Handle.ClearInsertionPosition();
 

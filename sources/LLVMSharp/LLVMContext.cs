@@ -18,9 +18,9 @@ namespace LLVMSharp
 
         public LLVMContextRef Handle { get; }
 
-        public static bool operator ==(LLVMContext left, LLVMContext right) => (left is object) ? ((right is object) && (left.Handle == right.Handle)) : (right is null);
+        public static bool operator ==(LLVMContext left, LLVMContext right) => ReferenceEquals(left, right) || (left?.Handle == right?.Handle);
 
-        public static bool operator !=(LLVMContext left, LLVMContext right) => (left is object) ? ((right is null) || (left.Handle != right.Handle)) : (right is object);
+        public static bool operator !=(LLVMContext left, LLVMContext right) => !(left == right);
 
         public override bool Equals(object obj) => (obj is LLVMContext other) && Equals(other);
 

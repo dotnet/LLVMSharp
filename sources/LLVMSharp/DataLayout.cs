@@ -14,52 +14,30 @@ namespace LLVMSharp
 
         public LLVMTargetDataRef Handle { get; }
 
-        public StructLayout GetStructLayout(StructType structType)
-        {
-            return new StructLayout(this, structType);
-        }
+        public StructLayout GetStructLayout(StructType structType) => new StructLayout(this, structType);
 
-        public ulong GetTypeSizeInBits(Type type)
-        {
-            return Handle.SizeOfTypeInBits(type.Handle);
-        }
+        public ulong GetTypeSizeInBits(Type type) => Handle.SizeOfTypeInBits(type.Handle);
 
-        public ulong GetTypeStoreSize(Type type)
-        {
-            return Handle.StoreSizeOfType(type.Handle);
-        }
+        public ulong GetTypeStoreSize(Type type) => Handle.StoreSizeOfType(type.Handle);
 
-        public ulong GetTypeAllocSize(Type type)
-        {
-            return Handle.ABISizeOfType(type.Handle);
-        }
+        public ulong GetTypeAllocSize(Type type) => Handle.ABISizeOfType(type.Handle);
 
-        public uint GetABITypeAlignment(Type type)
-        {
-            return Handle.ABIAlignmentOfType(type.Handle);
-        }
+        public uint GetABITypeAlignment(Type type) => Handle.ABIAlignmentOfType(type.Handle);
 
-        public uint GetPrefTypeAlignment(Type type)
-        {
-            return Handle.PreferredAlignmentOfType(type.Handle);
-        }
+        public uint GetPrefTypeAlignment(Type type) => Handle.PreferredAlignmentOfType(type.Handle);
 
-        public uint GetPreferredAlign(Value value)
-        {
-            return Handle.PreferredAlignmentOfGlobal(value.Handle);
-        }
+        public uint GetPreferredAlign(Value value) => Handle.PreferredAlignmentOfGlobal(value.Handle);
 
-        public static bool operator ==(DataLayout left, DataLayout right) => (left is object) ? ((right is object) && (left.Handle == right.Handle)) : (right is null);
+        public static bool operator ==(DataLayout left, DataLayout right) => ReferenceEquals(left, right) || (left?.Handle == right?.Handle);
 
-        public static bool operator !=(DataLayout left, DataLayout right) => (left is object) ? ((right is null) || (left.Handle != right.Handle)) : (right is object);
+        public static bool operator !=(DataLayout left, DataLayout right) => !(left == right);
 
         public override bool Equals(object obj) => (obj is DataLayout other) && Equals(other);
 
         public bool Equals(DataLayout other) => this == other;
 
-        public override int GetHashCode()
-        {
-            return Handle.GetHashCode();
-        }
+        public override int GetHashCode() => Handle.GetHashCode();
+
+        public override string ToString() => Handle.ToString();
     }
 }

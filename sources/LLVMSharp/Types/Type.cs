@@ -18,9 +18,9 @@ namespace LLVMSharp
 
         public LLVMTypeRef Handle { get; }
 
-        public static bool operator ==(Type left, Type right) => (left is object) ? ((right is object) && (left.Handle == right.Handle)) : (right is null);
+        public static bool operator ==(Type left, Type right) => ReferenceEquals(left, right) || (left.Handle == right.Handle);
 
-        public static bool operator !=(Type left, Type right) => (left is object) ? ((right is null) || (left.Handle != right.Handle)) : (right is object);
+        public static bool operator !=(Type left, Type right) => !(left == right);
 
         public static Type GetDoubleTy(LLVMContext C)
         {
