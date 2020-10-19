@@ -16,6 +16,8 @@ namespace LLVMSharp.Interop
 
         public static LLVMContextRef Global => LLVM.GetGlobalContext();
 
+        public LLVMTypeRef BFloatType => (Handle != IntPtr.Zero) ? LLVM.BFloatTypeInContext(this) : default;
+
         public LLVMTypeRef DoubleType => (Handle != IntPtr.Zero) ? LLVM.DoubleTypeInContext(this) : default;
 
         public LLVMTypeRef FloatType => (Handle != IntPtr.Zero) ? LLVM.FloatTypeInContext(this) : default;

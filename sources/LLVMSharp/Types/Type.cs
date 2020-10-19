@@ -22,6 +22,12 @@ namespace LLVMSharp
 
         public static bool operator !=(Type left, Type right) => !(left == right);
 
+        public static Type GetBFloatTy(LLVMContext C)
+        {
+            var handle = C.Handle.BFloatType;
+            return C.GetOrCreate(handle);
+        }
+
         public static Type GetDoubleTy(LLVMContext C)
         {
             var handle = C.Handle.DoubleType;

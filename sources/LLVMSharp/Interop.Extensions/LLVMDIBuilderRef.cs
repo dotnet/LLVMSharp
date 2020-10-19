@@ -22,17 +22,19 @@ namespace LLVMSharp.Interop
         public static bool operator !=(LLVMDIBuilderRef left, LLVMDIBuilderRef right) => !(left == right);
 
         public LLVMMetadataRef CreateCompileUnit(LLVMDWARFSourceLanguage SourceLanguage, LLVMMetadataRef FileMetadata, string Producer, int IsOptimized, string Flags, uint RuntimeVersion,
-            string SplitName, LLVMDWARFEmissionKind DwarfEmissionKind, uint DWOld, int SplitDebugInlining, int DebugInfoForProfiling) => CreateCompileUnit(SourceLanguage, FileMetadata, Producer.AsSpan(), IsOptimized, Flags.AsSpan(), RuntimeVersion, SplitName.AsSpan(), DwarfEmissionKind, DWOld, SplitDebugInlining, DebugInfoForProfiling);
+            string SplitName, LLVMDWARFEmissionKind DwarfEmissionKind, uint DWOld, int SplitDebugInlining, int DebugInfoForProfiling, string SysRoot, string SDK) => CreateCompileUnit(SourceLanguage, FileMetadata, Producer.AsSpan(), IsOptimized, Flags.AsSpan(), RuntimeVersion, SplitName.AsSpan(), DwarfEmissionKind, DWOld, SplitDebugInlining, DebugInfoForProfiling, SysRoot.AsSpan(), SDK.AsSpan());
 
         public LLVMMetadataRef CreateCompileUnit(LLVMDWARFSourceLanguage SourceLanguage, LLVMMetadataRef FileMetadata, ReadOnlySpan<char> Producer, int IsOptimized, ReadOnlySpan<char> Flags, uint RuntimeVersion,
-            ReadOnlySpan<char> SplitName, LLVMDWARFEmissionKind DwarfEmissionKind, uint DWOld, int SplitDebugInlining, int DebugInfoForProfiling)
+            ReadOnlySpan<char> SplitName, LLVMDWARFEmissionKind DwarfEmissionKind, uint DWOld, int SplitDebugInlining, int DebugInfoForProfiling, ReadOnlySpan<char> SysRoot, ReadOnlySpan<char> SDK)
         {
             using var marshaledProducer= new MarshaledString(Producer);
             using var marshaledFlags = new MarshaledString(Flags);
             using var marshaledSplitNameFlags = new MarshaledString(SplitName);
+            using var marshaledSysRoot = new MarshaledString(SysRoot);
+            using var marshaledSDK = new MarshaledString(SDK);
 
             return LLVM.DIBuilderCreateCompileUnit(this, SourceLanguage, FileMetadata, marshaledProducer, (UIntPtr)marshaledProducer.Length, IsOptimized, marshaledFlags, (UIntPtr)marshaledFlags.Length,
-                RuntimeVersion, marshaledSplitNameFlags, (UIntPtr)marshaledSplitNameFlags.Length, DwarfEmissionKind, DWOld, SplitDebugInlining, DebugInfoForProfiling);
+                RuntimeVersion, marshaledSplitNameFlags, (UIntPtr)marshaledSplitNameFlags.Length, DwarfEmissionKind, DWOld, SplitDebugInlining, DebugInfoForProfiling, marshaledSysRoot, (UIntPtr)marshaledSysRoot.Length, marshaledSDK, (UIntPtr)marshaledSDK.Length);
         }
 
         public LLVMMetadataRef CreateFile(string FullPath, string Directory) => CreateFile(FullPath.AsSpan(), Directory.AsSpan());

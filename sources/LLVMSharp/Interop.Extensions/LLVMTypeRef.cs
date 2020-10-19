@@ -13,6 +13,8 @@ namespace LLVMSharp.Interop
             Handle = handle;
         }
 
+        public static LLVMTypeRef BFloat => LLVM.BFloatType();
+
         public static LLVMTypeRef Double => LLVM.DoubleType();
 
         public static LLVMTypeRef Float => LLVM.FloatType();
