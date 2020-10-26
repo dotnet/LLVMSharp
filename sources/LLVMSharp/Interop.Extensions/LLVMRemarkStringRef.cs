@@ -4,23 +4,29 @@ using System;
 
 namespace LLVMSharp.Interop
 {
-    public unsafe partial struct LLVMRemarkStringRef
+    public unsafe partial struct LLVMRemarkStringRef : IEquatable<LLVMRemarkStringRef>
     {
+        public IntPtr Handle;
+
         public LLVMRemarkStringRef(IntPtr handle)
         {
             Handle = handle;
         }
 
-        public IntPtr Handle;
+        public static implicit operator LLVMRemarkStringRef(LLVMRemarkOpaqueString* value) => new LLVMRemarkStringRef((IntPtr)value);
 
-        public static implicit operator LLVMRemarkStringRef(LLVMRemarkOpaqueString* value)
-        {
-            return new LLVMRemarkStringRef((IntPtr)value);
-        }
+        public static implicit operator LLVMRemarkOpaqueString*(LLVMRemarkStringRef value) => (LLVMRemarkOpaqueString*)value.Handle;
 
-        public static implicit operator LLVMRemarkOpaqueString*(LLVMRemarkStringRef value)
-        {
-            return (LLVMRemarkOpaqueString*)value.Handle;
-        }
+        public static bool operator ==(LLVMRemarkStringRef left, LLVMRemarkStringRef right) => left.Handle == right.Handle;
+
+        public static bool operator !=(LLVMRemarkStringRef left, LLVMRemarkStringRef right) => !(left == right);
+
+        public override bool Equals(object obj) => (obj is LLVMRemarkStringRef other) && Equals(other);
+
+        public bool Equals(LLVMRemarkStringRef other) => this == other;
+
+        public override int GetHashCode() => Handle.GetHashCode();
+
+        public override string ToString() => $"{nameof(LLVMRemarkStringRef)}: {Handle:X}";
     }
 }

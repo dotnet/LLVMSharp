@@ -7,21 +7,11 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMTargetRef : IEquatable<LLVMTargetRef>
     {
+        public IntPtr Handle;
+
         public LLVMTargetRef(IntPtr handle)
         {
             Handle = handle;
-        }
-
-        public IntPtr Handle;
-
-        public static implicit operator LLVMTargetRef(LLVMTarget* value)
-        {
-            return new LLVMTargetRef((IntPtr)value);
-        }
-
-        public static implicit operator LLVMTarget*(LLVMTargetRef value)
-        {
-            return (LLVMTarget*)value.Handle;
         }
 
         public static string DefaultTriple
@@ -77,13 +67,17 @@ namespace LLVMSharp.Interop
             }
         }
 
+        public static implicit operator LLVMTargetRef(LLVMTarget* value) => new LLVMTargetRef((IntPtr)value);
+
+        public static implicit operator LLVMTarget*(LLVMTargetRef value) => (LLVMTarget*)value.Handle;
+
         public static bool operator ==(LLVMTargetRef left, LLVMTargetRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMTargetRef left, LLVMTargetRef right) => !(left == right);
 
-        public override bool Equals(object obj) => obj is LLVMTargetRef other && Equals(other);
+        public override bool Equals(object obj) => (obj is LLVMTargetRef other) && Equals(other);
 
-        public bool Equals(LLVMTargetRef other) => Handle == other.Handle;
+        public bool Equals(LLVMTargetRef other) => this == other;
 
         public override int GetHashCode() => Handle.GetHashCode();
 
@@ -98,5 +92,7 @@ namespace LLVMSharp.Interop
             using var marshaledFeatures = new MarshaledString(features);
             return LLVM.CreateTargetMachine(this, marshaledTriple, marshaledCPU, marshaledFeatures, level, reloc, codeModel);
         }
+
+        public override string ToString() => $"{nameof(LLVMTargetRef)}: {Handle:X}";
     }
 }

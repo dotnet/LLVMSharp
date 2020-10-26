@@ -7,22 +7,16 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMTargetMachineRef : IEquatable<LLVMTargetMachineRef>
     {
+        public IntPtr Handle;
+
         public LLVMTargetMachineRef(IntPtr handle)
         {
             Handle = handle;
         }
 
-        public IntPtr Handle;
+        public static implicit operator LLVMTargetMachineRef(LLVMOpaqueTargetMachine* value) => new LLVMTargetMachineRef((IntPtr)value);
 
-        public static implicit operator LLVMTargetMachineRef(LLVMOpaqueTargetMachine* value)
-        {
-            return new LLVMTargetMachineRef((IntPtr)value);
-        }
-
-        public static implicit operator LLVMOpaqueTargetMachine*(LLVMTargetMachineRef value)
-        {
-            return (LLVMOpaqueTargetMachine*)value.Handle;
-        }
+        public static implicit operator LLVMOpaqueTargetMachine*(LLVMTargetMachineRef value) => (LLVMOpaqueTargetMachine*)value.Handle;
 
         public static bool operator ==(LLVMTargetMachineRef left, LLVMTargetMachineRef right) => left.Handle == right.Handle;
 
@@ -51,11 +45,13 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public override bool Equals(object obj) => obj is LLVMTargetMachineRef other && Equals(other);
+        public override bool Equals(object obj) => (obj is LLVMTargetMachineRef other) && Equals(other);
 
-        public bool Equals(LLVMTargetMachineRef other) => Handle == other.Handle;
+        public bool Equals(LLVMTargetMachineRef other) => this == other;
 
         public override int GetHashCode() => Handle.GetHashCode();
+
+        public override string ToString() => $"{nameof(LLVMTargetMachineRef)}: {Handle:X}";
 
         public bool TryEmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen, out string message) => TryEmitToFile(module, fileName.AsSpan(), codegen, out message);
 

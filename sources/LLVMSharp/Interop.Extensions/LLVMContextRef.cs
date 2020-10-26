@@ -7,24 +7,16 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMContextRef : IDisposable, IEquatable<LLVMContextRef>
     {
+        public IntPtr Handle;
+
         public LLVMContextRef(IntPtr handle)
         {
             Handle = handle;
         }
 
-        public IntPtr Handle;
-
-        public static implicit operator LLVMContextRef(LLVMOpaqueContext* value)
-        {
-            return new LLVMContextRef((IntPtr)value);
-        }
-
-        public static implicit operator LLVMOpaqueContext*(LLVMContextRef value)
-        {
-            return (LLVMOpaqueContext*)value.Handle;
-        }
-
         public static LLVMContextRef Global => LLVM.GetGlobalContext();
+
+        public LLVMTypeRef BFloatType => (Handle != IntPtr.Zero) ? LLVM.BFloatTypeInContext(this) : default;
 
         public LLVMTypeRef DoubleType => (Handle != IntPtr.Zero) ? LLVM.DoubleTypeInContext(this) : default;
 
@@ -54,6 +46,10 @@ namespace LLVMSharp.Interop
 
         public LLVMTypeRef X86MMXType => (Handle != IntPtr.Zero) ? LLVM.X86MMXTypeInContext(this) : default;
 
+        public static implicit operator LLVMContextRef(LLVMOpaqueContext* value) => new LLVMContextRef((IntPtr)value);
+
+        public static implicit operator LLVMOpaqueContext*(LLVMContextRef value) => (LLVMOpaqueContext*)value.Handle;
+
         public static bool operator ==(LLVMContextRef left, LLVMContextRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMContextRef left, LLVMContextRef right) => !(left == right);
@@ -62,24 +58,15 @@ namespace LLVMSharp.Interop
 
         public LLVMBasicBlockRef AppendBasicBlock(LLVMValueRef Fn, string Name) => AppendBasicBlock(Fn, Name.AsSpan());
 
-        public LLVMBasicBlockRef AppendBasicBlock(LLVMValueRef Fn, ReadOnlySpan<char> Name)
-        {
-            return LLVMBasicBlockRef.AppendInContext(this, Fn, Name);
-        }
+        public LLVMBasicBlockRef AppendBasicBlock(LLVMValueRef Fn, ReadOnlySpan<char> Name) => LLVMBasicBlockRef.AppendInContext(this, Fn, Name);
 
         public LLVMBasicBlockRef CreateBasicBlock(string Name) => CreateBasicBlock(Name.AsSpan());
 
-        public LLVMBasicBlockRef CreateBasicBlock(ReadOnlySpan<char> Name)
-        {
-            return LLVMBasicBlockRef.CreateInContext(this, Name);
-        }
+        public LLVMBasicBlockRef CreateBasicBlock(ReadOnlySpan<char> Name) => LLVMBasicBlockRef.CreateInContext(this, Name);
 
         public LLVMBuilderRef CreateBuilder() => LLVMBuilderRef.Create(this);
 
-        public LLVMMetadataRef CreateDebugLocation(uint Line, uint Column, LLVMMetadataRef Scope, LLVMMetadataRef InlinedAt)
-        {
-            return LLVM.DIBuilderCreateDebugLocation(this, Line, Column, Scope, InlinedAt);
-        }
+        public LLVMMetadataRef CreateDebugLocation(uint Line, uint Column, LLVMMetadataRef Scope, LLVMMetadataRef InlinedAt) => LLVM.DIBuilderCreateDebugLocation(this, Line, Column, Scope, InlinedAt);
 
         public LLVMModuleRef CreateModuleWithName(string ModuleID) => CreateModuleWithName(ModuleID.AsSpan());
 
@@ -106,9 +93,9 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public override bool Equals(object obj) => obj is LLVMContextRef other && Equals(other);
+        public override bool Equals(object obj) => (obj is LLVMContextRef other) && Equals(other);
 
-        public bool Equals(LLVMContextRef other) => Handle == other.Handle;
+        public bool Equals(LLVMContextRef other) => this == other;
 
         public LLVMModuleRef GetBitcodeModule(LLVMMemoryBufferRef MemBuf)
         {
@@ -182,15 +169,9 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public LLVMBasicBlockRef InsertBasicBlock(LLVMBasicBlockRef BB, string Name)
-        {
-            return LLVMBasicBlockRef.InsertInContext(this, BB, Name);
-        }
+        public LLVMBasicBlockRef InsertBasicBlock(LLVMBasicBlockRef BB, string Name) => LLVMBasicBlockRef.InsertInContext(this, BB, Name);
 
-        public LLVMValueRef MetadataAsValue(LLVMMetadataRef MD)
-        {
-            return LLVM.MetadataAsValue(this, MD);
-        }
+        public LLVMValueRef MetadataAsValue(LLVMMetadataRef MD) => LLVM.MetadataAsValue(this, MD);
 
         public LLVMModuleRef ParseBitcode(LLVMMemoryBufferRef MemBuf)
         {
@@ -223,6 +204,8 @@ namespace LLVMSharp.Interop
             var pCallback = Marshal.GetFunctionPointerForDelegate(Callback);
             LLVM.ContextSetYieldCallback(this, pCallback, (void*)OpaqueHandle);
         }
+
+        public override string ToString() => $"{nameof(LLVMContextRef)}: {Handle:X}";
 
         public bool TryGetBitcodeModule(LLVMMemoryBufferRef MemBuf, out LLVMModuleRef OutM, out string OutMessage)
         {

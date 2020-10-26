@@ -15,27 +15,18 @@ namespace LLVMSharp
             _structType = structType;
         }
 
-        public ulong OffsetOfElement(uint element)
-        {
-            return _dataLayout.Handle.OffsetOfElement(_structType.Handle, element);
-        }
+        public ulong OffsetOfElement(uint element) => _dataLayout.Handle.OffsetOfElement(_structType.Handle, element);
 
-        public ulong ElementAtOffset(ulong offset)
-        {
-                return _dataLayout.Handle.ElementAtOffset(_structType.Handle, offset);
-        }
+        public ulong ElementAtOffset(ulong offset) => _dataLayout.Handle.ElementAtOffset(_structType.Handle, offset);
 
-        public static bool operator ==(StructLayout left, StructLayout right) => (left is object) ? ((right is object) && (left._dataLayout == right._dataLayout && left._structType == right._structType)) : (right is null);
+        public static bool operator ==(StructLayout left, StructLayout right) => ReferenceEquals(left, right) || ((left?._dataLayout == right._dataLayout) && (left?._structType == right?._structType));
 
-        public static bool operator !=(StructLayout left, StructLayout right) => (left is object) ? ((right is null) || (left._dataLayout != right._dataLayout || left._structType != right._structType)) : (right is object);
+        public static bool operator !=(StructLayout left, StructLayout right) => !(left == right);
 
         public override bool Equals(object obj) => (obj is StructLayout other) && Equals(other);
 
         public bool Equals(StructLayout other) => this == other;
 
-        public override int GetHashCode()
-        {
-            return _structType.GetHashCode() * 397 ^ _dataLayout.GetHashCode();
-        }
+        public override int GetHashCode() => HashCode.Combine(_structType, _dataLayout);
     }
 }

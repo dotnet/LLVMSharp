@@ -20,8 +20,8 @@ namespace LLVMSharp.UnitTests
 
             LLVMMetadataRef compileUnitMetadata = dIBuilder.CreateCompileUnit(
                 LLVMDWARFSourceLanguage.LLVMDWARFSourceLanguageC,
-                fileMetadata, "ILC", 0 /* Optimized */, String.Empty, 1, String.Empty,
-                LLVMDWARFEmissionKind.LLVMDWARFEmissionFull, 0, 0, 0);
+                fileMetadata, "ILC", 0 /* Optimized */, string.Empty, 1, string.Empty,
+                LLVMDWARFEmissionKind.LLVMDWARFEmissionFull, 0, 0, 0, string.Empty, string.Empty);
             module.AddNamedMetadataOperand("llvm.dbg.cu", compileUnitMetadata);
 
             LLVMMetadataRef functionMetaType = dIBuilder.CreateSubroutineType(fileMetadata,

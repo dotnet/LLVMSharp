@@ -6,31 +6,27 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMDisasmContextRef : IEquatable<LLVMDisasmContextRef>
     {
+        public IntPtr Handle;
+
         public LLVMDisasmContextRef(IntPtr handle)
         {
             Handle = handle;
         }
 
-        public IntPtr Handle;
+        public static explicit operator LLVMDisasmContextRef(void* value) => new LLVMDisasmContextRef((IntPtr)value);
 
-        public static explicit operator LLVMDisasmContextRef(void* value)
-        {
-            return new LLVMDisasmContextRef((IntPtr)value);
-        }
-
-        public static implicit operator void*(LLVMDisasmContextRef value)
-        {
-            return (void*)value.Handle;
-        }
+        public static implicit operator void*(LLVMDisasmContextRef value) => (void*)value.Handle;
 
         public static bool operator ==(LLVMDisasmContextRef left, LLVMDisasmContextRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMDisasmContextRef left, LLVMDisasmContextRef right) => !(left == right);
 
-        public override bool Equals(object obj) => obj is LLVMDisasmContextRef other && Equals(other);
+        public override bool Equals(object obj) => (obj is LLVMDisasmContextRef other) && Equals(other);
 
-        public bool Equals(LLVMDisasmContextRef other) => Handle == other.Handle;
+        public bool Equals(LLVMDisasmContextRef other) => this == other;
 
         public override int GetHashCode() => Handle.GetHashCode();
+
+        public override string ToString() => $"{nameof(LLVMDisasmContextRef)}: {Handle:X}";
     }
 }

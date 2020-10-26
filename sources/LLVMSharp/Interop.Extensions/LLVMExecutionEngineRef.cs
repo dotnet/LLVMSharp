@@ -7,26 +7,20 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMExecutionEngineRef : IDisposable, IEquatable<LLVMExecutionEngineRef>
     {
+        public IntPtr Handle;
+
         public LLVMExecutionEngineRef(IntPtr handle)
         {
             Handle = handle;
         }
 
-        public IntPtr Handle;
-
-        public static implicit operator LLVMExecutionEngineRef(LLVMOpaqueExecutionEngine* value)
-        {
-            return new LLVMExecutionEngineRef((IntPtr)value);
-        }
-
-        public static implicit operator LLVMOpaqueExecutionEngine*(LLVMExecutionEngineRef value)
-        {
-            return (LLVMOpaqueExecutionEngine*)value.Handle;
-        }
-
         public LLVMTargetDataRef TargetData => (Handle != IntPtr.Zero) ? LLVM.GetExecutionEngineTargetData(this) : default;
 
         public LLVMTargetMachineRef TargetMachine => (Handle != IntPtr.Zero) ? LLVM.GetExecutionEngineTargetMachine(this) : default;
+
+        public static implicit operator LLVMExecutionEngineRef(LLVMOpaqueExecutionEngine* value) => new LLVMExecutionEngineRef((IntPtr)value);
+
+        public static implicit operator LLVMOpaqueExecutionEngine*(LLVMExecutionEngineRef value) => (LLVMOpaqueExecutionEngine*)value.Handle;
 
         public static bool operator ==(LLVMExecutionEngineRef left, LLVMExecutionEngineRef right) => left.Handle == right.Handle;
 
@@ -45,9 +39,9 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public override bool Equals(object obj) => obj is LLVMExecutionEngineRef other && Equals(other);
+        public override bool Equals(object obj) => (obj is LLVMExecutionEngineRef other) && Equals(other);
 
-        public bool Equals(LLVMExecutionEngineRef other) => Handle == other.Handle;
+        public bool Equals(LLVMExecutionEngineRef other) => this == other;
 
         public LLVMValueRef FindFunction(string Name) => FindFunction(Name.AsSpan());
 
@@ -130,6 +124,8 @@ namespace LLVMSharp.Interop
         public void RunStaticDestructors() => LLVM.RunStaticDestructors(this);
 
         public IntPtr RecompileAndRelinkFunction(LLVMValueRef Fn) => (IntPtr)LLVM.RecompileAndRelinkFunction(this, Fn);
+
+        public override string ToString() => $"{nameof(LLVMExecutionEngineRef)}: {Handle:X}";
 
         public bool TryFindFunction(string Name, out LLVMValueRef OutFn) => TryFindFunction(Name.AsSpan(), out OutFn);
 

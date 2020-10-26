@@ -6,21 +6,11 @@ namespace LLVMSharp.Interop
 {
     public unsafe partial struct LLVMBuilderRef : IDisposable, IEquatable<LLVMBuilderRef>
     {
+        public IntPtr Handle;
+
         public LLVMBuilderRef(IntPtr handle)
         {
             Handle = handle;
-        }
-
-        public IntPtr Handle;
-
-        public static implicit operator LLVMBuilderRef(LLVMOpaqueBuilder* Builder)
-        {
-            return new LLVMBuilderRef((IntPtr)Builder);
-        }
-
-        public static implicit operator LLVMOpaqueBuilder*(LLVMBuilderRef Builder)
-        {
-            return (LLVMOpaqueBuilder*)Builder.Handle;
         }
 
         public LLVMValueRef CurrentDebugLocation
@@ -31,7 +21,11 @@ namespace LLVMSharp.Interop
 
         public LLVMBasicBlockRef InsertBlock => (Handle != IntPtr.Zero) ? LLVM.GetInsertBlock(this) : default;
 
-        public static bool operator ==(LLVMBuilderRef left, LLVMBuilderRef right) => left.Equals(right);
+        public static implicit operator LLVMBuilderRef(LLVMOpaqueBuilder* Builder) => new LLVMBuilderRef((IntPtr)Builder);
+
+        public static implicit operator LLVMOpaqueBuilder*(LLVMBuilderRef Builder) => (LLVMOpaqueBuilder*)Builder.Handle;
+
+        public static bool operator ==(LLVMBuilderRef left, LLVMBuilderRef right) => left.Handle == right.Handle;
 
         public static bool operator !=(LLVMBuilderRef left, LLVMBuilderRef right) => !(left == right);
 
@@ -725,9 +719,9 @@ namespace LLVMSharp.Interop
             }
         }
 
-        public override bool Equals(object obj) => obj is LLVMBuilderRef other && Equals(other);
+        public override bool Equals(object obj) => (obj is LLVMBuilderRef other) && Equals(other);
 
-        public bool Equals(LLVMBuilderRef other) => Handle == other.Handle;
+        public bool Equals(LLVMBuilderRef other) => this == other;
 
         public override int GetHashCode() => Handle.GetHashCode();
 
@@ -748,5 +742,7 @@ namespace LLVMSharp.Interop
         public void PositionBefore(LLVMValueRef Instr) => LLVM.PositionBuilderBefore(this, Instr);
 
         public void SetInstDebugLocation(LLVMValueRef Inst) => LLVM.SetInstDebugLocation(this, Inst);
+
+        public override string ToString() => $"{nameof(LLVMBuilderRef)}: {Handle:X}";
     }
 }

@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="libLLVM" />
+    <PackageReference Include="Microsoft.Bcl.HashCode" />
     <PackageReference Include="System.Memory" />
   </ItemGroup>
 
