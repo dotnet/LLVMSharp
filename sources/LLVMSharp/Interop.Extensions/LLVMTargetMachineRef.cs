@@ -22,18 +22,7 @@ namespace LLVMSharp.Interop
 
         public static bool operator !=(LLVMTargetMachineRef left, LLVMTargetMachineRef right) => !(left == right);
 
-        public string CreateTargetDataLayout()
-        {
-            var pDataLayout = LLVM.CreateTargetDataLayout(this);
-
-            if (pDataLayout is null)
-            {
-                return string.Empty;
-            }
-
-            var span = new ReadOnlySpan<byte>(pDataLayout, int.MaxValue);
-            return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
-        }
+        public LLVMTargetDataRef CreateTargetDataLayout() => LLVM.CreateTargetDataLayout(this);
 
         public void EmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen) => EmitToFile(module, fileName.AsSpan(), codegen);
 

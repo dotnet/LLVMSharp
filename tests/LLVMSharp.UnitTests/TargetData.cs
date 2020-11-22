@@ -67,5 +67,29 @@ namespace LLVMSharp.UnitTests
             LLVMValueRef global = m.AddGlobal(LLVMTypeRef.CreatePointer(LLVMTypeRef.Int8, 0), "someGlobal");
             Assert.AreEqual(4, target.PreferredAlignmentOfGlobal(global));
         }
+
+        private LLVMTargetDataRef TargetDataFromTriple(string triple)
+        {
+            LLVMTargetRef target = LLVMTargetRef.GetTargetFromTriple(triple);
+            LLVMTargetMachineRef targetMachine = target.CreateTargetMachine(triple, "", "",
+                LLVMCodeGenOptLevel.LLVMCodeGenLevelDefault, LLVMRelocMode.LLVMRelocDefault,
+                LLVMCodeModel.LLVMCodeModelDefault);
+            return targetMachine.CreateTargetDataLayout();
+        }
+
+        [Test]
+        public void MachineTest()
+        {
+            LLVM.InitializeX86TargetInfo();
+            LLVM.InitializeX86Target();
+            LLVM.InitializeX86TargetMC();
+
+            LLVMTypeRef pointerType = LLVMTypeRef.CreatePointer(LLVMTypeRef.Int32, 0);
+            LLVMTargetDataRef x86 = TargetDataFromTriple("i386-unknown-unknown");
+            LLVMTargetDataRef x86_64 = TargetDataFromTriple("amd64-unknown-unknown");
+
+            Assert.AreEqual(4, x86.ABISizeOfType(pointerType));
+            Assert.AreEqual(8, x86_64.ABISizeOfType(pointerType));
+        }
     }
 }

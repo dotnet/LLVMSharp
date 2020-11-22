@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace LLVMSharp.Interop
 {
@@ -28,6 +29,41 @@ namespace LLVMSharp.Interop
                 var span = new ReadOnlySpan<byte>(pDefaultTriple, int.MaxValue);
                 return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
             }
+        }
+
+        public static bool TryGetTargetFromTriple(ReadOnlySpan<char> triple, out LLVMTargetRef outTarget, out string outError)
+        {
+            using var marshaledTriple = new MarshaledString(triple);
+
+            fixed (LLVMTargetRef* pOutTarget = &outTarget)
+            {
+                sbyte* pError;
+                var result = LLVM.GetTargetFromTriple(marshaledTriple, (LLVMTarget**)pOutTarget, &pError);
+
+                if (pError is null)
+                {
+                    outError = string.Empty;
+                }
+                else
+                {
+                    var span = new ReadOnlySpan<byte>(pError, int.MaxValue);
+                    outError = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                }
+
+                return result == 0;
+            }
+        }
+
+        public static LLVMTargetRef GetTargetFromTriple(string triple) => GetTargetFromTriple(triple.AsSpan());
+
+        public static LLVMTargetRef GetTargetFromTriple(ReadOnlySpan<char> triple)
+        {
+            if (!TryGetTargetFromTriple(triple, out LLVMTargetRef target, out string message))
+            {
+                throw new ExternalException(message);
+            }
+
+            return target;
         }
 
         public static LLVMTargetRef First => LLVM.GetFirstTarget();
