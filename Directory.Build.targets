@@ -21,8 +21,9 @@
   </PropertyGroup>
 
   <!-- Settings that allow testing to work by default -->
-  <PropertyGroup>
-    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == '' AND '$(Contin)' != 'true'">
+    <RuntimeIdentifier>$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="'$(OVERRIDE_RUNTIME_IDENTIFIER)' != ''">$(OVERRIDE_RUNTIME_IDENTIFIER)</RuntimeIdentifier>
   </PropertyGroup>
 
   <!-- Package versions for package references across all projects -->
