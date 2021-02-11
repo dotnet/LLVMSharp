@@ -89,7 +89,7 @@ namespace LLVMSharp.Interop
         {
             var pStr = LLVM.PrintValueToString(this);
 
-            if (pStr is null)
+            if (pStr == null)
             {
                 return string.Empty;
             }

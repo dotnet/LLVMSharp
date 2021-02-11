@@ -48,10 +48,10 @@ namespace LLVMSharp.Interop
         {
             using var marshaledFileName = new MarshaledString(fileName);
 
-            sbyte* errorMessage;
+            sbyte* errorMessage = null;
             int result = LLVM.TargetMachineEmitToFile(this, module, marshaledFileName, codegen, &errorMessage);
 
-            if (errorMessage is null)
+            if (errorMessage == null)
             {
                 message = string.Empty;
             }

@@ -124,7 +124,7 @@ namespace LLVMSharp.Interop
 
                 var pStructName = LLVM.GetStructName(this);
 
-                if (pStructName is null)
+                if (pStructName == null)
                 {
                     return string.Empty;
                 }
@@ -214,7 +214,7 @@ namespace LLVMSharp.Interop
         {
             var pStr = LLVM.PrintTypeToString(this);
 
-            if (pStr is null)
+            if (pStr == null)
             {
                 return string.Empty;
             }

@@ -27,7 +27,7 @@ namespace LLVMSharp.Interop
 
                 var pDataLayoutStr = LLVM.GetDataLayout(this);
 
-                if (pDataLayoutStr is null)
+                if (pDataLayoutStr == null)
                 {
                     return string.Empty;
                 }
@@ -62,7 +62,7 @@ namespace LLVMSharp.Interop
 
                 var pTriple = LLVM.GetTarget(this);
 
-                if (pTriple is null)
+                if (pTriple == null)
                 {
                     return string.Empty;
                 }
@@ -271,7 +271,7 @@ namespace LLVMSharp.Interop
         {
             var pStr = LLVM.PrintModuleToString(this);
 
-            if (pStr is null)
+            if (pStr == null)
             {
                 return string.Empty;
             }
@@ -296,10 +296,10 @@ namespace LLVMSharp.Interop
         {
             fixed (LLVMExecutionEngineRef* pOutEE = &OutEE)
             {
-                sbyte* pError;
+                sbyte* pError = null;
                 var result = LLVM.CreateExecutionEngineForModule((LLVMOpaqueExecutionEngine**)pOutEE, this, &pError);
 
-                if (pError is null)
+                if (pError == null)
                 {
                     OutError = string.Empty;
                 }
@@ -317,10 +317,10 @@ namespace LLVMSharp.Interop
         {
             fixed (LLVMExecutionEngineRef* pOutInterp = &OutInterp)
             {
-                sbyte* pError;
+                sbyte* pError = null;
                 var result = LLVM.CreateInterpreterForModule((LLVMOpaqueExecutionEngine**)pOutInterp, this, &pError);
 
-                if (pError is null)
+                if (pError == null)
                 {
                     OutError = string.Empty;
                 }
@@ -345,10 +345,10 @@ namespace LLVMSharp.Interop
             fixed (LLVMExecutionEngineRef* pOutJIT = &OutJIT)
             fixed (LLVMMCJITCompilerOptions* pOptions = &Options)
             {
-                sbyte* pError;
+                sbyte* pError = null;
                 var result = LLVM.CreateMCJITCompilerForModule((LLVMOpaqueExecutionEngine**)pOutJIT, this, pOptions, (UIntPtr)Marshal.SizeOf<LLVMMCJITCompilerOptions>(), &pError);
 
-                if (pError is null)
+                if (pError == null)
                 {
                     OutError = string.Empty;
                 }
@@ -376,10 +376,9 @@ namespace LLVMSharp.Interop
             }
             catch (Exception)
             {
-
             }
 
-            if (pErrorMessage is null)
+            if (pErrorMessage == null)
             {
                 ErrorMessage = string.Empty;
             }
@@ -394,10 +393,10 @@ namespace LLVMSharp.Interop
 
         public bool TryVerify(LLVMVerifierFailureAction Action, out string OutMessage)
         {
-            sbyte* pMessage;
+            sbyte* pMessage = null;
             var result = LLVM.VerifyModule(this, Action, &pMessage);
 
-            if (pMessage is null)
+            if (pMessage == null)
             {
                 OutMessage = string.Empty;
             }
