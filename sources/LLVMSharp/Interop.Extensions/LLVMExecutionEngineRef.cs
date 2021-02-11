@@ -142,10 +142,10 @@ namespace LLVMSharp.Interop
         {
             fixed (LLVMModuleRef* pOutMod = &OutMod)
             {
-                sbyte* pError;
+                sbyte* pError = null;
                 var result = LLVM.RemoveModule(this, M, (LLVMOpaqueModule**)pOutMod, &pError);
 
-                if (pError is null)
+                if (pError == null)
                 {
                     OutError = string.Empty;
                 }

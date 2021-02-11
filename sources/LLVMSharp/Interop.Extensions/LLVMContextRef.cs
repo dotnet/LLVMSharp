@@ -211,10 +211,10 @@ namespace LLVMSharp.Interop
         {
             fixed (LLVMModuleRef* pOutM = &OutM)
             {
-                sbyte* pMessage;
+                sbyte* pMessage = null;
                 var result = LLVM.GetBitcodeModuleInContext(this, MemBuf, (LLVMOpaqueModule**)pOutM, &pMessage);
 
-                if (pMessage is null)
+                if (pMessage == null)
                 {
                     OutMessage = string.Empty;
                 }
@@ -232,10 +232,10 @@ namespace LLVMSharp.Interop
         {
             fixed (LLVMModuleRef* pOutModule = &OutModule)
             {
-                sbyte* pMessage;
+                sbyte* pMessage = null;
                 var result = LLVM.ParseBitcodeInContext(this, MemBuf, (LLVMOpaqueModule**)pOutModule, &pMessage);
 
-                if (pMessage is null)
+                if (pMessage == null)
                 {
                     OutMessage = string.Empty;
                 }
@@ -253,10 +253,10 @@ namespace LLVMSharp.Interop
         {
             fixed (LLVMModuleRef* pOutM = &OutM)
             {
-                sbyte* pMessage;
+                sbyte* pMessage = null;
                 var result = LLVM.ParseIRInContext(this, MemBuf, (LLVMOpaqueModule**)pOutM, &pMessage);
 
-                if (pMessage is null)
+                if (pMessage == null)
                 {
                     OutMessage = string.Empty;
                 }

@@ -34,7 +34,7 @@ namespace LLVMSharp.Interop
 
         private static bool TryResolveLLVM(Assembly assembly, DllImportSearchPath? searchPath, out IntPtr nativeLibrary)
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && NativeLibrary.TryLoad("libLLVM-10.so", assembly, searchPath, out nativeLibrary))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && NativeLibrary.TryLoad("libLLVM-11.so", assembly, searchPath, out nativeLibrary))
             {
                 return true;
             }

@@ -92,7 +92,7 @@ namespace LLVMSharp.Interop
 
                 var pName = LLVM.GetGC(this);
 
-                if (pName is null)
+                if (pName == null)
                 {
                     return string.Empty;
                 }
@@ -412,7 +412,7 @@ namespace LLVMSharp.Interop
 
                 var pStr = LLVM.GetValueName(this);
 
-                if (pStr is null)
+                if (pStr == null)
                 {
                     return string.Empty;
                 }
@@ -487,7 +487,7 @@ namespace LLVMSharp.Interop
 
                 var pSection = LLVM.GetSection(this);
 
-                if (pSection is null)
+                if (pSection == null)
                 {
                     return string.Empty;
                 }
@@ -852,7 +852,7 @@ namespace LLVMSharp.Interop
             {
                 var pStr = LLVM.GetAsString(this, pLength);
 
-                if (pStr is null)
+                if (pStr == null)
                 {
                     return string.Empty;
                 }
@@ -915,7 +915,7 @@ namespace LLVMSharp.Interop
             {
                 var pMDStr = LLVM.GetMDString(this, pLen);
 
-                if (pMDStr is null)
+                if (pMDStr == null)
                 {
                     return string.Empty;
                 }
@@ -941,7 +941,7 @@ namespace LLVMSharp.Interop
         {
             var pStr = LLVM.PrintValueToString(this);
 
-            if (pStr is null)
+            if (pStr == null)
             {
                 return string.Empty;
             }

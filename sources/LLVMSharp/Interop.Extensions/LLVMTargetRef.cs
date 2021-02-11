@@ -21,7 +21,7 @@ namespace LLVMSharp.Interop
             {
                 var pDefaultTriple = LLVM.GetDefaultTargetTriple();
 
-                if (pDefaultTriple is null)
+                if (pDefaultTriple == null)
                 {
                     return string.Empty;
                 }
@@ -37,10 +37,10 @@ namespace LLVMSharp.Interop
 
             fixed (LLVMTargetRef* pOutTarget = &outTarget)
             {
-                sbyte* pError;
+                sbyte* pError = null;
                 var result = LLVM.GetTargetFromTriple(marshaledTriple, (LLVMTarget**)pOutTarget, &pError);
 
-                if (pError is null)
+                if (pError == null)
                 {
                     outError = string.Empty;
                 }
@@ -93,7 +93,7 @@ namespace LLVMSharp.Interop
 
                 var pName = LLVM.GetTargetName(this);
 
-                if (pName is null)
+                if (pName == null)
                 {
                     return string.Empty;
                 }
