@@ -19,7 +19,7 @@ On Linux using .NET Core:
 
 ```bash
  $ git clone http://github.com/Microsoft/LLVMSharp
- $ cd LLVMSharp/src
+ $ cd LLVMSharp
  $ dotnet build
 ```
 
@@ -29,7 +29,7 @@ On Windows using .NET Core
 
 ```bash
  :> git clone http://github.com/mjsabby/LLVMSharp
- :> cd LLVMSharp\src
+ :> cd LLVMSharp
  :> dotnet build
 ```
 
