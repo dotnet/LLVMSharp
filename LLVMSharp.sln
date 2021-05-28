@@ -86,16 +86,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.osx-x64", "
 		packages\libLLVM\libLLVM.runtime.osx-x64\libLLVM.runtime.osx-x64.nuspec = packages\libLLVM\libLLVM.runtime.osx-x64\libLLVM.runtime.osx-x64.nuspec
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.sles-x64", "libLLVM.runtime.sles-x64", "{8C0E6B8A-9FFD-43A1-9324-CA4B8DE997C8}"
-	ProjectSection(SolutionItems) = preProject
-		packages\libLLVM\libLLVM.runtime.sles-x64\libLLVM.runtime.sles-x64.nuspec = packages\libLLVM\libLLVM.runtime.sles-x64\libLLVM.runtime.sles-x64.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.16.04-x64", "libLLVM.runtime.ubuntu.16.04-x64", "{9F3C3619-32D3-489E-BE7A-92FEE299DE34}"
-	ProjectSection(SolutionItems) = preProject
-		packages\libLLVM\libLLVM.runtime.ubuntu.16.04-x64\libLLVM.runtime.ubuntu.16.04-x64.nuspec = packages\libLLVM\libLLVM.runtime.ubuntu.16.04-x64\libLLVM.runtime.ubuntu.16.04-x64.nuspec
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.18.04-x64", "libLLVM.runtime.ubuntu.18.04-x64", "{481409E0-F009-4583-B587-7D6915E9B16E}"
 	ProjectSection(SolutionItems) = preProject
 		packages\libLLVM\libLLVM.runtime.ubuntu.18.04-x64\libLLVM.runtime.ubuntu.18.04-x64.nuspec = packages\libLLVM\libLLVM.runtime.ubuntu.18.04-x64\libLLVM.runtime.ubuntu.18.04-x64.nuspec
@@ -116,6 +106,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.win-x86", "
 		packages\libLLVM\libLLVM.runtime.win-x86\libLLVM.runtime.win-x86.nuspec = packages\libLLVM\libLLVM.runtime.win-x86\libLLVM.runtime.win-x86.nuspec
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.21.04-x64", "libLLVM.runtime.ubuntu.21.04-x64", "{1808D302-0067-4121-964C-2CBAFB8A957A}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM\libLLVM.runtime.ubuntu.21.04-x64\libLLVM.runtime.ubuntu.21.04-x64.nuspec = packages\libLLVM\libLLVM.runtime.ubuntu.21.04-x64\libLLVM.runtime.ubuntu.21.04-x64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.win-arm64", "libLLVM.runtime.win-arm64", "{19DB05E9-59B6-45E9-B47D-62913F7DF9A8}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM\libLLVM.runtime.win-arm64\libLLVM.runtime.win-arm64.nuspec = packages\libLLVM\libLLVM.runtime.win-arm64\libLLVM.runtime.win-arm64.nuspec
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLVMSharp.Interop", "sources\LLVMSharp.Interop\LLVMSharp.Interop.csproj", "{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -130,6 +132,10 @@ Global
 		{293C5F55-2CB1-4398-946B-8AD8E37D7FEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{293C5F55-2CB1-4398-946B-8AD8E37D7FEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{293C5F55-2CB1-4398-946B-8AD8E37D7FEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -144,12 +150,13 @@ Global
 		{A7F2EA37-BFBA-4659-969D-E9A4A696E10A} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{16539CB8-8AC7-4AD0-9D54-8EE615B2FCF3} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{D4550E5E-9485-4480-B2B6-9503EEC935BF} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
-		{8C0E6B8A-9FFD-43A1-9324-CA4B8DE997C8} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
-		{DC151BEE-774F-4032-8D2F-F3360F7F4D82} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
-		{9F3C3619-32D3-489E-BE7A-92FEE299DE34} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{481409E0-F009-4583-B587-7D6915E9B16E} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
+		{DC151BEE-774F-4032-8D2F-F3360F7F4D82} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{E785DDD0-B9CD-4412-8A3C-4E65C601168C} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{540AB7F4-29FD-462A-8791-259764FD4950} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
+		{1808D302-0067-4121-964C-2CBAFB8A957A} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
+		{19DB05E9-59B6-45E9-B47D-62913F7DF9A8} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
+		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6} = {62B5C536-C224-4EE1-972F-05F732B5980B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {75550D8C-A492-4ED3-8387-206830F8B21E}

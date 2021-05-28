@@ -19,4 +19,8 @@
     <PackageReference Include="System.Memory" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LLVMSharp.Interop\LLVMSharp.Interop.csproj" />
+  </ItemGroup>
+
 </Project>
