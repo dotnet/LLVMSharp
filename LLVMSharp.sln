@@ -116,6 +116,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.win-arm64",
 		packages\libLLVM\libLLVM.runtime.win-arm64\libLLVM.runtime.win-arm64.nuspec = packages\libLLVM\libLLVM.runtime.win-arm64\libLLVM.runtime.win-arm64.nuspec
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLVMSharp.Interop", "sources\LLVMSharp.Interop\LLVMSharp.Interop.csproj", "{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -130,6 +132,10 @@ Global
 		{293C5F55-2CB1-4398-946B-8AD8E37D7FEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{293C5F55-2CB1-4398-946B-8AD8E37D7FEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{293C5F55-2CB1-4398-946B-8AD8E37D7FEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,6 +156,7 @@ Global
 		{540AB7F4-29FD-462A-8791-259764FD4950} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{1808D302-0067-4121-964C-2CBAFB8A957A} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{19DB05E9-59B6-45E9-B47D-62913F7DF9A8} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
+		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6} = {62B5C536-C224-4EE1-972F-05F732B5980B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {75550D8C-A492-4ED3-8387-206830F8B21E}

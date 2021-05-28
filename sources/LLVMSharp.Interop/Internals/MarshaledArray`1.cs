@@ -3,9 +3,9 @@
 using System;
 using System.Buffers;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
-    internal unsafe struct MarshaledArray<T, U> : IDisposable
+    public unsafe struct MarshaledArray<T, U> : IDisposable
     {
         public MarshaledArray(ReadOnlySpan<T> inputs, Func<T, U> marshal)
         {

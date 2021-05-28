@@ -2,9 +2,9 @@
 
 using System;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
-    internal unsafe struct MarshaledStringArray : IDisposable
+    public unsafe struct MarshaledStringArray : IDisposable
     {
         public MarshaledStringArray(ReadOnlySpan<string> inputs)
         {

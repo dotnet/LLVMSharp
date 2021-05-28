@@ -3,7 +3,7 @@
 using System;
 using System.Diagnostics;
 
-namespace LLVMSharp
+namespace LLVMSharp.Interop
 {
     [Conditional("DEBUG")]
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.ReturnValue, AllowMultiple = false, Inherited = true)]
