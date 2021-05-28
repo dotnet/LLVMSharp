@@ -43,6 +43,8 @@ namespace LLVMSharp.Interop
 
         public static LLVMTypeRef X86MMX => LLVM.X86MMXType();
 
+        public static LLVMTypeRef X86AMX => LLVM.X86AMXType();
+
         public LLVMValueRef AlignOf => (Handle != IntPtr.Zero) ? LLVM.AlignOf(this) : default;
 
         public uint ArrayLength => (Kind == LLVMTypeKind.LLVMArrayTypeKind) ? LLVM.GetArrayLength(this) : default;
@@ -86,6 +88,8 @@ namespace LLVMSharp.Interop
         public uint ParamTypesCount => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) ? LLVM.CountParamTypes(this) : default;
 
         public uint PointerAddressSpace => (Kind == LLVMTypeKind.LLVMPointerTypeKind) ? LLVM.GetPointerAddressSpace(this) : default;
+
+        public LLVMValueRef Poison => (Handle != IntPtr.Zero) ? LLVM.GetPoison(this) : default;
 
         public LLVMTypeRef ReturnType => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) ? LLVM.GetReturnType(this) : default;
 
@@ -199,6 +203,8 @@ namespace LLVMSharp.Interop
         }
 
         public static LLVMTypeRef CreateVector(LLVMTypeRef ElementType, uint ElementCount) => LLVM.VectorType(ElementType, ElementCount);
+
+        public static LLVMTypeRef CreateScalableVector(LLVMTypeRef ElementType, uint ElementCount) => LLVM.ScalableVectorType(ElementType, ElementCount);
 
         public void Dump() => LLVM.DumpType(this);
 

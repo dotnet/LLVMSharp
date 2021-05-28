@@ -41,8 +41,6 @@ namespace LLVMSharp.Interop
 
         public void AddConstantMergePass() => LLVM.AddConstantMergePass(this);
 
-        public void AddConstantPropagationPass() => LLVM.AddConstantPropagationPass(this);
-
         public void AddCorrelatedValuePropagationPass() => LLVM.AddCorrelatedValuePropagationPass(this);
 
         public void AddDCEPass() => LLVM.AddDCEPass(this);
@@ -72,8 +70,6 @@ namespace LLVMSharp.Interop
         public void AddInstructionCombiningPass() => LLVM.AddInstructionCombiningPass(this);
 
         public void AddInternalizePass(uint AllButMain) => LLVM.AddInternalizePass(this, AllButMain);
-
-        public void AddIPConstantPropagationPass() => LLVM.AddIPConstantPropagationPass(this);
 
         public void AddIPSCCPPass() => LLVM.AddIPSCCPPass(this);
 

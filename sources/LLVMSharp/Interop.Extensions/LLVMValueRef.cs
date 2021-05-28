@@ -284,6 +284,8 @@ namespace LLVMSharp.Interop
 
         public LLVMValueRef IsAPHINode => LLVM.IsAPHINode(this);
 
+        public LLVMValueRef IsAPoisonValue => LLVM.IsAPoisonValue(this);
+
         public LLVMValueRef IsAPtrToIntInst => LLVM.IsAPtrToIntInst(this);
 
         public LLVMValueRef IsAResumeInst => LLVM.IsAResumeInst(this);
@@ -352,6 +354,8 @@ namespace LLVMSharp.Interop
         }
 
         public bool IsNull => (Handle != IntPtr.Zero) ? LLVM.IsNull(this) != 0 : default;
+
+        public bool IsPoison => (Handle != IntPtr.Zero) ? LLVM.IsPoison(this) != 0 : default;
 
         public bool IsTailCall
         {

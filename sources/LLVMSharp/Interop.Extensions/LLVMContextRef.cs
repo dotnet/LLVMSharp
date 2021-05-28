@@ -46,6 +46,8 @@ namespace LLVMSharp.Interop
 
         public LLVMTypeRef X86MMXType => (Handle != IntPtr.Zero) ? LLVM.X86MMXTypeInContext(this) : default;
 
+        public LLVMTypeRef X86AMXType => (Handle != IntPtr.Zero) ? LLVM.X86AMXTypeInContext(this) : default;
+
         public static implicit operator LLVMContextRef(LLVMOpaqueContext* value) => new LLVMContextRef((IntPtr)value);
 
         public static implicit operator LLVMOpaqueContext*(LLVMContextRef value) => (LLVMOpaqueContext*)value.Handle;
