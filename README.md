@@ -1,6 +1,6 @@
 # LLVMSharp
 
-LLVMSharp is a multi-platform .NET Standard library for accessing the LLVM infrastructure. The bindings are auto-generated using [ClangSharp](http://www.clangsharp.org) parsing LLVM-C header files.
+LLVMSharp is a multi-platform .NET Standard library for accessing the LLVM infrastructure. The bindings are auto-generated using [ClangSharp](https://github.com/Microsoft/ClangSharp) parsing LLVM-C header files.
 
 | Job | Debug Status | Release Status |
 | --- | ------------ | -------------- |
