@@ -13,6 +13,12 @@ LLVMSharp is a multi-platform .NET Standard library for accessing the LLVM infra
 
 [**LLVMSharp NuGet Package**](http://www.nuget.org/packages/LLVMSharp) for .NET Core 2.0+ (Linux, macOS, Windows) and .NET Framework 4+ - each version is built from the corresponding LLVM Release.
 
+## License
+
+Copyright (c) .NET Foundation and Contributors. All Rights Reserved.
+Licensed under the MIT License (MIT).
+See [LICENSE.md](LICENSE.md) in the repository root for more information.
+
 ## Building LLVMSharp
 
 On Linux using .NET Core:
