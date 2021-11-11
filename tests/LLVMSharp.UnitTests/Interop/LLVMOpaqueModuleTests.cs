@@ -30,7 +30,6 @@ namespace LLVMSharp.Interop.UnitTests
         [Test]
         public static void SizeOfTest()
         {
-            TestContext.WriteLine("Testing");
             Assert.That(sizeof(LLVMOpaqueModule), Is.EqualTo(1));
         }
 
