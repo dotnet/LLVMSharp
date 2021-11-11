@@ -7,7 +7,7 @@ namespace LLVMSharp.Interop
 {
     public enum LLVMModuleFlagBehavior
     {
-        LLVMModuleFlagBehaviorError,
+        LLVMModuleFlagBehaviorError = 1,
         LLVMModuleFlagBehaviorWarning,
         LLVMModuleFlagBehaviorRequire,
         LLVMModuleFlagBehaviorOverride,
