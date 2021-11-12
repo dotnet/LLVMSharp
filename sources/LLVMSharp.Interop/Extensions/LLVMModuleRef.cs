@@ -266,9 +266,9 @@ namespace LLVMSharp.Interop
             return LLVM.GetTypeByName(this, marshaledName);
         }
 
-        public int LinkInModule(LLVMModuleRef OtherModule)
+        public static bool LinkModules(LLVMModuleRef Dest, LLVMModuleRef Src)
         {
-            return LLVM.LinkModules2(this, OtherModule);
+            return Convert.ToBoolean(LLVM.LinkModules2(Dest, Src));
         }
 
         public void PrintToFile(string Filename) => PrintToFile(Filename.AsSpan());

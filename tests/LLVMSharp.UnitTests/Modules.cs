@@ -56,7 +56,7 @@ namespace LLVMSharp.UnitTests
             // linking the modules should cause a warning, not an error
             try
             {
-                module1.LinkInModule(module2);
+                LLVMModuleRef.LinkModules(module1, module2);
             }
             catch (AccessViolationException)
             {
