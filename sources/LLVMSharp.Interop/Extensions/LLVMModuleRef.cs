@@ -134,6 +134,15 @@ namespace LLVMSharp.Interop
             LLVM.AddNamedMetadataOperand(this, marshaledName, Val);
         }
 
+        public void AddModuleFlag(string FlagName, LLVMModuleFlagBehavior Behavior, uint Val) => AddModuleFlag(FlagName.AsSpan(), Behavior, Val);
+
+        public void AddModuleFlag(ReadOnlySpan<char> FlagName, LLVMModuleFlagBehavior Behavior, uint Val)
+        {
+            using var marshaledName = new MarshaledString(FlagName);
+            LLVMOpaqueMetadata* valAsMetadata = LLVM.ValueAsMetadata(LLVMValueRef.CreateConstInt(LLVMTypeRef.Int32, Val));
+            LLVM.AddModuleFlag(this, Behavior, marshaledName, (UIntPtr)FlagName.Length, valAsMetadata);
+        }
+
         public LLVMDIBuilderRef CreateDIBuilder()
         {
             return new LLVMDIBuilderRef((IntPtr)LLVM.CreateDIBuilder(this));
