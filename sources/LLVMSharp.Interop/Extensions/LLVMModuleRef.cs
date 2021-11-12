@@ -268,7 +268,7 @@ namespace LLVMSharp.Interop
 
         public static bool LinkModules(LLVMModuleRef Dest, LLVMModuleRef Src)
         {
-            return Convert.ToBoolean(LLVM.LinkModules2(Dest, Src));
+            return LLVM.LinkModules2(Dest, Src) != 0;
         }
 
         public void PrintToFile(string Filename) => PrintToFile(Filename.AsSpan());
