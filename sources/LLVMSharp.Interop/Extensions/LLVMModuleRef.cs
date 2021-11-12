@@ -126,14 +126,6 @@ namespace LLVMSharp.Interop
             return LLVM.AddGlobalInAddressSpace(this, Ty, marshaledName, AddressSpace);
         }
 
-        public void AddNamedMetadataOperand(string Name, LLVMValueRef Val) => AddNamedMetadataOperand(Name.AsSpan(), Val);
-
-        public void AddNamedMetadataOperand(ReadOnlySpan<char> Name, LLVMValueRef Val)
-        {
-            using var marshaledName = new MarshaledString(Name);
-            LLVM.AddNamedMetadataOperand(this, marshaledName, Val);
-        }
-
         public void AddModuleFlag(string FlagName, LLVMModuleFlagBehavior Behavior, uint Val) => AddModuleFlag(FlagName.AsSpan(), Behavior, Val);
 
         public void AddModuleFlag(ReadOnlySpan<char> FlagName, LLVMModuleFlagBehavior Behavior, uint Val)
@@ -141,6 +133,14 @@ namespace LLVMSharp.Interop
             using var marshaledName = new MarshaledString(FlagName);
             LLVMOpaqueMetadata* valAsMetadata = LLVM.ValueAsMetadata(LLVMValueRef.CreateConstInt(LLVMTypeRef.Int32, Val));
             LLVM.AddModuleFlag(this, Behavior, marshaledName, (UIntPtr)FlagName.Length, valAsMetadata);
+        }
+
+        public void AddNamedMetadataOperand(string Name, LLVMValueRef Val) => AddNamedMetadataOperand(Name.AsSpan(), Val);
+
+        public void AddNamedMetadataOperand(ReadOnlySpan<char> Name, LLVMValueRef Val)
+        {
+            using var marshaledName = new MarshaledString(Name);
+            LLVM.AddNamedMetadataOperand(this, marshaledName, Val);
         }
 
         public LLVMDIBuilderRef CreateDIBuilder()
@@ -264,6 +264,11 @@ namespace LLVMSharp.Interop
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.GetTypeByName(this, marshaledName);
+        }
+
+        public int LinkInModule(LLVMModuleRef OtherModule)
+        {
+            return LLVM.LinkModules2(this, OtherModule);
         }
 
         public void PrintToFile(string Filename) => PrintToFile(Filename.AsSpan());
