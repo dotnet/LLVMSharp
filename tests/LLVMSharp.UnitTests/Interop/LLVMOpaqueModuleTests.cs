@@ -25,11 +25,11 @@ namespace LLVMSharp.Interop.UnitTests
             Assert.That(typeof(LLVMOpaqueModule).IsLayoutSequential, Is.True);
         }
 
-        /// <summary><see cref="LLVMOpaqueModule" /> struct should have the correct size of 1.</summary>
+        /// <summary>Validates that the <see cref="LLVMOpaqueModule" /> struct has the correct size.</summary>
         [Test]
         public static void SizeOfTest()
         {
-            Assert.That(sizeof(LLVMOpaqueModule), Is.EqualTo(1), "LLVMOpaqueModule struct should have the correct size 1");
+            Assert.That(sizeof(LLVMOpaqueModule), Is.EqualTo(1));
         }
     }
 }

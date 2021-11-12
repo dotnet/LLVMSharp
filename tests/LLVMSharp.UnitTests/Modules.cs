@@ -36,7 +36,7 @@ namespace LLVMSharp.UnitTests
         /// <summary>Verifies that <see cref="LLVMModuleFlagBehavior"/> is defined as expected by <see cref="AddModuleFlag"/>
         /// so that there isn't unexpected behavior when modules with conflicting flags are linked.
         /// This test is relevant because AddModuleFlag expects a 0-based behavior enum (where 1 defines warning),
-        /// while the other method of adding a module flag (AddNamedMetadataOperand) expects a 1-based behavior
+        /// while AddNamedMetadataOperand(the other method of adding a module flag) expects a 1-based behavior
         /// (where 1 defines error).</summary>
         public static void TestBehaviorOfLinkingConflictingModules()
         {
