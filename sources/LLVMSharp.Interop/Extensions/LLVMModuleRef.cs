@@ -126,13 +126,25 @@ namespace LLVMSharp.Interop
             return LLVM.AddGlobalInAddressSpace(this, Ty, marshaledName, AddressSpace);
         }
 
-        public void AddModuleFlag(string FlagName, LLVMModuleFlagBehavior Behavior, uint Val) => AddModuleFlag(FlagName.AsSpan(), Behavior, Val);
+        public void AddModuleFlag(string FlagName, LLVMModuleFlagBehavior Behavior, uint ValAsUInt)
+        {
+            LLVMOpaqueValue* valAsValueRef = LLVMValueRef.CreateConstInt(LLVMTypeRef.Int32, ValAsUInt);
+            AddModuleFlag(FlagName, Behavior, valAsValueRef);
+        }
 
-        public void AddModuleFlag(ReadOnlySpan<char> FlagName, LLVMModuleFlagBehavior Behavior, uint Val)
+        public void AddModuleFlag(string FlagName, LLVMModuleFlagBehavior Behavior, LLVMValueRef ValAsValueRef)
+        {
+            LLVMOpaqueMetadata* valAsMetadata = LLVM.ValueAsMetadata(ValAsValueRef);
+            AddModuleFlag(FlagName, Behavior, valAsMetadata);
+        }
+
+        public void AddModuleFlag(string FlagName, LLVMModuleFlagBehavior Behavior, LLVMMetadataRef ValAsMetadataRef) => AddModuleFlag(FlagName.AsSpan(), Behavior, ValAsMetadataRef);
+
+
+        public void AddModuleFlag(ReadOnlySpan<char> FlagName, LLVMModuleFlagBehavior Behavior, LLVMMetadataRef ValAsMetadataRef)
         {
             using var marshaledName = new MarshaledString(FlagName);
-            LLVMOpaqueMetadata* valAsMetadata = LLVM.ValueAsMetadata(LLVMValueRef.CreateConstInt(LLVMTypeRef.Int32, Val));
-            LLVM.AddModuleFlag(this, Behavior, marshaledName, (UIntPtr)FlagName.Length, valAsMetadata);
+            LLVM.AddModuleFlag(this, Behavior, marshaledName, (UIntPtr)FlagName.Length, ValAsMetadataRef);
         }
 
         public void AddNamedMetadataOperand(string Name, LLVMValueRef Val) => AddNamedMetadataOperand(Name.AsSpan(), Val);
