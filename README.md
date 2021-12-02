@@ -1,13 +1,8 @@
 # LLVMSharp
 
-LLVMSharp is a multi-platform .NET Standard library for accessing the LLVM infrastructure. The bindings are auto-generated using [ClangSharp](https://github.com/Microsoft/ClangSharp) parsing LLVM-C header files.
+LLVMSharp is a multi-platform .NET Standard library for accessing the LLVM infrastructure. The bindings are auto-generated using [ClangSharp](https://github.com/dotnet/clangsharp) parsing LLVM-C header files.
 
-| Job | Debug Status | Release Status |
-| --- | ------------ | -------------- |
-| Windows x86 | [![Build Status](https://dev.azure.com/ms/LLVMSharp/_apis/build/status/microsoft.LLVMSharp?branchName=main&jobName=windows_debug_x86)](https://dev.azure.com/ms/LLVMSharp/_build/latest?definitionId=156&branchName=main) | [![Build Status](https://dev.azure.com/ms/LLVMSharp/_apis/build/status/microsoft.LLVMSharp?branchName=main&jobName=windows_release_x86)](https://dev.azure.com/ms/LLVMSharp/_build/latest?definitionId=156&branchName=main) |
-| Windows x64 | [![Build Status](https://dev.azure.com/ms/LLVMSharp/_apis/build/status/microsoft.LLVMSharp?branchName=main&jobName=windows_debug_x64)](https://dev.azure.com/ms/LLVMSharp/_build/latest?definitionId=156&branchName=main) | [![Build Status](https://dev.azure.com/ms/LLVMSharp/_apis/build/status/microsoft.LLVMSharp?branchName=main&jobName=windows_release_x64)](https://dev.azure.com/ms/LLVMSharp/_build/latest?definitionId=156&branchName=main) |
-| Ubuntu 16.04 x64 | [![Build Status](https://dev.azure.com/ms/LLVMSharp/_apis/build/status/microsoft.LLVMSharp?branchName=main&jobName=ubuntu_debug_x64)](https://dev.azure.com/ms/LLVMSharp/_build/latest?definitionId=156&branchName=main) | [![Build Status](https://dev.azure.com/ms/LLVMSharp/_apis/build/status/microsoft.LLVMSharp?branchName=main&jobName=ubuntu_release_x64)](https://dev.azure.com/ms/LLVMSharp/_build/latest?definitionId=156&branchName=main) |
-| MacOS x64 | [![Build Status](https://dev.azure.com/ms/LLVMSharp/_apis/build/status/microsoft.LLVMSharp?branchName=main&jobName=macos_debug_x64)](https://dev.azure.com/ms/LLVMSharp/_build/latest?definitionId=156&branchName=main) | [![Build Status](https://dev.azure.com/ms/LLVMSharp/_apis/build/status/microsoft.LLVMSharp?branchName=main&jobName=macos_release_x64)](https://dev.azure.com/ms/LLVMSharp/_build/latest?definitionId=156&branchName=main) |
+![ci](https://github.com/dotnet/clangsharp/workflows/ci/badge.svg?branch=main&event=push)
 
 A nuget package for the project is provided here: https://www.nuget.org/packages/llvmsharp.
 
@@ -48,7 +43,7 @@ See [LICENSE.md](LICENSE.md) in the repository root for more information.
 On Linux using .NET Core:
 
 ```bash
- $ git clone http://github.com/Microsoft/LLVMSharp
+ $ git clone http://github.com/dotnet/llvmsharp
  $ cd LLVMSharp
  $ dotnet build
 ```

@@ -97,6 +97,10 @@ try {
     }
   }
 
+  if (($architecture -ne "") -and ($architecture -ne "<auto>")) {
+    $properties += "/p:PlatformTarget=$architecture"
+  }
+
   $RepoRoot = Join-Path -Path $PSScriptRoot -ChildPath ".."
 
   if ($solution -eq "") {
