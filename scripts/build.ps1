@@ -96,8 +96,7 @@ try {
       $architecture = "<auto>"
     }
   }
-
-  if (($architecture -ne "") -and ($architecture -ne "<auto>")) {
+  elseif (($architecture -ne "") -and ($architecture -ne "<auto>")) {
     $properties += "/p:PlatformTarget=$architecture"
   }
 
