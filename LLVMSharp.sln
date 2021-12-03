@@ -42,9 +42,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLVMSharp.UnitTests", "test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{9BF3ABB4-8193-4E44-AD0D-82F4C40887E6}"
 	ProjectSection(SolutionItems) = preProject
-		scripts\azure-pipelines.yml = scripts\azure-pipelines.yml
-		scripts\azure-unix.yml = scripts\azure-unix.yml
-		scripts\azure-windows.yml = scripts\azure-windows.yml
 		scripts\build.ps1 = scripts\build.ps1
 		scripts\build.sh = scripts\build.sh
 		scripts\cibuild.cmd = scripts\cibuild.cmd
@@ -119,6 +116,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.win-arm64",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLVMSharp.Interop", "sources\LLVMSharp.Interop\LLVMSharp.Interop.csproj", "{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{E8ADE5A7-4363-43B7-B104-6B0E5510CAF0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{706334B8-BB91-49A4-BC9C-DFFDF3DCD770}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -158,6 +162,7 @@ Global
 		{1808D302-0067-4121-964C-2CBAFB8A957A} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{19DB05E9-59B6-45E9-B47D-62913F7DF9A8} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6} = {62B5C536-C224-4EE1-972F-05F732B5980B}
+		{706334B8-BB91-49A4-BC9C-DFFDF3DCD770} = {E8ADE5A7-4363-43B7-B104-6B0E5510CAF0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {75550D8C-A492-4ED3-8387-206830F8B21E}

@@ -16,8 +16,8 @@
   </PropertyGroup>
 
   <!-- Settings that are only set for CI builds -->
-  <PropertyGroup Condition="'$(BUILD_BUILDNUMBER)' != ''">
-    <PackageVersion Condition="'$(EXCLUDE_BUILDNUMBER_FROM_PACKAGE)' == ''">$(Version)-$(BUILD_BUILDNUMBER)</PackageVersion>
+  <PropertyGroup Condition="'$(GITHUB_RUN_ID)' != ''">
+    <PackageVersion Condition="'$(EXCLUDE_RUN_ID_FROM_PACKAGE)' != 'true'">$(Version).$(GITHUB_RUN_ID)</PackageVersion>
   </PropertyGroup>
 
   <!-- Settings that allow testing to work by default -->
@@ -30,8 +30,8 @@
   <ItemGroup>
     <PackageReference Update="libLLVM" Version="12.0.0" />
     <PackageReference Update="Microsoft.Bcl.HashCode" Version="1.1.1" />
-    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="16.10.0" />
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.0.0" />
+    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     <PackageReference Update="NUnit" Version="3.13.2" />
     <PackageReference Update="NUnit3TestAdapter" Version="3.17.0" />
     <PackageReference Update="System.Memory" Version="4.5.4" />

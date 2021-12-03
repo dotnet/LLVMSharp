@@ -7,7 +7,7 @@
     <owners>.NET Foundation and Contributors</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="expression">Apache-2.0 WITH LLVM-exception</license>
-    <projectUrl>https://github.com/microsoft/llvmsharp</projectUrl>
+    <projectUrl>https://github.com/dotnet/llvmsharp</projectUrl>
     <description>ubuntu 18.04 x64 native library for libLLVM.</description>
     <copyright>Copyright © LLVM Project</copyright>
     <repository type="git" url="https://github.com/llvm/llvm-project" branch="llvmorg-12.0.0" />
