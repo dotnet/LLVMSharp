@@ -8,7 +8,7 @@ A nuget package for the project is provided here: https://www.nuget.org/packages
 
 A convenience package which provides the native libLLVM library for several platforms is provided here: https://www.nuget.org/packages/libLLVM
 
-Nightly packages are available via the NuGet Feed URL: https://pkgs.terrafx.dev/index.json
+Nightly packages are available via the NuGet Feed URL: https://pkgs.clangsharp.dev/index.json
 
 Source browsing is available via: https://source.clangsharp.dev/
 
