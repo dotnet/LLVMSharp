@@ -8,7 +8,9 @@ A nuget package for the project is provided here: https://www.nuget.org/packages
 
 A convenience package which provides the native libLLVM library for several platforms is provided here: https://www.nuget.org/packages/libLLVM
 
-NOTE: These may be out of date as compared to the latest sources. New versions are published as appropriate and a nightly feed is not currently available.
+Nightly packages are available via the NuGet Feed URL: https://pkgs.clangsharp.dev/index.json
+
+Source browsing is available via: https://source.clangsharp.dev/
 
 ## Table of Contents
 
