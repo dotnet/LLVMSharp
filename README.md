@@ -55,7 +55,7 @@ On Windows using .NET Core
 **Note:** - you need to run these commands from the Visual Studio Developer Command Prompt.
 
 ```bash
- :> git clone http://github.com/mjsabby/LLVMSharp
+ :> git clone http://github.com/dotnet/LLVMSharp
  :> cd LLVMSharp
  :> dotnet build
 ```
