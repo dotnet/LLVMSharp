@@ -7,7 +7,7 @@ namespace LLVMSharp.Interop
 {
     public partial struct LLVMJITEvaluatedSymbol
     {
-        [NativeTypeName("LLVMOrcJITTargetAddress")]
+        [NativeTypeName("LLVMOrcExecutorAddress")]
         public ulong Address;
 
         public LLVMJITSymbolFlags Flags;

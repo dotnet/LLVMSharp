@@ -5,12 +5,7 @@
 
 namespace LLVMSharp.Interop
 {
-    public enum LLVMComdatSelectionKind
+    public partial struct LLVMOrcOpaqueDumpObjects
     {
-        LLVMAnyComdatSelectionKind,
-        LLVMExactMatchComdatSelectionKind,
-        LLVMLargestComdatSelectionKind,
-        LLVMNoDeduplicateComdatSelectionKind,
-        LLVMSameSizeComdatSelectionKind,
     }
 }

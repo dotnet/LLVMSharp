@@ -5,12 +5,11 @@
 
 namespace LLVMSharp.Interop
 {
-    public enum LLVMComdatSelectionKind
+    public unsafe partial struct LLVMOrcCDependenceMapPair
     {
-        LLVMAnyComdatSelectionKind,
-        LLVMExactMatchComdatSelectionKind,
-        LLVMLargestComdatSelectionKind,
-        LLVMNoDeduplicateComdatSelectionKind,
-        LLVMSameSizeComdatSelectionKind,
+        [NativeTypeName("LLVMOrcJITDylibRef")]
+        public LLVMOrcOpaqueJITDylib* JD;
+
+        public LLVMOrcCSymbolsList Names;
     }
 }

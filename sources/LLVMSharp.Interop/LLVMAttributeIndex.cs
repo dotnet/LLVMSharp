@@ -5,12 +5,9 @@
 
 namespace LLVMSharp.Interop
 {
-    public enum LLVMComdatSelectionKind
+    public enum LLVMAttributeIndex
     {
-        LLVMAnyComdatSelectionKind,
-        LLVMExactMatchComdatSelectionKind,
-        LLVMLargestComdatSelectionKind,
-        LLVMNoDeduplicateComdatSelectionKind,
-        LLVMSameSizeComdatSelectionKind,
+        LLVMAttributeReturnIndex = 0,
+        LLVMAttributeFunctionIndex = -1,
     }
 }

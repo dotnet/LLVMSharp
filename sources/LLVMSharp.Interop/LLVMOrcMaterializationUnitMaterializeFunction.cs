@@ -3,14 +3,10 @@
 // Ported from https://github.com/llvm/llvm-project/tree/llvmorg-13.0.0/llvm/include/llvm-c
 // Original source is Copyright (c) the LLVM Project and Contributors. Licensed under the Apache License v2.0 with LLVM Exceptions. See NOTICE.txt in the project root for license information.
 
+using System.Runtime.InteropServices;
+
 namespace LLVMSharp.Interop
 {
-    public enum LLVMComdatSelectionKind
-    {
-        LLVMAnyComdatSelectionKind,
-        LLVMExactMatchComdatSelectionKind,
-        LLVMLargestComdatSelectionKind,
-        LLVMNoDeduplicateComdatSelectionKind,
-        LLVMSameSizeComdatSelectionKind,
-    }
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public unsafe delegate void LLVMOrcMaterializationUnitMaterializeFunction(void* Ctx, [NativeTypeName("LLVMOrcMaterializationResponsibilityRef")] LLVMOrcOpaqueMaterializationResponsibility* MR);
 }

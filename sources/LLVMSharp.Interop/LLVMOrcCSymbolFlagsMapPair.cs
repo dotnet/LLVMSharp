@@ -5,12 +5,11 @@
 
 namespace LLVMSharp.Interop
 {
-    public enum LLVMComdatSelectionKind
+    public unsafe partial struct LLVMOrcCSymbolFlagsMapPair
     {
-        LLVMAnyComdatSelectionKind,
-        LLVMExactMatchComdatSelectionKind,
-        LLVMLargestComdatSelectionKind,
-        LLVMNoDeduplicateComdatSelectionKind,
-        LLVMSameSizeComdatSelectionKind,
+        [NativeTypeName("LLVMOrcSymbolStringPoolEntryRef")]
+        public LLVMOrcOpaqueSymbolStringPoolEntry* Name;
+
+        public LLVMJITSymbolFlags Flags;
     }
 }
