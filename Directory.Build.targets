@@ -28,7 +28,7 @@
 
   <!-- Package versions for package references across all projects -->
   <ItemGroup>
-    <PackageReference Update="libLLVM" Version="12.0.0" />
+    <PackageReference Update="libLLVM" Version="13.0.0" />
     <PackageReference Update="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
