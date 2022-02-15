@@ -32,7 +32,7 @@ namespace LLVMSharp.Interop
 
         public static implicit operator ReadOnlySpan<U>(in MarshaledArray<T, U> value)
         {
-            return value.Values;
+            return new ReadOnlySpan<U>(value.Values, 0, value.Count);
         }
 
         public void Dispose()
