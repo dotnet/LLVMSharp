@@ -872,17 +872,17 @@ namespace LLVMSharp.Interop
 
             fixed (LLVMAttributeRef* pAttrs = Attrs)
             {
-                LLVM.GetAttributesAtIndex(this, (uint)Idx, (LLVMOpaqueAttributeRef**)pAttrs);
+                LLVM.GetAttributesAtIndex(this, Idx, (LLVMOpaqueAttributeRef**)pAttrs);
             }
 
             return Attrs;
         }
 
-        public uint GetAttributeCountAtIndex(LLVMAttributeIndex Idx) => LLVM.GetAttributeCountAtIndex(this, (uint)Idx);
+        public uint GetAttributeCountAtIndex(LLVMAttributeIndex Idx) => LLVM.GetAttributeCountAtIndex(this, Idx);
 
         public LLVMValueRef GetBlockAddress(LLVMBasicBlockRef BB) => LLVM.BlockAddress(this, BB);
 
-        public uint GetCallSiteAttributeCount(LLVMAttributeIndex Idx) => LLVM.GetCallSiteAttributeCount(this, (uint)Idx);
+        public uint GetCallSiteAttributeCount(LLVMAttributeIndex Idx) => LLVM.GetCallSiteAttributeCount(this, Idx);
 
         public LLVMAttributeRef[] GetCallSiteAttributes(LLVMAttributeIndex Idx)
         {
@@ -890,7 +890,7 @@ namespace LLVMSharp.Interop
 
             fixed (LLVMAttributeRef* pAttrs = Attrs)
             {
-                LLVM.GetCallSiteAttributes(this, (uint)Idx, (LLVMOpaqueAttributeRef**)pAttrs);
+                LLVM.GetCallSiteAttributes(this, Idx, (LLVMOpaqueAttributeRef**)pAttrs);
             }
 
             return Attrs;
@@ -963,7 +963,7 @@ namespace LLVMSharp.Interop
             Alignment = Bytes;
         }
 
-        public void SetInstrParamAlignment(uint index, uint align) => LLVM.SetInstrParamAlignment(this, index, align);
+        public void SetInstrParamAlignment(LLVMAttributeIndex index, uint align) => LLVM.SetInstrParamAlignment(this, index, align);
 
         public void SetMetadata(uint KindID, LLVMValueRef Node) => LLVM.SetMetadata(this, KindID, Node);
 
