@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace LLVMSharp.Interop.UnitTests
 {
     /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueThreadSafeModule" /> struct.</summary>
-    public static unsafe class LLVMOrcOpaqueThreadSafeModuleTests
+    public static unsafe partial class LLVMOrcOpaqueThreadSafeModuleTests
     {
         /// <summary>Validates that the <see cref="LLVMOrcOpaqueThreadSafeModule" /> struct is blittable.</summary>
         [Test]

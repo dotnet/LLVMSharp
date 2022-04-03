@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace LLVMSharp.Interop.UnitTests
 {
     /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueSymbolStringPool" /> struct.</summary>
-    public static unsafe class LLVMOrcOpaqueSymbolStringPoolTests
+    public static unsafe partial class LLVMOrcOpaqueSymbolStringPoolTests
     {
         /// <summary>Validates that the <see cref="LLVMOrcOpaqueSymbolStringPool" /> struct is blittable.</summary>
         [Test]

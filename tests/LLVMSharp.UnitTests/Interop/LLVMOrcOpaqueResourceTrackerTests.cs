@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace LLVMSharp.Interop.UnitTests
 {
     /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueResourceTracker" /> struct.</summary>
-    public static unsafe class LLVMOrcOpaqueResourceTrackerTests
+    public static unsafe partial class LLVMOrcOpaqueResourceTrackerTests
     {
         /// <summary>Validates that the <see cref="LLVMOrcOpaqueResourceTracker" /> struct is blittable.</summary>
         [Test]

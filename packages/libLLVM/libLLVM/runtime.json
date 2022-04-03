@@ -5,24 +5,9 @@
         "libLLVM.runtime.freebsd.12-x64": "14.0.0"
       }
     },
-    "freebsd.12-x86": {
-      "libLLVM": {
-        "libLLVM.runtime.freebsd.12-x86": "14.0.0"
-      }
-    },
     "freebsd.13-x64": {
       "libLLVM": {
         "libLLVM.runtime.freebsd.13-x64": "14.0.0"
-      }
-    },
-    "freebsd.13-x86": {
-      "libLLVM": {
-        "libLLVM.runtime.freebsd.13-x86": "14.0.0"
-      }
-    },
-    "linux-arm": {
-      "libLLVM": {
-        "libLLVM.runtime.linux-arm": "14.0.0"
       }
     },
     "linux-arm64": {
@@ -45,9 +30,9 @@
         "libLLVM.runtime.ubuntu.20.04-x64": "14.0.0"
       }
     },
-    "ubuntu.21.04-x64": {
+    "ubuntu.21.10-x64": {
       "libLLVM": {
-        "libLLVM.runtime.ubuntu.21.04-x64": "14.0.0"
+        "libLLVM.runtime.ubuntu.21.10-x64": "14.0.0"
       }
     },
     "win-arm64": {

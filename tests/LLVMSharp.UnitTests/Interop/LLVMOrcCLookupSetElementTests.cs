@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 namespace LLVMSharp.Interop.UnitTests
 {
     /// <summary>Provides validation of the <see cref="LLVMOrcCLookupSetElement" /> struct.</summary>
-    public static unsafe class LLVMOrcCLookupSetElementTests
+    public static unsafe partial class LLVMOrcCLookupSetElementTests
     {
         /// <summary>Validates that the <see cref="LLVMOrcCLookupSetElement" /> struct is blittable.</summary>
         [Test]

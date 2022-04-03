@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace LLVMSharp.Interop.UnitTests
 {
     /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueDefinitionGenerator" /> struct.</summary>
-    public static unsafe class LLVMOrcOpaqueDefinitionGeneratorTests
+    public static unsafe partial class LLVMOrcOpaqueDefinitionGeneratorTests
     {
         /// <summary>Validates that the <see cref="LLVMOrcOpaqueDefinitionGenerator" /> struct is blittable.</summary>
         [Test]

@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace LLVMSharp.Interop.UnitTests
 {
     /// <summary>Provides validation of the <see cref="LLVMJITCSymbolMapPair" /> struct.</summary>
-    public static unsafe class LLVMJITCSymbolMapPairTests
+    public static unsafe partial class LLVMJITCSymbolMapPairTests
     {
         /// <summary>Validates that the <see cref="LLVMJITCSymbolMapPair" /> struct is blittable.</summary>
         [Test]

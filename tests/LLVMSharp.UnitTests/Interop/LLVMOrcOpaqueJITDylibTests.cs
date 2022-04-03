@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace LLVMSharp.Interop.UnitTests
 {
     /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueJITDylib" /> struct.</summary>
-    public static unsafe class LLVMOrcOpaqueJITDylibTests
+    public static unsafe partial class LLVMOrcOpaqueJITDylibTests
     {
         /// <summary>Validates that the <see cref="LLVMOrcOpaqueJITDylib" /> struct is blittable.</summary>
         [Test]

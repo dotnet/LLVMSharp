@@ -9,34 +9,34 @@ using System.Runtime.InteropServices;
 
 namespace LLVMSharp.Interop.UnitTests
 {
-    /// <summary>Provides validation of the <see cref="LTOObjectBuffer" /> struct.</summary>
-    public static unsafe partial class LTOObjectBufferTests
+    /// <summary>Provides validation of the <see cref="LLVMOrcCSymbolsList" /> struct.</summary>
+    public static unsafe partial class LLVMOrcCSymbolsListTests
     {
-        /// <summary>Validates that the <see cref="LTOObjectBuffer" /> struct is blittable.</summary>
+        /// <summary>Validates that the <see cref="LLVMOrcCSymbolsList" /> struct is blittable.</summary>
         [Test]
         public static void IsBlittableTest()
         {
-            Assert.That(Marshal.SizeOf<LTOObjectBuffer>(), Is.EqualTo(sizeof(LTOObjectBuffer)));
+            Assert.That(Marshal.SizeOf<LLVMOrcCSymbolsList>(), Is.EqualTo(sizeof(LLVMOrcCSymbolsList)));
         }
 
-        /// <summary>Validates that the <see cref="LTOObjectBuffer" /> struct has the right <see cref="LayoutKind" />.</summary>
+        /// <summary>Validates that the <see cref="LLVMOrcCSymbolsList" /> struct has the right <see cref="LayoutKind" />.</summary>
         [Test]
         public static void IsLayoutSequentialTest()
         {
-            Assert.That(typeof(LTOObjectBuffer).IsLayoutSequential, Is.True);
+            Assert.That(typeof(LLVMOrcCSymbolsList).IsLayoutSequential, Is.True);
         }
 
-        /// <summary>Validates that the <see cref="LTOObjectBuffer" /> struct has the correct size.</summary>
+        /// <summary>Validates that the <see cref="LLVMOrcCSymbolsList" /> struct has the correct size.</summary>
         [Test]
         public static void SizeOfTest()
         {
             if (Environment.Is64BitProcess)
             {
-                Assert.That(sizeof(LTOObjectBuffer), Is.EqualTo(16));
+                Assert.That(sizeof(LLVMOrcCSymbolsList), Is.EqualTo(16));
             }
             else
             {
-                Assert.That(sizeof(LTOObjectBuffer), Is.EqualTo(8));
+                Assert.That(sizeof(LLVMOrcCSymbolsList), Is.EqualTo(8));
             }
         }
     }

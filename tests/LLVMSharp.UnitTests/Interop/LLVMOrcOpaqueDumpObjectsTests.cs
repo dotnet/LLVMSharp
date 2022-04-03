@@ -8,28 +8,28 @@ using System.Runtime.InteropServices;
 
 namespace LLVMSharp.Interop.UnitTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOpInfoSymbol1" /> struct.</summary>
-    public static unsafe partial class LLVMOpInfoSymbol1Tests
+    /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueDumpObjects" /> struct.</summary>
+    public static unsafe partial class LLVMOrcOpaqueDumpObjectsTests
     {
-        /// <summary>Validates that the <see cref="LLVMOpInfoSymbol1" /> struct is blittable.</summary>
+        /// <summary>Validates that the <see cref="LLVMOrcOpaqueDumpObjects" /> struct is blittable.</summary>
         [Test]
         public static void IsBlittableTest()
         {
-            Assert.That(Marshal.SizeOf<LLVMOpInfoSymbol1>(), Is.EqualTo(sizeof(LLVMOpInfoSymbol1)));
+            Assert.That(Marshal.SizeOf<LLVMOrcOpaqueDumpObjects>(), Is.EqualTo(sizeof(LLVMOrcOpaqueDumpObjects)));
         }
 
-        /// <summary>Validates that the <see cref="LLVMOpInfoSymbol1" /> struct has the right <see cref="LayoutKind" />.</summary>
+        /// <summary>Validates that the <see cref="LLVMOrcOpaqueDumpObjects" /> struct has the right <see cref="LayoutKind" />.</summary>
         [Test]
         public static void IsLayoutSequentialTest()
         {
-            Assert.That(typeof(LLVMOpInfoSymbol1).IsLayoutSequential, Is.True);
+            Assert.That(typeof(LLVMOrcOpaqueDumpObjects).IsLayoutSequential, Is.True);
         }
 
-        /// <summary>Validates that the <see cref="LLVMOpInfoSymbol1" /> struct has the correct size.</summary>
+        /// <summary>Validates that the <see cref="LLVMOrcOpaqueDumpObjects" /> struct has the correct size.</summary>
         [Test]
         public static void SizeOfTest()
         {
-            Assert.That(sizeof(LLVMOpInfoSymbol1), Is.EqualTo(24));
+            Assert.That(sizeof(LLVMOrcOpaqueDumpObjects), Is.EqualTo(1));
         }
     }
 }

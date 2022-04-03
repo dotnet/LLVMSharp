@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace LLVMSharp.Interop.UnitTests
 {
     /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueObjectLayer" /> struct.</summary>
-    public static unsafe class LLVMOrcOpaqueObjectLayerTests
+    public static unsafe partial class LLVMOrcOpaqueObjectLayerTests
     {
         /// <summary>Validates that the <see cref="LLVMOrcOpaqueObjectLayer" /> struct is blittable.</summary>
         [Test]

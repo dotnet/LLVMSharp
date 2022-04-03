@@ -9,34 +9,34 @@ using System.Runtime.InteropServices;
 
 namespace LLVMSharp.Interop.UnitTests
 {
-    /// <summary>Provides validation of the <see cref="LTOObjectBuffer" /> struct.</summary>
-    public static unsafe partial class LTOObjectBufferTests
+    /// <summary>Provides validation of the <see cref="LLVMOrcCSymbolFlagsMapPair" /> struct.</summary>
+    public static unsafe partial class LLVMOrcCSymbolFlagsMapPairTests
     {
-        /// <summary>Validates that the <see cref="LTOObjectBuffer" /> struct is blittable.</summary>
+        /// <summary>Validates that the <see cref="LLVMOrcCSymbolFlagsMapPair" /> struct is blittable.</summary>
         [Test]
         public static void IsBlittableTest()
         {
-            Assert.That(Marshal.SizeOf<LTOObjectBuffer>(), Is.EqualTo(sizeof(LTOObjectBuffer)));
+            Assert.That(Marshal.SizeOf<LLVMOrcCSymbolFlagsMapPair>(), Is.EqualTo(sizeof(LLVMOrcCSymbolFlagsMapPair)));
         }
 
-        /// <summary>Validates that the <see cref="LTOObjectBuffer" /> struct has the right <see cref="LayoutKind" />.</summary>
+        /// <summary>Validates that the <see cref="LLVMOrcCSymbolFlagsMapPair" /> struct has the right <see cref="LayoutKind" />.</summary>
         [Test]
         public static void IsLayoutSequentialTest()
         {
-            Assert.That(typeof(LTOObjectBuffer).IsLayoutSequential, Is.True);
+            Assert.That(typeof(LLVMOrcCSymbolFlagsMapPair).IsLayoutSequential, Is.True);
         }
 
-        /// <summary>Validates that the <see cref="LTOObjectBuffer" /> struct has the correct size.</summary>
+        /// <summary>Validates that the <see cref="LLVMOrcCSymbolFlagsMapPair" /> struct has the correct size.</summary>
         [Test]
         public static void SizeOfTest()
         {
             if (Environment.Is64BitProcess)
             {
-                Assert.That(sizeof(LTOObjectBuffer), Is.EqualTo(16));
+                Assert.That(sizeof(LLVMOrcCSymbolFlagsMapPair), Is.EqualTo(16));
             }
             else
             {
-                Assert.That(sizeof(LTOObjectBuffer), Is.EqualTo(8));
+                Assert.That(sizeof(LLVMOrcCSymbolFlagsMapPair), Is.EqualTo(8));
             }
         }
     }

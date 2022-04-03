@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace LLVMSharp.Interop.UnitTests
 {
     /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueLookupState" /> struct.</summary>
-    public static unsafe class LLVMOrcOpaqueLookupStateTests
+    public static unsafe partial class LLVMOrcOpaqueLookupStateTests
     {
         /// <summary>Validates that the <see cref="LLVMOrcOpaqueLookupState" /> struct is blittable.</summary>
         [Test]

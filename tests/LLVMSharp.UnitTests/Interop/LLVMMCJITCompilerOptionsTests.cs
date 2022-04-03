@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 namespace LLVMSharp.Interop.UnitTests
 {
     /// <summary>Provides validation of the <see cref="LLVMMCJITCompilerOptions" /> struct.</summary>
-    public static unsafe class LLVMMCJITCompilerOptionsTests
+    public static unsafe partial class LLVMMCJITCompilerOptionsTests
     {
         /// <summary>Validates that the <see cref="LLVMMCJITCompilerOptions" /> struct is blittable.</summary>
         [Test]

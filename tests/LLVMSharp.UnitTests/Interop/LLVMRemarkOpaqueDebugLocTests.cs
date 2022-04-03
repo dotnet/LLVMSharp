@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace LLVMSharp.Interop.UnitTests
 {
     /// <summary>Provides validation of the <see cref="LLVMRemarkOpaqueDebugLoc" /> struct.</summary>
-    public static unsafe class LLVMRemarkOpaqueDebugLocTests
+    public static unsafe partial class LLVMRemarkOpaqueDebugLocTests
     {
         /// <summary>Validates that the <see cref="LLVMRemarkOpaqueDebugLoc" /> struct is blittable.</summary>
         [Test]

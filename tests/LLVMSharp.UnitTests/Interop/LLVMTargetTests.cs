@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace LLVMSharp.Interop.UnitTests
 {
     /// <summary>Provides validation of the <see cref="LLVMTarget" /> struct.</summary>
-    public static unsafe class LLVMTargetTests
+    public static unsafe partial class LLVMTargetTests
     {
         /// <summary>Validates that the <see cref="LLVMTarget" /> struct is blittable.</summary>
         [Test]

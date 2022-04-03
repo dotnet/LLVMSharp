@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace LLVMSharp.Interop.UnitTests
 {
     /// <summary>Provides validation of the <see cref="LLVMJITEvaluatedSymbol" /> struct.</summary>
-    public static unsafe class LLVMJITEvaluatedSymbolTests
+    public static unsafe partial class LLVMJITEvaluatedSymbolTests
     {
         /// <summary>Validates that the <see cref="LLVMJITEvaluatedSymbol" /> struct is blittable.</summary>
         [Test]
