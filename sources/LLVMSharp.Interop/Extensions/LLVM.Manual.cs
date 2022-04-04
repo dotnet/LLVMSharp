@@ -1,6 +1,6 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
-// Ported from https://github.com/llvm/llvm-project/tree/llvmorg-13.0.0/llvm/include/llvm-c
+// Ported from https://github.com/llvm/llvm-project/tree/llvmorg-14.0.0/llvm/include/llvm-c
 // Original source is Copyright (c) the LLVM Project and Contributors. Licensed under the Apache License v2.0 with LLVM Exceptions. See NOTICE.txt in the project root for license information.
 
 using System.Runtime.InteropServices;
@@ -50,6 +50,9 @@ namespace LLVMSharp.Interop
 
         [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSystemZTargetInfo", ExactSpelling = true)]
         public static extern void InitializeSystemZTargetInfo();
+
+        [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeVETargetInfo", ExactSpelling = true)]
+        public static extern void InitializeVETargetInfo();
 
         [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeWebAssemblyTargetInfo", ExactSpelling = true)]
         public static extern void InitializeWebAssemblyTargetInfo();
@@ -102,6 +105,9 @@ namespace LLVMSharp.Interop
         [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSystemZTarget", ExactSpelling = true)]
         public static extern void InitializeSystemZTarget();
 
+        [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeVETarget", ExactSpelling = true)]
+        public static extern void InitializeVETarget();
+
         [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeWebAssemblyTarget", ExactSpelling = true)]
         public static extern void InitializeWebAssemblyTarget();
 
@@ -152,6 +158,9 @@ namespace LLVMSharp.Interop
 
         [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSystemZTargetMC", ExactSpelling = true)]
         public static extern void InitializeSystemZTargetMC();
+
+        [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeVETargetMC", ExactSpelling = true)]
+        public static extern void InitializeVETargetMC();
 
         [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeWebAssemblyTargetMC", ExactSpelling = true)]
         public static extern void InitializeWebAssemblyTargetMC();
@@ -204,6 +213,9 @@ namespace LLVMSharp.Interop
         [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSystemZAsmPrinter", ExactSpelling = true)]
         public static extern void InitializeSystemZAsmPrinter();
 
+        [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeVEAsmPrinter", ExactSpelling = true)]
+        public static extern void InitializeVEAsmPrinter();
+
         [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeWebAssemblyAsmPrinter", ExactSpelling = true)]
         public static extern void InitializeWebAssemblyAsmPrinter();
 
@@ -252,6 +264,9 @@ namespace LLVMSharp.Interop
         [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSystemZAsmParser", ExactSpelling = true)]
         public static extern void InitializeSystemZAsmParser();
 
+        [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeVEAsmParser", ExactSpelling = true)]
+        public static extern void InitializeVEAsmParser();
+
         [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeWebAssemblyAsmParser", ExactSpelling = true)]
         public static extern void InitializeWebAssemblyAsmParser();
 
@@ -296,6 +311,9 @@ namespace LLVMSharp.Interop
 
         [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSystemZDisassembler", ExactSpelling = true)]
         public static extern void InitializeSystemZDisassembler();
+
+        [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeVEDisassembler", ExactSpelling = true)]
+        public static extern void InitializeVEDisassembler();
 
         [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeWebAssemblyDisassembler", ExactSpelling = true)]
         public static extern void InitializeWebAssemblyDisassembler();

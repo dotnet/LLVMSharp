@@ -45,8 +45,6 @@ namespace LLVMSharp.Interop
             LLVM.PassManagerBuilderPopulateLTOPassManager(this, PM, Internalize, RunInliner);
         }
 
-        public void SetOptLevel(uint OptLevel) => LLVM.PassManagerBuilderSetOptLevel(this, OptLevel);
-
         public void SetSizeLevel(uint SizeLevel) => LLVM.PassManagerBuilderSetSizeLevel(this, SizeLevel);
 
         public void SetDisableUnitAtATime(int Value) => LLVM.PassManagerBuilderSetDisableUnitAtATime(this, Value);
