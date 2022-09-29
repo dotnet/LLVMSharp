@@ -5,21 +5,10 @@
 
 namespace LLVMSharp.Interop;
 
-public enum LLVMAtomicRMWBinOp
+public unsafe partial struct LLVMOrcCSymbolMapPair
 {
-    LLVMAtomicRMWBinOpXchg,
-    LLVMAtomicRMWBinOpAdd,
-    LLVMAtomicRMWBinOpSub,
-    LLVMAtomicRMWBinOpAnd,
-    LLVMAtomicRMWBinOpNand,
-    LLVMAtomicRMWBinOpOr,
-    LLVMAtomicRMWBinOpXor,
-    LLVMAtomicRMWBinOpMax,
-    LLVMAtomicRMWBinOpMin,
-    LLVMAtomicRMWBinOpUMax,
-    LLVMAtomicRMWBinOpUMin,
-    LLVMAtomicRMWBinOpFAdd,
-    LLVMAtomicRMWBinOpFSub,
-    LLVMAtomicRMWBinOpFMax,
-    LLVMAtomicRMWBinOpFMin,
+    [NativeTypeName("LLVMOrcSymbolStringPoolEntryRef")]
+    public LLVMOrcOpaqueSymbolStringPoolEntry* Name;
+
+    public LLVMJITEvaluatedSymbol Sym;
 }

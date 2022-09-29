@@ -22,4 +22,5 @@ public enum LLVMBinaryType
     LLVMBinaryTypeMachO64L,
     LLVMBinaryTypeMachO64B,
     LLVMBinaryTypeWasm,
+    LLVMBinaryTypeOffload,
 }

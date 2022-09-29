@@ -86,6 +86,7 @@ public class IR
     }
 
     [Test]
+    [Obsolete]
     public void CallsFunction([Range(0, 10)] int op1, [Range(0, 10)] int op2)
     {
         using var module = LLVMModuleRef.CreateWithName("test_call");

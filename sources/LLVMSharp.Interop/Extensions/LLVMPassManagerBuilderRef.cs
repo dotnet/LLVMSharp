@@ -40,11 +40,6 @@ public unsafe partial struct LLVMPassManagerBuilderRef : IEquatable<LLVMPassMana
 
     public void PopulateModulePassManager(LLVMPassManagerRef PM) => LLVM.PassManagerBuilderPopulateModulePassManager(this, PM);
 
-    public void PopulateLTOPassManager(LLVMPassManagerRef PM, int Internalize, int RunInliner)
-    {
-        LLVM.PassManagerBuilderPopulateLTOPassManager(this, PM, Internalize, RunInliner);
-    }
-
     public void SetSizeLevel(uint SizeLevel) => LLVM.PassManagerBuilderSetSizeLevel(this, SizeLevel);
 
     public void SetDisableUnitAtATime(int Value) => LLVM.PassManagerBuilderSetDisableUnitAtATime(this, Value);

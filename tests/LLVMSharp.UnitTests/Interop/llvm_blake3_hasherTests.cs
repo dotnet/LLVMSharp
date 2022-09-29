@@ -8,27 +8,27 @@ using System.Runtime.InteropServices;
 
 namespace LLVMSharp.Interop.UnitTests;
 
-/// <summary>Provides validation of the <see cref="LLVMOpaqueTargetData" /> struct.</summary>
-public static unsafe partial class LLVMOpaqueTargetDataTests
+/// <summary>Provides validation of the <see cref="llvm_blake3_hasher" /> struct.</summary>
+public static unsafe partial class llvm_blake3_hasherTests
 {
-    /// <summary>Validates that the <see cref="LLVMOpaqueTargetData" /> struct is blittable.</summary>
+    /// <summary>Validates that the <see cref="llvm_blake3_hasher" /> struct is blittable.</summary>
     [Test]
     public static void IsBlittableTest()
     {
-        Assert.That(Marshal.SizeOf<LLVMOpaqueTargetData>(), Is.EqualTo(sizeof(LLVMOpaqueTargetData)));
+        Assert.That(Marshal.SizeOf<llvm_blake3_hasher>(), Is.EqualTo(sizeof(llvm_blake3_hasher)));
     }
 
-    /// <summary>Validates that the <see cref="LLVMOpaqueTargetData" /> struct has the right <see cref="LayoutKind" />.</summary>
+    /// <summary>Validates that the <see cref="llvm_blake3_hasher" /> struct has the right <see cref="LayoutKind" />.</summary>
     [Test]
     public static void IsLayoutSequentialTest()
     {
-        Assert.That(typeof(LLVMOpaqueTargetData).IsLayoutSequential, Is.True);
+        Assert.That(typeof(llvm_blake3_hasher).IsLayoutSequential, Is.True);
     }
 
-    /// <summary>Validates that the <see cref="LLVMOpaqueTargetData" /> struct has the correct size.</summary>
+    /// <summary>Validates that the <see cref="llvm_blake3_hasher" /> struct has the correct size.</summary>
     [Test]
     public static void SizeOfTest()
     {
-        Assert.That(sizeof(LLVMOpaqueTargetData), Is.EqualTo(1));
+        Assert.That(sizeof(llvm_blake3_hasher), Is.EqualTo(1912));
     }
 }

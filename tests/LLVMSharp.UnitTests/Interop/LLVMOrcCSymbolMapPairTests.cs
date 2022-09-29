@@ -8,27 +8,27 @@ using System.Runtime.InteropServices;
 
 namespace LLVMSharp.Interop.UnitTests;
 
-/// <summary>Provides validation of the <see cref="LLVMOpaquePassManager" /> struct.</summary>
-public static unsafe partial class LLVMOpaquePassManagerTests
+/// <summary>Provides validation of the <see cref="LLVMOrcCSymbolMapPair" /> struct.</summary>
+public static unsafe partial class LLVMOrcCSymbolMapPairTests
 {
-    /// <summary>Validates that the <see cref="LLVMOpaquePassManager" /> struct is blittable.</summary>
+    /// <summary>Validates that the <see cref="LLVMOrcCSymbolMapPair" /> struct is blittable.</summary>
     [Test]
     public static void IsBlittableTest()
     {
-        Assert.That(Marshal.SizeOf<LLVMOpaquePassManager>(), Is.EqualTo(sizeof(LLVMOpaquePassManager)));
+        Assert.That(Marshal.SizeOf<LLVMOrcCSymbolMapPair>(), Is.EqualTo(sizeof(LLVMOrcCSymbolMapPair)));
     }
 
-    /// <summary>Validates that the <see cref="LLVMOpaquePassManager" /> struct has the right <see cref="LayoutKind" />.</summary>
+    /// <summary>Validates that the <see cref="LLVMOrcCSymbolMapPair" /> struct has the right <see cref="LayoutKind" />.</summary>
     [Test]
     public static void IsLayoutSequentialTest()
     {
-        Assert.That(typeof(LLVMOpaquePassManager).IsLayoutSequential, Is.True);
+        Assert.That(typeof(LLVMOrcCSymbolMapPair).IsLayoutSequential, Is.True);
     }
 
-    /// <summary>Validates that the <see cref="LLVMOpaquePassManager" /> struct has the correct size.</summary>
+    /// <summary>Validates that the <see cref="LLVMOrcCSymbolMapPair" /> struct has the correct size.</summary>
     [Test]
     public static void SizeOfTest()
     {
-        Assert.That(sizeof(LLVMOpaquePassManager), Is.EqualTo(1));
+        Assert.That(sizeof(LLVMOrcCSymbolMapPair), Is.EqualTo(24));
     }
 }

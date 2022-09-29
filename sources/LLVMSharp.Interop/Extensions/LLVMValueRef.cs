@@ -699,27 +699,7 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public static LLVMValueRef CreateConstBitCast(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstBitCast(ConstantVal, ToType);
 
-    public static LLVMValueRef CreateConstExactSDiv(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstExactSDiv(LHSConstant, RHSConstant);
-
-    public static LLVMValueRef CreateConstExactUDiv(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstExactUDiv(LHSConstant, RHSConstant);
-
     public static LLVMValueRef CreateConstExtractElement(LLVMValueRef VectorConstant, LLVMValueRef IndexConstant) => LLVM.ConstExtractElement(VectorConstant, IndexConstant);
-
-    public static LLVMValueRef CreateConstExtractValue(LLVMValueRef AggConstant, uint[] IdxList) => CreateConstExtractValue(AggConstant, IdxList.AsSpan());
-
-    public static LLVMValueRef CreateConstExtractValue(LLVMValueRef AggConstant, ReadOnlySpan<uint> IdxList)
-    {
-        fixed (uint* pIdxList = IdxList)
-        {
-            return LLVM.ConstExtractValue(AggConstant, pIdxList, (uint)IdxList.Length);
-        }
-    }
-
-    public static LLVMValueRef CreateConstFAdd(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstFAdd(LHSConstant, RHSConstant);
-
-    public static LLVMValueRef CreateConstFDiv(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstFDiv(LHSConstant, RHSConstant);
-
-    public static LLVMValueRef CreateConstFMul(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstFMul(LHSConstant, RHSConstant);
 
     public static LLVMValueRef CreateConstFNeg(LLVMValueRef ConstantVal) => LLVM.ConstFNeg(ConstantVal);
 
@@ -733,12 +713,10 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public static LLVMValueRef CreateConstFPTrunc(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstFPTrunc(ConstantVal, ToType);
 
-    public static LLVMValueRef CreateConstFRem(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstFRem(LHSConstant, RHSConstant);
-
-    public static LLVMValueRef CreateConstFSub(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstFSub(LHSConstant, RHSConstant);
-
+    [Obsolete("Use CreateConstGEP2 instead to support opaque pointer")]
     public static LLVMValueRef CreateConstGEP(LLVMValueRef ConstantVal, LLVMValueRef[] ConstantIndices) => CreateConstGEP(ConstantVal, ConstantIndices.AsSpan());
 
+    [Obsolete("Use CreateConstGEP2 instead to support opaque pointer")]
     public static LLVMValueRef CreateConstGEP(LLVMValueRef ConstantVal, ReadOnlySpan<LLVMValueRef> ConstantIndices)
     {
         fixed (LLVMValueRef* pConstantIndices = ConstantIndices)
@@ -747,13 +725,35 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
         }
     }
 
+    public static LLVMValueRef CreateConstGEP2(LLVMTypeRef Ty, LLVMValueRef ConstantVal, LLVMValueRef[] ConstantIndices) => CreateConstGEP2(Ty, ConstantVal, ConstantIndices.AsSpan());
+
+    public static LLVMValueRef CreateConstGEP2(LLVMTypeRef Ty, LLVMValueRef ConstantVal, ReadOnlySpan<LLVMValueRef> ConstantIndices)
+    {
+        fixed (LLVMValueRef* pConstantIndices = ConstantIndices)
+        {
+            return LLVM.ConstGEP2(Ty, ConstantVal, (LLVMOpaqueValue**)pConstantIndices, (uint)ConstantIndices.Length);
+        }
+    }
+
+    [Obsolete("Use CreateConstInBoundsGEP2 instead to support opaque pointer")]
     public static LLVMValueRef CreateConstInBoundsGEP(LLVMValueRef ConstantVal, LLVMValueRef[] ConstantIndices) => CreateConstInBoundsGEP(ConstantVal, ConstantIndices.AsSpan());
 
+    [Obsolete("Use CreateConstInBoundsGEP2 instead to support opaque pointer")]
     public static LLVMValueRef CreateConstInBoundsGEP(LLVMValueRef ConstantVal, ReadOnlySpan<LLVMValueRef> ConstantIndices)
     {
         fixed (LLVMValueRef* pConstantIndices = ConstantIndices)
         {
             return LLVM.ConstInBoundsGEP(ConstantVal, (LLVMOpaqueValue**)pConstantIndices, (uint)ConstantIndices.Length);
+        }
+    }
+
+    public static LLVMValueRef CreateConstInBoundsGEP2(LLVMTypeRef Ty, LLVMValueRef ConstantVal, LLVMValueRef[] ConstantIndices) => CreateConstInBoundsGEP2(Ty, ConstantVal, ConstantIndices.AsSpan());
+
+    public static LLVMValueRef CreateConstInBoundsGEP2(LLVMTypeRef Ty, LLVMValueRef ConstantVal, ReadOnlySpan<LLVMValueRef> ConstantIndices)
+    {
+        fixed (LLVMValueRef* pConstantIndices = ConstantIndices)
+        {
+            return LLVM.ConstInBoundsGEP2(Ty, ConstantVal, (LLVMOpaqueValue**)pConstantIndices, (uint)ConstantIndices.Length);
         }
     }
 
@@ -767,16 +767,6 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
     }
 
     public static LLVMValueRef CreateConstInsertElement(LLVMValueRef VectorConstant, LLVMValueRef ElementValueConstant, LLVMValueRef IndexConstant) => LLVM.ConstInsertElement(VectorConstant, ElementValueConstant, IndexConstant);
-
-    public static LLVMValueRef CreateConstInsertValue(LLVMValueRef AggConstant, LLVMValueRef ElementValueConstant, uint[] IdxList) => CreateConstInsertValue(AggConstant, ElementValueConstant, IdxList.AsSpan());
-
-    public static LLVMValueRef CreateConstInsertValue(LLVMValueRef AggConstant, LLVMValueRef ElementValueConstant, ReadOnlySpan<uint> IdxList)
-    {
-        fixed (uint* pIdxList = IdxList)
-        {
-            return LLVM.ConstInsertValue(AggConstant, ElementValueConstant, pIdxList, (uint)IdxList.Length);
-        }
-    }
 
     public static LLVMValueRef CreateConstInt(LLVMTypeRef IntTy, ulong N, bool SignExtend = false) => LLVM.ConstInt(IntTy, N, SignExtend ? 1 : 0);
 
@@ -872,8 +862,6 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
         return LLVM.ConstRealOfStringAndSize(RealTy, marshaledText, (uint)marshaledText.Length);
     }
 
-    public static LLVMValueRef CreateConstSDiv(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstSDiv(LHSConstant, RHSConstant);
-
     public static LLVMValueRef CreateConstSelect(LLVMValueRef ConstantCondition, LLVMValueRef ConstantIfTrue, LLVMValueRef ConstantIfFalse) => LLVM.ConstSelect(ConstantCondition, ConstantIfTrue, ConstantIfFalse);
 
     public static LLVMValueRef CreateConstSExt(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstSExt(ConstantVal, ToType);
@@ -885,8 +873,6 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
     public static LLVMValueRef CreateConstShuffleVector(LLVMValueRef VectorAConstant, LLVMValueRef VectorBConstant, LLVMValueRef MaskConstant) => LLVM.ConstShuffleVector(VectorAConstant, VectorBConstant, MaskConstant);
 
     public static LLVMValueRef CreateConstSIToFP(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstSIToFP(ConstantVal, ToType);
-
-    public static LLVMValueRef CreateConstSRem(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstSRem(LHSConstant, RHSConstant);
 
     public static LLVMValueRef CreateConstStruct(LLVMValueRef[] ConstantVals, bool Packed) => CreateConstStruct(ConstantVals.AsSpan(), Packed);
 
@@ -904,11 +890,7 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public static LLVMValueRef CreateConstTruncOrBitCast(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstTruncOrBitCast(ConstantVal, ToType);
 
-    public static LLVMValueRef CreateConstUDiv(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstUDiv(LHSConstant, RHSConstant);
-
     public static LLVMValueRef CreateConstUIToFP(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstUIToFP(ConstantVal, ToType);
-
-    public static LLVMValueRef CreateConstURem(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstURem(LHSConstant, RHSConstant);
 
     public static LLVMValueRef CreateConstVector(LLVMValueRef[] ScalarConstantVars) => CreateConstVector(ScalarConstantVars.AsSpan());
 
@@ -1037,6 +1019,9 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
         return result;
     }
 
+    public LLVMValueRef GetAggregateElement(uint idx) => LLVM.GetAggregateElement(this, idx);
+
+    [Obsolete("Use GetAggregateElement instead")]
     public LLVMValueRef GetElementAsConstant(uint idx) => LLVM.GetElementAsConstant(this, idx);
 
     public override int GetHashCode() => Handle.GetHashCode();

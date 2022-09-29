@@ -5,21 +5,23 @@
 
 namespace LLVMSharp.Interop;
 
-public enum LLVMAtomicRMWBinOp
+public unsafe partial struct llvm_blake3_chunk_state
 {
-    LLVMAtomicRMWBinOpXchg,
-    LLVMAtomicRMWBinOpAdd,
-    LLVMAtomicRMWBinOpSub,
-    LLVMAtomicRMWBinOpAnd,
-    LLVMAtomicRMWBinOpNand,
-    LLVMAtomicRMWBinOpOr,
-    LLVMAtomicRMWBinOpXor,
-    LLVMAtomicRMWBinOpMax,
-    LLVMAtomicRMWBinOpMin,
-    LLVMAtomicRMWBinOpUMax,
-    LLVMAtomicRMWBinOpUMin,
-    LLVMAtomicRMWBinOpFAdd,
-    LLVMAtomicRMWBinOpFSub,
-    LLVMAtomicRMWBinOpFMax,
-    LLVMAtomicRMWBinOpFMin,
+    [NativeTypeName("uint32_t[8]")]
+    public fixed uint cv[8];
+
+    [NativeTypeName("uint64_t")]
+    public ulong chunk_counter;
+
+    [NativeTypeName("uint8_t[64]")]
+    public fixed byte buf[64];
+
+    [NativeTypeName("uint8_t")]
+    public byte buf_len;
+
+    [NativeTypeName("uint8_t")]
+    public byte blocks_compressed;
+
+    [NativeTypeName("uint8_t")]
+    public byte flags;
 }

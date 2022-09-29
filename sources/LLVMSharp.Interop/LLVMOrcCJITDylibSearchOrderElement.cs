@@ -5,21 +5,10 @@
 
 namespace LLVMSharp.Interop;
 
-public enum LLVMAtomicRMWBinOp
+public unsafe partial struct LLVMOrcCJITDylibSearchOrderElement
 {
-    LLVMAtomicRMWBinOpXchg,
-    LLVMAtomicRMWBinOpAdd,
-    LLVMAtomicRMWBinOpSub,
-    LLVMAtomicRMWBinOpAnd,
-    LLVMAtomicRMWBinOpNand,
-    LLVMAtomicRMWBinOpOr,
-    LLVMAtomicRMWBinOpXor,
-    LLVMAtomicRMWBinOpMax,
-    LLVMAtomicRMWBinOpMin,
-    LLVMAtomicRMWBinOpUMax,
-    LLVMAtomicRMWBinOpUMin,
-    LLVMAtomicRMWBinOpFAdd,
-    LLVMAtomicRMWBinOpFSub,
-    LLVMAtomicRMWBinOpFMax,
-    LLVMAtomicRMWBinOpFMin,
+    [NativeTypeName("LLVMOrcJITDylibRef")]
+    public LLVMOrcOpaqueJITDylib* JD;
+
+    public LLVMOrcJITDylibLookupFlags JDLookupFlags;
 }

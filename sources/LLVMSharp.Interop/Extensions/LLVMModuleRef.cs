@@ -94,12 +94,22 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         return LLVM.ModuleCreateWithName(marshaledModuleID);
     }
 
+    [Obsolete("Use AddAlias2 instead to support opaque pointer")]
     public LLVMValueRef AddAlias(LLVMTypeRef Ty, LLVMValueRef Aliasee, string Name) => AddAlias(Ty, Aliasee, Name.AsSpan());
 
+    [Obsolete("Use AddAlias2 instead to support opaque pointer")]
     public LLVMValueRef AddAlias(LLVMTypeRef Ty, LLVMValueRef Aliasee, ReadOnlySpan<char> Name)
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.AddAlias(this, Ty, Aliasee, marshaledName);
+    }
+
+    public LLVMValueRef AddAlias2(LLVMTypeRef ValueTy, uint AddrSpace, LLVMValueRef Aliasee, string Name) => AddAlias2(ValueTy, AddrSpace, Aliasee, Name.AsSpan());
+
+    public LLVMValueRef AddAlias2(LLVMTypeRef ValueTy, uint AddrSpace, LLVMValueRef Aliasee, ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.AddAlias2(this, ValueTy, AddrSpace, Aliasee, marshaledName);
     }
 
     public LLVMValueRef AddFunction(string Name, LLVMTypeRef FunctionTy) => AddFunction(Name.AsSpan(), FunctionTy);
