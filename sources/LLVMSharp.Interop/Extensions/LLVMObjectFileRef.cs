@@ -21,7 +21,7 @@ public unsafe partial struct LLVMObjectFileRef : IEquatable<LLVMObjectFileRef>
 
     public static bool operator !=(LLVMObjectFileRef left, LLVMObjectFileRef right) => !(left == right);
 
-    public override bool Equals(object obj) => (obj is LLVMObjectFileRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMObjectFileRef other) && Equals(other);
 
     public bool Equals(LLVMObjectFileRef other) => this == other;
 

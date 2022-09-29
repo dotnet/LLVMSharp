@@ -32,13 +32,13 @@ public sealed class IRBuilder : IRBuilderBase
     public ReturnInst CreateAggregateRet(ReadOnlySpan<Value> retVals)
     {
         using var retValHandles = new MarshaledArray<Value, LLVMValueRef>(retVals, (value) => value.Handle);
-        var handle = Handle.BuildAggregateRet(retValHandles);
+        var handle = Handle.BuildAggregateRet(retValHandles.AsSpan());
         return Context.GetOrCreate<ReturnInst>(handle);
     }
 
-    public AllocaInst CreateAlloca(Type ty, Value arraySize = null, string name = "") => CreateAlloca(ty, arraySize, name.AsSpan());
+    public AllocaInst CreateAlloca(Type ty, Value? arraySize = null, string name = "") => CreateAlloca(ty, arraySize, name.AsSpan());
 
-    public AllocaInst CreateAlloca(Type ty, Value arraySize, ReadOnlySpan<char> name)
+    public AllocaInst CreateAlloca(Type ty, Value? arraySize, ReadOnlySpan<char> name)
     {
         var handle = Handle.BuildArrayAlloca(ty.Handle, arraySize?.Handle ?? default, name);
         return Context.GetOrCreate<AllocaInst>(handle);
@@ -88,12 +88,12 @@ public sealed class IRBuilder : IRBuilderBase
         return Context.GetOrCreate<BranchInst>(handle);
     }
 
-    public CallInst CreateCall(Value callee, Value[] args = null, string name = "") => CreateCall(callee, args.AsSpan(), name.AsSpan());
+    public CallInst CreateCall(FunctionType fTy, Value callee, Value[]? args = null, string name = "") => CreateCall(fTy, callee, args.AsSpan(), name.AsSpan());
 
-    public CallInst CreateCall(Value callee, ReadOnlySpan<Value> args, ReadOnlySpan<char> name)
+    public CallInst CreateCall(FunctionType fTy, Value callee, ReadOnlySpan<Value> args, ReadOnlySpan<char> name)
     {
         using var argHandles = new MarshaledArray<Value, LLVMValueRef>(args, (value) => value.Handle);
-        var handle = Handle.BuildCall(callee.Handle, argHandles, name);
+        var handle = Handle.BuildCall2(fTy.Handle, callee.Handle, argHandles.AsSpan(), name);
         return Context.GetOrCreate<CallInst>(handle);
     }
 
@@ -247,12 +247,12 @@ public sealed class IRBuilder : IRBuilderBase
         return Context.GetOrCreate(handle);
     }
 
-    public Value CreateGEP(Value ptr, Value[] idxList, string name = "") => CreateGEP(ptr, idxList.AsSpan(), name.AsSpan());
+    public Value CreateGEP(Type ty, Value ptr, Value[] idxList, string name = "") => CreateGEP(ty, ptr, idxList.AsSpan(), name.AsSpan());
 
-    public Value CreateGEP(Value ptr, ReadOnlySpan<Value> idxList, ReadOnlySpan<char> name)
+    public Value CreateGEP(Type ty, Value ptr, ReadOnlySpan<Value> idxList, ReadOnlySpan<char> name)
     {
         using var idxListHandles = new MarshaledArray<Value, LLVMValueRef>(idxList, (value) => value.Handle);
-        var handle = Handle.BuildGEP(ptr.Handle, idxListHandles, name);
+        var handle = Handle.BuildGEP2(ty.Handle, ptr.Handle, idxListHandles.AsSpan(), name);
         return Context.GetOrCreate(handle);
     }
 
@@ -272,12 +272,12 @@ public sealed class IRBuilder : IRBuilderBase
         return Context.GetOrCreate(handle);
     }
 
-    public Value CreateInBoundsGEP(Value ptr, Value[] idxList, string name = "") => CreateInBoundsGEP(ptr, idxList.AsSpan(), name.AsSpan());
+    public Value CreateInBoundsGEP(Type ty, Value ptr, Value[] idxList, string name = "") => CreateInBoundsGEP(ty, ptr, idxList.AsSpan(), name.AsSpan());
 
-    public Value CreateInBoundsGEP(Value ptr, ReadOnlySpan<Value> idxList, ReadOnlySpan<char> name)
+    public Value CreateInBoundsGEP(Type ty, Value ptr, ReadOnlySpan<Value> idxList, ReadOnlySpan<char> name)
     {
         using var idxListHandles = new MarshaledArray<Value, LLVMValueRef>(idxList, (value) => value.Handle);
-        var handle = Handle.BuildInBoundsGEP(ptr.Handle, idxListHandles, name);
+        var handle = Handle.BuildInBoundsGEP2(ty.Handle, ptr.Handle, idxListHandles.AsSpan(), name);
         return Context.GetOrCreate(handle);
     }
 
@@ -319,12 +319,12 @@ public sealed class IRBuilder : IRBuilderBase
         return Context.GetOrCreate(handle);
     }
 
-    public InvokeInst CreateInvoke(Value callee, BasicBlock normalDest, BasicBlock unwindDest, Value[] args, string name = "") => CreateInvoke(callee, normalDest, unwindDest, args.AsSpan(), name.AsSpan());
+    public InvokeInst CreateInvoke(FunctionType ty, Value callee, BasicBlock normalDest, BasicBlock unwindDest, Value[] args, string name = "") => CreateInvoke(ty, callee, normalDest, unwindDest, args.AsSpan(), name.AsSpan());
 
-    public InvokeInst CreateInvoke(Value callee, BasicBlock normalDest, BasicBlock unwindDest, ReadOnlySpan<Value> args, ReadOnlySpan<char> name)
+    public InvokeInst CreateInvoke(FunctionType ty, Value callee, BasicBlock normalDest, BasicBlock unwindDest, ReadOnlySpan<Value> args, ReadOnlySpan<char> name)
     {
         using var argHandles = new MarshaledArray<Value, LLVMValueRef>(args, (value) => value.Handle);
-        var handle = Handle.BuildInvoke(callee.Handle, argHandles, normalDest.Handle, unwindDest.Handle, name);
+        var handle = Handle.BuildInvoke2(ty.Handle, callee.Handle, argHandles.AsSpan(), normalDest.Handle, unwindDest.Handle, name);
         return Context.GetOrCreate<InvokeInst>(handle);
     }
 
@@ -352,11 +352,11 @@ public sealed class IRBuilder : IRBuilderBase
         return Context.GetOrCreate<LandingPadInst>(handle);
     }
 
-    public LoadInst CreateLoad(Value ptr, string name = "") => CreateLoad(ptr, name.AsSpan());
+    public LoadInst CreateLoad(Type ty, Value ptr, string name = "") => CreateLoad(ty, ptr, name.AsSpan());
 
-    public LoadInst CreateLoad(Value ptr, ReadOnlySpan<char> name)
+    public LoadInst CreateLoad(Type ty, Value ptr, ReadOnlySpan<char> name)
     {
-        var handle = Handle.BuildLoad(ptr.Handle, name);
+        var handle = Handle.BuildLoad2(ty.Handle, ptr.Handle, name);
         return Context.GetOrCreate<LoadInst>(handle);
     }
 
@@ -480,11 +480,11 @@ public sealed class IRBuilder : IRBuilderBase
         return Context.GetOrCreate(handle);
     }
 
-    public Value CreatePtrDiff(Value lhs, Value rhs, string name = "") => CreatePtrDiff(lhs, rhs, name.AsSpan());
+    public Value CreatePtrDiff(Type elemTy, Value lhs, Value rhs, string name = "") => CreatePtrDiff(elemTy, lhs, rhs, name.AsSpan());
 
-    public Value CreatePtrDiff(Value lhs, Value rhs, ReadOnlySpan<char> name)
+    public Value CreatePtrDiff(Type elemTy, Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
-        var handle = Handle.BuildPtrDiff(lhs.Handle, rhs.Handle, name);
+        var handle = Handle.BuildPtrDiff2(elemTy.Handle, lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
 
@@ -584,11 +584,11 @@ public sealed class IRBuilder : IRBuilderBase
         return Context.GetOrCreate<StoreInst>(handle);
     }
 
-    public Value CreateStructGEP(Value ptr, uint idx, string name = "") => CreateStructGEP(ptr, idx, name.AsSpan());
+    public Value CreateStructGEP(Type ty, Value ptr, uint idx, string name = "") => CreateStructGEP(ty, ptr, idx, name.AsSpan());
 
-    public Value CreateStructGEP(Value ptr, uint idx, ReadOnlySpan<char> name)
+    public Value CreateStructGEP(Type ty, Value ptr, uint idx, ReadOnlySpan<char> name)
     {
-        var handle = Handle.BuildStructGEP(ptr.Handle, idx, name);
+        var handle = Handle.BuildStructGEP2(ty.Handle, ptr.Handle, idx, name);
         return Context.GetOrCreate(handle);
     }
 

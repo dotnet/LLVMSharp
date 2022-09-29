@@ -26,8 +26,7 @@ public unsafe partial struct LLVMTargetRef : IEquatable<LLVMTargetRef>
                 return string.Empty;
             }
 
-            var span = new ReadOnlySpan<byte>(pDefaultTriple, int.MaxValue);
-            return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            return SpanExtensions.AsString(pDefaultTriple);
         }
     }
 
@@ -46,8 +45,7 @@ public unsafe partial struct LLVMTargetRef : IEquatable<LLVMTargetRef>
             }
             else
             {
-                var span = new ReadOnlySpan<byte>(pError, int.MaxValue);
-                outError = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                outError = SpanExtensions.AsString(pError);
             }
 
             return result == 0;
@@ -98,8 +96,7 @@ public unsafe partial struct LLVMTargetRef : IEquatable<LLVMTargetRef>
                 return string.Empty;
             }
 
-            var span = new ReadOnlySpan<byte>(pName, int.MaxValue);
-            return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            return SpanExtensions.AsString(pName);
         }
     }
 
@@ -111,7 +108,7 @@ public unsafe partial struct LLVMTargetRef : IEquatable<LLVMTargetRef>
 
     public static bool operator !=(LLVMTargetRef left, LLVMTargetRef right) => !(left == right);
 
-    public override bool Equals(object obj) => (obj is LLVMTargetRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMTargetRef other) && Equals(other);
 
     public bool Equals(LLVMTargetRef other) => this == other;
 

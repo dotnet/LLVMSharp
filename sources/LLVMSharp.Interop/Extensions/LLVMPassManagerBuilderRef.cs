@@ -30,7 +30,7 @@ public unsafe partial struct LLVMPassManagerBuilderRef : IEquatable<LLVMPassMana
         }
     }
 
-    public override bool Equals(object obj) => (obj is LLVMPassManagerBuilderRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMPassManagerBuilderRef other) && Equals(other);
 
     public bool Equals(LLVMPassManagerBuilderRef other) => this == other;
 
@@ -39,11 +39,6 @@ public unsafe partial struct LLVMPassManagerBuilderRef : IEquatable<LLVMPassMana
     public void PopulateFunctionPassManager(LLVMPassManagerRef PM) => LLVM.PassManagerBuilderPopulateFunctionPassManager(this, PM);
 
     public void PopulateModulePassManager(LLVMPassManagerRef PM) => LLVM.PassManagerBuilderPopulateModulePassManager(this, PM);
-
-    public void PopulateLTOPassManager(LLVMPassManagerRef PM, int Internalize, int RunInliner)
-    {
-        LLVM.PassManagerBuilderPopulateLTOPassManager(this, PM, Internalize, RunInliner);
-    }
 
     public void SetSizeLevel(uint SizeLevel) => LLVM.PassManagerBuilderSetSizeLevel(this, SizeLevel);
 

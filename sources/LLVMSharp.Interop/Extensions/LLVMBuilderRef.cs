@@ -124,14 +124,27 @@ public unsafe partial struct LLVMBuilderRef : IDisposable, IEquatable<LLVMBuilde
 
     public LLVMValueRef BuildBr(LLVMBasicBlockRef Dest) => LLVM.BuildBr(this, Dest);
 
+    [Obsolete("Use BuildCall2 instead to support opaque pointer")]
     public LLVMValueRef BuildCall(LLVMValueRef Fn, LLVMValueRef[] Args, string Name = "") => BuildCall(Fn, Args.AsSpan(), Name.AsSpan());
 
+    [Obsolete("Use BuildCall2 instead to support opaque pointer")]
     public LLVMValueRef BuildCall(LLVMValueRef Fn, ReadOnlySpan<LLVMValueRef> Args, ReadOnlySpan<char> Name)
     {
         fixed (LLVMValueRef* pArgs = Args)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.BuildCall(this, Fn, (LLVMOpaqueValue**)pArgs, (uint)Args.Length, marshaledName);
+        }
+    }
+
+    public LLVMValueRef BuildCall2(LLVMTypeRef Ty, LLVMValueRef Fn, LLVMValueRef[] Args, string Name = "") => BuildCall2(Ty, Fn, Args.AsSpan(), Name.AsSpan());
+
+    public LLVMValueRef BuildCall2(LLVMTypeRef Ty, LLVMValueRef Fn, ReadOnlySpan<LLVMValueRef> Args, ReadOnlySpan<char> Name)
+    {
+        fixed (LLVMValueRef* pArgs = Args)
+        {
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.BuildCall2(this, Ty, Fn, (LLVMOpaqueValue**)pArgs, (uint)Args.Length, marshaledName);
         }
     }
 
@@ -283,14 +296,27 @@ public unsafe partial struct LLVMBuilderRef : IDisposable, IEquatable<LLVMBuilde
         return LLVM.BuildFSub(this, LHS, RHS, marshaledName);
     }
 
+    [Obsolete("Use BuildGEP2 instead to support opaque pointer")]
     public LLVMValueRef BuildGEP(LLVMValueRef Pointer, LLVMValueRef[] Indices, string Name = "") => BuildGEP(Pointer, Indices.AsSpan(), Name.AsSpan());
 
+    [Obsolete("Use BuildGEP2 instead to support opaque pointer")]
     public LLVMValueRef BuildGEP(LLVMValueRef Pointer, ReadOnlySpan<LLVMValueRef> Indices, ReadOnlySpan<char> Name)
     {
         fixed (LLVMValueRef* pIndices = Indices)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.BuildGEP(this, Pointer, (LLVMOpaqueValue**)pIndices, (uint)Indices.Length, marshaledName);
+        }
+    }
+
+    public LLVMValueRef BuildGEP2(LLVMTypeRef Ty, LLVMValueRef Pointer, LLVMValueRef[] Indices, string Name = "") => BuildGEP2(Ty, Pointer, Indices.AsSpan(), Name.AsSpan());
+
+    public LLVMValueRef BuildGEP2(LLVMTypeRef Ty, LLVMValueRef Pointer, ReadOnlySpan<LLVMValueRef> Indices, ReadOnlySpan<char> Name)
+    {
+        fixed (LLVMValueRef* pIndices = Indices)
+        {
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.BuildGEP2(this, Ty, Pointer, (LLVMOpaqueValue**)pIndices, (uint)Indices.Length, marshaledName);
         }
     }
 
@@ -320,14 +346,27 @@ public unsafe partial struct LLVMBuilderRef : IDisposable, IEquatable<LLVMBuilde
         return LLVM.BuildICmp(this, Op, LHS, RHS, marshaledName);
     }
 
+    [Obsolete("Use BuildInBoundsGEP2 instead to support opaque pointer")]
     public LLVMValueRef BuildInBoundsGEP(LLVMValueRef Pointer, LLVMValueRef[] Indices, string Name = "") => BuildInBoundsGEP(Pointer, Indices.AsSpan(), Name.AsSpan());
 
+    [Obsolete("Use BuildInBoundsGEP2 instead to support opaque pointer")]
     public LLVMValueRef BuildInBoundsGEP(LLVMValueRef Pointer, ReadOnlySpan<LLVMValueRef> Indices, ReadOnlySpan<char> Name)
     {
         fixed (LLVMValueRef* pIndices = Indices)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.BuildInBoundsGEP(this, Pointer, (LLVMOpaqueValue**)pIndices, (uint)Indices.Length, marshaledName);
+        }
+    }
+
+    public LLVMValueRef BuildInBoundsGEP2(LLVMTypeRef Ty, LLVMValueRef Pointer, LLVMValueRef[] Indices, string Name = "") => BuildInBoundsGEP2(Ty, Pointer, Indices.AsSpan(), Name.AsSpan());
+
+    public LLVMValueRef BuildInBoundsGEP2(LLVMTypeRef Ty, LLVMValueRef Pointer, ReadOnlySpan<LLVMValueRef> Indices, ReadOnlySpan<char> Name)
+    {
+        fixed (LLVMValueRef* pIndices = Indices)
+        {
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.BuildInBoundsGEP2(this, Ty, Pointer, (LLVMOpaqueValue**)pIndices, (uint)Indices.Length, marshaledName);
         }
     }
 
@@ -365,14 +404,27 @@ public unsafe partial struct LLVMBuilderRef : IDisposable, IEquatable<LLVMBuilde
         return LLVM.BuildIntToPtr(this, Val, DestTy, marshaledName);
     }
 
+    [Obsolete("Use BuildInvoke2 instead to support opaque pointer")]
     public LLVMValueRef BuildInvoke(LLVMValueRef Fn, LLVMValueRef[] Args, LLVMBasicBlockRef Then, LLVMBasicBlockRef Catch, string Name = "") => BuildInvoke(Fn, Args.AsSpan(), Then, Catch, Name.AsSpan());
 
+    [Obsolete("Use BuildInvoke2 instead to support opaque pointer")]
     public LLVMValueRef BuildInvoke(LLVMValueRef Fn, ReadOnlySpan<LLVMValueRef> Args, LLVMBasicBlockRef Then, LLVMBasicBlockRef Catch, ReadOnlySpan<char> Name)
     {
         fixed (LLVMValueRef* pArgs = Args)
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.BuildInvoke(this, Fn, (LLVMOpaqueValue**)pArgs, (uint)Args.Length, Then, Catch, marshaledName);
+        }
+    }
+
+    public LLVMValueRef BuildInvoke2(LLVMTypeRef Ty, LLVMValueRef Fn, LLVMValueRef[] Args, LLVMBasicBlockRef Then, LLVMBasicBlockRef Catch, string Name = "") => BuildInvoke2(Ty, Fn, Args.AsSpan(), Then, Catch, Name.AsSpan());
+
+    public LLVMValueRef BuildInvoke2(LLVMTypeRef Ty, LLVMValueRef Fn, ReadOnlySpan<LLVMValueRef> Args, LLVMBasicBlockRef Then, LLVMBasicBlockRef Catch, ReadOnlySpan<char> Name)
+    {
+        fixed (LLVMValueRef* pArgs = Args)
+        {
+            using var marshaledName = new MarshaledString(Name);
+            return LLVM.BuildInvoke2(this, Ty, Fn, (LLVMOpaqueValue**)pArgs, (uint)Args.Length, Then, Catch, marshaledName);
         }
     }
 
@@ -400,12 +452,22 @@ public unsafe partial struct LLVMBuilderRef : IDisposable, IEquatable<LLVMBuilde
         return LLVM.BuildLandingPad(this, Ty, PersFn, NumClauses, marshaledName);
     }
 
+    [Obsolete("Use BuildLoad2 instead to support opaque pointer")]
     public LLVMValueRef BuildLoad(LLVMValueRef PointerVal, string Name = "") => BuildLoad(PointerVal, Name.AsSpan());
 
+    [Obsolete("Use BuildLoad2 instead to support opaque pointer")]
     public LLVMValueRef BuildLoad(LLVMValueRef PointerVal, ReadOnlySpan<char> Name)
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.BuildLoad(this, PointerVal, marshaledName);
+    }
+
+    public LLVMValueRef BuildLoad2(LLVMTypeRef Ty, LLVMValueRef PointerVal, string Name = "") => BuildLoad2(Ty, PointerVal, Name.AsSpan());
+
+    public LLVMValueRef BuildLoad2(LLVMTypeRef Ty, LLVMValueRef PointerVal, ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.BuildLoad2(this, Ty, PointerVal, marshaledName);
     }
 
     public LLVMValueRef BuildLShr(LLVMValueRef LHS, LLVMValueRef RHS, string Name = "") => BuildLShr(LHS, RHS, Name.AsSpan());
@@ -536,12 +598,22 @@ public unsafe partial struct LLVMBuilderRef : IDisposable, IEquatable<LLVMBuilde
         return LLVM.BuildPointerCast(this, Val, DestTy, marshaledName);
     }
 
+    [Obsolete("Use BuildPtrDiff2 instead to support opaque pointer")]
     public LLVMValueRef BuildPtrDiff(LLVMValueRef LHS, LLVMValueRef RHS, string Name = "") => BuildPtrDiff(LHS, RHS, Name.AsSpan());
 
+    [Obsolete("Use BuildPtrDiff2 instead to support opaque pointer")]
     public LLVMValueRef BuildPtrDiff(LLVMValueRef LHS, LLVMValueRef RHS, ReadOnlySpan<char> Name)
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.BuildPtrDiff(this, LHS, RHS, marshaledName);
+    }
+
+    public LLVMValueRef BuildPtrDiff2(LLVMTypeRef ElemTy, LLVMValueRef LHS, LLVMValueRef RHS, string Name = "") => BuildPtrDiff2(ElemTy, LHS, RHS, Name.AsSpan());
+
+    public LLVMValueRef BuildPtrDiff2(LLVMTypeRef ElemTy, LLVMValueRef LHS, LLVMValueRef RHS, ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.BuildPtrDiff2(this, ElemTy, LHS, RHS, marshaledName);
     }
 
     public LLVMValueRef BuildPtrToInt(LLVMValueRef Val, LLVMTypeRef DestTy, string Name = "") => BuildPtrToInt(Val, DestTy, Name.AsSpan());
@@ -624,12 +696,22 @@ public unsafe partial struct LLVMBuilderRef : IDisposable, IEquatable<LLVMBuilde
 
     public LLVMValueRef BuildStore(LLVMValueRef Val, LLVMValueRef Ptr) => LLVM.BuildStore(this, Val, Ptr);
 
+    [Obsolete("Use BuildStructGEP2 instead to support opaque pointer")]
     public LLVMValueRef BuildStructGEP(LLVMValueRef Pointer, uint Idx, string Name = "") => BuildStructGEP(Pointer, Idx, Name.AsSpan());
 
+    [Obsolete("Use BuildStructGEP2 instead to support opaque pointer")]
     public LLVMValueRef BuildStructGEP(LLVMValueRef Pointer, uint Idx, ReadOnlySpan<char> Name)
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.BuildStructGEP(this, Pointer, Idx, marshaledName);
+    }
+
+    public LLVMValueRef BuildStructGEP2(LLVMTypeRef Ty, LLVMValueRef Pointer, uint Idx, string Name = "") => BuildStructGEP2(Ty, Pointer, Idx, Name.AsSpan());
+
+    public LLVMValueRef BuildStructGEP2(LLVMTypeRef Ty, LLVMValueRef Pointer, uint Idx, ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.BuildStructGEP2(this, Ty, Pointer, Idx, marshaledName);
     }
 
     public LLVMValueRef BuildSub(LLVMValueRef LHS, LLVMValueRef RHS, string Name = "") => BuildSub(LHS, RHS, Name.AsSpan());
@@ -726,7 +808,7 @@ public unsafe partial struct LLVMBuilderRef : IDisposable, IEquatable<LLVMBuilde
         }
     }
 
-    public override bool Equals(object obj) => (obj is LLVMBuilderRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMBuilderRef other) && Equals(other);
 
     public bool Equals(LLVMBuilderRef other) => this == other;
 

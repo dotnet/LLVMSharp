@@ -25,7 +25,7 @@ public unsafe partial struct LLVMGenericValueRef : IEquatable<LLVMGenericValueRe
 
     public LLVMGenericValueRef CreateFloat(LLVMTypeRef Ty, double N) => LLVM.CreateGenericValueOfFloat(Ty, N);
 
-    public override bool Equals(object obj) => (obj is LLVMGenericValueRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMGenericValueRef other) && Equals(other);
 
     public bool Equals(LLVMGenericValueRef other) => this == other;
 

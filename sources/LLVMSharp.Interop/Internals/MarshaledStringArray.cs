@@ -4,50 +4,52 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe struct MarshaledStringArray : IDisposable
+public unsafe ref struct MarshaledStringArray
 {
+    private MarshaledString[]? _values;
+
     public MarshaledStringArray(ReadOnlySpan<string> inputs)
     {
-        if (inputs.IsEmpty)
+        if (inputs.Length == 0)
         {
-            Count = 0;
-            Values = null;
+            _values = null;
         }
         else
         {
-            Count = inputs.Length;
-            Values = new MarshaledString[Count];
+            _values = new MarshaledString[inputs.Length];
 
-            for (int i = 0; i < Count; i++)
+            for (var i = 0; i < inputs.Length; i++)
             {
-                Values[i] = new MarshaledString(inputs[i].AsSpan());
+                _values[i] = new MarshaledString(inputs[i]);
             }
         }
     }
 
-    public int Count { get; private set; }
+    public int Count => (_values is not null) ? _values.Length : 0;
 
-    public MarshaledString[] Values { get; private set; }
+    public ReadOnlySpan<MarshaledString> Values => _values;
 
     public void Dispose()
     {
-        if (Values != null)
+        if (_values != null)
         {
-            for (int i = 0; i < Values.Length; i++)
+            for (var i = 0; i < _values.Length; i++)
             {
-                Values[i].Dispose();
+                _values[i].Dispose();
             }
 
-            Values = null;
-            Count = 0;
+            _values = null;
         }
     }
 
     public void Fill(sbyte** pDestination)
     {
-        for (int i = 0; i < Count; i++)
+        if (_values != null)
         {
-            pDestination[i] = Values[i];
+            for (var i = 0; i < _values.Length; i++)
+            {
+                pDestination[i] = Values[i];
+            }
         }
     }
 }

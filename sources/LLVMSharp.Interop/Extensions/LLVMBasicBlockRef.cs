@@ -67,7 +67,7 @@ public unsafe partial struct LLVMBasicBlockRef : IEquatable<LLVMBasicBlockRef>
 
     public void Dump() => LLVM.DumpValue(this);
 
-    public override bool Equals(object obj) => (obj is LLVMBasicBlockRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMBasicBlockRef other) && Equals(other);
 
     public bool Equals(LLVMBasicBlockRef other) => this == other;
 
@@ -93,9 +93,8 @@ public unsafe partial struct LLVMBasicBlockRef : IEquatable<LLVMBasicBlockRef>
         {
             return string.Empty;
         }
-        var span = new ReadOnlySpan<byte>(pStr, int.MaxValue);
 
-        var result = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+        var result = SpanExtensions.AsString(pStr);
         LLVM.DisposeMessage(pStr);
         return result;
     }

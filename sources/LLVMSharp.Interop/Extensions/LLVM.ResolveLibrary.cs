@@ -9,7 +9,7 @@ namespace LLVMSharp.Interop;
 
 public static unsafe partial class LLVM
 {
-    public static event DllImportResolver ResolveLibrary;
+    public static event DllImportResolver? ResolveLibrary;
 
     static LLVM()
     {

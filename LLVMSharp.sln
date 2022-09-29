@@ -99,9 +99,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.win-x86", "
 		packages\libLLVM\libLLVM.runtime.win-x86\libLLVM.runtime.win-x86.nuspec = packages\libLLVM\libLLVM.runtime.win-x86\libLLVM.runtime.win-x86.nuspec
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.21.10-x64", "libLLVM.runtime.ubuntu.21.10-x64", "{1808D302-0067-4121-964C-2CBAFB8A957A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.22.04-x64", "libLLVM.runtime.ubuntu.22.04-x64", "{1808D302-0067-4121-964C-2CBAFB8A957A}"
 	ProjectSection(SolutionItems) = preProject
-		packages\libLLVM\libLLVM.runtime.ubuntu.21.10-x64\libLLVM.runtime.ubuntu.21.10-x64.nuspec = packages\libLLVM\libLLVM.runtime.ubuntu.21.10-x64\libLLVM.runtime.ubuntu.21.10-x64.nuspec
+		packages\libLLVM\libLLVM.runtime.ubuntu.22.04-x64\libLLVM.runtime.ubuntu.22.04-x64.nuspec = packages\libLLVM\libLLVM.runtime.ubuntu.22.04-x64\libLLVM.runtime.ubuntu.22.04-x64.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.win-arm64", "libLLVM.runtime.win-arm64", "{19DB05E9-59B6-45E9-B47D-62913F7DF9A8}"
@@ -121,6 +121,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.freebsd.13-x64", "libLLVM.runtime.freebsd.13-x64", "{4F526018-55AE-41FF-BF01-21F60EB95CBC}"
 	ProjectSection(SolutionItems) = preProject
 		packages\libLLVM\libLLVM.runtime.freebsd.13-x64\libLLVM.runtime.freebsd.13-x64.nuspec = packages\libLLVM\libLLVM.runtime.freebsd.13-x64\libLLVM.runtime.freebsd.13-x64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.linux-x64", "libLLVM.runtime.linux-x64", "{C8508256-2EC1-4C88-B61D-AFB86569FBCD}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM\libLLVM.runtime.linux-x64\libLLVM.runtime.linux-x64.nuspec = packages\libLLVM\libLLVM.runtime.linux-x64\libLLVM.runtime.linux-x64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.osx-arm64", "libLLVM.runtime.osx-arm64", "{3870145D-F6DC-4082-A3F5-2316D49ADD43}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVM\libLLVM.runtime.osx-arm64\libLLVM.runtime.osx-arm64.nuspec = packages\libLLVM\libLLVM.runtime.osx-arm64\libLLVM.runtime.osx-arm64.nuspec
 	EndProjectSection
 EndProject
 Global
@@ -162,6 +172,8 @@ Global
 		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6} = {62B5C536-C224-4EE1-972F-05F732B5980B}
 		{706334B8-BB91-49A4-BC9C-DFFDF3DCD770} = {E8ADE5A7-4363-43B7-B104-6B0E5510CAF0}
 		{4F526018-55AE-41FF-BF01-21F60EB95CBC} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
+		{C8508256-2EC1-4C88-B61D-AFB86569FBCD} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
+		{3870145D-F6DC-4082-A3F5-2316D49ADD43} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {75550D8C-A492-4ED3-8387-206830F8B21E}

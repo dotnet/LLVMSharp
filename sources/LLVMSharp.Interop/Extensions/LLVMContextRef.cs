@@ -95,7 +95,7 @@ public unsafe partial struct LLVMContextRef : IDisposable, IEquatable<LLVMContex
         }
     }
 
-    public override bool Equals(object obj) => (obj is LLVMContextRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMContextRef other) && Equals(other);
 
     public bool Equals(LLVMContextRef other) => this == other;
 
@@ -195,16 +195,26 @@ public unsafe partial struct LLVMContextRef : IDisposable, IEquatable<LLVMContex
         return M;
     }
 
-    public void SetDiagnosticHandler(LLVMDiagnosticHandler Handler, IntPtr DiagnosticContext)
+    public void SetDiagnosticHandler(LLVMDiagnosticHandler Handler, void* DiagnosticContext)
     {
-        var pHandler = Marshal.GetFunctionPointerForDelegate(Handler);
-        LLVM.ContextSetDiagnosticHandler(this, pHandler, (void*)DiagnosticContext);
+        var pHandler = (delegate* unmanaged[Cdecl] < LLVMOpaqueDiagnosticInfo *, void *, void > )Marshal.GetFunctionPointerForDelegate(Handler);
+        SetDiagnosticHandler(pHandler, DiagnosticContext);
     }
 
-    public void SetYieldCallback(LLVMYieldCallback Callback, IntPtr OpaqueHandle)
+    public void SetDiagnosticHandler(delegate* unmanaged[Cdecl]<LLVMOpaqueDiagnosticInfo*, void*, void> Handler, void* DiagnosticContext)
     {
-        var pCallback = Marshal.GetFunctionPointerForDelegate(Callback);
-        LLVM.ContextSetYieldCallback(this, pCallback, (void*)OpaqueHandle);
+        LLVM.ContextSetDiagnosticHandler(this, Handler, DiagnosticContext);
+    }
+
+    public void SetYieldCallback(LLVMYieldCallback Callback, void* OpaqueHandle)
+    {
+        var pCallback = (delegate* unmanaged[Cdecl] < LLVMOpaqueContext *, void *, void>)Marshal.GetFunctionPointerForDelegate(Callback);
+        SetYieldCallback(pCallback, OpaqueHandle);
+    }
+
+    public void SetYieldCallback(delegate* unmanaged[Cdecl]<LLVMOpaqueContext*, void*, void> Callback, void* OpaqueHandle)
+    {
+        LLVM.ContextSetYieldCallback(this, Callback, OpaqueHandle);
     }
 
     public override string ToString() => $"{nameof(LLVMContextRef)}: {Handle:X}";
@@ -222,8 +232,7 @@ public unsafe partial struct LLVMContextRef : IDisposable, IEquatable<LLVMContex
             }
             else
             {
-                var span = new ReadOnlySpan<byte>(pMessage, int.MaxValue);
-                OutMessage = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                OutMessage = SpanExtensions.AsString(pMessage);
             }
 
             return result == 0;
@@ -243,8 +252,7 @@ public unsafe partial struct LLVMContextRef : IDisposable, IEquatable<LLVMContex
             }
             else
             {
-                var span = new ReadOnlySpan<byte>(pMessage, int.MaxValue);
-                OutMessage = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                OutMessage = SpanExtensions.AsString(pMessage);
             }
 
             return result == 0;
@@ -264,8 +272,7 @@ public unsafe partial struct LLVMContextRef : IDisposable, IEquatable<LLVMContex
             }
             else
             {
-                var span = new ReadOnlySpan<byte>(pMessage, int.MaxValue);
-                OutMessage = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                OutMessage = SpanExtensions.AsString(pMessage);
             }
 
             return result == 0;

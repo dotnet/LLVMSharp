@@ -39,7 +39,7 @@ public unsafe partial struct LLVMExecutionEngineRef : IDisposable, IEquatable<LL
         }
     }
 
-    public override bool Equals(object obj) => (obj is LLVMExecutionEngineRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMExecutionEngineRef other) && Equals(other);
 
     public bool Equals(LLVMExecutionEngineRef other) => this == other;
 
@@ -151,8 +151,7 @@ public unsafe partial struct LLVMExecutionEngineRef : IDisposable, IEquatable<LL
             }
             else
             {
-                var span = new ReadOnlySpan<byte>(pError, int.MaxValue);
-                OutError = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                OutError = SpanExtensions.AsString(pError);
             }
 
             return result == 0;

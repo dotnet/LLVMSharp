@@ -3,6 +3,7 @@
 using System;
 using LLVMSharp.Interop;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 
 namespace LLVMSharp.UnitTests;
 
@@ -15,7 +16,7 @@ public class IR
         var op2 = 0;
         using var module = LLVMModuleRef.CreateWithName("test_add");
 
-        var def = module.AddFunction(
+        (_, var def) = module.AddFunction(
             LLVMTypeRef.Int32, "add", new[] { LLVMTypeRef.Int32, LLVMTypeRef.Int32 }, (f, b) =>
             {
             var p1 = f.Params[0];
@@ -40,7 +41,7 @@ public class IR
     {
         using var module = LLVMModuleRef.CreateWithName("test_lshift");
 
-        var def = module.AddFunction(
+        (_, var def) = module.AddFunction(
             LLVMTypeRef.Int32, "lshift", new[] { LLVMTypeRef.Int32, LLVMTypeRef.Int32 }, (f, b) =>
             {
             var p1 = f.Params[0];
@@ -65,7 +66,7 @@ public class IR
     {
         using var module = LLVMModuleRef.CreateWithName("test_greaterthan");
 
-        var def = module.AddFunction(
+        (_, var def) = module.AddFunction(
             LLVMTypeRef.Int1, "greaterthan", new[] { LLVMTypeRef.Int32, LLVMTypeRef.Int32 }, (f, b) =>
             {
             var p1 = f.Params[0];
@@ -90,7 +91,7 @@ public class IR
     {
         using var module = LLVMModuleRef.CreateWithName("test_call");
 
-        var defAdd = module.AddFunction(
+        (var addType, var addDef) = module.AddFunction(
             LLVMTypeRef.Int32, "add", new[] { LLVMTypeRef.Int32, LLVMTypeRef.Int32 }, (f, b) =>
             {
             var p1 = f.Params[0];
@@ -98,12 +99,10 @@ public class IR
             var add = b.BuildAdd(p1, p2);
             var ret = b.BuildRet(add);
             });
-        var defEntry = module.AddFunction(
+        (_, var entryDef) = module.AddFunction(
             LLVMTypeRef.Int32, "entry", new[] { LLVMTypeRef.Int32, LLVMTypeRef.Int32 }, (f, b) =>
             {
-                var p1 = f.Params[0];
-                var p2 = f.Params[1];
-                var call = b.BuildCall(defAdd, new[] { p1, p2 });
+                var call = b.BuildCall2(addType, addDef, f.Params, ReadOnlySpan<char>.Empty);
                 var ret = b.BuildRet(call);
             });
         module.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
@@ -113,7 +112,7 @@ public class IR
         _ = LLVM.InitializeNativeAsmPrinter();
 
         var engine = module.CreateMCJITCompiler();
-        var func = engine.GetPointerToGlobal<Int32Int32Int32Delegate>(defEntry);
+        var func = engine.GetPointerToGlobal<Int32Int32Int32Delegate>(entryDef);
         var result = op1 + op2;
         Assert.AreEqual(result, func(op1, op2));
     }
@@ -124,7 +123,7 @@ public class IR
         var uInput = (uint)input;
         using var module = LLVMModuleRef.CreateWithName("test_constant");
 
-        var def = module.AddFunction(
+        (_, var def) = module.AddFunction(
             LLVMTypeRef.Int32, "constant", Array.Empty<LLVMTypeRef>(), (f, b) =>
             {
             var value = LLVMValueRef.CreateConstInt(LLVMTypeRef.Int32, uInput);
@@ -147,7 +146,7 @@ public class IR
         using var module = LLVMModuleRef.CreateWithName("test_sizeof");
 
         var str = LLVMTypeRef.CreateStruct(new[] { LLVMTypeRef.Int32, LLVMTypeRef.Int32 }, true);
-        var def = module.AddFunction(
+        (_, var def) = module.AddFunction(
             LLVMTypeRef.Int32, "structure", Array.Empty<LLVMTypeRef>(), (f, b) =>
             {
                 var sz = str.SizeOf;

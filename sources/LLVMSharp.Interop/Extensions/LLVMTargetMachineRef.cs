@@ -34,7 +34,7 @@ public unsafe partial struct LLVMTargetMachineRef : IEquatable<LLVMTargetMachine
         }
     }
 
-    public override bool Equals(object obj) => (obj is LLVMTargetMachineRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMTargetMachineRef other) && Equals(other);
 
     public bool Equals(LLVMTargetMachineRef other) => this == other;
 
@@ -57,8 +57,7 @@ public unsafe partial struct LLVMTargetMachineRef : IEquatable<LLVMTargetMachine
         }
         else
         {
-            var span = new ReadOnlySpan<byte>(errorMessage, int.MaxValue);
-            message = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            message = SpanExtensions.AsString(errorMessage);
             LLVM.DisposeErrorMessage(errorMessage);
         }
 

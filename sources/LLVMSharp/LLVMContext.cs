@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using LLVMSharp.Interop;
 
 namespace LLVMSharp;
@@ -18,13 +19,13 @@ public sealed class LLVMContext : IEquatable<LLVMContext>
 
     public LLVMContextRef Handle { get; }
 
-    public static bool operator ==(LLVMContext left, LLVMContext right) => ReferenceEquals(left, right) || (left?.Handle == right?.Handle);
+    public static bool operator ==(LLVMContext? left, LLVMContext? right) => ReferenceEquals(left, right) || (left?.Handle == right?.Handle);
 
-    public static bool operator !=(LLVMContext left, LLVMContext right) => !(left == right);
+    public static bool operator !=(LLVMContext? left, LLVMContext? right) => !(left == right);
 
-    public override bool Equals(object obj) => (obj is LLVMContext other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMContext other) && Equals(other);
 
-    public bool Equals(LLVMContext other) => this == other;
+    public bool Equals(LLVMContext? other) => this == other;
 
     public override int GetHashCode() => Handle.GetHashCode();
 
@@ -35,15 +36,16 @@ public sealed class LLVMContext : IEquatable<LLVMContext>
     internal TType GetOrCreate<TType>(LLVMTypeRef handle)
         where TType : Type
     {
-        WeakReference<Type> typeRef;
+        WeakReference<Type>? typeRef;
 
         if (handle == null)
         {
-            return null;
+            Debug.Assert(handle != null);
+            return null!;
         }
         else if (!_createdTypes.TryGetValue(handle, out typeRef))
         {
-            typeRef = new WeakReference<Type>(null);
+            typeRef = new WeakReference<Type>(null!);
             _createdTypes.Add(handle, typeRef);
         }
 
@@ -58,15 +60,16 @@ public sealed class LLVMContext : IEquatable<LLVMContext>
     internal TValue GetOrCreate<TValue>(LLVMValueRef handle)
         where TValue : Value
     {
-        WeakReference<Value> valueRef;
+        WeakReference<Value>? valueRef;
 
         if (handle == null)
         {
-            return null;
+            Debug.Assert(handle != null);
+            return null!;
         }
         else if (!_createdValues.TryGetValue(handle, out valueRef))
         {
-            valueRef = new WeakReference<Value>(null);
+            valueRef = new WeakReference<Value>(null!);
             _createdValues.Add(handle, valueRef);
         }
 

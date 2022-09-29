@@ -8,44 +8,61 @@ namespace LLVMSharp.Interop;
 
 public unsafe struct MarshaledString : IDisposable
 {
+    public MarshaledString(string? input) : this(input.AsSpan())
+    {
+    }
+
     public MarshaledString(ReadOnlySpan<char> input)
     {
-        if (input.IsEmpty)
-        {
-            var value = Marshal.AllocHGlobal(1);
-            Marshal.WriteByte(value, 0, 0);
+        int length = input.Length;
+        sbyte* value;
 
-            Length = 0;
-            Value = (sbyte*)value;
-        }
-        else
+        if (length != 0)
         {
-            var valueBytes = Encoding.UTF8.GetBytes(input.ToString());
-            var length = valueBytes.Length;
-            var value = Marshal.AllocHGlobal(length + 1);
-            Marshal.Copy(valueBytes, 0, value, length);
-            Marshal.WriteByte(value, length, 0);
-
-            Length = length;
-            Value = (sbyte*)value;
+            length = Encoding.UTF8.GetMaxByteCount(input.Length);
         }
+
+#if NET6_0_OR_GREATER
+        value = (sbyte*)NativeMemory.Alloc((uint)(length) + 1);
+#else
+        value = (sbyte*)Marshal.AllocHGlobal(length + 1);
+#endif
+
+        if (length != 0)
+        {
+            fixed (char* pInput = input)
+            {
+                length = Encoding.UTF8.GetBytes(pInput, input.Length, (byte*)value, length);
+            }
+        }
+        value[length] = 0;
+
+        Length = length;
+        Value = value;
     }
+
+    public ReadOnlySpan<byte> AsSpan() => new ReadOnlySpan<byte>(Value, Length);
 
     public int Length { get; private set; }
 
     public sbyte* Value { get; private set; }
 
+    public static implicit operator sbyte*(MarshaledString value) => value.Value;
+
     public void Dispose()
     {
         if (Value != null)
         {
+#if NET6_0_OR_GREATER
+            NativeMemory.Free(Value);
+#else
             Marshal.FreeHGlobal((IntPtr)Value);
+#endif
+
             Value = null;
             Length = 0;
         }
     }
-
-    public static implicit operator sbyte*(in MarshaledString value) => value.Value;
 
     public override string ToString()
     {

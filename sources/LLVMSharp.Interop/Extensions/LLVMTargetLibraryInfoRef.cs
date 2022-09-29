@@ -21,7 +21,7 @@ public unsafe partial struct LLVMTargetLibraryInfoRef : IEquatable<LLVMTargetLib
 
     public static bool operator !=(LLVMTargetLibraryInfoRef left, LLVMTargetLibraryInfoRef right) => !(left == right);
 
-    public override bool Equals(object obj) => (obj is LLVMTargetLibraryInfoRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMTargetLibraryInfoRef other) && Equals(other);
 
     public bool Equals(LLVMTargetLibraryInfoRef other) => this == other;
 

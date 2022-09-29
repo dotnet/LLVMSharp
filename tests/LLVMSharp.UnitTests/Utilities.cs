@@ -11,14 +11,15 @@ public static class Utilities
 {
     public static void EnsurePropertiesWork(this object obj)
     {
-        var map = new Dictionary<string, object>();
+        var map = new Dictionary<string, object?>();
+
         foreach(var p in obj.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
         {
             map.Add(p.Name, p.GetValue(obj));
         }
     }
 
-    public static LLVMValueRef AddFunction(this LLVMModuleRef module, LLVMTypeRef returnType, string name, LLVMTypeRef[] parameterTypes, Action<LLVMValueRef, LLVMBuilderRef> action)
+    public static (LLVMTypeRef functionType, LLVMValueRef function) AddFunction(this LLVMModuleRef module, LLVMTypeRef returnType, string name, LLVMTypeRef[] parameterTypes, Action<LLVMValueRef, LLVMBuilderRef> action)
     {
         var type = LLVMTypeRef.CreateFunction(returnType, parameterTypes);
         var func = module.AddFunction(name, type);
@@ -26,6 +27,6 @@ public static class Utilities
         var builder = module.Context.CreateBuilder();
         builder.PositionAtEnd(block);
         action(func, builder);
-        return func;
+        return (type, func);
     }
 }

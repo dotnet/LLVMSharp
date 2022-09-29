@@ -19,13 +19,13 @@ public sealed class StructLayout : IEquatable<StructLayout>
 
     public ulong ElementAtOffset(ulong offset) => _dataLayout.Handle.ElementAtOffset(_structType.Handle, offset);
 
-    public static bool operator ==(StructLayout left, StructLayout right) => ReferenceEquals(left, right) || ((left?._dataLayout == right._dataLayout) && (left?._structType == right?._structType));
+    public static bool operator ==(StructLayout? left, StructLayout? right) => ReferenceEquals(left, right) || ((left?._dataLayout == right?._dataLayout) && (left?._structType == right?._structType));
 
-    public static bool operator !=(StructLayout left, StructLayout right) => !(left == right);
+    public static bool operator !=(StructLayout? left, StructLayout? right) => !(left == right);
 
-    public override bool Equals(object obj) => (obj is StructLayout other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is StructLayout other) && Equals(other);
 
-    public bool Equals(StructLayout other) => this == other;
+    public bool Equals(StructLayout? other) => this == other;
 
     public override int GetHashCode() => HashCode.Combine(_structType, _dataLayout);
 }

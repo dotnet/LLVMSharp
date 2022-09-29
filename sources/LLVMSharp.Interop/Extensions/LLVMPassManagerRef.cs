@@ -29,8 +29,6 @@ public unsafe partial struct LLVMPassManagerRef : IDisposable, IEquatable<LLVMPa
 
     public void AddAlwaysInlinerPass() => LLVM.AddAlwaysInlinerPass(this);
 
-    public void AddArgumentPromotionPass() => LLVM.AddArgumentPromotionPass(this);
-
     public void AddBasicAliasAnalysisPass() => LLVM.AddBasicAliasAnalysisPass(this);
 
     public void AddBitTrackingDCEPass() => LLVM.AddBitTrackingDCEPass(this);
@@ -86,8 +84,6 @@ public unsafe partial struct LLVMPassManagerRef : IDisposable, IEquatable<LLVMPa
     public void AddLoopRotatePass() => LLVM.AddLoopRotatePass(this);
 
     public void AddLoopUnrollPass() => LLVM.AddLoopUnrollPass(this);
-
-    public void AddLoopUnswitchPass() => LLVM.AddLoopUnswitchPass(this);
 
     public void AddLoopVectorizePass() => LLVM.AddLoopVectorizePass(this);
 
@@ -148,7 +144,7 @@ public unsafe partial struct LLVMPassManagerRef : IDisposable, IEquatable<LLVMPa
         }
     }
 
-    public override bool Equals(object obj) => (obj is LLVMPassManagerRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMPassManagerRef other) && Equals(other);
 
     public bool Equals(LLVMPassManagerRef other) => this == other;
 

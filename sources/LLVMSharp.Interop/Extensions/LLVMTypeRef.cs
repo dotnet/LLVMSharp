@@ -51,7 +51,7 @@ public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
 
     public LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetTypeContext(this) : default;
 
-    public LLVMTypeRef ElementType => ((Kind == LLVMTypeKind.LLVMPointerTypeKind) || (Kind == LLVMTypeKind.LLVMArrayTypeKind) || (Kind == LLVMTypeKind.LLVMVectorTypeKind)) ? LLVM.GetElementType(this) : default;
+    public LLVMTypeRef ElementType => (((Kind == LLVMTypeKind.LLVMPointerTypeKind) && (SubtypesCount != 0)) || (Kind == LLVMTypeKind.LLVMArrayTypeKind) || (Kind == LLVMTypeKind.LLVMVectorTypeKind)) ? LLVM.GetElementType(this) : default;
 
     public uint IntWidth => (Kind == LLVMTypeKind.LLVMIntegerTypeKind) ? LLVM.GetIntTypeWidth(this) : default;
 
@@ -133,8 +133,7 @@ public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
                 return string.Empty;
             }
 
-            var span = new ReadOnlySpan<byte>(pStructName, int.MaxValue);
-            return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            return SpanExtensions.AsString(pStructName);
         }
     }
 
@@ -208,7 +207,7 @@ public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
 
     public void Dump() => LLVM.DumpType(this);
 
-    public override bool Equals(object obj) => (obj is LLVMTypeRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMTypeRef other) && Equals(other);
 
     public bool Equals(LLVMTypeRef other) => this == other;
 
@@ -224,9 +223,8 @@ public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
         {
             return string.Empty;
         }
-        var span = new ReadOnlySpan<byte>(pStr, int.MaxValue);
 
-        var result = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+        var result = SpanExtensions.AsString(pStr);
         LLVM.DisposeMessage(pStr);
         return result;
     }

@@ -21,7 +21,7 @@ public unsafe partial struct LLVMErrorTypeId : IEquatable<LLVMErrorTypeId>
 
     public static bool operator !=(LLVMErrorTypeId left, LLVMErrorTypeId right) => !(left == right);
 
-    public override bool Equals(object obj) => (obj is LLVMErrorTypeId other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMErrorTypeId other) && Equals(other);
 
     public bool Equals(LLVMErrorTypeId other) => this == other;
 

@@ -16,7 +16,7 @@ public sealed class ConstantStruct : ConstantAggregate
     public static Constant GetAnon(LLVMContext ctx, ReadOnlySpan<Constant> v, bool packed)
     {
         using var marshaledV = new MarshaledArray<Constant, LLVMValueRef>(v, (value) => value.Handle);
-        var handle = ctx.Handle.GetConstStruct(marshaledV, packed);
+        var handle = ctx.Handle.GetConstStruct(marshaledV.AsSpan(), packed);
         return ctx.GetOrCreate<Constant>(handle);
     }
 }

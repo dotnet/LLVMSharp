@@ -18,9 +18,9 @@ public class Type : IEquatable<Type>
 
     public LLVMTypeRef Handle { get; }
 
-    public static bool operator ==(Type left, Type right) => ReferenceEquals(left, right) || (left.Handle == right.Handle);
+    public static bool operator ==(Type? left, Type? right) => ReferenceEquals(left, right) || (left?.Handle == right?.Handle);
 
-    public static bool operator !=(Type left, Type right) => !(left == right);
+    public static bool operator !=(Type? left, Type? right) => !(left == right);
 
     public static Type GetBFloatTy(LLVMContext c)
     {
@@ -112,9 +112,9 @@ public class Type : IEquatable<Type>
         return c.GetOrCreate(handle);
     }
 
-    public override bool Equals(object obj) => (obj is Type other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is Type other) && Equals(other);
 
-    public bool Equals(Type other) => this == other;
+    public bool Equals(Type? other) => this == other;
 
     public override int GetHashCode() => Handle.GetHashCode();
 
