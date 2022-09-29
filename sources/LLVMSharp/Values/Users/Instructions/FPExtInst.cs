@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class FPExtInst : CastInst
 {
-    public sealed class FPExtInst : CastInst
+    internal FPExtInst(LLVMValueRef handle) : base(handle.IsAFPExtInst)
     {
-        internal FPExtInst(LLVMValueRef handle) : base(handle.IsAFPExtInst)
-        {
-        }
     }
 }

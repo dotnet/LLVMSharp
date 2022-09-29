@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class VectorType : SequentialType
 {
-    public sealed class VectorType : SequentialType
+    internal VectorType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMVectorTypeKind)
     {
-        internal VectorType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMVectorTypeKind)
-        {
-        }
     }
 }

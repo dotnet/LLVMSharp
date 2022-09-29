@@ -7,6 +7,11 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <Compile Remove="Extensions/LLVM.ResolveLibrary.cs" />
+    <InternalsVisibleTo Include="LLVMSharp" Key="$(AssemblyOriginatorPublicKey)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
+    <Compile Remove="Shims/SkipLocalsInitAttribute.cs" />
   </ItemGroup>
 
   <ItemGroup>

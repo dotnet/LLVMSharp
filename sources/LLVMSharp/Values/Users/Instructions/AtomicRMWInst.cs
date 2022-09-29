@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed partial class AtomicRMWInst : Instruction
 {
-    public sealed partial class AtomicRMWInst : Instruction
+    internal AtomicRMWInst(LLVMValueRef handle) : base(handle.IsAAtomicRMWInst)
     {
-        internal AtomicRMWInst(LLVMValueRef handle) : base(handle.IsAAtomicRMWInst)
-        {
-        }
     }
 }

@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class PHINode : Instruction
 {
-    public sealed class PHINode : Instruction
+    internal PHINode(LLVMValueRef handle) : base(handle.IsAPHINode)
     {
-        internal PHINode(LLVMValueRef handle) : base(handle.IsAPHINode)
-        {
-        }
     }
 }

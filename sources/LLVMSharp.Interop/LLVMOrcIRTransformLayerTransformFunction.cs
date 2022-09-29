@@ -5,9 +5,8 @@
 
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop
-{
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    [return: NativeTypeName("LLVMErrorRef")]
-    public unsafe delegate LLVMOpaqueError* LLVMOrcIRTransformLayerTransformFunction(void* Ctx, [NativeTypeName("LLVMOrcThreadSafeModuleRef *")] LLVMOrcOpaqueThreadSafeModule** ModInOut, [NativeTypeName("LLVMOrcMaterializationResponsibilityRef")] LLVMOrcOpaqueMaterializationResponsibility* MR);
-}
+namespace LLVMSharp.Interop;
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+[return: NativeTypeName("LLVMErrorRef")]
+public unsafe delegate LLVMOpaqueError* LLVMOrcIRTransformLayerTransformFunction(void* Ctx, [NativeTypeName("LLVMOrcThreadSafeModuleRef *")] LLVMOrcOpaqueThreadSafeModule** ModInOut, [NativeTypeName("LLVMOrcMaterializationResponsibilityRef")] LLVMOrcOpaqueMaterializationResponsibility* MR);

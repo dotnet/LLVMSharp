@@ -3,21 +3,20 @@
 using System;
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ConstantStruct : ConstantAggregate
 {
-    public sealed class ConstantStruct : ConstantAggregate
+    internal ConstantStruct(LLVMValueRef handle) : base(handle.IsAConstantStruct, LLVMValueKind.LLVMConstantStructValueKind)
     {
-        internal ConstantStruct(LLVMValueRef handle) : base(handle.IsAConstantStruct, LLVMValueKind.LLVMConstantStructValueKind)
-        {
-        }
+    }
 
-        public static Constant GetAnon(LLVMContext Ctx, Constant[] V, bool Packed = false) => GetAnon(Ctx, V.AsSpan(), Packed);
+    public static Constant GetAnon(LLVMContext ctx, Constant[] v, bool packed = false) => GetAnon(ctx, v.AsSpan(), packed);
 
-        public static Constant GetAnon(LLVMContext Ctx, ReadOnlySpan<Constant> V, bool Packed)
-        {
-            using var marshaledV = new MarshaledArray<Constant, LLVMValueRef>(V, (value) => value.Handle);
-            var handle = Ctx.Handle.GetConstStruct(marshaledV, Packed);
-            return Ctx.GetOrCreate<Constant>(handle);
-        }
+    public static Constant GetAnon(LLVMContext ctx, ReadOnlySpan<Constant> v, bool packed)
+    {
+        using var marshaledV = new MarshaledArray<Constant, LLVMValueRef>(v, (value) => value.Handle);
+        var handle = ctx.Handle.GetConstStruct(marshaledV, packed);
+        return ctx.GetOrCreate<Constant>(handle);
     }
 }

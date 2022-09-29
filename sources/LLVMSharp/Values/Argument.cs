@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class Argument : Value
 {
-    public sealed class Argument : Value
+    internal Argument(LLVMValueRef handle) : base(handle.IsAArgument, LLVMValueKind.LLVMArgumentValueKind)
     {
-        internal Argument(LLVMValueRef handle) : base(handle.IsAArgument, LLVMValueKind.LLVMArgumentValueKind)
-        {
-        }
     }
 }

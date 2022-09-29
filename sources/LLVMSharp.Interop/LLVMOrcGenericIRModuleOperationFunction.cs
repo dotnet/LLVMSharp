@@ -5,9 +5,8 @@
 
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop
-{
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    [return: NativeTypeName("LLVMErrorRef")]
-    public unsafe delegate LLVMOpaqueError* LLVMOrcGenericIRModuleOperationFunction(void* Ctx, [NativeTypeName("LLVMModuleRef")] LLVMOpaqueModule* M);
-}
+namespace LLVMSharp.Interop;
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+[return: NativeTypeName("LLVMErrorRef")]
+public unsafe delegate LLVMOpaqueError* LLVMOrcGenericIRModuleOperationFunction(void* Ctx, [NativeTypeName("LLVMModuleRef")] LLVMOpaqueModule* M);

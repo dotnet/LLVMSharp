@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class FenceInst : Instruction
 {
-    public sealed class FenceInst : Instruction
+    internal FenceInst(LLVMValueRef handle) : base(handle.IsAFenceInst)
     {
-        internal FenceInst(LLVMValueRef handle) : base(handle.IsAFenceInst)
-        {
-        }
     }
 }

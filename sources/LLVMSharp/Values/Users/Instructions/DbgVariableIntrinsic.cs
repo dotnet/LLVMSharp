@@ -2,18 +2,17 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
-{
-    public class DbgVariableIntrinsic : DbgInfoIntrinsic
-    {
-        private protected DbgVariableIntrinsic(LLVMValueRef handle) : base(handle.IsADbgVariableIntrinsic)
-        {
-        }
+namespace LLVMSharp;
 
-        internal static new DbgVariableIntrinsic Create(LLVMValueRef handle) => handle switch
-        {
-            _ when handle.IsADbgDeclareInst != null => new DbgDeclareInst(handle),
-            _ => new DbgVariableIntrinsic(handle),
-        };
+public class DbgVariableIntrinsic : DbgInfoIntrinsic
+{
+    private protected DbgVariableIntrinsic(LLVMValueRef handle) : base(handle.IsADbgVariableIntrinsic)
+    {
     }
+
+    internal static new DbgVariableIntrinsic Create(LLVMValueRef handle) => handle switch
+    {
+        _ when handle.IsADbgDeclareInst != null => new DbgDeclareInst(handle),
+        _ => new DbgVariableIntrinsic(handle),
+    };
 }

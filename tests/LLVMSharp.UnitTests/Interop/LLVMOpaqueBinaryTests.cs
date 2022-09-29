@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOpaqueBinary" /> struct.</summary>
+public static unsafe partial class LLVMOpaqueBinaryTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOpaqueBinary" /> struct.</summary>
-    public static unsafe partial class LLVMOpaqueBinaryTests
+    /// <summary>Validates that the <see cref="LLVMOpaqueBinary" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOpaqueBinary" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOpaqueBinary>(), Is.EqualTo(sizeof(LLVMOpaqueBinary)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOpaqueBinary>(), Is.EqualTo(sizeof(LLVMOpaqueBinary)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueBinary" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOpaqueBinary).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueBinary" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOpaqueBinary).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueBinary" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOpaqueBinary), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueBinary" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOpaqueBinary), Is.EqualTo(1));
     }
 }

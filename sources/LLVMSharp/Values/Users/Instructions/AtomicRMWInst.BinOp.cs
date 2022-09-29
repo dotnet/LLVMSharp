@@ -2,25 +2,24 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public partial class AtomicRMWInst
 {
-    public partial class AtomicRMWInst
+    public enum BinOp
     {
-        public enum BinOp
-        {
-            Xchg = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpXchg,
-            Add = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpAdd,
-            Sub = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpSub,
-            And = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpAnd,
-            Nand = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpNand,
-            Or = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpOr,
-            Xor = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpXor,
-            Max = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpMax,
-            Min = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpMin,
-            UMax = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpUMax,
-            UMin = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpUMin,
-            FAdd = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpFAdd,
-            FSub = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpFSub,
-        }
+        Xchg = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpXchg,
+        Add = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpAdd,
+        Sub = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpSub,
+        And = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpAnd,
+        Nand = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpNand,
+        Or = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpOr,
+        Xor = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpXor,
+        Max = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpMax,
+        Min = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpMin,
+        UMax = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpUMax,
+        UMin = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpUMin,
+        FAdd = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpFAdd,
+        FSub = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpFSub,
     }
 }

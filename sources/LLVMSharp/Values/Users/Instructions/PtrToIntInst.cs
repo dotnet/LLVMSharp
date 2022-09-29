@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class PtrToIntInst : CastInst
 {
-    public sealed class PtrToIntInst : CastInst
+    internal PtrToIntInst(LLVMValueRef handle) : base(handle.IsAPtrToIntInst)
     {
-        internal PtrToIntInst(LLVMValueRef handle) : base(handle.IsAPtrToIntInst)
-        {
-        }
     }
 }

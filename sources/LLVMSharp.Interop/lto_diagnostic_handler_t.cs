@@ -5,8 +5,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop
-{
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void lto_diagnostic_handler_t(lto_codegen_diagnostic_severity_t severity, [NativeTypeName("const char *")] sbyte* diag, void* ctxt);
-}
+namespace LLVMSharp.Interop;
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public unsafe delegate void lto_diagnostic_handler_t(lto_codegen_diagnostic_severity_t severity, [NativeTypeName("const char *")] sbyte* diag, void* ctxt);

@@ -2,25 +2,24 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public partial class Instruction
 {
-    public partial class Instruction
+    public enum CastOps
     {
-        public enum CastOps
-        {
-            Trunc = LLVMOpcode.LLVMTrunc,
-            ZExt = LLVMOpcode.LLVMZExt,
-            SExt = LLVMOpcode.LLVMSExt,
-            FPToUI = LLVMOpcode.LLVMFPToUI,
-            FPToSI = LLVMOpcode.LLVMFPToSI,
-            UIToFP = LLVMOpcode.LLVMUIToFP,
-            SIToFP = LLVMOpcode.LLVMSIToFP,
-            FPTrunc = LLVMOpcode.LLVMFPTrunc,
-            FPExt = LLVMOpcode.LLVMFPExt,
-            PtrToInt = LLVMOpcode.LLVMPtrToInt,
-            IntToPtr = LLVMOpcode.LLVMIntToPtr,
-            BitCast = LLVMOpcode.LLVMBitCast,
-            AddrSpaceCast = LLVMOpcode.LLVMAddrSpaceCast,
-        }
+        Trunc = LLVMOpcode.LLVMTrunc,
+        ZExt = LLVMOpcode.LLVMZExt,
+        SExt = LLVMOpcode.LLVMSExt,
+        FPToUI = LLVMOpcode.LLVMFPToUI,
+        FPToSI = LLVMOpcode.LLVMFPToSI,
+        UIToFP = LLVMOpcode.LLVMUIToFP,
+        SIToFP = LLVMOpcode.LLVMSIToFP,
+        FPTrunc = LLVMOpcode.LLVMFPTrunc,
+        FPExt = LLVMOpcode.LLVMFPExt,
+        PtrToInt = LLVMOpcode.LLVMPtrToInt,
+        IntToPtr = LLVMOpcode.LLVMIntToPtr,
+        BitCast = LLVMOpcode.LLVMBitCast,
+        AddrSpaceCast = LLVMOpcode.LLVMAddrSpaceCast,
     }
 }

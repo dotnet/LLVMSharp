@@ -5,14 +5,13 @@
 
 using System;
 
-namespace LLVMSharp.Interop
-{
-    public unsafe partial struct LLVMOrcCSymbolsList
-    {
-        [NativeTypeName("LLVMOrcSymbolStringPoolEntryRef *")]
-        public LLVMOrcOpaqueSymbolStringPoolEntry** Symbols;
+namespace LLVMSharp.Interop;
 
-        [NativeTypeName("size_t")]
-        public UIntPtr Length;
-    }
+public unsafe partial struct LLVMOrcCSymbolsList
+{
+    [NativeTypeName("LLVMOrcSymbolStringPoolEntryRef *")]
+    public LLVMOrcOpaqueSymbolStringPoolEntry** Symbols;
+
+    [NativeTypeName("size_t")]
+    public UIntPtr Length;
 }

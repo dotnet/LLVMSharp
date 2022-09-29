@@ -2,22 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <IncludeContentInPack>false</IncludeContentInPack>
     <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <Compile Remove="Interop.Extensions/LLVM.ResolveLibrary.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="libLLVM" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Microsoft.Bcl.HashCode" />
-    <PackageReference Include="System.Memory" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LLVMSharp.Interop\LLVMSharp.Interop.csproj" />

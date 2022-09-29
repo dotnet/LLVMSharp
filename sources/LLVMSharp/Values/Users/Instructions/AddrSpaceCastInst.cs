@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class AddrSpaceCastInst : CastInst
 {
-    public sealed class AddrSpaceCastInst : CastInst
+    internal AddrSpaceCastInst(LLVMValueRef handle) : base(handle.IsAAddrSpaceCastInst)
     {
-        internal AddrSpaceCastInst(LLVMValueRef handle) : base(handle.IsAAddrSpaceCastInst)
-        {
-        }
     }
 }

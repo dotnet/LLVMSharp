@@ -5,8 +5,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop
-{
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate int LLVMOpInfoCallback(void* DisInfo, [NativeTypeName("uint64_t")] ulong PC, [NativeTypeName("uint64_t")] ulong Offset, [NativeTypeName("uint64_t")] ulong Size, int TagType, void* TagBuf);
-}
+namespace LLVMSharp.Interop;
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public unsafe delegate int LLVMOpInfoCallback(void* DisInfo, [NativeTypeName("uint64_t")] ulong PC, [NativeTypeName("uint64_t")] ulong Offset, [NativeTypeName("uint64_t")] ulong Size, int TagType, void* TagBuf);

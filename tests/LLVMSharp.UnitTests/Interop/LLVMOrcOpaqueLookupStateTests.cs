@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOrcOpaqueLookupState" /> struct.</summary>
+public static unsafe partial class LLVMOrcOpaqueLookupStateTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueLookupState" /> struct.</summary>
-    public static unsafe partial class LLVMOrcOpaqueLookupStateTests
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueLookupState" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueLookupState" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOrcOpaqueLookupState>(), Is.EqualTo(sizeof(LLVMOrcOpaqueLookupState)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOrcOpaqueLookupState>(), Is.EqualTo(sizeof(LLVMOrcOpaqueLookupState)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueLookupState" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOrcOpaqueLookupState).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueLookupState" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOrcOpaqueLookupState).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueLookupState" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOrcOpaqueLookupState), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueLookupState" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOrcOpaqueLookupState), Is.EqualTo(1));
     }
 }

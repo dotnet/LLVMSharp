@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ConstantInt : ConstantData
 {
-    public sealed class ConstantInt : ConstantData
+    internal ConstantInt(LLVMValueRef handle) : base(handle.IsAConstantInt, LLVMValueKind.LLVMConstantIntValueKind)
     {
-        internal ConstantInt(LLVMValueRef handle) : base(handle.IsAConstantInt, LLVMValueKind.LLVMConstantIntValueKind)
-        {
-        }
     }
 }

@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ICmpInst : CmpInst
 {
-    public sealed class ICmpInst : CmpInst
+    internal ICmpInst(LLVMValueRef handle) : base(handle.IsAICmpInst)
     {
-        internal ICmpInst(LLVMValueRef handle) : base(handle.IsAICmpInst)
-        {
-        }
     }
 }

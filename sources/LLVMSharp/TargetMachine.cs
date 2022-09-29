@@ -3,22 +3,21 @@
 using System;
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class TargetMachine : IEquatable<TargetMachine>
 {
-    public sealed class TargetMachine : IEquatable<TargetMachine>
-    {
-        public LLVMTargetMachineRef Handle { get; }
+    public LLVMTargetMachineRef Handle { get; }
 
-        public static bool operator ==(TargetMachine left, TargetMachine right) => ReferenceEquals(left, right) || (left?.Handle == right?.Handle);
+    public static bool operator ==(TargetMachine left, TargetMachine right) => ReferenceEquals(left, right) || (left?.Handle == right?.Handle);
 
-        public static bool operator !=(TargetMachine left, TargetMachine right) => !(left == right);
+    public static bool operator !=(TargetMachine left, TargetMachine right) => !(left == right);
 
-        public override bool Equals(object obj) => (obj is TargetMachine other) && Equals(other);
+    public override bool Equals(object obj) => (obj is TargetMachine other) && Equals(other);
 
-        public bool Equals(TargetMachine other) => this == other;
+    public bool Equals(TargetMachine other) => this == other;
 
-        public override int GetHashCode() => Handle.GetHashCode();
+    public override int GetHashCode() => Handle.GetHashCode();
 
-        public override string ToString() => Handle.ToString();
-    }
+    public override string ToString() => Handle.ToString();
 }

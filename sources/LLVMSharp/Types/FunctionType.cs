@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class FunctionType : Type
 {
-    public sealed class FunctionType : Type
+    internal FunctionType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMFunctionTypeKind)
     {
-        internal FunctionType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMFunctionTypeKind)
-        {
-        }
     }
 }

@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class BlockAddress : Constant
 {
-    public sealed class BlockAddress : Constant
+    internal BlockAddress(LLVMValueRef handle) : base(handle.IsABlockAddress, LLVMValueKind.LLVMBlockAddressValueKind)
     {
-        internal BlockAddress(LLVMValueRef handle) : base(handle.IsABlockAddress, LLVMValueKind.LLVMBlockAddressValueKind)
-        {
-        }
     }
 }

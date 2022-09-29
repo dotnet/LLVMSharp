@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOpaqueLTOModule" /> struct.</summary>
+public static unsafe partial class LLVMOpaqueLTOModuleTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOpaqueLTOModule" /> struct.</summary>
-    public static unsafe partial class LLVMOpaqueLTOModuleTests
+    /// <summary>Validates that the <see cref="LLVMOpaqueLTOModule" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOpaqueLTOModule" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOpaqueLTOModule>(), Is.EqualTo(sizeof(LLVMOpaqueLTOModule)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOpaqueLTOModule>(), Is.EqualTo(sizeof(LLVMOpaqueLTOModule)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueLTOModule" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOpaqueLTOModule).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueLTOModule" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOpaqueLTOModule).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueLTOModule" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOpaqueLTOModule), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueLTOModule" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOpaqueLTOModule), Is.EqualTo(1));
     }
 }
