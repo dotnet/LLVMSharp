@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ZExtInst : CastInst
 {
-    public sealed class ZExtInst : CastInst
+    internal ZExtInst(LLVMValueRef handle) : base(handle.IsAZExtInst)
     {
-        internal ZExtInst(LLVMValueRef handle) : base(handle.IsAZExtInst)
-        {
-        }
     }
 }

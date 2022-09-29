@@ -2,18 +2,17 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
-{
-    public sealed class AllocaInst : UnaryInstruction
-    {
-        internal AllocaInst(LLVMValueRef handle) : base(handle.IsAAllocaInst)
-        {
-        }
+namespace LLVMSharp;
 
-        public uint Alignment
-        {
-            get => Handle.Alignment;
-            set => Handle.SetAlignment(value);
-        }
+public sealed class AllocaInst : UnaryInstruction
+{
+    internal AllocaInst(LLVMValueRef handle) : base(handle.IsAAllocaInst)
+    {
+    }
+
+    public uint Alignment
+    {
+        get => Handle.Alignment;
+        set => Handle.SetAlignment(value);
     }
 }

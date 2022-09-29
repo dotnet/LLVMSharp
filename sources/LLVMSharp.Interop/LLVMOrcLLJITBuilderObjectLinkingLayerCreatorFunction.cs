@@ -5,9 +5,8 @@
 
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop
-{
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    [return: NativeTypeName("LLVMOrcObjectLayerRef")]
-    public unsafe delegate LLVMOrcOpaqueObjectLayer* LLVMOrcLLJITBuilderObjectLinkingLayerCreatorFunction(void* Ctx, [NativeTypeName("LLVMOrcExecutionSessionRef")] LLVMOrcOpaqueExecutionSession* ES, [NativeTypeName("const char *")] sbyte* Triple);
-}
+namespace LLVMSharp.Interop;
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+[return: NativeTypeName("LLVMOrcObjectLayerRef")]
+public unsafe delegate LLVMOrcOpaqueObjectLayer* LLVMOrcLLJITBuilderObjectLinkingLayerCreatorFunction(void* Ctx, [NativeTypeName("LLVMOrcExecutionSessionRef")] LLVMOrcOpaqueExecutionSession* ES, [NativeTypeName("const char *")] sbyte* Triple);

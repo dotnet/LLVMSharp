@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOpaqueObjectFile" /> struct.</summary>
+public static unsafe partial class LLVMOpaqueObjectFileTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOpaqueObjectFile" /> struct.</summary>
-    public static unsafe partial class LLVMOpaqueObjectFileTests
+    /// <summary>Validates that the <see cref="LLVMOpaqueObjectFile" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOpaqueObjectFile" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOpaqueObjectFile>(), Is.EqualTo(sizeof(LLVMOpaqueObjectFile)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOpaqueObjectFile>(), Is.EqualTo(sizeof(LLVMOpaqueObjectFile)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueObjectFile" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOpaqueObjectFile).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueObjectFile" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOpaqueObjectFile).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueObjectFile" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOpaqueObjectFile), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueObjectFile" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOpaqueObjectFile), Is.EqualTo(1));
     }
 }

@@ -3,35 +3,34 @@
 // Ported from https://github.com/llvm/llvm-project/tree/llvmorg-14.0.0/llvm/include/llvm-c
 // Original source is Copyright (c) the LLVM Project and Contributors. Licensed under the Apache License v2.0 with LLVM Exceptions. See NOTICE.txt in the project root for license information.
 
-namespace LLVMSharp.Interop
+namespace LLVMSharp.Interop;
+
+public enum LLVMValueKind
 {
-    public enum LLVMValueKind
-    {
-        LLVMArgumentValueKind,
-        LLVMBasicBlockValueKind,
-        LLVMMemoryUseValueKind,
-        LLVMMemoryDefValueKind,
-        LLVMMemoryPhiValueKind,
-        LLVMFunctionValueKind,
-        LLVMGlobalAliasValueKind,
-        LLVMGlobalIFuncValueKind,
-        LLVMGlobalVariableValueKind,
-        LLVMBlockAddressValueKind,
-        LLVMConstantExprValueKind,
-        LLVMConstantArrayValueKind,
-        LLVMConstantStructValueKind,
-        LLVMConstantVectorValueKind,
-        LLVMUndefValueValueKind,
-        LLVMConstantAggregateZeroValueKind,
-        LLVMConstantDataArrayValueKind,
-        LLVMConstantDataVectorValueKind,
-        LLVMConstantIntValueKind,
-        LLVMConstantFPValueKind,
-        LLVMConstantPointerNullValueKind,
-        LLVMConstantTokenNoneValueKind,
-        LLVMMetadataAsValueValueKind,
-        LLVMInlineAsmValueKind,
-        LLVMInstructionValueKind,
-        LLVMPoisonValueValueKind,
-    }
+    LLVMArgumentValueKind,
+    LLVMBasicBlockValueKind,
+    LLVMMemoryUseValueKind,
+    LLVMMemoryDefValueKind,
+    LLVMMemoryPhiValueKind,
+    LLVMFunctionValueKind,
+    LLVMGlobalAliasValueKind,
+    LLVMGlobalIFuncValueKind,
+    LLVMGlobalVariableValueKind,
+    LLVMBlockAddressValueKind,
+    LLVMConstantExprValueKind,
+    LLVMConstantArrayValueKind,
+    LLVMConstantStructValueKind,
+    LLVMConstantVectorValueKind,
+    LLVMUndefValueValueKind,
+    LLVMConstantAggregateZeroValueKind,
+    LLVMConstantDataArrayValueKind,
+    LLVMConstantDataVectorValueKind,
+    LLVMConstantIntValueKind,
+    LLVMConstantFPValueKind,
+    LLVMConstantPointerNullValueKind,
+    LLVMConstantTokenNoneValueKind,
+    LLVMMetadataAsValueValueKind,
+    LLVMInlineAsmValueKind,
+    LLVMInstructionValueKind,
+    LLVMPoisonValueValueKind,
 }

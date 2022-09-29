@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOpaqueExecutionEngine" /> struct.</summary>
+public static unsafe partial class LLVMOpaqueExecutionEngineTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOpaqueExecutionEngine" /> struct.</summary>
-    public static unsafe partial class LLVMOpaqueExecutionEngineTests
+    /// <summary>Validates that the <see cref="LLVMOpaqueExecutionEngine" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOpaqueExecutionEngine" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOpaqueExecutionEngine>(), Is.EqualTo(sizeof(LLVMOpaqueExecutionEngine)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOpaqueExecutionEngine>(), Is.EqualTo(sizeof(LLVMOpaqueExecutionEngine)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueExecutionEngine" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOpaqueExecutionEngine).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueExecutionEngine" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOpaqueExecutionEngine).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueExecutionEngine" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOpaqueExecutionEngine), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueExecutionEngine" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOpaqueExecutionEngine), Is.EqualTo(1));
     }
 }

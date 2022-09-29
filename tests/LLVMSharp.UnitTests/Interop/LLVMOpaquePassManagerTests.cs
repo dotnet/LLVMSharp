@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOpaquePassManager" /> struct.</summary>
+public static unsafe partial class LLVMOpaquePassManagerTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOpaquePassManager" /> struct.</summary>
-    public static unsafe partial class LLVMOpaquePassManagerTests
+    /// <summary>Validates that the <see cref="LLVMOpaquePassManager" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOpaquePassManager" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOpaquePassManager>(), Is.EqualTo(sizeof(LLVMOpaquePassManager)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOpaquePassManager>(), Is.EqualTo(sizeof(LLVMOpaquePassManager)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaquePassManager" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOpaquePassManager).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaquePassManager" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOpaquePassManager).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaquePassManager" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOpaquePassManager), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaquePassManager" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOpaquePassManager), Is.EqualTo(1));
     }
 }

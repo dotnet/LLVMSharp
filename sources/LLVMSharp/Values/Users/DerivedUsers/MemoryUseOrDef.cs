@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public class MemoryUseOrDef : MemoryAccess
 {
-    public class MemoryUseOrDef : MemoryAccess
+    private protected MemoryUseOrDef(LLVMValueRef handle, LLVMValueKind expectedValueKind) : base(handle, expectedValueKind)
     {
-        private protected MemoryUseOrDef(LLVMValueRef handle, LLVMValueKind expectedValueKind) : base(handle, expectedValueKind)
-        {
-        }
     }
 }

@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class BitCastInst : CastInst
 {
-    public sealed class BitCastInst : CastInst
+    internal BitCastInst(LLVMValueRef handle) : base(handle.IsABitCastInst)
     {
-        internal BitCastInst(LLVMValueRef handle) : base(handle.IsABitCastInst)
-        {
-        }
     }
 }

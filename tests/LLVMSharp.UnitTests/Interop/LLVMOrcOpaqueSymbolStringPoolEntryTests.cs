@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOrcOpaqueSymbolStringPoolEntry" /> struct.</summary>
+public static unsafe partial class LLVMOrcOpaqueSymbolStringPoolEntryTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueSymbolStringPoolEntry" /> struct.</summary>
-    public static unsafe partial class LLVMOrcOpaqueSymbolStringPoolEntryTests
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueSymbolStringPoolEntry" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueSymbolStringPoolEntry" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOrcOpaqueSymbolStringPoolEntry>(), Is.EqualTo(sizeof(LLVMOrcOpaqueSymbolStringPoolEntry)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOrcOpaqueSymbolStringPoolEntry>(), Is.EqualTo(sizeof(LLVMOrcOpaqueSymbolStringPoolEntry)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueSymbolStringPoolEntry" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOrcOpaqueSymbolStringPoolEntry).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueSymbolStringPoolEntry" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOrcOpaqueSymbolStringPoolEntry).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueSymbolStringPoolEntry" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOrcOpaqueSymbolStringPoolEntry), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueSymbolStringPoolEntry" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOrcOpaqueSymbolStringPoolEntry), Is.EqualTo(1));
     }
 }

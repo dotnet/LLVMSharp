@@ -2,19 +2,18 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
-{
-    public class ConstantDataSequential : ConstantData
-    {
-        private protected ConstantDataSequential(LLVMValueRef handle, LLVMValueKind expectedValueKind) : base(handle.IsAConstantDataSequential, expectedValueKind)
-        {
-        }
+namespace LLVMSharp;
 
-        internal new static ConstantDataSequential Create(LLVMValueRef handle) => handle switch
-        {
-            _ when handle.IsAConstantDataArray != null => new ConstantDataArray(handle),
-            _ when handle.IsAConstantDataVector != null => new ConstantDataVector(handle),
-            _ => new ConstantDataSequential(handle, handle.Kind),
-        };
+public class ConstantDataSequential : ConstantData
+{
+    private protected ConstantDataSequential(LLVMValueRef handle, LLVMValueKind expectedValueKind) : base(handle.IsAConstantDataSequential, expectedValueKind)
+    {
     }
+
+    internal new static ConstantDataSequential Create(LLVMValueRef handle) => handle switch
+    {
+        _ when handle.IsAConstantDataArray != null => new ConstantDataArray(handle),
+        _ when handle.IsAConstantDataVector != null => new ConstantDataVector(handle),
+        _ => new ConstantDataSequential(handle, handle.Kind),
+    };
 }

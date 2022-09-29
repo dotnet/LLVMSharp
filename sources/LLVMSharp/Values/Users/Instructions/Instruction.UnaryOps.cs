@@ -2,13 +2,12 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public partial class Instruction
 {
-    public partial class Instruction
+    public enum UnaryOps
     {
-        public enum UnaryOps
-        {
-            FNeg = LLVMOpcode.LLVMFNeg,
-        }
+        FNeg = LLVMOpcode.LLVMFNeg,
     }
 }

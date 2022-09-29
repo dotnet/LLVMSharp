@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class MetadataAsValue : Value
 {
-    public sealed class MetadataAsValue : Value
+    internal MetadataAsValue(LLVMValueRef handle) : base(handle, LLVMValueKind.LLVMMetadataAsValueValueKind)
     {
-        internal MetadataAsValue(LLVMValueRef handle) : base(handle, LLVMValueKind.LLVMMetadataAsValueValueKind)
-        {
-        }
     }
 }

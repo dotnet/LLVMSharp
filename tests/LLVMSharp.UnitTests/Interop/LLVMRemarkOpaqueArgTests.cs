@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMRemarkOpaqueArg" /> struct.</summary>
+public static unsafe partial class LLVMRemarkOpaqueArgTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMRemarkOpaqueArg" /> struct.</summary>
-    public static unsafe partial class LLVMRemarkOpaqueArgTests
+    /// <summary>Validates that the <see cref="LLVMRemarkOpaqueArg" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMRemarkOpaqueArg" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMRemarkOpaqueArg>(), Is.EqualTo(sizeof(LLVMRemarkOpaqueArg)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMRemarkOpaqueArg>(), Is.EqualTo(sizeof(LLVMRemarkOpaqueArg)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMRemarkOpaqueArg" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMRemarkOpaqueArg).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMRemarkOpaqueArg" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMRemarkOpaqueArg).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMRemarkOpaqueArg" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMRemarkOpaqueArg), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMRemarkOpaqueArg" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMRemarkOpaqueArg), Is.EqualTo(1));
     }
 }

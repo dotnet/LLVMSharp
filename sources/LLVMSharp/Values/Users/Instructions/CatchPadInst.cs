@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class CatchPadInst : FuncletPadInst
 {
-    public sealed class CatchPadInst : FuncletPadInst
+    internal CatchPadInst(LLVMValueRef handle) : base(handle.IsACatchPadInst)
     {
-        internal CatchPadInst(LLVMValueRef handle) : base(handle.IsACatchPadInst)
-        {
-        }
     }
 }

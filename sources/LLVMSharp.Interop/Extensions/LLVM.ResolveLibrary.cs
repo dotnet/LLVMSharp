@@ -4,75 +4,74 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop
+namespace LLVMSharp.Interop;
+
+public static unsafe partial class LLVM
 {
-    public static unsafe partial class LLVM
+    public static event DllImportResolver ResolveLibrary;
+
+    static LLVM()
     {
-        public static event DllImportResolver ResolveLibrary;
+        NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), OnDllImport);
+    }
 
-        static LLVM()
+    private static IntPtr OnDllImport(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
+    {
+        IntPtr nativeLibrary;
+
+        if (TryResolveLibrary(libraryName, assembly, searchPath, out nativeLibrary))
         {
-            NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), OnDllImport);
+            return nativeLibrary;
         }
 
-        private static IntPtr OnDllImport(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
+        if (libraryName.Equals("libLLVM") && TryResolveLLVM(assembly, searchPath, out nativeLibrary))
         {
-            IntPtr nativeLibrary;
-
-            if (TryResolveLibrary(libraryName, assembly, searchPath, out nativeLibrary))
-            {
-                return nativeLibrary;
-            }
-
-            if (libraryName.Equals("libLLVM") && TryResolveLLVM(assembly, searchPath, out nativeLibrary))
-            {
-                return nativeLibrary;
-            }
-
-            return IntPtr.Zero;
+            return nativeLibrary;
         }
 
-        private static bool TryResolveLLVM(Assembly assembly, DllImportSearchPath? searchPath, out IntPtr nativeLibrary)
+        return IntPtr.Zero;
+    }
+
+    private static bool TryResolveLLVM(Assembly assembly, DllImportSearchPath? searchPath, out IntPtr nativeLibrary)
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && NativeLibrary.TryLoad("libLLVM-11.so", assembly, searchPath, out nativeLibrary))
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && NativeLibrary.TryLoad("libLLVM-11.so", assembly, searchPath, out nativeLibrary))
-            {
-                return true;
-            }
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && NativeLibrary.TryLoad("LLVM-C.dll", assembly, searchPath, out nativeLibrary))
-            {
-                return true;
-            }
-
-            if (NativeLibrary.TryLoad("libLLVM", assembly, searchPath, out nativeLibrary))
-            {
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
-        private static bool TryResolveLibrary(string libraryName, Assembly assembly, DllImportSearchPath? searchPath, out IntPtr nativeLibrary)
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && NativeLibrary.TryLoad("LLVM-C.dll", assembly, searchPath, out nativeLibrary))
         {
-            var resolveLibrary = ResolveLibrary;
+            return true;
+        }
 
-            if (resolveLibrary != null)
+        if (NativeLibrary.TryLoad("libLLVM", assembly, searchPath, out nativeLibrary))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private static bool TryResolveLibrary(string libraryName, Assembly assembly, DllImportSearchPath? searchPath, out IntPtr nativeLibrary)
+    {
+        var resolveLibrary = ResolveLibrary;
+
+        if (resolveLibrary != null)
+        {
+            var resolvers = resolveLibrary.GetInvocationList();
+
+            foreach (DllImportResolver resolver in resolvers)
             {
-                var resolvers = resolveLibrary.GetInvocationList();
+                nativeLibrary = resolver(libraryName, assembly, searchPath);
 
-                foreach (DllImportResolver resolver in resolvers)
+                if (nativeLibrary != IntPtr.Zero)
                 {
-                    nativeLibrary = resolver(libraryName, assembly, searchPath);
-
-                    if (nativeLibrary != IntPtr.Zero)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
-
-            nativeLibrary = IntPtr.Zero;
-            return false;
         }
+
+        nativeLibrary = IntPtr.Zero;
+        return false;
     }
 }

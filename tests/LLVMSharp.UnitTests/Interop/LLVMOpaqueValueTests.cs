@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOpaqueValue" /> struct.</summary>
+public static unsafe partial class LLVMOpaqueValueTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOpaqueValue" /> struct.</summary>
-    public static unsafe partial class LLVMOpaqueValueTests
+    /// <summary>Validates that the <see cref="LLVMOpaqueValue" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOpaqueValue" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOpaqueValue>(), Is.EqualTo(sizeof(LLVMOpaqueValue)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOpaqueValue>(), Is.EqualTo(sizeof(LLVMOpaqueValue)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueValue" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOpaqueValue).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueValue" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOpaqueValue).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueValue" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOpaqueValue), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueValue" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOpaqueValue), Is.EqualTo(1));
     }
 }

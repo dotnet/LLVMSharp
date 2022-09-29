@@ -2,19 +2,18 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
-{
-    public class GlobalObject : GlobalValue
-    {
-        private protected GlobalObject(LLVMValueRef handle, LLVMValueKind expectedValueKind) : base(handle.IsAGlobalObject, expectedValueKind)
-        {
-        }
+namespace LLVMSharp;
 
-        internal new static GlobalObject Create(LLVMValueRef handle) => handle switch
-        {
-            _ when handle.IsAFunction != null => new Function(handle),
-            _ when handle.IsAGlobalVariable != null => new GlobalVariable(handle),
-            _ => new GlobalObject(handle, handle.Kind),
-        };
+public class GlobalObject : GlobalValue
+{
+    private protected GlobalObject(LLVMValueRef handle, LLVMValueKind expectedValueKind) : base(handle.IsAGlobalObject, expectedValueKind)
+    {
     }
+
+    internal new static GlobalObject Create(LLVMValueRef handle) => handle switch
+    {
+        _ when handle.IsAFunction != null => new Function(handle),
+        _ when handle.IsAGlobalVariable != null => new GlobalVariable(handle),
+        _ => new GlobalObject(handle, handle.Kind),
+    };
 }

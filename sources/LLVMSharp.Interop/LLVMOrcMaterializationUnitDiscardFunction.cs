@@ -5,8 +5,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop
-{
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void LLVMOrcMaterializationUnitDiscardFunction(void* Ctx, [NativeTypeName("LLVMOrcJITDylibRef")] LLVMOrcOpaqueJITDylib* JD, [NativeTypeName("LLVMOrcSymbolStringPoolEntryRef")] LLVMOrcOpaqueSymbolStringPoolEntry* Symbol);
-}
+namespace LLVMSharp.Interop;
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public unsafe delegate void LLVMOrcMaterializationUnitDiscardFunction(void* Ctx, [NativeTypeName("LLVMOrcJITDylibRef")] LLVMOrcOpaqueJITDylib* JD, [NativeTypeName("LLVMOrcSymbolStringPoolEntryRef")] LLVMOrcOpaqueSymbolStringPoolEntry* Symbol);

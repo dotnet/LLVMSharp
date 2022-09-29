@@ -2,17 +2,16 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
-{
-    public class ConstantExpr : Constant
-    {
-        private protected ConstantExpr(LLVMValueRef handle) : base(handle.IsAConstantExpr, LLVMValueKind.LLVMConstantExprValueKind)
-        {
-        }
+namespace LLVMSharp;
 
-        internal static new ConstantExpr Create(LLVMValueRef handle) => handle switch
-        {
-            _ => new ConstantExpr(handle),
-        };
+public class ConstantExpr : Constant
+{
+    private protected ConstantExpr(LLVMValueRef handle) : base(handle.IsAConstantExpr, LLVMValueKind.LLVMConstantExprValueKind)
+    {
     }
+
+    internal static new ConstantExpr Create(LLVMValueRef handle) => handle switch
+    {
+        _ => new ConstantExpr(handle),
+    };
 }

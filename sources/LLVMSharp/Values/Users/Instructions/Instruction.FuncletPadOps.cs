@@ -2,14 +2,13 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public partial class Instruction
 {
-    public partial class Instruction
+    public enum FuncletPadOps
     {
-        public enum FuncletPadOps
-        {
-            CleanupPad = LLVMOpcode.LLVMCleanupPad,
-            CatchPad = LLVMOpcode.LLVMCatchPad,
-        }
+        CleanupPad = LLVMOpcode.LLVMCleanupPad,
+        CatchPad = LLVMOpcode.LLVMCatchPad,
     }
 }

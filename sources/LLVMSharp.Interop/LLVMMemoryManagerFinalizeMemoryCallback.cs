@@ -5,9 +5,8 @@
 
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop
-{
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    [return: NativeTypeName("LLVMBool")]
-    public unsafe delegate int LLVMMemoryManagerFinalizeMemoryCallback(void* Opaque, [NativeTypeName("char **")] sbyte** ErrMsg);
-}
+namespace LLVMSharp.Interop;
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+[return: NativeTypeName("LLVMBool")]
+public unsafe delegate int LLVMMemoryManagerFinalizeMemoryCallback(void* Opaque, [NativeTypeName("char **")] sbyte** ErrMsg);

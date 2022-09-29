@@ -5,8 +5,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop
-{
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void LLVMMemoryManagerDestroyCallback(void* Opaque);
-}
+namespace LLVMSharp.Interop;
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public unsafe delegate void LLVMMemoryManagerDestroyCallback(void* Opaque);

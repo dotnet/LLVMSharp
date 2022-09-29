@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class InsertValueInst : Instruction
 {
-    public sealed class InsertValueInst : Instruction
+    internal InsertValueInst(LLVMValueRef handle) : base(handle.IsAInsertValueInst)
     {
-        internal InsertValueInst(LLVMValueRef handle) : base(handle.IsAInsertValueInst)
-        {
-        }
     }
 }

@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class FCmpInst : CmpInst
 {
-    public sealed class FCmpInst : CmpInst
+    internal FCmpInst(LLVMValueRef handle) : base(handle.IsAFCmpInst)
     {
-        internal FCmpInst(LLVMValueRef handle) : base(handle.IsAFCmpInst)
-        {
-        }
     }
 }

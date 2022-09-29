@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class GlobalAlias : GlobalIndirectSymbol
 {
-    public sealed class GlobalAlias : GlobalIndirectSymbol
+    internal GlobalAlias(LLVMValueRef handle) : base(handle.IsAGlobalAlias, LLVMValueKind.LLVMGlobalAliasValueKind)
     {
-        internal GlobalAlias(LLVMValueRef handle) : base(handle.IsAGlobalAlias, LLVMValueKind.LLVMGlobalAliasValueKind)
-        {
-        }
     }
 }

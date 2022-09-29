@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ReturnInst : Instruction
 {
-    public sealed class ReturnInst : Instruction
+    internal ReturnInst(LLVMValueRef handle) : base(handle.IsAReturnInst)
     {
-        internal ReturnInst(LLVMValueRef handle) : base(handle.IsAReturnInst)
-        {
-        }
     }
 }

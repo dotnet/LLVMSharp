@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class FPTruncInst : CastInst
 {
-    public sealed class FPTruncInst : CastInst
+    internal FPTruncInst(LLVMValueRef handle) : base(handle.IsAFPTruncInst)
     {
-        internal FPTruncInst(LLVMValueRef handle) : base(handle.IsAFPTruncInst)
-        {
-        }
     }
 }

@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class CatchReturnInst : Instruction
 {
-    public sealed class CatchReturnInst : Instruction
+    internal CatchReturnInst(LLVMValueRef handle) : base(handle.IsACatchReturnInst)
     {
-        internal CatchReturnInst(LLVMValueRef handle) : base(handle.IsACatchReturnInst)
-        {
-        }
     }
 }

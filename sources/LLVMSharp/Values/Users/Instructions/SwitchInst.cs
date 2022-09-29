@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class SwitchInst : Instruction
 {
-    public sealed class SwitchInst : Instruction
+    internal SwitchInst(LLVMValueRef handle) : base(handle.IsASwitchInst)
     {
-        internal SwitchInst(LLVMValueRef handle) : base(handle.IsASwitchInst)
-        {
-        }
     }
 }
