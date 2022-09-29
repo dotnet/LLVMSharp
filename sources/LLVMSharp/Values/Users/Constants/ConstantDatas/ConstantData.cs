@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public class ConstantData : Constant
 {
-    public class ConstantData : Constant
+    private protected ConstantData(LLVMValueRef handle, LLVMValueKind expectedValueKind) : base(handle, expectedValueKind)
     {
-        private protected ConstantData(LLVMValueRef handle, LLVMValueKind expectedValueKind) : base(handle, expectedValueKind)
-        {
-        }
     }
 }

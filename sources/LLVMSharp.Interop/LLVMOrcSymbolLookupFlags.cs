@@ -5,12 +5,11 @@
 
 using System;
 
-namespace LLVMSharp.Interop
+namespace LLVMSharp.Interop;
+
+[Flags]
+public enum LLVMOrcSymbolLookupFlags
 {
-    [Flags]
-    public enum LLVMOrcSymbolLookupFlags
-    {
-        LLVMOrcSymbolLookupFlagsRequiredSymbol,
-        LLVMOrcSymbolLookupFlagsWeaklyReferencedSymbol,
-    }
+    LLVMOrcSymbolLookupFlagsRequiredSymbol,
+    LLVMOrcSymbolLookupFlagsWeaklyReferencedSymbol,
 }

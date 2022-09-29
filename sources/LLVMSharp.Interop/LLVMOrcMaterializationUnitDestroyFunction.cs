@@ -5,8 +5,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop
-{
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void LLVMOrcMaterializationUnitDestroyFunction(void* Ctx);
-}
+namespace LLVMSharp.Interop;
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public unsafe delegate void LLVMOrcMaterializationUnitDestroyFunction(void* Ctx);

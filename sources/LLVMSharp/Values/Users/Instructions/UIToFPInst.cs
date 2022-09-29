@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class UIToFPInst : CastInst
 {
-    public sealed class UIToFPInst : CastInst
+    internal UIToFPInst(LLVMValueRef handle) : base(handle.IsAUIToFPInst)
     {
-        internal UIToFPInst(LLVMValueRef handle) : base(handle.IsAUIToFPInst)
-        {
-        }
     }
 }

@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public class CallBase : Instruction
 {
-    public class CallBase : Instruction
+    private protected CallBase(LLVMValueRef handle) : base(handle)
     {
-        private protected CallBase(LLVMValueRef handle) : base(handle)
-        {
-        }
     }
 }

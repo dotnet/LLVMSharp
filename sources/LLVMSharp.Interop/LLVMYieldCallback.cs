@@ -5,8 +5,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop
-{
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void LLVMYieldCallback([NativeTypeName("LLVMContextRef")] LLVMOpaqueContext* param0, void* param1);
-}
+namespace LLVMSharp.Interop;
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public unsafe delegate void LLVMYieldCallback([NativeTypeName("LLVMContextRef")] LLVMOpaqueContext* param0, void* param1);

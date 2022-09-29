@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class FPToUIInst : CastInst
 {
-    public sealed class FPToUIInst : CastInst
+    internal FPToUIInst(LLVMValueRef handle) : base(handle.IsAFPToUIInst)
     {
-        internal FPToUIInst(LLVMValueRef handle) : base(handle.IsAFPToUIInst)
-        {
-        }
     }
 }

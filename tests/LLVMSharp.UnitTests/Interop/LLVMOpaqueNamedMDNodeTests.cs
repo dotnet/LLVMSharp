@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOpaqueNamedMDNode" /> struct.</summary>
+public static unsafe partial class LLVMOpaqueNamedMDNodeTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOpaqueNamedMDNode" /> struct.</summary>
-    public static unsafe partial class LLVMOpaqueNamedMDNodeTests
+    /// <summary>Validates that the <see cref="LLVMOpaqueNamedMDNode" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOpaqueNamedMDNode" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOpaqueNamedMDNode>(), Is.EqualTo(sizeof(LLVMOpaqueNamedMDNode)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOpaqueNamedMDNode>(), Is.EqualTo(sizeof(LLVMOpaqueNamedMDNode)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueNamedMDNode" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOpaqueNamedMDNode).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueNamedMDNode" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOpaqueNamedMDNode).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueNamedMDNode" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOpaqueNamedMDNode), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueNamedMDNode" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOpaqueNamedMDNode), Is.EqualTo(1));
     }
 }

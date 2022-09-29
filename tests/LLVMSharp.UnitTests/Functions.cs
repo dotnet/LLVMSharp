@@ -3,17 +3,16 @@
 using LLVMSharp.Interop;
 using NUnit.Framework;
 
-namespace LLVMSharp.UnitTests
+namespace LLVMSharp.UnitTests;
+
+public class Functions
 {
-    public class Functions
+    [Test]
+    public void ParamTypesRoundtrip()
     {
-        [Test]
-        public void ParamTypesRoundtrip()
-        {
-            var returnType = LLVMTypeRef.Int8;
-            var parameterTypes = new[] { LLVMTypeRef.Double };
-            var functionType = LLVMTypeRef.CreateFunction(returnType, parameterTypes);
-            Assert.AreEqual(parameterTypes, functionType.ParamTypes);
-        }
+        var returnType = LLVMTypeRef.Int8;
+        var parameterTypes = new[] { LLVMTypeRef.Double };
+        var functionType = LLVMTypeRef.CreateFunction(returnType, parameterTypes);
+        Assert.AreEqual(parameterTypes, functionType.ParamTypes);
     }
 }

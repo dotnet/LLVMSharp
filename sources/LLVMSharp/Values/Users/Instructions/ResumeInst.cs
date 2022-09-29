@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ResumeInst : Instruction
 {
-    public sealed class ResumeInst : Instruction
+    internal ResumeInst(LLVMValueRef handle) : base(handle.IsAResumeInst)
     {
-        internal ResumeInst(LLVMValueRef handle) : base(handle.IsAResumeInst)
-        {
-        }
     }
 }

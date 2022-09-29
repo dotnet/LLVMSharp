@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class SExtInst : CastInst
 {
-    public sealed class SExtInst : CastInst
+    internal SExtInst(LLVMValueRef handle) : base(handle.IsASExtInst)
     {
-        internal SExtInst(LLVMValueRef handle) : base(handle.IsASExtInst)
-        {
-        }
     }
 }

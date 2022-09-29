@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class VAArgInst : UnaryInstruction
 {
-    public sealed class VAArgInst : UnaryInstruction
+    internal VAArgInst(LLVMValueRef handle) : base(handle.IsAVAArgInst)
     {
-        internal VAArgInst(LLVMValueRef handle) : base(handle.IsAVAArgInst)
-        {
-        }
     }
 }

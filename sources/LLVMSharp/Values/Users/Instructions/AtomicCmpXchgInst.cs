@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class AtomicCmpXchgInst : Instruction
 {
-    public sealed class AtomicCmpXchgInst : Instruction
+    internal AtomicCmpXchgInst(LLVMValueRef handle) : base(handle.IsAAtomicCmpXchgInst)
     {
-        internal AtomicCmpXchgInst(LLVMValueRef handle) : base(handle.IsAAtomicCmpXchgInst)
-        {
-        }
     }
 }

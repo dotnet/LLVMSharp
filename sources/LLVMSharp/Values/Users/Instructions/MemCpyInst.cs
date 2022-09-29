@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class MemCpyInst : MemTransferInst
 {
-    public sealed class MemCpyInst : MemTransferInst
+    internal MemCpyInst(LLVMValueRef handle) : base(handle.IsAMemCpyInst)
     {
-        internal MemCpyInst(LLVMValueRef handle) : base(handle.IsAMemCpyInst)
-        {
-        }
     }
 }

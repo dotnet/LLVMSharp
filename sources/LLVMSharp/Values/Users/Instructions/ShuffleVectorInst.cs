@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ShuffleVectorInst : Instruction
 {
-    public sealed class ShuffleVectorInst : Instruction
+    internal ShuffleVectorInst(LLVMValueRef handle) : base(handle.IsAShuffleVectorInst)
     {
-        internal ShuffleVectorInst(LLVMValueRef handle) : base(handle.IsAShuffleVectorInst)
-        {
-        }
     }
 }

@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOrcOpaqueLazyCallThroughManager" /> struct.</summary>
+public static unsafe partial class LLVMOrcOpaqueLazyCallThroughManagerTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueLazyCallThroughManager" /> struct.</summary>
-    public static unsafe partial class LLVMOrcOpaqueLazyCallThroughManagerTests
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueLazyCallThroughManager" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueLazyCallThroughManager" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOrcOpaqueLazyCallThroughManager>(), Is.EqualTo(sizeof(LLVMOrcOpaqueLazyCallThroughManager)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOrcOpaqueLazyCallThroughManager>(), Is.EqualTo(sizeof(LLVMOrcOpaqueLazyCallThroughManager)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueLazyCallThroughManager" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOrcOpaqueLazyCallThroughManager).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueLazyCallThroughManager" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOrcOpaqueLazyCallThroughManager).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueLazyCallThroughManager" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOrcOpaqueLazyCallThroughManager), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueLazyCallThroughManager" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOrcOpaqueLazyCallThroughManager), Is.EqualTo(1));
     }
 }

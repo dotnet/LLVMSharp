@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class CleanupReturnInst : Instruction
 {
-    public sealed class CleanupReturnInst : Instruction
+    internal CleanupReturnInst(LLVMValueRef handle) : base(handle.IsACleanupReturnInst)
     {
-        internal CleanupReturnInst(LLVMValueRef handle) : base(handle.IsACleanupReturnInst)
-        {
-        }
     }
 }

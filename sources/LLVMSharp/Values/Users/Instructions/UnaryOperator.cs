@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class UnaryOperator : UnaryInstruction
 {
-    public sealed class UnaryOperator : UnaryInstruction
+    internal UnaryOperator(LLVMValueRef handle) : base(handle.IsAUnaryOperator)
     {
-        internal UnaryOperator(LLVMValueRef handle) : base(handle.IsAUnaryOperator)
-        {
-        }
     }
 }

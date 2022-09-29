@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class UndefValue : ConstantData
 {
-    public sealed class UndefValue : ConstantData
+    internal UndefValue(LLVMValueRef handle) : base(handle.IsAUndefValue, LLVMValueKind.LLVMUndefValueValueKind)
     {
-        internal UndefValue(LLVMValueRef handle) : base(handle.IsAUndefValue, LLVMValueKind.LLVMUndefValueValueKind)
-        {
-        }
     }
 }

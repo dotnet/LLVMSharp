@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class BinaryOperator : Instruction
 {
-    public sealed class BinaryOperator : Instruction
+    internal BinaryOperator(LLVMValueRef handle) : base(handle.IsABinaryOperator)
     {
-        internal BinaryOperator(LLVMValueRef handle) : base(handle.IsABinaryOperator)
-        {
-        }
     }
 }

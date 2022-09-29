@@ -3,11 +3,10 @@
 // Ported from https://github.com/llvm/llvm-project/tree/llvmorg-14.0.0/llvm/include/llvm-c
 // Original source is Copyright (c) the LLVM Project and Contributors. Licensed under the Apache License v2.0 with LLVM Exceptions. See NOTICE.txt in the project root for license information.
 
-namespace LLVMSharp.Interop
+namespace LLVMSharp.Interop;
+
+public enum LLVMAttributeIndex
 {
-    public enum LLVMAttributeIndex
-    {
-        LLVMAttributeReturnIndex = 0,
-        LLVMAttributeFunctionIndex = -1,
-    }
+    LLVMAttributeReturnIndex = 0,
+    LLVMAttributeFunctionIndex = -1,
 }

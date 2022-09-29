@@ -5,15 +5,14 @@
 
 using System;
 
-namespace LLVMSharp.Interop
+namespace LLVMSharp.Interop;
+
+[NativeTypeName("int")]
+[Flags]
+public enum LLVMJITSymbolGenericFlags : uint
 {
-    [NativeTypeName("int")]
-    [Flags]
-    public enum LLVMJITSymbolGenericFlags : uint
-    {
-        LLVMJITSymbolGenericFlagsExported = 1U << 0,
-        LLVMJITSymbolGenericFlagsWeak = 1U << 1,
-        LLVMJITSymbolGenericFlagsCallable = 1U << 2,
-        LLVMJITSymbolGenericFlagsMaterializationSideEffectsOnly = 1U << 3,
-    }
+    LLVMJITSymbolGenericFlagsExported = 1U << 0,
+    LLVMJITSymbolGenericFlagsWeak = 1U << 1,
+    LLVMJITSymbolGenericFlagsCallable = 1U << 2,
+    LLVMJITSymbolGenericFlagsMaterializationSideEffectsOnly = 1U << 3,
 }

@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOrcOpaqueJITTargetMachineBuilder" /> struct.</summary>
+public static unsafe partial class LLVMOrcOpaqueJITTargetMachineBuilderTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueJITTargetMachineBuilder" /> struct.</summary>
-    public static unsafe partial class LLVMOrcOpaqueJITTargetMachineBuilderTests
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueJITTargetMachineBuilder" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueJITTargetMachineBuilder" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOrcOpaqueJITTargetMachineBuilder>(), Is.EqualTo(sizeof(LLVMOrcOpaqueJITTargetMachineBuilder)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOrcOpaqueJITTargetMachineBuilder>(), Is.EqualTo(sizeof(LLVMOrcOpaqueJITTargetMachineBuilder)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueJITTargetMachineBuilder" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOrcOpaqueJITTargetMachineBuilder).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueJITTargetMachineBuilder" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOrcOpaqueJITTargetMachineBuilder).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueJITTargetMachineBuilder" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOrcOpaqueJITTargetMachineBuilder), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueJITTargetMachineBuilder" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOrcOpaqueJITTargetMachineBuilder), Is.EqualTo(1));
     }
 }
