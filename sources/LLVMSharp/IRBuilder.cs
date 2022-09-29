@@ -32,7 +32,7 @@ public sealed class IRBuilder : IRBuilderBase
     public ReturnInst CreateAggregateRet(ReadOnlySpan<Value> retVals)
     {
         using var retValHandles = new MarshaledArray<Value, LLVMValueRef>(retVals, (value) => value.Handle);
-        var handle = Handle.BuildAggregateRet(retValHandles);
+        var handle = Handle.BuildAggregateRet(retValHandles.AsSpan());
         return Context.GetOrCreate<ReturnInst>(handle);
     }
 
@@ -93,7 +93,7 @@ public sealed class IRBuilder : IRBuilderBase
     public CallInst CreateCall(FunctionType fTy, Value callee, ReadOnlySpan<Value> args, ReadOnlySpan<char> name)
     {
         using var argHandles = new MarshaledArray<Value, LLVMValueRef>(args, (value) => value.Handle);
-        var handle = Handle.BuildCall2(fTy.Handle, callee.Handle, argHandles, name);
+        var handle = Handle.BuildCall2(fTy.Handle, callee.Handle, argHandles.AsSpan(), name);
         return Context.GetOrCreate<CallInst>(handle);
     }
 
@@ -252,7 +252,7 @@ public sealed class IRBuilder : IRBuilderBase
     public Value CreateGEP(Type ty, Value ptr, ReadOnlySpan<Value> idxList, ReadOnlySpan<char> name)
     {
         using var idxListHandles = new MarshaledArray<Value, LLVMValueRef>(idxList, (value) => value.Handle);
-        var handle = Handle.BuildGEP2(ty.Handle, ptr.Handle, idxListHandles, name);
+        var handle = Handle.BuildGEP2(ty.Handle, ptr.Handle, idxListHandles.AsSpan(), name);
         return Context.GetOrCreate(handle);
     }
 
@@ -277,7 +277,7 @@ public sealed class IRBuilder : IRBuilderBase
     public Value CreateInBoundsGEP(Type ty, Value ptr, ReadOnlySpan<Value> idxList, ReadOnlySpan<char> name)
     {
         using var idxListHandles = new MarshaledArray<Value, LLVMValueRef>(idxList, (value) => value.Handle);
-        var handle = Handle.BuildInBoundsGEP2(ty.Handle, ptr.Handle, idxListHandles, name);
+        var handle = Handle.BuildInBoundsGEP2(ty.Handle, ptr.Handle, idxListHandles.AsSpan(), name);
         return Context.GetOrCreate(handle);
     }
 
@@ -324,7 +324,7 @@ public sealed class IRBuilder : IRBuilderBase
     public InvokeInst CreateInvoke(FunctionType ty, Value callee, BasicBlock normalDest, BasicBlock unwindDest, ReadOnlySpan<Value> args, ReadOnlySpan<char> name)
     {
         using var argHandles = new MarshaledArray<Value, LLVMValueRef>(args, (value) => value.Handle);
-        var handle = Handle.BuildInvoke2(ty.Handle, callee.Handle, argHandles, normalDest.Handle, unwindDest.Handle, name);
+        var handle = Handle.BuildInvoke2(ty.Handle, callee.Handle, argHandles.AsSpan(), normalDest.Handle, unwindDest.Handle, name);
         return Context.GetOrCreate<InvokeInst>(handle);
     }
 

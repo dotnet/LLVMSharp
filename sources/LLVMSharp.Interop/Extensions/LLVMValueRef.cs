@@ -93,7 +93,7 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
         }
     }
 
-    public LLVMBasicBlockRef EntryBasicBlock => (IsAFunction != null) ? LLVM.GetEntryBasicBlock(this) : default;
+    public LLVMBasicBlockRef EntryBasicBlock => ((IsAFunction != null) && (BasicBlocksCount != 0)) ? LLVM.GetEntryBasicBlock(this) : default;
 
     public LLVMRealPredicate FCmpPredicate => (Handle != IntPtr.Zero) ? LLVM.GetFCmpPredicate(this) : default;
 
@@ -146,6 +146,8 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
     public LLVMModuleRef GlobalParent => (IsAGlobalValue != null) ? LLVM.GetGlobalParent(this) : default;
 
     public bool HasMetadata => (IsAInstruction != null) && LLVM.HasMetadata(this) != 0;
+
+    public bool HasPersonalityFn => (IsAFunction != null) && LLVM.HasPersonalityFn(this) != 0;
 
     public bool HasUnnamedAddr
     {
@@ -360,7 +362,7 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public LLVMValueRef IsASwitchInst => LLVM.IsASwitchInst(this);
 
-    public LLVMValueRef IsATerminatorInst => LLVM.IsATerminatorInst(this);
+    public LLVMValueRef IsATerminatorInst => (IsAInstruction != null) ? LLVM.IsATerminatorInst(this) : default;
 
     public LLVMValueRef IsATruncInst => LLVM.IsATruncInst(this);
 
@@ -500,7 +502,7 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
         }
     }
 
-    public uint MDNodeOperandsCount => (Kind != LLVMValueKind.LLVMMetadataAsValueValueKind) ? LLVM.GetMDNodeNumOperands(this) : default;
+    public uint MDNodeOperandsCount => (Kind == LLVMValueKind.LLVMMetadataAsValueValueKind) ? LLVM.GetMDNodeNumOperands(this) : default;
 
     public string Name
     {
@@ -567,7 +569,7 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
     {
         get
         {
-            return (IsAFunction != null) ? LLVM.GetPersonalityFn(this) : default;
+            return HasPersonalityFn ? LLVM.GetPersonalityFn(this) : default;
         }
 
         set
