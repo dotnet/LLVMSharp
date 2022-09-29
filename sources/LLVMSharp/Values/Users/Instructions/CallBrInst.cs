@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class CallBrInst : CallBase
 {
-    public sealed class CallBrInst : CallBase
+    internal CallBrInst(LLVMValueRef handle) : base(handle.IsACallBrInst)
     {
-        internal CallBrInst(LLVMValueRef handle) : base(handle.IsACallBrInst)
-        {
-        }
     }
 }

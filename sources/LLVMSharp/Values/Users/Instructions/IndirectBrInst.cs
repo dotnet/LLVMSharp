@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class IndirectBrInst : Instruction
 {
-    public sealed class IndirectBrInst : Instruction
+    internal IndirectBrInst(LLVMValueRef handle) : base(handle.IsAIndirectBrInst)
     {
-        internal IndirectBrInst(LLVMValueRef handle) : base(handle.IsAIndirectBrInst)
-        {
-        }
     }
 }

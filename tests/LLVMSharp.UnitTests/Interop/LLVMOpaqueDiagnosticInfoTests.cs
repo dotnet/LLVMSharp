@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOpaqueDiagnosticInfo" /> struct.</summary>
+public static unsafe partial class LLVMOpaqueDiagnosticInfoTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOpaqueDiagnosticInfo" /> struct.</summary>
-    public static unsafe partial class LLVMOpaqueDiagnosticInfoTests
+    /// <summary>Validates that the <see cref="LLVMOpaqueDiagnosticInfo" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOpaqueDiagnosticInfo" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOpaqueDiagnosticInfo>(), Is.EqualTo(sizeof(LLVMOpaqueDiagnosticInfo)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOpaqueDiagnosticInfo>(), Is.EqualTo(sizeof(LLVMOpaqueDiagnosticInfo)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueDiagnosticInfo" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOpaqueDiagnosticInfo).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueDiagnosticInfo" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOpaqueDiagnosticInfo).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueDiagnosticInfo" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOpaqueDiagnosticInfo), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueDiagnosticInfo" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOpaqueDiagnosticInfo), Is.EqualTo(1));
     }
 }

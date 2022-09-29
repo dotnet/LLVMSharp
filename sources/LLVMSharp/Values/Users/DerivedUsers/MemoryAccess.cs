@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public class MemoryAccess : DerivedUser
 {
-    public class MemoryAccess : DerivedUser
+    private protected MemoryAccess(LLVMValueRef handle, LLVMValueKind expectedValueKind) : base(handle, expectedValueKind)
     {
-        private protected MemoryAccess(LLVMValueRef handle, LLVMValueKind expectedValueKind) : base(handle, expectedValueKind)
-        {
-        }
     }
 }

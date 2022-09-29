@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ExtractElementInst : Instruction
 {
-    public sealed class ExtractElementInst : Instruction
+    internal ExtractElementInst(LLVMValueRef handle) : base(handle.IsAExtractElementInst)
     {
-        internal ExtractElementInst(LLVMValueRef handle) : base(handle.IsAExtractElementInst)
-        {
-        }
     }
 }

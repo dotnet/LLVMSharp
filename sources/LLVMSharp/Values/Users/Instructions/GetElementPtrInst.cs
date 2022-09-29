@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class GetElementPtrInst : Instruction
 {
-    public sealed class GetElementPtrInst : Instruction
+    internal GetElementPtrInst(LLVMValueRef handle) : base(handle.IsAGetElementPtrInst)
     {
-        internal GetElementPtrInst(LLVMValueRef handle) : base(handle.IsAGetElementPtrInst)
-        {
-        }
     }
 }

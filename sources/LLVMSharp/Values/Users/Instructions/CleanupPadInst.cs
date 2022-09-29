@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class CleanupPadInst : FuncletPadInst
 {
-    public sealed class CleanupPadInst : FuncletPadInst
+    internal CleanupPadInst(LLVMValueRef handle) : base(handle.IsACleanupPadInst)
     {
-        internal CleanupPadInst(LLVMValueRef handle) : base(handle.IsACleanupPadInst)
-        {
-        }
     }
 }

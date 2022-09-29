@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOrcOpaqueLLJIT" /> struct.</summary>
+public static unsafe partial class LLVMOrcOpaqueLLJITTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueLLJIT" /> struct.</summary>
-    public static unsafe partial class LLVMOrcOpaqueLLJITTests
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueLLJIT" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueLLJIT" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOrcOpaqueLLJIT>(), Is.EqualTo(sizeof(LLVMOrcOpaqueLLJIT)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOrcOpaqueLLJIT>(), Is.EqualTo(sizeof(LLVMOrcOpaqueLLJIT)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueLLJIT" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOrcOpaqueLLJIT).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueLLJIT" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOrcOpaqueLLJIT).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueLLJIT" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOrcOpaqueLLJIT), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueLLJIT" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOrcOpaqueLLJIT), Is.EqualTo(1));
     }
 }

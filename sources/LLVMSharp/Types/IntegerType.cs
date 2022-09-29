@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class IntegerType : Type
 {
-    public sealed class IntegerType : Type
+    internal IntegerType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMIntegerTypeKind)
     {
-        internal IntegerType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMIntegerTypeKind)
-        {
-        }
     }
 }

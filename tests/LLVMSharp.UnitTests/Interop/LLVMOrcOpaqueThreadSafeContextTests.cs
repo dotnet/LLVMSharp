@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOrcOpaqueThreadSafeContext" /> struct.</summary>
+public static unsafe partial class LLVMOrcOpaqueThreadSafeContextTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueThreadSafeContext" /> struct.</summary>
-    public static unsafe partial class LLVMOrcOpaqueThreadSafeContextTests
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueThreadSafeContext" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueThreadSafeContext" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOrcOpaqueThreadSafeContext>(), Is.EqualTo(sizeof(LLVMOrcOpaqueThreadSafeContext)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOrcOpaqueThreadSafeContext>(), Is.EqualTo(sizeof(LLVMOrcOpaqueThreadSafeContext)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueThreadSafeContext" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOrcOpaqueThreadSafeContext).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueThreadSafeContext" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOrcOpaqueThreadSafeContext).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueThreadSafeContext" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOrcOpaqueThreadSafeContext), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueThreadSafeContext" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOrcOpaqueThreadSafeContext), Is.EqualTo(1));
     }
 }

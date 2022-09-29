@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOpaqueSymbolIterator" /> struct.</summary>
+public static unsafe partial class LLVMOpaqueSymbolIteratorTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOpaqueSymbolIterator" /> struct.</summary>
-    public static unsafe partial class LLVMOpaqueSymbolIteratorTests
+    /// <summary>Validates that the <see cref="LLVMOpaqueSymbolIterator" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOpaqueSymbolIterator" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOpaqueSymbolIterator>(), Is.EqualTo(sizeof(LLVMOpaqueSymbolIterator)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOpaqueSymbolIterator>(), Is.EqualTo(sizeof(LLVMOpaqueSymbolIterator)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueSymbolIterator" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOpaqueSymbolIterator).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueSymbolIterator" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOpaqueSymbolIterator).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueSymbolIterator" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOpaqueSymbolIterator), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueSymbolIterator" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOpaqueSymbolIterator), Is.EqualTo(1));
     }
 }

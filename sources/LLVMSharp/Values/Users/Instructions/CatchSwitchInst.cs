@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class CatchSwitchInst : Instruction
 {
-    public sealed class CatchSwitchInst : Instruction
+    internal CatchSwitchInst(LLVMValueRef handle) : base(handle.IsACatchSwitchInst)
     {
-        internal CatchSwitchInst(LLVMValueRef handle) : base(handle.IsACatchSwitchInst)
-        {
-        }
     }
 }

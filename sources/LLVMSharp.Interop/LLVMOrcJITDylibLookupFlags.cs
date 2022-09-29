@@ -5,12 +5,11 @@
 
 using System;
 
-namespace LLVMSharp.Interop
+namespace LLVMSharp.Interop;
+
+[Flags]
+public enum LLVMOrcJITDylibLookupFlags
 {
-    [Flags]
-    public enum LLVMOrcJITDylibLookupFlags
-    {
-        LLVMOrcJITDylibLookupFlagsMatchExportedSymbolsOnly,
-        LLVMOrcJITDylibLookupFlagsMatchAllSymbols,
-    }
+    LLVMOrcJITDylibLookupFlagsMatchExportedSymbolsOnly,
+    LLVMOrcJITDylibLookupFlagsMatchAllSymbols,
 }

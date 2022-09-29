@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class Function : GlobalObject
 {
-    public sealed class Function : GlobalObject
+    internal Function(LLVMValueRef handle) : base(handle.IsAFunction, LLVMValueKind.LLVMFunctionValueKind)
     {
-        internal Function(LLVMValueRef handle) : base(handle.IsAFunction, LLVMValueKind.LLVMFunctionValueKind)
-        {
-        }
     }
 }

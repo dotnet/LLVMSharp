@@ -3,44 +3,40 @@
 using System;
 using System.Buffers;
 
-namespace LLVMSharp.Interop
+namespace LLVMSharp.Interop;
+
+public unsafe struct MarshaledArray<T, U> : IDisposable
 {
-    public unsafe struct MarshaledArray<T, U> : IDisposable
+    public MarshaledArray(ReadOnlySpan<T> inputs, Func<T, U> marshal)
     {
-        public MarshaledArray(ReadOnlySpan<T> inputs, Func<T, U> marshal)
+        if (inputs.IsEmpty)
         {
-            if (inputs.IsEmpty)
-            {
-                Count = 0;
-                Values = null;
-            }
-            else
-            {
-                Count = inputs.Length;
-                Values = ArrayPool<U>.Shared.Rent(Count);
+            Count = 0;
+            Values = null;
+        }
+        else
+        {
+            Count = inputs.Length;
+            Values = ArrayPool<U>.Shared.Rent(Count);
 
-                for (int i = 0; i < Count; i++)
-                {
-                    Values[i] = marshal(inputs[i]);
-                }
+            for (int i = 0; i < Count; i++)
+            {
+                Values[i] = marshal(inputs[i]);
             }
         }
+    }
 
-        public int Count { get; private set; }
+    public int Count { get; private set; }
 
-        public U[] Values { get; private set; }
+    public U[] Values { get; private set; }
 
-        public static implicit operator ReadOnlySpan<U>(in MarshaledArray<T, U> value)
+    public static implicit operator ReadOnlySpan<U>(in MarshaledArray<T, U> value) => value.Values;
+
+    public void Dispose()
+    {
+        if (Values != null)
         {
-            return value.Values;
-        }
-
-        public void Dispose()
-        {
-            if (Values != null)
-            {
-                ArrayPool<U>.Shared.Return(Values);
-            }
+            ArrayPool<U>.Shared.Return(Values);
         }
     }
 }

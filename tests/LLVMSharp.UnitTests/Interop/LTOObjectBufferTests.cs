@@ -7,37 +7,36 @@ using NUnit.Framework;
 using System;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LTOObjectBuffer" /> struct.</summary>
+public static unsafe partial class LTOObjectBufferTests
 {
-    /// <summary>Provides validation of the <see cref="LTOObjectBuffer" /> struct.</summary>
-    public static unsafe partial class LTOObjectBufferTests
+    /// <summary>Validates that the <see cref="LTOObjectBuffer" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LTOObjectBuffer" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LTOObjectBuffer>(), Is.EqualTo(sizeof(LTOObjectBuffer)));
-        }
+        Assert.That(Marshal.SizeOf<LTOObjectBuffer>(), Is.EqualTo(sizeof(LTOObjectBuffer)));
+    }
 
-        /// <summary>Validates that the <see cref="LTOObjectBuffer" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LTOObjectBuffer).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LTOObjectBuffer" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LTOObjectBuffer).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LTOObjectBuffer" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
+    /// <summary>Validates that the <see cref="LTOObjectBuffer" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        if (Environment.Is64BitProcess)
         {
-            if (Environment.Is64BitProcess)
-            {
-                Assert.That(sizeof(LTOObjectBuffer), Is.EqualTo(16));
-            }
-            else
-            {
-                Assert.That(sizeof(LTOObjectBuffer), Is.EqualTo(8));
-            }
+            Assert.That(sizeof(LTOObjectBuffer), Is.EqualTo(16));
+        }
+        else
+        {
+            Assert.That(sizeof(LTOObjectBuffer), Is.EqualTo(8));
         }
     }
 }

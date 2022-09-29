@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOrcOpaqueIRTransformLayer" /> struct.</summary>
+public static unsafe partial class LLVMOrcOpaqueIRTransformLayerTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueIRTransformLayer" /> struct.</summary>
-    public static unsafe partial class LLVMOrcOpaqueIRTransformLayerTests
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueIRTransformLayer" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueIRTransformLayer" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOrcOpaqueIRTransformLayer>(), Is.EqualTo(sizeof(LLVMOrcOpaqueIRTransformLayer)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOrcOpaqueIRTransformLayer>(), Is.EqualTo(sizeof(LLVMOrcOpaqueIRTransformLayer)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueIRTransformLayer" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOrcOpaqueIRTransformLayer).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueIRTransformLayer" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOrcOpaqueIRTransformLayer).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueIRTransformLayer" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOrcOpaqueIRTransformLayer), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueIRTransformLayer" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOrcOpaqueIRTransformLayer), Is.EqualTo(1));
     }
 }

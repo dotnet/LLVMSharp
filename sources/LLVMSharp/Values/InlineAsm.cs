@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class InlineAsm : Value
 {
-    public sealed class InlineAsm : Value
+    internal InlineAsm(LLVMValueRef handle) : base(handle.IsAInlineAsm, LLVMValueKind.LLVMInlineAsmValueKind)
     {
-        internal InlineAsm(LLVMValueRef handle) : base(handle.IsAInlineAsm, LLVMValueKind.LLVMInlineAsmValueKind)
-        {
-        }
     }
 }

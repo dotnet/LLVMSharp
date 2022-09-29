@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class UnreachableInst : Instruction
 {
-    public sealed class UnreachableInst : Instruction
+    internal UnreachableInst(LLVMValueRef handle) : base(handle.IsAUnreachableInst)
     {
-        internal UnreachableInst(LLVMValueRef handle) : base(handle.IsAUnreachableInst)
-        {
-        }
     }
 }

@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ConstantDataVector : ConstantDataSequential
 {
-    public sealed class ConstantDataVector : ConstantDataSequential
+    internal ConstantDataVector(LLVMValueRef handle) : base(handle.IsAConstantDataVector, LLVMValueKind.LLVMConstantDataVectorValueKind)
     {
-        internal ConstantDataVector(LLVMValueRef handle) : base(handle.IsAConstantDataVector, LLVMValueKind.LLVMConstantDataVectorValueKind)
-        {
-        }
     }
 }

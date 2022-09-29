@@ -2,18 +2,24 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class LoadInst : UnaryInstruction
 {
-    public sealed class LoadInst : UnaryInstruction
+    internal LoadInst(LLVMValueRef handle) : base(handle.IsALoadInst)
     {
-        internal LoadInst(LLVMValueRef handle) : base(handle.IsALoadInst)
+    }
+
+    public uint Alignment
+    {
+        get
         {
+            return Handle.Alignment;
         }
 
-        public uint Alignment
+        set
         {
-            get => Handle.Alignment;
-            set => Handle.SetAlignment(value);
+            Handle.SetAlignment(value);
         }
     }
 }

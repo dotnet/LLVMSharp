@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class SIToFPInst : CastInst
 {
-    public sealed class SIToFPInst : CastInst
+    internal SIToFPInst(LLVMValueRef handle) : base(handle.IsASIToFPInst)
     {
-        internal SIToFPInst(LLVMValueRef handle) : base(handle.IsASIToFPInst)
-        {
-        }
     }
 }

@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOpaqueUse" /> struct.</summary>
+public static unsafe partial class LLVMOpaqueUseTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOpaqueUse" /> struct.</summary>
-    public static unsafe partial class LLVMOpaqueUseTests
+    /// <summary>Validates that the <see cref="LLVMOpaqueUse" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOpaqueUse" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOpaqueUse>(), Is.EqualTo(sizeof(LLVMOpaqueUse)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOpaqueUse>(), Is.EqualTo(sizeof(LLVMOpaqueUse)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueUse" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOpaqueUse).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueUse" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOpaqueUse).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueUse" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOpaqueUse), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueUse" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOpaqueUse), Is.EqualTo(1));
     }
 }

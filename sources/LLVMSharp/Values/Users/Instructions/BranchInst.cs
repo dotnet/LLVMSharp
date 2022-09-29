@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class BranchInst : Instruction
 {
-    public sealed class BranchInst : Instruction
+    internal BranchInst(LLVMValueRef handle) : base(handle.IsABranchInst)
     {
-        internal BranchInst(LLVMValueRef handle) : base(handle.IsABranchInst)
-        {
-        }
     }
 }

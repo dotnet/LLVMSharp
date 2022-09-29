@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class GlobalVariable : GlobalObject
 {
-    public sealed class GlobalVariable : GlobalObject
+    internal GlobalVariable(LLVMValueRef handle) : base(handle.IsAGlobalVariable, LLVMValueKind.LLVMGlobalVariableValueKind)
     {
-        internal GlobalVariable(LLVMValueRef handle) : base(handle.IsAGlobalVariable, LLVMValueKind.LLVMGlobalVariableValueKind)
-        {
-        }
     }
 }

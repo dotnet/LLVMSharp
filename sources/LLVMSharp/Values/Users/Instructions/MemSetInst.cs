@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class MemSetInst : MemSetBase
 {
-    public sealed class MemSetInst : MemSetBase
+    internal MemSetInst(LLVMValueRef handle) : base(handle.IsAMemSetInst)
     {
-        internal MemSetInst(LLVMValueRef handle) : base(handle.IsAMemSetInst)
-        {
-        }
     }
 }

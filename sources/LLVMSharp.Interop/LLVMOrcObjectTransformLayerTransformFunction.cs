@@ -5,9 +5,8 @@
 
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop
-{
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    [return: NativeTypeName("LLVMErrorRef")]
-    public unsafe delegate LLVMOpaqueError* LLVMOrcObjectTransformLayerTransformFunction(void* Ctx, [NativeTypeName("LLVMMemoryBufferRef *")] LLVMOpaqueMemoryBuffer** ObjInOut);
-}
+namespace LLVMSharp.Interop;
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+[return: NativeTypeName("LLVMErrorRef")]
+public unsafe delegate LLVMOpaqueError* LLVMOrcObjectTransformLayerTransformFunction(void* Ctx, [NativeTypeName("LLVMMemoryBufferRef *")] LLVMOpaqueMemoryBuffer** ObjInOut);
