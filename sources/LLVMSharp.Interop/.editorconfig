@@ -1,0 +1,41 @@
+# Copyright © Tanner Gooding and Contributors. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
+
+###############################################################################
+# EditorConfig is awesome: http://EditorConfig.org
+###############################################################################
+
+###############################################################################
+# Not top-most EditorConfig file
+###############################################################################
+root = false
+
+###############################################################################
+# Set dotnet naming rules to:
+#    disable any parent naming rules since they are not applicable to interop
+###############################################################################
+[*.cs]
+dotnet_naming_rule.async_methods_should_be_pascal_case_suffixed_with_async.severity = none
+dotnet_naming_rule.const_fields_and_locals_should_be_pascal_case.severity = none
+dotnet_naming_rule.interfaces_should_be_pascal_case_prefixed_with_i.severity = none
+dotnet_naming_rule.locals_should_be_camel_case.severity = none
+dotnet_naming_rule.parameters_should_be_camel_case.severity = none
+dotnet_naming_rule.private_and_internal_static_fields_should_be_camel_case_prefixed_with_s_and_underscore.severity = none
+dotnet_naming_rule.private_and_internal_fields_should_be_camel_case_prefixed_with_underscore.severity = none
+dotnet_naming_rule.public_and_protected_declarations_should_be_pascal_case.severity = none
+dotnet_naming_rule.type_parameters_should_be_pascal_case_prefixed_with_t.severity = none
+
+###############################################################################
+# Set dotnet style options to:
+#    disable certain parent style options since they are not applicable to interop
+###############################################################################
+csharp_style_expression_bodied_methods = when_on_single_line:none
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:none
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:none
+dotnet_style_parentheses_in_other_operators = never_if_unnecessary:none
+dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:none
+dotnet_style_prefer_conditional_expression_over_assignment = true:none
+dotnet_style_prefer_conditional_expression_over_return = true:none
+csharp_style_prefer_pattern_matching = true:none
+csharp_style_var_elsewhere = true:none
+csharp_style_var_for_built_in_types = true:none
+csharp_style_var_when_type_is_apparent = true:none

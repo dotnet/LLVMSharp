@@ -3,15 +3,14 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop
+namespace LLVMSharp.Interop;
+
+public unsafe partial struct LLVMMCJITCompilerOptions
 {
-    public unsafe partial struct LLVMMCJITCompilerOptions
+    public static LLVMMCJITCompilerOptions Create()
     {
-        public static LLVMMCJITCompilerOptions Create()
-        {
-            LLVMMCJITCompilerOptions Options;
-            LLVM.InitializeMCJITCompilerOptions(&Options, (UIntPtr)Marshal.SizeOf<LLVMMCJITCompilerOptions>());
-            return Options;
-        }
+        LLVMMCJITCompilerOptions Options;
+        LLVM.InitializeMCJITCompilerOptions(&Options, (UIntPtr)Marshal.SizeOf<LLVMMCJITCompilerOptions>());
+        return Options;
     }
 }

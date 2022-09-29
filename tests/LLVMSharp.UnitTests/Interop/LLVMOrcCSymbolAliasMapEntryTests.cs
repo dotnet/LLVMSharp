@@ -7,37 +7,36 @@ using NUnit.Framework;
 using System;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOrcCSymbolAliasMapEntry" /> struct.</summary>
+public static unsafe partial class LLVMOrcCSymbolAliasMapEntryTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOrcCSymbolAliasMapEntry" /> struct.</summary>
-    public static unsafe partial class LLVMOrcCSymbolAliasMapEntryTests
+    /// <summary>Validates that the <see cref="LLVMOrcCSymbolAliasMapEntry" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOrcCSymbolAliasMapEntry" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOrcCSymbolAliasMapEntry>(), Is.EqualTo(sizeof(LLVMOrcCSymbolAliasMapEntry)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOrcCSymbolAliasMapEntry>(), Is.EqualTo(sizeof(LLVMOrcCSymbolAliasMapEntry)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcCSymbolAliasMapEntry" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOrcCSymbolAliasMapEntry).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcCSymbolAliasMapEntry" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOrcCSymbolAliasMapEntry).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcCSymbolAliasMapEntry" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
+    /// <summary>Validates that the <see cref="LLVMOrcCSymbolAliasMapEntry" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        if (Environment.Is64BitProcess)
         {
-            if (Environment.Is64BitProcess)
-            {
-                Assert.That(sizeof(LLVMOrcCSymbolAliasMapEntry), Is.EqualTo(16));
-            }
-            else
-            {
-                Assert.That(sizeof(LLVMOrcCSymbolAliasMapEntry), Is.EqualTo(8));
-            }
+            Assert.That(sizeof(LLVMOrcCSymbolAliasMapEntry), Is.EqualTo(16));
+        }
+        else
+        {
+            Assert.That(sizeof(LLVMOrcCSymbolAliasMapEntry), Is.EqualTo(8));
         }
     }
 }

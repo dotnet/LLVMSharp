@@ -2,16 +2,15 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public enum AtomicOrdering
 {
-    public enum AtomicOrdering
-    {
-        NotAtomic = LLVMAtomicOrdering.LLVMAtomicOrderingNotAtomic,
-        Unordered = LLVMAtomicOrdering.LLVMAtomicOrderingUnordered,
-        Monotonic = LLVMAtomicOrdering.LLVMAtomicOrderingMonotonic,
-        Acquire = LLVMAtomicOrdering.LLVMAtomicOrderingAcquire,
-        Release = LLVMAtomicOrdering.LLVMAtomicOrderingRelease,
-        AcquireRelease = LLVMAtomicOrdering.LLVMAtomicOrderingAcquireRelease,
-        SequentiallyConsistent = LLVMAtomicOrdering.LLVMAtomicOrderingSequentiallyConsistent,
-    }
+    NotAtomic = LLVMAtomicOrdering.LLVMAtomicOrderingNotAtomic,
+    Unordered = LLVMAtomicOrdering.LLVMAtomicOrderingUnordered,
+    Monotonic = LLVMAtomicOrdering.LLVMAtomicOrderingMonotonic,
+    Acquire = LLVMAtomicOrdering.LLVMAtomicOrderingAcquire,
+    Release = LLVMAtomicOrdering.LLVMAtomicOrderingRelease,
+    AcquireRelease = LLVMAtomicOrdering.LLVMAtomicOrderingAcquireRelease,
+    SequentiallyConsistent = LLVMAtomicOrdering.LLVMAtomicOrderingSequentiallyConsistent,
 }

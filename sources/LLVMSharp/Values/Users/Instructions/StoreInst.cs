@@ -2,18 +2,24 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class StoreInst : Instruction
 {
-    public sealed class StoreInst : Instruction
+    internal StoreInst(LLVMValueRef handle) : base(handle.IsAStoreInst)
     {
-        internal StoreInst(LLVMValueRef handle) : base(handle.IsAStoreInst)
+    }
+
+    public uint Alignment
+    {
+        get
         {
+            return Handle.Alignment;
         }
 
-        public uint Alignment
+        set
         {
-            get => Handle.Alignment;
-            set => Handle.SetAlignment(value);
+            Handle.SetAlignment(value);
         }
     }
 }

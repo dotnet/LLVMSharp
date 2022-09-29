@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class MemoryUse : MemoryUseOrDef
 {
-    public sealed class MemoryUse : MemoryUseOrDef
+    internal MemoryUse(LLVMValueRef handle) : base(handle, LLVMValueKind.LLVMMemoryUseValueKind)
     {
-        internal MemoryUse(LLVMValueRef handle) : base(handle, LLVMValueKind.LLVMMemoryUseValueKind)
-        {
-        }
     }
 }

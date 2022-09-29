@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ConstantFP : ConstantData
 {
-    public sealed class ConstantFP : ConstantData
+    internal ConstantFP(LLVMValueRef handle) : base(handle.IsAConstantFP, LLVMValueKind.LLVMConstantFPValueKind)
     {
-        internal ConstantFP(LLVMValueRef handle) : base(handle.IsAConstantFP, LLVMValueKind.LLVMConstantFPValueKind)
-        {
-        }
     }
 }

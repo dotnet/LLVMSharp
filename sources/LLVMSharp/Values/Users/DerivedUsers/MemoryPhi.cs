@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class MemoryPhi : MemoryAccess
 {
-    public sealed class MemoryPhi : MemoryAccess
+    internal MemoryPhi(LLVMValueRef handle) : base(handle, LLVMValueKind.LLVMMemoryPhiValueKind)
     {
-        internal MemoryPhi(LLVMValueRef handle) : base(handle, LLVMValueKind.LLVMMemoryPhiValueKind)
-        {
-        }
     }
 }

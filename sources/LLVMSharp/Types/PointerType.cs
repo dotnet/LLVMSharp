@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class PointerType : Type
 {
-    public sealed class PointerType : Type
+    internal PointerType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMPointerTypeKind)
     {
-        internal PointerType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMPointerTypeKind)
-        {
-        }
     }
 }

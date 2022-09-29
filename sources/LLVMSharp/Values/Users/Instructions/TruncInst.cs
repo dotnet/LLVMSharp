@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class TruncInst : CastInst
 {
-    public sealed class TruncInst : CastInst
+    internal TruncInst(LLVMValueRef handle) : base(handle.IsATruncInst)
     {
-        internal TruncInst(LLVMValueRef handle) : base(handle.IsATruncInst)
-        {
-        }
     }
 }

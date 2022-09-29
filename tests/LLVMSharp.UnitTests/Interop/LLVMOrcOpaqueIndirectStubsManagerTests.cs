@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOrcOpaqueIndirectStubsManager" /> struct.</summary>
+public static unsafe partial class LLVMOrcOpaqueIndirectStubsManagerTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOrcOpaqueIndirectStubsManager" /> struct.</summary>
-    public static unsafe partial class LLVMOrcOpaqueIndirectStubsManagerTests
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueIndirectStubsManager" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueIndirectStubsManager" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOrcOpaqueIndirectStubsManager>(), Is.EqualTo(sizeof(LLVMOrcOpaqueIndirectStubsManager)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOrcOpaqueIndirectStubsManager>(), Is.EqualTo(sizeof(LLVMOrcOpaqueIndirectStubsManager)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueIndirectStubsManager" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOrcOpaqueIndirectStubsManager).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueIndirectStubsManager" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOrcOpaqueIndirectStubsManager).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOrcOpaqueIndirectStubsManager" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOrcOpaqueIndirectStubsManager), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOrcOpaqueIndirectStubsManager" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOrcOpaqueIndirectStubsManager), Is.EqualTo(1));
     }
 }

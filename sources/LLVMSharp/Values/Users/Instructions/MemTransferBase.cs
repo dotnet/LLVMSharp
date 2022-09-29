@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public class MemTransferBase : MemIntrinsic
 {
-    public class MemTransferBase : MemIntrinsic
+    private protected MemTransferBase(LLVMValueRef handle) : base(handle)
     {
-        private protected MemTransferBase(LLVMValueRef handle) : base(handle)
-        {
-        }
     }
 }

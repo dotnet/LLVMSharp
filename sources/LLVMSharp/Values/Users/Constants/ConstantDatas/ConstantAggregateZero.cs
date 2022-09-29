@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ConstantAggregateZero : ConstantData
 {
-    public sealed class ConstantAggregateZero : ConstantData
+    internal ConstantAggregateZero(LLVMValueRef handle) : base(handle.IsAConstantAggregateZero, LLVMValueKind.LLVMConstantAggregateZeroValueKind)
     {
-        internal ConstantAggregateZero(LLVMValueRef handle) : base(handle.IsAConstantAggregateZero, LLVMValueKind.LLVMConstantAggregateZeroValueKind)
-        {
-        }
     }
 }

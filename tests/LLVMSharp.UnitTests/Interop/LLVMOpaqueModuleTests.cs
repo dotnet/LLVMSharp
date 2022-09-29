@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOpaqueModule" /> struct.</summary>
+public static unsafe partial class LLVMOpaqueModuleTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOpaqueModule" /> struct.</summary>
-    public static unsafe partial class LLVMOpaqueModuleTests
+    /// <summary>Validates that the <see cref="LLVMOpaqueModule" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOpaqueModule" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOpaqueModule>(), Is.EqualTo(sizeof(LLVMOpaqueModule)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOpaqueModule>(), Is.EqualTo(sizeof(LLVMOpaqueModule)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueModule" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOpaqueModule).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueModule" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOpaqueModule).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaqueModule" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOpaqueModule), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaqueModule" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOpaqueModule), Is.EqualTo(1));
     }
 }

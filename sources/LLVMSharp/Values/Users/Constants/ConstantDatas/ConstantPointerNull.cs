@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ConstantPointerNull : ConstantData
 {
-    public sealed class ConstantPointerNull : ConstantData
+    internal ConstantPointerNull(LLVMValueRef handle) : base(handle.IsAConstantPointerNull, LLVMValueKind.LLVMConstantPointerNullValueKind)
     {
-        internal ConstantPointerNull(LLVMValueRef handle) : base(handle.IsAConstantPointerNull, LLVMValueKind.LLVMConstantPointerNullValueKind)
-        {
-        }
     }
 }

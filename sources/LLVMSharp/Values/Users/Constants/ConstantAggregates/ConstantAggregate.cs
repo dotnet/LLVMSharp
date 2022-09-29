@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public class ConstantAggregate : Constant
 {
-    public class ConstantAggregate : Constant
+    private protected ConstantAggregate(LLVMValueRef handle, LLVMValueKind expectedValueKind) : base(handle, expectedValueKind)
     {
-        private protected ConstantAggregate(LLVMValueRef handle, LLVMValueKind expectedValueKind) : base(handle, expectedValueKind)
-        {
-        }
     }
 }

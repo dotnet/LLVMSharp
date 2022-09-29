@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class GlobalIFunc : GlobalIndirectSymbol
 {
-    public sealed class GlobalIFunc : GlobalIndirectSymbol
+    internal GlobalIFunc(LLVMValueRef handle) : base(handle.IsAGlobalIFunc, LLVMValueKind.LLVMGlobalIFuncValueKind)
     {
-        internal GlobalIFunc(LLVMValueRef handle) : base(handle.IsAGlobalIFunc, LLVMValueKind.LLVMGlobalIFuncValueKind)
-        {
-        }
     }
 }

@@ -3,160 +3,159 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop
+namespace LLVMSharp.Interop;
+
+public unsafe partial struct LLVMExecutionEngineRef : IDisposable, IEquatable<LLVMExecutionEngineRef>
 {
-    public unsafe partial struct LLVMExecutionEngineRef : IDisposable, IEquatable<LLVMExecutionEngineRef>
+    public IntPtr Handle;
+
+    public LLVMExecutionEngineRef(IntPtr handle)
     {
-        public IntPtr Handle;
+        Handle = handle;
+    }
 
-        public LLVMExecutionEngineRef(IntPtr handle)
+    public LLVMTargetDataRef TargetData => (Handle != IntPtr.Zero) ? LLVM.GetExecutionEngineTargetData(this) : default;
+
+    public LLVMTargetMachineRef TargetMachine => (Handle != IntPtr.Zero) ? LLVM.GetExecutionEngineTargetMachine(this) : default;
+
+    public static implicit operator LLVMExecutionEngineRef(LLVMOpaqueExecutionEngine* value) => new LLVMExecutionEngineRef((IntPtr)value);
+
+    public static implicit operator LLVMOpaqueExecutionEngine*(LLVMExecutionEngineRef value) => (LLVMOpaqueExecutionEngine*)value.Handle;
+
+    public static bool operator ==(LLVMExecutionEngineRef left, LLVMExecutionEngineRef right) => left.Handle == right.Handle;
+
+    public static bool operator !=(LLVMExecutionEngineRef left, LLVMExecutionEngineRef right) => !(left == right);
+
+    public void AddGlobalMapping(LLVMValueRef Global, IntPtr Addr) => LLVM.AddGlobalMapping(this, Global, (void*)Addr);
+
+    public void AddModule(LLVMModuleRef M) => LLVM.AddModule(this, M);
+
+    public void Dispose()
+    {
+        if (Handle != IntPtr.Zero)
         {
-            Handle = handle;
+            LLVM.DisposeExecutionEngine(this);
+            Handle = IntPtr.Zero;
+        }
+    }
+
+    public override bool Equals(object obj) => (obj is LLVMExecutionEngineRef other) && Equals(other);
+
+    public bool Equals(LLVMExecutionEngineRef other) => this == other;
+
+    public LLVMValueRef FindFunction(string Name) => FindFunction(Name.AsSpan());
+
+    public LLVMValueRef FindFunction(ReadOnlySpan<char> Name)
+    {
+        if (!TryFindFunction(Name, out var Fn))
+        {
+            throw new ExternalException();
         }
 
-        public LLVMTargetDataRef TargetData => (Handle != IntPtr.Zero) ? LLVM.GetExecutionEngineTargetData(this) : default;
+        return Fn;
+    }
 
-        public LLVMTargetMachineRef TargetMachine => (Handle != IntPtr.Zero) ? LLVM.GetExecutionEngineTargetMachine(this) : default;
+    public void FreeMachineCodeForFunction(LLVMValueRef F) => LLVM.FreeMachineCodeForFunction(this, F);
 
-        public static implicit operator LLVMExecutionEngineRef(LLVMOpaqueExecutionEngine* value) => new LLVMExecutionEngineRef((IntPtr)value);
+    public ulong GetFunctionAddress(string Name) => GetFunctionAddress(Name.AsSpan());
 
-        public static implicit operator LLVMOpaqueExecutionEngine*(LLVMExecutionEngineRef value) => (LLVMOpaqueExecutionEngine*)value.Handle;
+    public ulong GetFunctionAddress(ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.GetFunctionAddress(this, marshaledName);
+    }
 
-        public static bool operator ==(LLVMExecutionEngineRef left, LLVMExecutionEngineRef right) => left.Handle == right.Handle;
+    public ulong GetGlobalValueAddress(string Name) => GetGlobalValueAddress(Name.AsSpan()); 
 
-        public static bool operator !=(LLVMExecutionEngineRef left, LLVMExecutionEngineRef right) => !(left == right);
+    public ulong GetGlobalValueAddress(ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.GetGlobalValueAddress(this, marshaledName);
+    }
 
-        public void AddGlobalMapping(LLVMValueRef Global, IntPtr Addr) => LLVM.AddGlobalMapping(this, Global, (void*)Addr);
+    public override int GetHashCode() => Handle.GetHashCode();
 
-        public void AddModule(LLVMModuleRef M) => LLVM.AddModule(this, M);
+    public IntPtr GetPointerToGlobal(LLVMValueRef Global) => (IntPtr)LLVM.GetPointerToGlobal(this, Global);
 
-        public void Dispose()
+    public TDelegate GetPointerToGlobal<TDelegate>(LLVMValueRef Global)
+    {
+        var pGlobal = GetPointerToGlobal(Global);
+        return Marshal.GetDelegateForFunctionPointer<TDelegate>(pGlobal);
+    }
+
+    public LLVMModuleRef RemoveModule(LLVMModuleRef M)
+    {
+        if (!TryRemoveModule(M, out LLVMModuleRef Mod, out string Error))
         {
-            if (Handle != IntPtr.Zero)
-            {
-                LLVM.DisposeExecutionEngine(this);
-                Handle = IntPtr.Zero;
-            }
+            throw new ExternalException(Error);
         }
 
-        public override bool Equals(object obj) => (obj is LLVMExecutionEngineRef other) && Equals(other);
+        return Mod;
+    }
 
-        public bool Equals(LLVMExecutionEngineRef other) => this == other;
+    public LLVMGenericValueRef RunFunction(LLVMValueRef F, LLVMGenericValueRef[] Args) => RunFunction(F, Args.AsSpan());
 
-        public LLVMValueRef FindFunction(string Name) => FindFunction(Name.AsSpan());
-
-        public LLVMValueRef FindFunction(ReadOnlySpan<char> Name)
+    public LLVMGenericValueRef RunFunction(LLVMValueRef F, ReadOnlySpan<LLVMGenericValueRef> Args)
+    {
+        fixed (LLVMGenericValueRef* pArgs = Args)
         {
-            if (!TryFindFunction(Name, out var Fn))
-            {
-                throw new ExternalException();
-            }
-
-            return Fn;
+            return LLVM.RunFunction(this, F, (uint)Args.Length, (LLVMOpaqueGenericValue**)pArgs);
         }
+    }
 
-        public void FreeMachineCodeForFunction(LLVMValueRef F) => LLVM.FreeMachineCodeForFunction(this, F);
+    public int RunFunctionAsMain(LLVMValueRef F, uint ArgC, string[] ArgV, string[] EnvP) => RunFunctionAsMain(F, ArgC, ArgV.AsSpan(), EnvP.AsSpan());
 
-        public ulong GetFunctionAddress(string Name) => GetFunctionAddress(Name.AsSpan());
+    public int RunFunctionAsMain(LLVMValueRef F, uint ArgC, ReadOnlySpan<string> ArgV, ReadOnlySpan<string> EnvP)
+    {
+        using var marshaledArgV = new MarshaledStringArray(ArgV);
+        using var marshaledEnvP = new MarshaledStringArray(EnvP);
 
-        public ulong GetFunctionAddress(ReadOnlySpan<char> Name)
+        var pArgV = stackalloc sbyte*[marshaledArgV.Count];
+        marshaledArgV.Fill(pArgV);
+
+        var pEnvP = stackalloc sbyte*[marshaledEnvP.Count];
+        marshaledEnvP.Fill(pEnvP);
+
+        return LLVM.RunFunctionAsMain(this, F, ArgC, pArgV, pEnvP);
+    }
+
+    public void RunStaticConstructors() => LLVM.RunStaticConstructors(this);
+
+    public void RunStaticDestructors() => LLVM.RunStaticDestructors(this);
+
+    public IntPtr RecompileAndRelinkFunction(LLVMValueRef Fn) => (IntPtr)LLVM.RecompileAndRelinkFunction(this, Fn);
+
+    public override string ToString() => $"{nameof(LLVMExecutionEngineRef)}: {Handle:X}";
+
+    public bool TryFindFunction(string Name, out LLVMValueRef OutFn) => TryFindFunction(Name.AsSpan(), out OutFn);
+
+    public bool TryFindFunction(ReadOnlySpan<char> Name, out LLVMValueRef OutFn)
+    {
+        fixed (LLVMValueRef* pOutFn = &OutFn)
         {
             using var marshaledName = new MarshaledString(Name);
-            return LLVM.GetFunctionAddress(this, marshaledName);
+            return LLVM.FindFunction(this, marshaledName, (LLVMOpaqueValue**)pOutFn) == 0;
         }
+    }
 
-        public ulong GetGlobalValueAddress(string Name) => GetGlobalValueAddress(Name.AsSpan()); 
-
-        public ulong GetGlobalValueAddress(ReadOnlySpan<char> Name)
+    public bool TryRemoveModule(LLVMModuleRef M, out LLVMModuleRef OutMod, out string OutError)
+    {
+        fixed (LLVMModuleRef* pOutMod = &OutMod)
         {
-            using var marshaledName = new MarshaledString(Name);
-            return LLVM.GetGlobalValueAddress(this, marshaledName);
-        }
+            sbyte* pError = null;
+            var result = LLVM.RemoveModule(this, M, (LLVMOpaqueModule**)pOutMod, &pError);
 
-        public override int GetHashCode() => Handle.GetHashCode();
-
-        public IntPtr GetPointerToGlobal(LLVMValueRef Global) => (IntPtr)LLVM.GetPointerToGlobal(this, Global);
-
-        public TDelegate GetPointerToGlobal<TDelegate>(LLVMValueRef Global)
-        {
-            var pGlobal = GetPointerToGlobal(Global);
-            return Marshal.GetDelegateForFunctionPointer<TDelegate>(pGlobal);
-        }
-
-        public LLVMModuleRef RemoveModule(LLVMModuleRef M)
-        {
-            if (!TryRemoveModule(M, out LLVMModuleRef Mod, out string Error))
+            if (pError == null)
             {
-                throw new ExternalException(Error);
+                OutError = string.Empty;
+            }
+            else
+            {
+                var span = new ReadOnlySpan<byte>(pError, int.MaxValue);
+                OutError = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
             }
 
-            return Mod;
-        }
-
-        public LLVMGenericValueRef RunFunction(LLVMValueRef F, LLVMGenericValueRef[] Args) => RunFunction(F, Args.AsSpan());
-
-        public LLVMGenericValueRef RunFunction(LLVMValueRef F, ReadOnlySpan<LLVMGenericValueRef> Args)
-        {
-            fixed (LLVMGenericValueRef* pArgs = Args)
-            {
-                return LLVM.RunFunction(this, F, (uint)Args.Length, (LLVMOpaqueGenericValue**)pArgs);
-            }
-        }
-
-        public int RunFunctionAsMain(LLVMValueRef F, uint ArgC, string[] ArgV, string[] EnvP) => RunFunctionAsMain(F, ArgC, ArgV.AsSpan(), EnvP.AsSpan());
-
-        public int RunFunctionAsMain(LLVMValueRef F, uint ArgC, ReadOnlySpan<string> ArgV, ReadOnlySpan<string> EnvP)
-        {
-            using var marshaledArgV = new MarshaledStringArray(ArgV);
-            using var marshaledEnvP = new MarshaledStringArray(EnvP);
-
-            var pArgV = stackalloc sbyte*[marshaledArgV.Count];
-            marshaledArgV.Fill(pArgV);
-
-            var pEnvP = stackalloc sbyte*[marshaledEnvP.Count];
-            marshaledEnvP.Fill(pEnvP);
-
-            return LLVM.RunFunctionAsMain(this, F, ArgC, pArgV, pEnvP);
-        }
-
-        public void RunStaticConstructors() => LLVM.RunStaticConstructors(this);
-
-        public void RunStaticDestructors() => LLVM.RunStaticDestructors(this);
-
-        public IntPtr RecompileAndRelinkFunction(LLVMValueRef Fn) => (IntPtr)LLVM.RecompileAndRelinkFunction(this, Fn);
-
-        public override string ToString() => $"{nameof(LLVMExecutionEngineRef)}: {Handle:X}";
-
-        public bool TryFindFunction(string Name, out LLVMValueRef OutFn) => TryFindFunction(Name.AsSpan(), out OutFn);
-
-        public bool TryFindFunction(ReadOnlySpan<char> Name, out LLVMValueRef OutFn)
-        {
-            fixed (LLVMValueRef* pOutFn = &OutFn)
-            {
-                using var marshaledName = new MarshaledString(Name);
-                return LLVM.FindFunction(this, marshaledName, (LLVMOpaqueValue**)pOutFn) == 0;
-            }
-        }
-
-        public bool TryRemoveModule(LLVMModuleRef M, out LLVMModuleRef OutMod, out string OutError)
-        {
-            fixed (LLVMModuleRef* pOutMod = &OutMod)
-            {
-                sbyte* pError = null;
-                var result = LLVM.RemoveModule(this, M, (LLVMOpaqueModule**)pOutMod, &pError);
-
-                if (pError == null)
-                {
-                    OutError = string.Empty;
-                }
-                else
-                {
-                    var span = new ReadOnlySpan<byte>(pError, int.MaxValue);
-                    OutError = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
-                }
-
-                return result == 0;
-            }
+            return result == 0;
         }
     }
 }

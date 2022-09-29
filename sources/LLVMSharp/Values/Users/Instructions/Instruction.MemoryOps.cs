@@ -2,19 +2,18 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public partial class Instruction
 {
-    public partial class Instruction
+    public enum MemoryOps
     {
-        public enum MemoryOps
-        {
-            Alloca = LLVMOpcode.LLVMAlloca,
-            Load = LLVMOpcode.LLVMLoad,
-            Store = LLVMOpcode.LLVMStore,
-            GetElementPtr = LLVMOpcode.LLVMGetElementPtr,
-            Fence = LLVMOpcode.LLVMFence,
-            AtomicCmpXchg = LLVMOpcode.LLVMAtomicCmpXchg,
-            AtomicRMW = LLVMOpcode.LLVMAtomicRMW,
-        }
+        Alloca = LLVMOpcode.LLVMAlloca,
+        Load = LLVMOpcode.LLVMLoad,
+        Store = LLVMOpcode.LLVMStore,
+        GetElementPtr = LLVMOpcode.LLVMGetElementPtr,
+        Fence = LLVMOpcode.LLVMFence,
+        AtomicCmpXchg = LLVMOpcode.LLVMAtomicCmpXchg,
+        AtomicRMW = LLVMOpcode.LLVMAtomicRMW,
     }
 }

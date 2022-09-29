@@ -6,30 +6,29 @@
 using NUnit.Framework;
 using System.Runtime.InteropServices;
 
-namespace LLVMSharp.Interop.UnitTests
+namespace LLVMSharp.Interop.UnitTests;
+
+/// <summary>Provides validation of the <see cref="LLVMOpaquePassRegistry" /> struct.</summary>
+public static unsafe partial class LLVMOpaquePassRegistryTests
 {
-    /// <summary>Provides validation of the <see cref="LLVMOpaquePassRegistry" /> struct.</summary>
-    public static unsafe partial class LLVMOpaquePassRegistryTests
+    /// <summary>Validates that the <see cref="LLVMOpaquePassRegistry" /> struct is blittable.</summary>
+    [Test]
+    public static void IsBlittableTest()
     {
-        /// <summary>Validates that the <see cref="LLVMOpaquePassRegistry" /> struct is blittable.</summary>
-        [Test]
-        public static void IsBlittableTest()
-        {
-            Assert.That(Marshal.SizeOf<LLVMOpaquePassRegistry>(), Is.EqualTo(sizeof(LLVMOpaquePassRegistry)));
-        }
+        Assert.That(Marshal.SizeOf<LLVMOpaquePassRegistry>(), Is.EqualTo(sizeof(LLVMOpaquePassRegistry)));
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaquePassRegistry" /> struct has the right <see cref="LayoutKind" />.</summary>
-        [Test]
-        public static void IsLayoutSequentialTest()
-        {
-            Assert.That(typeof(LLVMOpaquePassRegistry).IsLayoutSequential, Is.True);
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaquePassRegistry" /> struct has the right <see cref="LayoutKind" />.</summary>
+    [Test]
+    public static void IsLayoutSequentialTest()
+    {
+        Assert.That(typeof(LLVMOpaquePassRegistry).IsLayoutSequential, Is.True);
+    }
 
-        /// <summary>Validates that the <see cref="LLVMOpaquePassRegistry" /> struct has the correct size.</summary>
-        [Test]
-        public static void SizeOfTest()
-        {
-            Assert.That(sizeof(LLVMOpaquePassRegistry), Is.EqualTo(1));
-        }
+    /// <summary>Validates that the <see cref="LLVMOpaquePassRegistry" /> struct has the correct size.</summary>
+    [Test]
+    public static void SizeOfTest()
+    {
+        Assert.That(sizeof(LLVMOpaquePassRegistry), Is.EqualTo(1));
     }
 }

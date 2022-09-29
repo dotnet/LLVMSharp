@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class SelectInst : Instruction
 {
-    public sealed class SelectInst : Instruction
+    internal SelectInst(LLVMValueRef handle) : base(handle.IsASelectInst)
     {
-        internal SelectInst(LLVMValueRef handle) : base(handle.IsASelectInst)
-        {
-        }
     }
 }

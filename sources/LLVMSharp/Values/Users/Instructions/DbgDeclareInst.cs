@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class DbgDeclareInst : DbgVariableIntrinsic
 {
-    public sealed class DbgDeclareInst : DbgVariableIntrinsic
+    internal DbgDeclareInst(LLVMValueRef handle) : base(handle.IsADbgDeclareInst)
     {
-        internal DbgDeclareInst(LLVMValueRef handle) : base(handle.IsADbgDeclareInst)
-        {
-        }
     }
 }

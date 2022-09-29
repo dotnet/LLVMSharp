@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class FreezeInst : UnaryInstruction
 {
-    public sealed class FreezeInst : UnaryInstruction
+    internal FreezeInst(LLVMValueRef handle) : base(handle.IsAFreezeInst)
     {
-        internal FreezeInst(LLVMValueRef handle) : base(handle.IsAFreezeInst)
-        {
-        }
     }
 }

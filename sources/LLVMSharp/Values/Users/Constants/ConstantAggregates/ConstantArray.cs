@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ConstantArray : ConstantAggregate
 {
-    public sealed class ConstantArray : ConstantAggregate
+    internal ConstantArray(LLVMValueRef handle) : base(handle.IsAConstantArray, LLVMValueKind.LLVMConstantArrayValueKind)
     {
-        internal ConstantArray(LLVMValueRef handle) : base(handle.IsAConstantArray, LLVMValueKind.LLVMConstantArrayValueKind)
-        {
-        }
     }
 }

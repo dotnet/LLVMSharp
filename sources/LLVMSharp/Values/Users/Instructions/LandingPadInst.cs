@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class LandingPadInst : Instruction
 {
-    public sealed class LandingPadInst : Instruction
+    internal LandingPadInst(LLVMValueRef handle) : base(handle.IsALandingPadInst)
     {
-        internal LandingPadInst(LLVMValueRef handle) : base(handle.IsALandingPadInst)
-        {
-        }
     }
 }

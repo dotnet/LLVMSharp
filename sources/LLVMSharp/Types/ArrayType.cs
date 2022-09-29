@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ArrayType : SequentialType
 {
-    public sealed class ArrayType : SequentialType
+    internal ArrayType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMArrayTypeKind)
     {
-        internal ArrayType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMArrayTypeKind)
-        {
-        }
     }
 }

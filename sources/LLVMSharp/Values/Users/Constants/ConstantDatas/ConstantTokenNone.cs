@@ -2,12 +2,11 @@
 
 using LLVMSharp.Interop;
 
-namespace LLVMSharp
+namespace LLVMSharp;
+
+public sealed class ConstantTokenNone : ConstantData
 {
-    public sealed class ConstantTokenNone : ConstantData
+    internal ConstantTokenNone(LLVMValueRef handle) : base(handle.IsAConstantTokenNone, LLVMValueKind.LLVMConstantTokenNoneValueKind)
     {
-        internal ConstantTokenNone(LLVMValueRef handle) : base(handle.IsAConstantTokenNone, LLVMValueKind.LLVMConstantTokenNoneValueKind)
-        {
-        }
     }
 }

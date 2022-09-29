@@ -5,14 +5,13 @@
 
 using System;
 
-namespace LLVMSharp.Interop
-{
-    public unsafe partial struct LTOObjectBuffer
-    {
-        [NativeTypeName("const char *")]
-        public sbyte* Buffer;
+namespace LLVMSharp.Interop;
 
-        [NativeTypeName("size_t")]
-        public UIntPtr Size;
-    }
+public unsafe partial struct LTOObjectBuffer
+{
+    [NativeTypeName("const char *")]
+    public sbyte* Buffer;
+
+    [NativeTypeName("size_t")]
+    public UIntPtr Size;
 }
