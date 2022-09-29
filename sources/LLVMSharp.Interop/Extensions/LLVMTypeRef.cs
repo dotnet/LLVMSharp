@@ -208,7 +208,7 @@ public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
 
     public void Dump() => LLVM.DumpType(this);
 
-    public override bool Equals(object obj) => (obj is LLVMTypeRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMTypeRef other) && Equals(other);
 
     public bool Equals(LLVMTypeRef other) => this == other;
 

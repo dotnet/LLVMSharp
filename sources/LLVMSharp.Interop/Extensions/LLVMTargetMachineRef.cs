@@ -34,7 +34,7 @@ public unsafe partial struct LLVMTargetMachineRef : IEquatable<LLVMTargetMachine
         }
     }
 
-    public override bool Equals(object obj) => (obj is LLVMTargetMachineRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMTargetMachineRef other) && Equals(other);
 
     public bool Equals(LLVMTargetMachineRef other) => this == other;
 

@@ -808,7 +808,7 @@ public unsafe partial struct LLVMBuilderRef : IDisposable, IEquatable<LLVMBuilde
         }
     }
 
-    public override bool Equals(object obj) => (obj is LLVMBuilderRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMBuilderRef other) && Equals(other);
 
     public bool Equals(LLVMBuilderRef other) => this == other;
 

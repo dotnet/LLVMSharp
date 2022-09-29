@@ -21,7 +21,7 @@ public unsafe partial struct LLVMSectionIteratorRef : IEquatable<LLVMSectionIter
 
     public static bool operator !=(LLVMSectionIteratorRef left, LLVMSectionIteratorRef right) => !(left == right);
 
-    public override bool Equals(object obj) => (obj is LLVMSectionIteratorRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMSectionIteratorRef other) && Equals(other);
 
     public bool Equals(LLVMSectionIteratorRef other) => this == other;
 

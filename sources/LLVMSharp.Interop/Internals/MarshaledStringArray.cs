@@ -27,11 +27,11 @@ public unsafe struct MarshaledStringArray : IDisposable
 
     public int Count { get; private set; }
 
-    public MarshaledString[] Values { get; private set; }
+    public MarshaledString[]? Values { get; private set; }
 
     public void Dispose()
     {
-        if (Values != null)
+        if (Values is not null)
         {
             for (int i = 0; i < Values.Length; i++)
             {
@@ -45,9 +45,12 @@ public unsafe struct MarshaledStringArray : IDisposable
 
     public void Fill(sbyte** pDestination)
     {
-        for (int i = 0; i < Count; i++)
+        if (Values is not null)
         {
-            pDestination[i] = Values[i];
+            for (int i = 0; i < Count; i++)
+            {
+                pDestination[i] = Values[i];
+            }
         }
     }
 }

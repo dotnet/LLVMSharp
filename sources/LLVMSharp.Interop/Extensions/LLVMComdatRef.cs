@@ -21,7 +21,7 @@ public unsafe partial struct LLVMComdatRef : IEquatable<LLVMComdatRef>
 
     public static bool operator !=(LLVMComdatRef left, LLVMComdatRef right) => !(left == right);
 
-    public override bool Equals(object obj) => (obj is LLVMComdatRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMComdatRef other) && Equals(other);
 
     public bool Equals(LLVMComdatRef other) => this == other;
 

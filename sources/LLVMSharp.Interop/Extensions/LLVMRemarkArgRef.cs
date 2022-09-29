@@ -21,7 +21,7 @@ public unsafe partial struct LLVMRemarkArgRef : IEquatable<LLVMRemarkArgRef>
 
     public static bool operator !=(LLVMRemarkArgRef left, LLVMRemarkArgRef right) => !(left == right);
 
-    public override bool Equals(object obj) => (obj is LLVMRemarkArgRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMRemarkArgRef other) && Equals(other);
 
     public bool Equals(LLVMRemarkArgRef other) => this == other;
 

@@ -28,7 +28,7 @@ public unsafe struct MarshaledArray<T, U> : IDisposable
 
     public int Count { get; private set; }
 
-    public U[] Values { get; private set; }
+    public U[]? Values { get; private set; }
 
     public static implicit operator ReadOnlySpan<U>(in MarshaledArray<T, U> value) => value.Values;
 

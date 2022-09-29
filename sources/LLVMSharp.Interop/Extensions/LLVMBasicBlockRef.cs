@@ -67,7 +67,7 @@ public unsafe partial struct LLVMBasicBlockRef : IEquatable<LLVMBasicBlockRef>
 
     public void Dump() => LLVM.DumpValue(this);
 
-    public override bool Equals(object obj) => (obj is LLVMBasicBlockRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMBasicBlockRef other) && Equals(other);
 
     public bool Equals(LLVMBasicBlockRef other) => this == other;
 

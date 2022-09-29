@@ -39,7 +39,7 @@ public unsafe partial struct LLVMExecutionEngineRef : IDisposable, IEquatable<LL
         }
     }
 
-    public override bool Equals(object obj) => (obj is LLVMExecutionEngineRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMExecutionEngineRef other) && Equals(other);
 
     public bool Equals(LLVMExecutionEngineRef other) => this == other;
 

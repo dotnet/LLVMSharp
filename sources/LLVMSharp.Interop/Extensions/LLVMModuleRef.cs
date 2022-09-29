@@ -235,7 +235,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
 
     public void Dump() => LLVM.DumpModule(this);
 
-    public override bool Equals(object obj) => (obj is LLVMModuleRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMModuleRef other) && Equals(other);
 
     public bool Equals(LLVMModuleRef other) => this == other;
 

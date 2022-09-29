@@ -960,7 +960,7 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public void Dump() => LLVM.DumpValue(this);
 
-    public override bool Equals(object obj) => (obj is LLVMValueRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMValueRef other) && Equals(other);
 
     public bool Equals(LLVMValueRef other) => this == other;
 

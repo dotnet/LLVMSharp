@@ -11,7 +11,7 @@ public class DIBuilder
     public void CreateDebugLocation()
     {
         var fileName = Path.GetFileName("DIBuilder.c");
-        var directory = Path.GetDirectoryName(".");
+        var directory = Path.GetDirectoryName(".") ?? "";
         var module = LLVMModuleRef.CreateWithName("netscripten");
         module.Target = "asmjs-unknown-emscripten";
         var dIBuilder = module.CreateDIBuilder();

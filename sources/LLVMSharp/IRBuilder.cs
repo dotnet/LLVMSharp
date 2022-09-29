@@ -36,9 +36,9 @@ public sealed class IRBuilder : IRBuilderBase
         return Context.GetOrCreate<ReturnInst>(handle);
     }
 
-    public AllocaInst CreateAlloca(Type ty, Value arraySize = null, string name = "") => CreateAlloca(ty, arraySize, name.AsSpan());
+    public AllocaInst CreateAlloca(Type ty, Value? arraySize = null, string name = "") => CreateAlloca(ty, arraySize, name.AsSpan());
 
-    public AllocaInst CreateAlloca(Type ty, Value arraySize, ReadOnlySpan<char> name)
+    public AllocaInst CreateAlloca(Type ty, Value? arraySize, ReadOnlySpan<char> name)
     {
         var handle = Handle.BuildArrayAlloca(ty.Handle, arraySize?.Handle ?? default, name);
         return Context.GetOrCreate<AllocaInst>(handle);
@@ -88,7 +88,7 @@ public sealed class IRBuilder : IRBuilderBase
         return Context.GetOrCreate<BranchInst>(handle);
     }
 
-    public CallInst CreateCall(FunctionType fTy, Value callee, Value[] args = null, string name = "") => CreateCall(fTy, callee, args.AsSpan(), name.AsSpan());
+    public CallInst CreateCall(FunctionType fTy, Value callee, Value[]? args = null, string name = "") => CreateCall(fTy, callee, args.AsSpan(), name.AsSpan());
 
     public CallInst CreateCall(FunctionType fTy, Value callee, ReadOnlySpan<Value> args, ReadOnlySpan<char> name)
     {

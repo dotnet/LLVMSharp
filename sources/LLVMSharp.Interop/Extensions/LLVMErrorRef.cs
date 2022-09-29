@@ -21,7 +21,7 @@ public unsafe partial struct LLVMErrorRef : IEquatable<LLVMErrorRef>
 
     public static bool operator !=(LLVMErrorRef left, LLVMErrorRef right) => !(left == right);
 
-    public override bool Equals(object obj) => (obj is LLVMErrorRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMErrorRef other) && Equals(other);
 
     public bool Equals(LLVMErrorRef other) => this == other;
 

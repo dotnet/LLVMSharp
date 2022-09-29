@@ -21,7 +21,7 @@ public unsafe partial struct LLVMBinaryRef : IEquatable<LLVMBinaryRef>
 
     public static bool operator !=(LLVMBinaryRef left, LLVMBinaryRef right) => !(left == right);
 
-    public override bool Equals(object obj) => (obj is LLVMBinaryRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMBinaryRef other) && Equals(other);
 
     public bool Equals(LLVMBinaryRef other) => this == other;
 

@@ -95,7 +95,7 @@ public unsafe partial struct LLVMContextRef : IDisposable, IEquatable<LLVMContex
         }
     }
 
-    public override bool Equals(object obj) => (obj is LLVMContextRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMContextRef other) && Equals(other);
 
     public bool Equals(LLVMContextRef other) => this == other;
 

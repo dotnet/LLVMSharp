@@ -21,7 +21,7 @@ public unsafe partial struct lto_module_t : IEquatable<lto_module_t>
 
     public static bool operator !=(lto_module_t left, lto_module_t right) => !(left == right);
 
-    public override bool Equals(object obj) => (obj is lto_module_t other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is lto_module_t other) && Equals(other);
 
     public bool Equals(lto_module_t other) => this == other;
 

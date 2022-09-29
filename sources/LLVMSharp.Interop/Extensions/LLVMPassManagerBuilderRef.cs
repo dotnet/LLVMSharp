@@ -30,7 +30,7 @@ public unsafe partial struct LLVMPassManagerBuilderRef : IEquatable<LLVMPassMana
         }
     }
 
-    public override bool Equals(object obj) => (obj is LLVMPassManagerBuilderRef other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is LLVMPassManagerBuilderRef other) && Equals(other);
 
     public bool Equals(LLVMPassManagerBuilderRef other) => this == other;
 

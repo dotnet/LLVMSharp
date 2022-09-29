@@ -21,7 +21,7 @@ public unsafe partial struct lto_code_gen_t : IEquatable<lto_code_gen_t>
 
     public static bool operator !=(lto_code_gen_t left, lto_code_gen_t right) => !(left == right);
 
-    public override bool Equals(object obj) => (obj is lto_code_gen_t other) && Equals(other);
+    public override bool Equals(object? obj) => (obj is lto_code_gen_t other) && Equals(other);
 
     public bool Equals(lto_code_gen_t other) => this == other;
 
