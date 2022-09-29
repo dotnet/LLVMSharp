@@ -32,8 +32,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
                 return string.Empty;
             }
 
-            var span = new ReadOnlySpan<byte>(pDataLayoutStr, int.MaxValue);
-            return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            return SpanExtensions.AsString(pDataLayoutStr);
         }
 
         set
@@ -67,8 +66,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
                 return string.Empty;
             }
 
-            var span = new ReadOnlySpan<byte>(pTriple, int.MaxValue);
-            return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            return SpanExtensions.AsString(pTriple);
         }
 
         set
@@ -306,9 +304,8 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         {
             return string.Empty;
         }
-        var span = new ReadOnlySpan<byte>(pStr, int.MaxValue);
 
-        var result = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+        var result = SpanExtensions.AsString(pStr);
         LLVM.DisposeMessage(pStr);
         return result;
     }
@@ -336,8 +333,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
             }
             else
             {
-                var span = new ReadOnlySpan<byte>(pError, int.MaxValue);
-                OutError = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                OutError = SpanExtensions.AsString(pError);
             }
 
             return result == 0;
@@ -357,8 +353,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
             }
             else
             {
-                var span = new ReadOnlySpan<byte>(pError, int.MaxValue);
-                OutError = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                OutError = SpanExtensions.AsString(pError);
             }
 
             return result == 0;
@@ -385,8 +380,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
             }
             else
             {
-                var span = new ReadOnlySpan<byte>(pError, int.MaxValue);
-                OutError = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                OutError = SpanExtensions.AsString(pError);
             }
 
             return result == 0;
@@ -401,6 +395,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
 
         sbyte* pErrorMessage = null;
         int result = 0;
+
         try
         {
             result = LLVM.PrintModuleToFile(this, marshaledFilename, &pErrorMessage);
@@ -415,8 +410,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         }
         else
         {
-            var span = new ReadOnlySpan<byte>(pErrorMessage, int.MaxValue);
-            ErrorMessage = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            ErrorMessage = SpanExtensions.AsString(pErrorMessage);
         }
 
         return result == 0;
@@ -433,8 +427,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         }
         else
         {
-            var span = new ReadOnlySpan<byte>(pMessage, int.MaxValue);
-            OutMessage = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            OutMessage = SpanExtensions.AsString(pMessage);
         }
 
         return result == 0;

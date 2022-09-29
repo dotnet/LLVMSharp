@@ -133,8 +133,7 @@ public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
                 return string.Empty;
             }
 
-            var span = new ReadOnlySpan<byte>(pStructName, int.MaxValue);
-            return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            return SpanExtensions.AsString(pStructName);
         }
     }
 
@@ -224,9 +223,8 @@ public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
         {
             return string.Empty;
         }
-        var span = new ReadOnlySpan<byte>(pStr, int.MaxValue);
 
-        var result = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+        var result = SpanExtensions.AsString(pStr);
         LLVM.DisposeMessage(pStr);
         return result;
     }

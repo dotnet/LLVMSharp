@@ -132,8 +132,7 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
                 return string.Empty;
             }
 
-            var span = new ReadOnlySpan<byte>(pName, int.MaxValue);
-            return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            return SpanExtensions.AsString(pName);
         }
 
         set
@@ -520,8 +519,7 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
                 return string.Empty;
             }
 
-            var span = new ReadOnlySpan<byte>(pStr, int.MaxValue);
-            return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            return SpanExtensions.AsString(pStr);
         }
 
         set
@@ -602,8 +600,7 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
                 return string.Empty;
             }
 
-            var span = new ReadOnlySpan<byte>(pSection, int.MaxValue);
-            return span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+            return SpanExtensions.AsString(pSection);
         }
 
         set
@@ -1068,9 +1065,8 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
         {
             return string.Empty;
         }
-        var span = new ReadOnlySpan<byte>(pStr, int.MaxValue);
 
-        var result = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+        var result = SpanExtensions.AsString(pStr);
         LLVM.DisposeMessage(pStr);
         return result;
     }

@@ -93,9 +93,8 @@ public unsafe partial struct LLVMBasicBlockRef : IEquatable<LLVMBasicBlockRef>
         {
             return string.Empty;
         }
-        var span = new ReadOnlySpan<byte>(pStr, int.MaxValue);
 
-        var result = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+        var result = SpanExtensions.AsString(pStr);
         LLVM.DisposeMessage(pStr);
         return result;
     }

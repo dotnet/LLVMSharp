@@ -232,8 +232,7 @@ public unsafe partial struct LLVMContextRef : IDisposable, IEquatable<LLVMContex
             }
             else
             {
-                var span = new ReadOnlySpan<byte>(pMessage, int.MaxValue);
-                OutMessage = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                OutMessage = SpanExtensions.AsString(pMessage);
             }
 
             return result == 0;
@@ -253,8 +252,7 @@ public unsafe partial struct LLVMContextRef : IDisposable, IEquatable<LLVMContex
             }
             else
             {
-                var span = new ReadOnlySpan<byte>(pMessage, int.MaxValue);
-                OutMessage = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                OutMessage = SpanExtensions.AsString(pMessage);
             }
 
             return result == 0;
@@ -274,8 +272,7 @@ public unsafe partial struct LLVMContextRef : IDisposable, IEquatable<LLVMContex
             }
             else
             {
-                var span = new ReadOnlySpan<byte>(pMessage, int.MaxValue);
-                OutMessage = span.Slice(0, span.IndexOf((byte)'\0')).AsString();
+                OutMessage = SpanExtensions.AsString(pMessage);
             }
 
             return result == 0;
