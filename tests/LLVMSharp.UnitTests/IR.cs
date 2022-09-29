@@ -3,6 +3,7 @@
 using System;
 using LLVMSharp.Interop;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 
 namespace LLVMSharp.UnitTests;
 
@@ -86,7 +87,6 @@ public class IR
     }
 
     [Test]
-    [Obsolete]
     public void CallsFunction([Range(0, 10)] int op1, [Range(0, 10)] int op2)
     {
         using var module = LLVMModuleRef.CreateWithName("test_call");
@@ -104,7 +104,7 @@ public class IR
             {
                 var p1 = f.Params[0];
                 var p2 = f.Params[1];
-                var call = b.BuildCall(defAdd, new[] { p1, p2 });
+                var call = b.BuildCall2(defAdd.TypeOf, defAdd, new[] { p1, p2 });
                 var ret = b.BuildRet(call);
             });
         module.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
