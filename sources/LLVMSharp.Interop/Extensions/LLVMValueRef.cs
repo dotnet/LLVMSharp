@@ -15,14 +15,28 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public uint Alignment
     {
-        get => ((IsAGlobalValue != null) || (IsAAllocaInst != null) || (IsALoadInst != null) || (IsAStoreInst != null)) ? LLVM.GetAlignment(this) : default;
-        set => LLVM.SetAlignment(this, value);
+        get
+        {
+            return ((IsAGlobalValue != null) || (IsAAllocaInst != null) || (IsALoadInst != null) || (IsAStoreInst != null)) ? LLVM.GetAlignment(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetAlignment(this, value);
+        }
     }
 
     public LLVMAtomicRMWBinOp AtomicRMWBinOp
     {
-        get => (IsAAtomicRMWInst != null) ? LLVM.GetAtomicRMWBinOp(this) : default;
-        set => LLVM.SetAtomicRMWBinOp(this, value);
+        get
+        {
+            return (IsAAtomicRMWInst != null) ? LLVM.GetAtomicRMWBinOp(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetAtomicRMWBinOp(this, value);
+        }
     }
 
     public LLVMBasicBlockRef[] BasicBlocks
@@ -49,8 +63,15 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public LLVMValueRef Condition
     {
-        get => (IsABranchInst != null) ? LLVM.GetCondition(this) : default;
-        set => LLVM.SetCondition(this, value);
+        get
+        {
+            return (IsABranchInst != null) ? LLVM.GetCondition(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetCondition(this, value);
+        }
     }
 
     public ulong ConstIntZExt => (IsAConstantInt != null) ? LLVM.ConstIntGetZExtValue(this) : default;
@@ -61,8 +82,15 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public LLVMDLLStorageClass DLLStorageClass
     {
-        get => (IsAGlobalValue != null) ? LLVM.GetDLLStorageClass(this) : default;
-        set => LLVM.SetDLLStorageClass(this, value);
+        get
+        {
+            return (IsAGlobalValue != null) ? LLVM.GetDLLStorageClass(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetDLLStorageClass(this, value);
+        }
     }
 
     public LLVMBasicBlockRef EntryBasicBlock => (IsAFunction != null) ? LLVM.GetEntryBasicBlock(this) : default;
@@ -77,8 +105,15 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public uint FunctionCallConv
     {
-        get => (IsAFunction != null) ? LLVM.GetFunctionCallConv(this) : default;
-        set => LLVM.SetFunctionCallConv(this, value);
+        get
+        {
+            return (IsAFunction != null) ? LLVM.GetFunctionCallConv(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetFunctionCallConv(this, value);
+        }
     }
 
     public string GC
@@ -110,12 +145,19 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public LLVMModuleRef GlobalParent => (IsAGlobalValue != null) ? LLVM.GetGlobalParent(this) : default;
 
-    public bool HasMetadata => (IsAInstruction != null) ? LLVM.HasMetadata(this) != 0 : default;
+    public bool HasMetadata => (IsAInstruction != null) && LLVM.HasMetadata(this) != 0;
 
     public bool HasUnnamedAddr
     {
-        get => (IsAGlobalValue != null) ? LLVM.HasUnnamedAddr(this) != 0 : default;
-        set => LLVM.SetUnnamedAddr(this, value ? 1 : 0);
+        get
+        {
+            return (IsAGlobalValue != null) && LLVM.HasUnnamedAddr(this) != 0;
+        }
+
+        set
+        {
+            LLVM.SetUnnamedAddr(this, value ? 1 : 0);
+        }
     }
 
     public LLVMIntPredicate ICmpPredicate => (Handle != IntPtr.Zero) ? LLVM.GetICmpPredicate(this) : default;
@@ -124,14 +166,28 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public LLVMValueRef Initializer
     {
-        get => (IsAGlobalVariable != null) ? LLVM.GetInitializer(this) : default;
-        set => LLVM.SetInitializer(this, value);
+        get
+        {
+            return (IsAGlobalVariable != null) ? LLVM.GetInitializer(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetInitializer(this, value);
+        }
     }
 
     public uint InstructionCallConv
     {
-        get => ((IsACallBrInst != null) || (IsACallInst != null) || (IsAInvokeInst != null)) ? LLVM.GetInstructionCallConv(this) : default;
-        set => LLVM.SetInstructionCallConv(this, value);
+        get
+        {
+            return ((IsACallBrInst != null) || (IsACallInst != null) || (IsAInvokeInst != null)) ? LLVM.GetInstructionCallConv(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetInstructionCallConv(this, value);
+        }
     }
 
     public LLVMValueRef InstructionClone => (Handle != IntPtr.Zero) ? LLVM.InstructionClone(this) : default;
@@ -324,52 +380,86 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public LLVMValueRef IsAZExtInst => LLVM.IsAZExtInst(this);
 
-    public bool IsBasicBlock => (Handle != IntPtr.Zero) ? LLVM.ValueIsBasicBlock(this) != 0 : default;
+    public bool IsBasicBlock => (Handle != IntPtr.Zero) && LLVM.ValueIsBasicBlock(this) != 0;
 
     public bool IsCleanup
     {
-        get => (IsALandingPadInst != null) ? LLVM.IsCleanup(this) != 0 : default;
-        set => LLVM.SetCleanup(this, value ? 1 : 0);
+        get
+        {
+            return (IsALandingPadInst != null) && LLVM.IsCleanup(this) != 0;
+        }
+
+        set
+        {
+            LLVM.SetCleanup(this, value ? 1 : 0);
+        }
     }
 
-    public bool IsConditional => (IsABranchInst != null) ? LLVM.IsConditional(this) != 0 : default;
+    public bool IsConditional => (IsABranchInst != null) && LLVM.IsConditional(this) != 0;
 
-    public bool IsConstant => (Handle != IntPtr.Zero) ? LLVM.IsConstant(this) != 0 : default;
+    public bool IsConstant => (Handle != IntPtr.Zero) && LLVM.IsConstant(this) != 0;
 
-    public bool IsConstantString => (IsAConstantDataSequential != null) ? LLVM.IsConstantString(this) != 0 : default;
+    public bool IsConstantString => (IsAConstantDataSequential != null) && LLVM.IsConstantString(this) != 0;
 
-    public bool IsDeclaration => (IsAGlobalValue != null) ? LLVM.IsDeclaration(this) != 0 : default;
+    public bool IsDeclaration => (IsAGlobalValue != null) && LLVM.IsDeclaration(this) != 0;
 
     public bool IsExternallyInitialized
     {
-        get => (IsAGlobalVariable != null) ? LLVM.IsExternallyInitialized(this) != 0 : default;
-        set => LLVM.SetExternallyInitialized(this, value ? 1 : 0);
+        get
+        {
+            return (IsAGlobalVariable != null) && LLVM.IsExternallyInitialized(this) != 0;
+        }
+
+        set
+        {
+            LLVM.SetExternallyInitialized(this, value ? 1 : 0);
+        }
     }
 
     public bool IsGlobalConstant
     {
-        get => (IsAGlobalVariable != null) ? LLVM.IsGlobalConstant(this) != 0 : default;
-        set => LLVM.SetGlobalConstant(this, value ? 1 : 0);
+        get
+        {
+            return (IsAGlobalVariable != null) && LLVM.IsGlobalConstant(this) != 0;
+        }
 
+        set
+        {
+            LLVM.SetGlobalConstant(this, value ? 1 : 0);
+        }
     }
 
-    public bool IsNull => (Handle != IntPtr.Zero) ? LLVM.IsNull(this) != 0 : default;
+    public bool IsNull => (Handle != IntPtr.Zero) && LLVM.IsNull(this) != 0;
 
-    public bool IsPoison => (Handle != IntPtr.Zero) ? LLVM.IsPoison(this) != 0 : default;
+    public bool IsPoison => (Handle != IntPtr.Zero) && LLVM.IsPoison(this) != 0;
 
     public bool IsTailCall
     {
-        get => (IsACallInst != null) ? LLVM.IsTailCall(this) != 0 : default;
-        set => LLVM.SetTailCall(this, IsTailCall ? 1 : 0);
+        get
+        {
+            return (IsACallInst != null) && LLVM.IsTailCall(this) != 0;
+        }
+
+        set
+        {
+            LLVM.SetTailCall(this, IsTailCall ? 1 : 0);
+        }
     }
 
     public bool IsThreadLocal
     {
-        get => (IsAGlobalVariable != null) ? LLVM.IsThreadLocal(this) != 0 : default;
-        set => LLVM.SetThreadLocal(this, value ? 1 : 0);
+        get
+        {
+            return (IsAGlobalVariable != null) && LLVM.IsThreadLocal(this) != 0;
+        }
+
+        set
+        {
+            LLVM.SetThreadLocal(this, value ? 1 : 0);
+        }
     }
 
-    public bool IsUndef => (Handle != IntPtr.Zero) ? LLVM.IsUndef(this) != 0 : default;
+    public bool IsUndef => (Handle != IntPtr.Zero) && LLVM.IsUndef(this) != 0;
 
     public LLVMValueKind Kind => (Handle != IntPtr.Zero) ? LLVM.GetValueKind(this) : default;
 
@@ -379,8 +469,15 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public LLVMLinkage Linkage
     {
-        get => (IsAGlobalValue != null) ? LLVM.GetLinkage(this) : default;
-        set => LLVM.SetLinkage(this, value);
+        get
+        {
+            return (IsAGlobalValue != null) ? LLVM.GetLinkage(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetLinkage(this, value);
+        }
     }
 
     public LLVMValueRef[] MDNodeOperands
@@ -468,8 +565,15 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public LLVMValueRef PersonalityFn
     {
-        get => (IsAFunction != null) ? LLVM.GetPersonalityFn(this) : default;
-        set => LLVM.SetPersonalityFn(this, value);
+        get
+        {
+            return (IsAFunction != null) ? LLVM.GetPersonalityFn(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetPersonalityFn(this, value);
+        }
     }
 
     public LLVMValueRef PreviousGlobal => (IsAGlobalVariable != null) ? LLVM.GetPreviousGlobal(this) : default;
@@ -513,28 +617,56 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public LLVMThreadLocalMode ThreadLocalMode
     {
-        get => (IsAGlobalVariable != null) ? LLVM.GetThreadLocalMode(this) : default;
-        set => LLVM.SetThreadLocalMode(this, value);
+        get
+        {
+            return (IsAGlobalVariable != null) ? LLVM.GetThreadLocalMode(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetThreadLocalMode(this, value);
+        }
     }
 
     public LLVMTypeRef TypeOf => (Handle != IntPtr.Zero) ? LLVM.TypeOf(this) : default;
 
     public LLVMVisibility Visibility
     {
-        get => (IsAGlobalValue != null) ? LLVM.GetVisibility(this) : default;
-        set => LLVM.SetVisibility(this, value);
+        get
+        {
+            return (IsAGlobalValue != null) ? LLVM.GetVisibility(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetVisibility(this, value);
+        }
     }
 
     public bool Volatile
     {
-        get => ((IsALoadInst != null) || (IsAStoreInst != null) || (IsAAtomicRMWInst != null) || (IsAAtomicCmpXchgInst != null)) ? LLVM.GetVolatile(this) != 0 : default;
-        set => LLVM.SetVolatile(this, value ? 1 : 0);
+        get
+        {
+            return ((IsALoadInst != null) || (IsAStoreInst != null) || (IsAAtomicRMWInst != null) || (IsAAtomicCmpXchgInst != null)) && LLVM.GetVolatile(this) != 0;
+        }
+
+        set
+        {
+            LLVM.SetVolatile(this, value ? 1 : 0);
+        }
     }
 
     public bool Weak
     {
-        get => (IsAAtomicCmpXchgInst != null) ? LLVM.GetWeak(this) != 0 : default;
-        set => LLVM.SetWeak(this, value ? 1 : 0);
+        get
+        {
+            return (IsAAtomicCmpXchgInst != null) && LLVM.GetWeak(this) != 0;
+        }
+
+        set
+        {
+            LLVM.SetWeak(this, value ? 1 : 0);
+        }
     }
 
     public static implicit operator LLVMValueRef(LLVMOpaqueValue* value) => new LLVMValueRef((IntPtr)value);

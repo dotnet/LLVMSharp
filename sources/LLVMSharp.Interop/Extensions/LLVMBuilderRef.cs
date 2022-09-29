@@ -15,8 +15,15 @@ public unsafe partial struct LLVMBuilderRef : IDisposable, IEquatable<LLVMBuilde
 
     public LLVMValueRef CurrentDebugLocation
     {
-        get => (Handle != IntPtr.Zero) ? LLVM.GetCurrentDebugLocation(this) : default;
-        set => LLVM.SetCurrentDebugLocation(this, value);
+        get
+        {
+            return (Handle != IntPtr.Zero) ? LLVM.GetCurrentDebugLocation(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetCurrentDebugLocation(this, value);
+        }
     }
 
     public LLVMBasicBlockRef InsertBlock => (Handle != IntPtr.Zero) ? LLVM.GetInsertBlock(this) : default;

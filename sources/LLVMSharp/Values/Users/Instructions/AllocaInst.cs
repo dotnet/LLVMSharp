@@ -12,7 +12,14 @@ public sealed class AllocaInst : UnaryInstruction
 
     public uint Alignment
     {
-        get => Handle.Alignment;
-        set => Handle.SetAlignment(value);
+        get
+        {
+            return Handle.Alignment;
+        }
+
+        set
+        {
+            Handle.SetAlignment(value);
+        }
     }
 }

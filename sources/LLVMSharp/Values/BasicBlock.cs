@@ -16,27 +16,27 @@ public sealed class BasicBlock : Value
         Handle = handle.AsBasicBlock();
     }
 
-    public static BasicBlock Create(LLVMContext Context, string Name) => Create(Context, Name.AsSpan());
+    public static BasicBlock Create(LLVMContext context, string name) => Create(context, name.AsSpan());
 
-    public static BasicBlock Create(LLVMContext Context, ReadOnlySpan<char> Name)
+    public static BasicBlock Create(LLVMContext context, ReadOnlySpan<char> name)
     {
-        var handle = LLVMBasicBlockRef.CreateInContext(Context.Handle, Name);
+        var handle = LLVMBasicBlockRef.CreateInContext(context.Handle, name);
         return new BasicBlock(handle);
     }
 
-    public static BasicBlock Create(LLVMContext Context, string Name, Function Parent) => Create(Context, Name.AsSpan(), Parent);
+    public static BasicBlock Create(LLVMContext context, string name, Function parent) => Create(context, name.AsSpan(), parent);
 
-    public static BasicBlock Create(LLVMContext Context, ReadOnlySpan<char> Name, Function Parent)
+    public static BasicBlock Create(LLVMContext context, ReadOnlySpan<char> name, Function parent)
     {
-        var handle = LLVMBasicBlockRef.AppendInContext(Context.Handle, Parent.Handle, Name);
+        var handle = LLVMBasicBlockRef.AppendInContext(context.Handle, parent.Handle, name);
         return new BasicBlock(handle);
     }
 
-    public static BasicBlock Create(LLVMContext Context, string Name, BasicBlock InsertBefore) => Create(Context, Name.AsSpan(), InsertBefore);
+    public static BasicBlock Create(LLVMContext context, string name, BasicBlock insertBefore) => Create(context, name.AsSpan(), insertBefore);
 
-    public static BasicBlock Create(LLVMContext Context, ReadOnlySpan<char> Name, BasicBlock InsertBefore)
+    public static BasicBlock Create(LLVMContext context, ReadOnlySpan<char> name, BasicBlock insertBefore)
     {
-        var handle = LLVMBasicBlockRef.InsertInContext(Context.Handle, InsertBefore.Handle, Name);
+        var handle = LLVMBasicBlockRef.InsertInContext(context.Handle, insertBefore.Handle, name);
         return new BasicBlock(handle);
     }
 

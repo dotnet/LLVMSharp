@@ -12,11 +12,18 @@ public class GlobalValue : Constant
 
     public uint Alignment
     {
-        get => Handle.Alignment;
-        set => Handle.SetAlignment(value);
+        get
+        {
+            return Handle.Alignment;
+        }
+
+        set
+        {
+            Handle.SetAlignment(value);
+        }
     }
 
-    internal new static GlobalValue Create(LLVMValueRef handle) => handle switch
+    internal static new GlobalValue Create(LLVMValueRef handle) => handle switch
     {
         _ when handle.IsAGlobalAlias != null => new GlobalAlias(handle),
         _ when handle.IsAGlobalIFunc != null => new GlobalIFunc(handle),

@@ -11,11 +11,11 @@ public sealed class StructType : CompositeType
     {
     }
 
-    public static StructType Create(LLVMContext Context, string Name) => Create(Context, Name.AsSpan());
+    public static StructType Create(LLVMContext context, string name) => Create(context, name.AsSpan());
 
-    public static StructType Create(LLVMContext Context, ReadOnlySpan<char> Name)
+    public static StructType Create(LLVMContext context, ReadOnlySpan<char> name)
     {
-        var handle = Context.Handle.CreateNamedStruct(Name);
-        return Context.GetOrCreate<StructType>(handle);
+        var handle = context.Handle.CreateNamedStruct(name);
+        return context.GetOrCreate<StructType>(handle);
     }
 }

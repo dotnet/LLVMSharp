@@ -55,13 +55,13 @@ public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
 
     public uint IntWidth => (Kind == LLVMTypeKind.LLVMIntegerTypeKind) ? LLVM.GetIntTypeWidth(this) : default;
 
-    public bool IsFunctionVarArg => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) ? LLVM.IsFunctionVarArg(this) != 0 : default;
+    public bool IsFunctionVarArg => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) && LLVM.IsFunctionVarArg(this) != 0;
 
-    public bool IsOpaqueStruct => (Kind == LLVMTypeKind.LLVMStructTypeKind) ? LLVM.IsOpaqueStruct(this) != 0 : default;
+    public bool IsOpaqueStruct => (Kind == LLVMTypeKind.LLVMStructTypeKind) && LLVM.IsOpaqueStruct(this) != 0;
 
-    public bool IsPackedStruct => (Kind == LLVMTypeKind.LLVMStructTypeKind) ? LLVM.IsPackedStruct(this) != 0 : default;
+    public bool IsPackedStruct => (Kind == LLVMTypeKind.LLVMStructTypeKind) && LLVM.IsPackedStruct(this) != 0;
 
-    public bool IsSized => (Handle != IntPtr.Zero) ? LLVM.TypeIsSized(this) != 0 : default;
+    public bool IsSized => (Handle != IntPtr.Zero) && LLVM.TypeIsSized(this) != 0;
 
     public LLVMTypeKind Kind => (Handle != IntPtr.Zero) ? LLVM.GetTypeKind(this) : default;
 

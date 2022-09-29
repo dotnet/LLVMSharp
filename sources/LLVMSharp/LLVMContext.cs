@@ -47,7 +47,7 @@ public sealed class LLVMContext : IEquatable<LLVMContext>
             _createdTypes.Add(handle, typeRef);
         }
 
-        if (!typeRef.TryGetTarget(out Type type))
+        if (!typeRef.TryGetTarget(out var type))
         {
             type = Type.Create(handle);
             typeRef.SetTarget(type);
@@ -70,7 +70,7 @@ public sealed class LLVMContext : IEquatable<LLVMContext>
             _createdValues.Add(handle, valueRef);
         }
 
-        if (!valueRef.TryGetTarget(out Value value))
+        if (!valueRef.TryGetTarget(out var value))
         {
             value = Value.Create(handle);
             valueRef.SetTarget(value);

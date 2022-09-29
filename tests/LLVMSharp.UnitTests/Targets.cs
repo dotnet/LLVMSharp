@@ -10,7 +10,7 @@ namespace LLVMSharp.UnitTests;
 public class Targets
 {
     [Test]
-    public void InitializeX86Targets() => this.InitializeTargets(() =>
+    public void InitializeX86Targets() => InitializeTargets(() =>
     {
         LLVM.InitializeX86TargetInfo();
         LLVM.InitializeX86Target();
@@ -20,7 +20,7 @@ public class Targets
     }, new[] { "x86" });
 
     [Test]
-    public void InitializeARMTargets() => this.InitializeTargets(() =>
+    public void InitializeARMTargets() => InitializeTargets(() =>
     {
         LLVM.InitializeARMTargetInfo();
         LLVM.InitializeARMTarget();

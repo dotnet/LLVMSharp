@@ -10,7 +10,7 @@ public class ConstantDataSequential : ConstantData
     {
     }
 
-    internal new static ConstantDataSequential Create(LLVMValueRef handle) => handle switch
+    internal static new ConstantDataSequential Create(LLVMValueRef handle) => handle switch
     {
         _ when handle.IsAConstantDataArray != null => new ConstantDataArray(handle),
         _ when handle.IsAConstantDataVector != null => new ConstantDataVector(handle),

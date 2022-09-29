@@ -30,10 +30,7 @@ public unsafe struct MarshaledArray<T, U> : IDisposable
 
     public U[] Values { get; private set; }
 
-    public static implicit operator ReadOnlySpan<U>(in MarshaledArray<T, U> value)
-    {
-        return value.Values;
-    }
+    public static implicit operator ReadOnlySpan<U>(in MarshaledArray<T, U> value) => value.Values;
 
     public void Dispose()
     {

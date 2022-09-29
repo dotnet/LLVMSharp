@@ -1,6 +1,7 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -17,39 +18,20 @@ public static unsafe partial class LLVM
 
     private static IntPtr OnDllImport(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
     {
-        IntPtr nativeLibrary;
-
-        if (TryResolveLibrary(libraryName, assembly, searchPath, out nativeLibrary))
-        {
-            return nativeLibrary;
-        }
-
-        if (libraryName.Equals("libLLVM") && TryResolveLLVM(assembly, searchPath, out nativeLibrary))
-        {
-            return nativeLibrary;
-        }
-
-        return IntPtr.Zero;
+        return TryResolveLibrary(libraryName, assembly, searchPath, out var nativeLibrary)
+            ? nativeLibrary
+            : libraryName.Equals("libLLVM") && TryResolveLLVM(assembly, searchPath, out nativeLibrary)
+            ? nativeLibrary
+            : IntPtr.Zero;
     }
 
     private static bool TryResolveLLVM(Assembly assembly, DllImportSearchPath? searchPath, out IntPtr nativeLibrary)
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && NativeLibrary.TryLoad("libLLVM-11.so", assembly, searchPath, out nativeLibrary))
-        {
-            return true;
-        }
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && NativeLibrary.TryLoad("LLVM-C.dll", assembly, searchPath, out nativeLibrary))
-        {
-            return true;
-        }
-
-        if (NativeLibrary.TryLoad("libLLVM", assembly, searchPath, out nativeLibrary))
-        {
-            return true;
-        }
-
-        return false;
+        return (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && NativeLibrary.TryLoad("libLLVM.so.14", assembly, searchPath, out nativeLibrary))
+            || (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && NativeLibrary.TryLoad("libLLVM-14", assembly, searchPath, out nativeLibrary))
+            || (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && NativeLibrary.TryLoad("libLLVM.so.1", assembly, searchPath, out nativeLibrary))
+            || (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && NativeLibrary.TryLoad("LLVM-C.dll", assembly, searchPath, out nativeLibrary))
+            || NativeLibrary.TryLoad("libLLVM", assembly, searchPath, out nativeLibrary);
     }
 
     private static bool TryResolveLibrary(string libraryName, Assembly assembly, DllImportSearchPath? searchPath, out IntPtr nativeLibrary)
@@ -60,7 +42,7 @@ public static unsafe partial class LLVM
         {
             var resolvers = resolveLibrary.GetInvocationList();
 
-            foreach (DllImportResolver resolver in resolvers)
+            foreach (DllImportResolver resolver in resolvers.Cast<DllImportResolver>())
             {
                 nativeLibrary = resolver(libraryName, assembly, searchPath);
 

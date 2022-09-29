@@ -10,7 +10,7 @@ public class Constant : User
     {
     }
 
-    internal new static Constant Create(LLVMValueRef handle) => handle switch
+    internal static new Constant Create(LLVMValueRef handle) => handle switch
     {
         _ when handle.IsABlockAddress != null => new BlockAddress(handle),
         _ when handle.IsAConstantAggregateZero != null => new ConstantAggregateZero(handle),

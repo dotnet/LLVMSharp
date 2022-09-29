@@ -10,7 +10,7 @@ public class User : Value
     {
     }
 
-    internal new static User Create(LLVMValueRef handle) => handle switch
+    internal static new User Create(LLVMValueRef handle) => handle switch
     {
         _ when handle.IsAConstant != null => Constant.Create(handle),
         _ when handle.IsAInstruction != null => Instruction.Create(handle),

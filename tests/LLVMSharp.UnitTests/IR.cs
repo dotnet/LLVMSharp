@@ -25,9 +25,9 @@ public class IR
             });
         module.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
 
-        LLVM.InitializeNativeTarget();
-        LLVM.InitializeNativeAsmParser();
-        LLVM.InitializeNativeAsmPrinter();
+        _ = LLVM.InitializeNativeTarget();
+        _ = LLVM.InitializeNativeAsmParser();
+        _ = LLVM.InitializeNativeAsmPrinter();
 
         var engine = module.CreateMCJITCompiler();
         var func = engine.GetPointerToGlobal<Int32Int32Int32Delegate>(def);
@@ -50,9 +50,9 @@ public class IR
             });
         module.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
 
-        LLVM.InitializeNativeTarget();
-        LLVM.InitializeNativeAsmParser();
-        LLVM.InitializeNativeAsmPrinter();
+        _ = LLVM.InitializeNativeTarget();
+        _ = LLVM.InitializeNativeAsmParser();
+        _ = LLVM.InitializeNativeAsmPrinter();
 
         var engine = module.CreateMCJITCompiler();
         var func = engine.GetPointerToGlobal<Int32Int32Int32Delegate>(def);
@@ -75,9 +75,9 @@ public class IR
             });
         module.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
 
-        LLVM.InitializeNativeTarget();
-        LLVM.InitializeNativeAsmParser();
-        LLVM.InitializeNativeAsmPrinter();
+        _ = LLVM.InitializeNativeTarget();
+        _ = LLVM.InitializeNativeAsmParser();
+        _ = LLVM.InitializeNativeAsmPrinter();
 
         var engine = module.CreateMCJITCompiler();
         var func = engine.GetPointerToGlobal<Int32Int32Int8Delegate>(def);
@@ -108,9 +108,9 @@ public class IR
             });
         module.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
 
-        LLVM.InitializeNativeTarget();
-        LLVM.InitializeNativeAsmParser();
-        LLVM.InitializeNativeAsmPrinter();
+        _ = LLVM.InitializeNativeTarget();
+        _ = LLVM.InitializeNativeAsmParser();
+        _ = LLVM.InitializeNativeAsmPrinter();
 
         var engine = module.CreateMCJITCompiler();
         var func = engine.GetPointerToGlobal<Int32Int32Int32Delegate>(defEntry);
@@ -132,9 +132,9 @@ public class IR
             });
         module.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
 
-        LLVM.InitializeNativeTarget();
-        LLVM.InitializeNativeAsmParser();
-        LLVM.InitializeNativeAsmPrinter();
+        _ = LLVM.InitializeNativeTarget();
+        _ = LLVM.InitializeNativeAsmParser();
+        _ = LLVM.InitializeNativeAsmPrinter();
 
         var engine = module.CreateMCJITCompiler();
         var func = engine.GetPointerToGlobal<Int32Delegate>(def);
@@ -156,9 +156,9 @@ public class IR
             });
         module.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
 
-        LLVM.InitializeNativeTarget();
-        LLVM.InitializeNativeAsmParser();
-        LLVM.InitializeNativeAsmPrinter();
+        _ = LLVM.InitializeNativeTarget();
+        _ = LLVM.InitializeNativeAsmParser();
+        _ = LLVM.InitializeNativeAsmPrinter();
 
         var engine = module.CreateMCJITCompiler();
         var func = engine.GetPointerToGlobal<Int32Delegate>(def);

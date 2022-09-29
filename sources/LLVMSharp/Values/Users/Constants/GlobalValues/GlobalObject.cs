@@ -10,7 +10,7 @@ public class GlobalObject : GlobalValue
     {
     }
 
-    internal new static GlobalObject Create(LLVMValueRef handle) => handle switch
+    internal static new GlobalObject Create(LLVMValueRef handle) => handle switch
     {
         _ when handle.IsAFunction != null => new Function(handle),
         _ when handle.IsAGlobalVariable != null => new GlobalVariable(handle),

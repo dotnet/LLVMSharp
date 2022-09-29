@@ -45,10 +45,7 @@ public unsafe struct MarshaledString : IDisposable
         }
     }
 
-    public static implicit operator sbyte*(in MarshaledString value)
-    {
-        return value.Value;
-    }
+    public static implicit operator sbyte*(in MarshaledString value) => value.Value;
 
     public override string ToString()
     {

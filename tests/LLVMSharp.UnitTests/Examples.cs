@@ -9,7 +9,7 @@ namespace LLVMSharp.UnitTests;
 public class Examples
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate int BinaryInt32Operation(int op1, int op2);
+    private delegate int BinaryInt32Operation(int op1, int op2);
 
     [Test]
     public void Intro()
@@ -26,9 +26,9 @@ public class Examples
             });
         module.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
 
-        LLVM.InitializeNativeTarget();
-        LLVM.InitializeNativeAsmParser();
-        LLVM.InitializeNativeAsmPrinter();
+        _ = LLVM.InitializeNativeTarget();
+        _ = LLVM.InitializeNativeAsmParser();
+        _ = LLVM.InitializeNativeAsmPrinter();
 
         var engine = module.CreateMCJITCompiler();
         var function = engine.GetPointerToGlobal<BinaryInt32Operation>(def);

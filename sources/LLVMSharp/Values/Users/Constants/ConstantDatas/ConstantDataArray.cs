@@ -11,11 +11,11 @@ public sealed class ConstantDataArray : ConstantDataSequential
     {
     }
 
-    public static Constant GetString(LLVMContext Context, string Initializer, bool AddNull = true) => GetString(Context, Initializer.AsSpan(), AddNull);
+    public static Constant GetString(LLVMContext context, string initializer, bool addNull = true) => GetString(context, initializer.AsSpan(), addNull);
 
-    public static Constant GetString(LLVMContext Context, ReadOnlySpan<char> Initializer, bool AddNull)
+    public static Constant GetString(LLVMContext context, ReadOnlySpan<char> initializer, bool addNull)
     {
-        var handle = Context.Handle.GetConstString(Initializer, !AddNull);
-        return Context.GetOrCreate<Constant>(handle);
+        var handle = context.Handle.GetConstString(initializer, !addNull);
+        return context.GetOrCreate<Constant>(handle);
     }
 }

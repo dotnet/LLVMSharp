@@ -5,15 +5,15 @@ using NUnit.Framework;
 
 namespace LLVMSharp.UnitTests;
 
-class TargetData
+public sealed class TargetData
 {
     [Test]
     public void OffsetTest()
     {
-        LLVMModuleRef m = LLVMModuleRef.CreateWithName("netscripten");
-        LLVMExecutionEngineRef engineRef = m.CreateExecutionEngine();
-        LLVMTargetDataRef target = engineRef.TargetData;
-        LLVMTypeRef testStruct = LLVMTypeRef.CreateStruct(
+        var m = LLVMModuleRef.CreateWithName("netscripten");
+        var engineRef = m.CreateExecutionEngine();
+        var target = engineRef.TargetData;
+        var testStruct = LLVMTypeRef.CreateStruct(
             new[]
             {
                 LLVMTypeRef.Int16,
@@ -30,10 +30,10 @@ class TargetData
     [Test]
     public void SizeTest()
     {
-        LLVMModuleRef m = LLVMModuleRef.CreateWithName("netscripten");
-        LLVMExecutionEngineRef engineRef = m.CreateExecutionEngine();
-        LLVMTargetDataRef target = engineRef.TargetData;
-        LLVMTypeRef testStruct = LLVMTypeRef.CreateStruct(
+        var m = LLVMModuleRef.CreateWithName("netscripten");
+        var engineRef = m.CreateExecutionEngine();
+        var target = engineRef.TargetData;
+        var testStruct = LLVMTypeRef.CreateStruct(
             new[]
             {
                 LLVMTypeRef.Int16,
@@ -48,12 +48,12 @@ class TargetData
     [Test]
     public void AlignmentTest()
     {
-        LLVMModuleRef m = LLVMModuleRef.CreateWithName("netscripten");
+        var m = LLVMModuleRef.CreateWithName("netscripten");
         m.Target = "wasm32-unknown-unknown-wasm";
         m.DataLayout = "e-m:e-p:32:32-i64:64-n32:64-S128";
-        LLVMExecutionEngineRef engineRef = m.CreateExecutionEngine();
-        LLVMTargetDataRef target = engineRef.TargetData;
-        LLVMTypeRef testStruct = LLVMTypeRef.CreateStruct(
+        var engineRef = m.CreateExecutionEngine();
+        var target = engineRef.TargetData;
+        var testStruct = LLVMTypeRef.CreateStruct(
             new[]
             {
                 LLVMTypeRef.Int16,
@@ -64,14 +64,14 @@ class TargetData
         Assert.AreEqual(1, target.CallFrameAlignmentOfType(testStruct));
         Assert.AreEqual(8, target.PreferredAlignmentOfType(testStruct));
 
-        LLVMValueRef global = m.AddGlobal(LLVMTypeRef.CreatePointer(LLVMTypeRef.Int8, 0), "someGlobal");
+        var global = m.AddGlobal(LLVMTypeRef.CreatePointer(LLVMTypeRef.Int8, 0), "someGlobal");
         Assert.AreEqual(4, target.PreferredAlignmentOfGlobal(global));
     }
 
     private LLVMTargetDataRef TargetDataFromTriple(string triple)
     {
-        LLVMTargetRef target = LLVMTargetRef.GetTargetFromTriple(triple);
-        LLVMTargetMachineRef targetMachine = target.CreateTargetMachine(triple, "", "",
+        var target = LLVMTargetRef.GetTargetFromTriple(triple);
+        var targetMachine = target.CreateTargetMachine(triple, "", "",
             LLVMCodeGenOptLevel.LLVMCodeGenLevelDefault, LLVMRelocMode.LLVMRelocDefault,
             LLVMCodeModel.LLVMCodeModelDefault);
         return targetMachine.CreateTargetDataLayout();
@@ -84,9 +84,9 @@ class TargetData
         LLVM.InitializeX86Target();
         LLVM.InitializeX86TargetMC();
 
-        LLVMTypeRef pointerType = LLVMTypeRef.CreatePointer(LLVMTypeRef.Int32, 0);
-        LLVMTargetDataRef x86 = TargetDataFromTriple("i386-unknown-unknown");
-        LLVMTargetDataRef x86_64 = TargetDataFromTriple("amd64-unknown-unknown");
+        var pointerType = LLVMTypeRef.CreatePointer(LLVMTypeRef.Int32, 0);
+        var x86 = TargetDataFromTriple("i386-unknown-unknown");
+        var x86_64 = TargetDataFromTriple("amd64-unknown-unknown");
 
         Assert.AreEqual(4, x86.ABISizeOfType(pointerType));
         Assert.AreEqual(8, x86_64.ABISizeOfType(pointerType));
