@@ -133,6 +133,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.osx-arm64",
 		packages\libLLVM\libLLVM.runtime.osx-arm64\libLLVM.runtime.osx-arm64.nuspec = packages\libLLVM\libLLVM.runtime.osx-arm64\libLLVM.runtime.osx-arm64.nuspec
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{ABEBDCC2-715B-48BE-B87C-851048AB3FF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "samples\HelloWorld\HelloWorld.csproj", "{92062943-C2BC-4FA7-BBA3-454FE3C9D9DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -151,6 +155,10 @@ Global
 		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92062943-C2BC-4FA7-BBA3-454FE3C9D9DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92062943-C2BC-4FA7-BBA3-454FE3C9D9DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92062943-C2BC-4FA7-BBA3-454FE3C9D9DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92062943-C2BC-4FA7-BBA3-454FE3C9D9DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,6 +182,7 @@ Global
 		{4F526018-55AE-41FF-BF01-21F60EB95CBC} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{C8508256-2EC1-4C88-B61D-AFB86569FBCD} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{3870145D-F6DC-4082-A3F5-2316D49ADD43} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
+		{92062943-C2BC-4FA7-BBA3-454FE3C9D9DF} = {ABEBDCC2-715B-48BE-B87C-851048AB3FF8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {75550D8C-A492-4ED3-8387-206830F8B21E}
