@@ -64,11 +64,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM", "libLLVM", "{568A
 		packages\libLLVM\libLLVM\runtime.json = packages\libLLVM\libLLVM\runtime.json
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.freebsd.12-x64", "libLLVM.runtime.freebsd.12-x64", "{7B8F6AD5-F16F-4605-BD50-6C4DAD69C792}"
-	ProjectSection(SolutionItems) = preProject
-		packages\libLLVM\libLLVM.runtime.freebsd.12-x64\libLLVM.runtime.freebsd.12-x64.nuspec = packages\libLLVM\libLLVM.runtime.freebsd.12-x64\libLLVM.runtime.freebsd.12-x64.nuspec
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.linux-arm64", "libLLVM.runtime.linux-arm64", "{16539CB8-8AC7-4AD0-9D54-8EE615B2FCF3}"
 	ProjectSection(SolutionItems) = preProject
 		packages\libLLVM\libLLVM.runtime.linux-arm64\libLLVM.runtime.linux-arm64.nuspec = packages\libLLVM\libLLVM.runtime.linux-arm64\libLLVM.runtime.linux-arm64.nuspec
@@ -79,16 +74,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.osx-x64", "
 		packages\libLLVM\libLLVM.runtime.osx-x64\libLLVM.runtime.osx-x64.nuspec = packages\libLLVM\libLLVM.runtime.osx-x64\libLLVM.runtime.osx-x64.nuspec
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.18.04-x64", "libLLVM.runtime.ubuntu.18.04-x64", "{481409E0-F009-4583-B587-7D6915E9B16E}"
-	ProjectSection(SolutionItems) = preProject
-		packages\libLLVM\libLLVM.runtime.ubuntu.18.04-x64\libLLVM.runtime.ubuntu.18.04-x64.nuspec = packages\libLLVM\libLLVM.runtime.ubuntu.18.04-x64\libLLVM.runtime.ubuntu.18.04-x64.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.20.04-x64", "libLLVM.runtime.ubuntu.20.04-x64", "{DC151BEE-774F-4032-8D2F-F3360F7F4D82}"
-	ProjectSection(SolutionItems) = preProject
-		packages\libLLVM\libLLVM.runtime.ubuntu.20.04-x64\libLLVM.runtime.ubuntu.20.04-x64.nuspec = packages\libLLVM\libLLVM.runtime.ubuntu.20.04-x64\libLLVM.runtime.ubuntu.20.04-x64.nuspec
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.win-x64", "libLLVM.runtime.win-x64", "{E785DDD0-B9CD-4412-8A3C-4E65C601168C}"
 	ProjectSection(SolutionItems) = preProject
 		packages\libLLVM\libLLVM.runtime.win-x64\libLLVM.runtime.win-x64.nuspec = packages\libLLVM\libLLVM.runtime.win-x64\libLLVM.runtime.win-x64.nuspec
@@ -97,11 +82,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.win-x86", "libLLVM.runtime.win-x86", "{540AB7F4-29FD-462A-8791-259764FD4950}"
 	ProjectSection(SolutionItems) = preProject
 		packages\libLLVM\libLLVM.runtime.win-x86\libLLVM.runtime.win-x86.nuspec = packages\libLLVM\libLLVM.runtime.win-x86\libLLVM.runtime.win-x86.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.ubuntu.22.04-x64", "libLLVM.runtime.ubuntu.22.04-x64", "{1808D302-0067-4121-964C-2CBAFB8A957A}"
-	ProjectSection(SolutionItems) = preProject
-		packages\libLLVM\libLLVM.runtime.ubuntu.22.04-x64\libLLVM.runtime.ubuntu.22.04-x64.nuspec = packages\libLLVM\libLLVM.runtime.ubuntu.22.04-x64\libLLVM.runtime.ubuntu.22.04-x64.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.win-arm64", "libLLVM.runtime.win-arm64", "{19DB05E9-59B6-45E9-B47D-62913F7DF9A8}"
@@ -116,11 +96,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{706334B8-BB91-49A4-BC9C-DFFDF3DCD770}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\ci.yml = .github\workflows\ci.yml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.freebsd.13-x64", "libLLVM.runtime.freebsd.13-x64", "{4F526018-55AE-41FF-BF01-21F60EB95CBC}"
-	ProjectSection(SolutionItems) = preProject
-		packages\libLLVM\libLLVM.runtime.freebsd.13-x64\libLLVM.runtime.freebsd.13-x64.nuspec = packages\libLLVM\libLLVM.runtime.freebsd.13-x64\libLLVM.runtime.freebsd.13-x64.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.linux-x64", "libLLVM.runtime.linux-x64", "{C8508256-2EC1-4C88-B61D-AFB86569FBCD}"
@@ -160,18 +135,13 @@ Global
 		{293C5F55-2CB1-4398-946B-8AD8E37D7FEE} = {5E2DA015-A829-4304-9B2F-B868ECB77A95}
 		{9D46FF1C-E09F-4063-A97D-C09F26310B67} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
 		{568A07AC-AF60-4A3E-ABD3-2B51D9DD4EBF} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
-		{7B8F6AD5-F16F-4605-BD50-6C4DAD69C792} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{16539CB8-8AC7-4AD0-9D54-8EE615B2FCF3} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{D4550E5E-9485-4480-B2B6-9503EEC935BF} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
-		{481409E0-F009-4583-B587-7D6915E9B16E} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
-		{DC151BEE-774F-4032-8D2F-F3360F7F4D82} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{E785DDD0-B9CD-4412-8A3C-4E65C601168C} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{540AB7F4-29FD-462A-8791-259764FD4950} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
-		{1808D302-0067-4121-964C-2CBAFB8A957A} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{19DB05E9-59B6-45E9-B47D-62913F7DF9A8} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6} = {62B5C536-C224-4EE1-972F-05F732B5980B}
 		{706334B8-BB91-49A4-BC9C-DFFDF3DCD770} = {E8ADE5A7-4363-43B7-B104-6B0E5510CAF0}
-		{4F526018-55AE-41FF-BF01-21F60EB95CBC} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{C8508256-2EC1-4C88-B61D-AFB86569FBCD} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{3870145D-F6DC-4082-A3F5-2316D49ADD43} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 	EndGlobalSection

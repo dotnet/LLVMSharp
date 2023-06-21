@@ -7,6 +7,7 @@ using NUnit.Framework.Internal;
 
 namespace LLVMSharp.UnitTests;
 
+[Platform(Exclude = "32-bit")]
 public class IR
 {
     [Test]

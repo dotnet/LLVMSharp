@@ -1,6 +1,6 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
-// Ported from https://github.com/llvm/llvm-project/tree/llvmorg-15.0.0/llvm/include/llvm-c
+// Ported from https://github.com/llvm/llvm-project/tree/llvmorg-16.0.6/llvm/include/llvm-c
 // Original source is Copyright (c) the LLVM Project and Contributors. Licensed under the Apache License v2.0 with LLVM Exceptions. See NOTICE.txt in the project root for license information.
 
 using System.Runtime.InteropServices;
@@ -29,6 +29,9 @@ public static unsafe partial class LLVM
 
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeLanaiTargetInfo", ExactSpelling = true)]
     public static extern void InitializeLanaiTargetInfo();
+
+    [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeLoongArchTargetInfo", ExactSpelling = true)]
+    public static extern void InitializeLoongArchTargetInfo();
 
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeMipsTargetInfo", ExactSpelling = true)]
     public static extern void InitializeMipsTargetInfo();
@@ -84,6 +87,9 @@ public static unsafe partial class LLVM
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeLanaiTarget", ExactSpelling = true)]
     public static extern void InitializeLanaiTarget();
 
+    [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeLoongArchTarget", ExactSpelling = true)]
+    public static extern void InitializeLoongArchTarget();
+
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeMipsTarget", ExactSpelling = true)]
     public static extern void InitializeMipsTarget();
 
@@ -137,6 +143,9 @@ public static unsafe partial class LLVM
 
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeLanaiTargetMC", ExactSpelling = true)]
     public static extern void InitializeLanaiTargetMC();
+
+    [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeLoongArchTargetMC", ExactSpelling = true)]
+    public static extern void InitializeLoongArchTargetMC();
 
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeMipsTargetMC", ExactSpelling = true)]
     public static extern void InitializeMipsTargetMC();
@@ -192,6 +201,9 @@ public static unsafe partial class LLVM
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeLanaiAsmPrinter", ExactSpelling = true)]
     public static extern void InitializeLanaiAsmPrinter();
 
+    [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeLoongArchAsmPrinter", ExactSpelling = true)]
+    public static extern void InitializeLoongArchAsmPrinter();
+
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeMipsAsmPrinter", ExactSpelling = true)]
     public static extern void InitializeMipsAsmPrinter();
 
@@ -246,6 +258,9 @@ public static unsafe partial class LLVM
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeLanaiAsmParser", ExactSpelling = true)]
     public static extern void InitializeLanaiAsmParser();
 
+    [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeLoongArchAsmParser", ExactSpelling = true)]
+    public static extern void InitializeLoongArchAsmParser();
+
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeMipsAsmParser", ExactSpelling = true)]
     public static extern void InitializeMipsAsmParser();
 
@@ -294,6 +309,9 @@ public static unsafe partial class LLVM
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeLanaiDisassembler", ExactSpelling = true)]
     public static extern void InitializeLanaiDisassembler();
 
+    [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeLoongArchDisassembler", ExactSpelling = true)]
+    public static extern void InitializeLoongArchDisassembler();
+
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeMipsDisassembler", ExactSpelling = true)]
     public static extern void InitializeMipsDisassembler();
 
@@ -323,4 +341,326 @@ public static unsafe partial class LLVM
 
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeXCoreDisassembler", ExactSpelling = true)]
     public static extern void InitializeXCoreDisassembler();
+
+    [return: NativeTypeName("LLVMBool")]
+    public static int InitializeNativeTarget()
+    {
+        switch (RuntimeInformation.ProcessArchitecture)
+        {
+            case Architecture.X86:
+            case Architecture.X64:
+            {
+                InitializeX86TargetInfo();
+                InitializeX86Target();
+                InitializeX86TargetMC();
+                return 0;
+            }
+
+            case Architecture.Arm:
+#if NET7_0_OR_GREATER
+            case Architecture.Armv6:
+#else
+            case (Architecture)(7):
+#endif
+            {
+                InitializeARMTargetInfo();
+                InitializeARMTarget();
+                InitializeARMTargetMC();
+                return 0;
+            }
+
+            case Architecture.Arm64:
+            {
+                InitializeAArch64TargetInfo();
+                InitializeAArch64Target();
+                InitializeAArch64TargetMC();
+                return 0;
+            }
+
+#if NET6_0_OR_GREATER
+            case Architecture.Wasm:
+#else
+            case (Architecture)(4):
+#endif
+            {
+                InitializeWebAssemblyTargetInfo();
+                InitializeWebAssemblyTarget();
+                InitializeWebAssemblyTargetMC();
+                return 0;
+            }
+
+#if NET6_0_OR_GREATER
+            case Architecture.S390x:
+#else
+            case (Architecture)(5):
+#endif
+            {
+                InitializeSystemZTargetInfo();
+                InitializeSystemZTarget();
+                InitializeSystemZTargetMC();
+                return 0;
+            }
+
+#if NET7_0_OR_GREATER
+            case Architecture.LoongArch64:
+#else
+            case (Architecture)(6):
+#endif
+            {
+                InitializeLoongArchTargetInfo();
+                InitializeLoongArchTarget();
+                InitializeLoongArchTargetMC();
+                return 0;
+            }
+
+#if NET7_0_OR_GREATER
+            case Architecture.Ppc64le:
+#else
+            case (Architecture)(8):
+#endif
+            {
+                InitializePowerPCTargetInfo();
+                InitializePowerPCTarget();
+                InitializePowerPCTargetMC();
+                return 0;
+            }
+
+
+            default:
+            {
+                return 1;
+            }
+        }
+    }
+
+    [return: NativeTypeName("LLVMBool")]
+    public static int InitializeNativeAsmParser()
+    {
+        switch (RuntimeInformation.ProcessArchitecture)
+        {
+            case Architecture.X86:
+            case Architecture.X64:
+            {
+                InitializeX86AsmParser();
+                return 0;
+            }
+
+            case Architecture.Arm:
+#if NET7_0_OR_GREATER
+            case Architecture.Armv6:
+#else
+            case (Architecture)(7):
+#endif
+            {
+                InitializeARMAsmParser();
+                return 0;
+            }
+
+            case Architecture.Arm64:
+            {
+                InitializeAArch64AsmParser();
+                return 0;
+            }
+
+#if NET6_0_OR_GREATER
+            case Architecture.Wasm:
+#else
+            case (Architecture)(4):
+#endif
+            {
+                InitializeWebAssemblyAsmParser();
+                return 0;
+            }
+
+#if NET6_0_OR_GREATER
+            case Architecture.S390x:
+#else
+            case (Architecture)(5):
+#endif
+            {
+                InitializeSystemZAsmParser();
+                return 0;
+            }
+
+#if NET7_0_OR_GREATER
+            case Architecture.LoongArch64:
+#else
+            case (Architecture)(6):
+#endif
+            {
+                InitializeLoongArchAsmParser();
+                return 0;
+            }
+
+#if NET7_0_OR_GREATER
+            case Architecture.Ppc64le:
+#else
+            case (Architecture)(8):
+#endif
+            {
+                InitializePowerPCAsmParser();
+                return 0;
+            }
+
+
+            default:
+            {
+                return 1;
+            }
+        }
+    }
+
+    [return: NativeTypeName("LLVMBool")]
+    public static int InitializeNativeAsmPrinter()
+    {
+        switch (RuntimeInformation.ProcessArchitecture)
+        {
+            case Architecture.X86:
+            case Architecture.X64:
+            {
+                InitializeX86AsmPrinter();
+                return 0;
+            }
+
+            case Architecture.Arm:
+#if NET7_0_OR_GREATER
+            case Architecture.Armv6:
+#else
+            case (Architecture)(7):
+#endif
+            {
+                InitializeARMAsmPrinter();
+                return 0;
+            }
+
+            case Architecture.Arm64:
+            {
+                InitializeAArch64AsmPrinter();
+                return 0;
+            }
+
+#if NET6_0_OR_GREATER
+            case Architecture.Wasm:
+#else
+            case (Architecture)(4):
+#endif
+            {
+                InitializeWebAssemblyAsmPrinter();
+                return 0;
+            }
+
+#if NET6_0_OR_GREATER
+            case Architecture.S390x:
+#else
+            case (Architecture)(5):
+#endif
+            {
+                InitializeSystemZAsmPrinter();
+                return 0;
+            }
+
+#if NET7_0_OR_GREATER
+            case Architecture.LoongArch64:
+#else
+            case (Architecture)(6):
+#endif
+            {
+                InitializeLoongArchAsmPrinter();
+                return 0;
+            }
+
+#if NET7_0_OR_GREATER
+            case Architecture.Ppc64le:
+#else
+            case (Architecture)(8):
+#endif
+            {
+                InitializePowerPCAsmPrinter();
+                return 0;
+            }
+
+
+            default:
+            {
+                return 1;
+            }
+        }
+    }
+
+    [return: NativeTypeName("LLVMBool")]
+    public static int InitializeNativeDisassembler()
+    {
+        switch (RuntimeInformation.ProcessArchitecture)
+        {
+            case Architecture.X86:
+            case Architecture.X64:
+            {
+                InitializeX86Disassembler();
+                return 0;
+            }
+
+            case Architecture.Arm:
+#if NET7_0_OR_GREATER
+            case Architecture.Armv6:
+#else
+            case (Architecture)(7):
+#endif
+            {
+                InitializeARMDisassembler();
+                return 0;
+            }
+
+            case Architecture.Arm64:
+            {
+                InitializeAArch64Disassembler();
+                return 0;
+            }
+
+#if NET6_0_OR_GREATER
+            case Architecture.Wasm:
+#else
+            case (Architecture)(4):
+#endif
+            {
+                InitializeWebAssemblyDisassembler();
+                return 0;
+            }
+
+#if NET6_0_OR_GREATER
+            case Architecture.S390x:
+#else
+            case (Architecture)(5):
+#endif
+            {
+                InitializeSystemZDisassembler();
+                return 0;
+            }
+
+#if NET7_0_OR_GREATER
+            case Architecture.LoongArch64:
+#else
+            case (Architecture)(6):
+#endif
+            {
+                InitializeLoongArchDisassembler();
+                return 0;
+            }
+
+#if NET7_0_OR_GREATER
+            case Architecture.Ppc64le:
+#else
+            case (Architecture)(8):
+#endif
+            {
+                InitializePowerPCDisassembler();
+                return 0;
+            }
+
+
+            default:
+            {
+                return 1;
+            }
+        }
+    }
 }

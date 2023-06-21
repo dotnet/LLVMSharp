@@ -105,8 +105,6 @@ public unsafe partial struct LLVMPassManagerRef : IDisposable, IEquatable<LLVMPa
 
     public void AddPromoteMemoryToRegisterPass() => LLVM.AddPromoteMemoryToRegisterPass(this);
 
-    public void AddPruneEHPass() => LLVM.AddPruneEHPass(this);
-
     public void AddReassociatePass() => LLVM.AddReassociatePass(this);
 
     public void AddScalarizerPass() => LLVM.AddScalarizerPass(this);

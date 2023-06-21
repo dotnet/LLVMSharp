@@ -12,6 +12,7 @@ public class Examples
     private delegate int BinaryInt32Operation(int op1, int op2);
 
     [Test]
+    [Platform(Exclude = "32-bit")]
     public void Intro()
     {
         using var module = LLVMModuleRef.CreateWithName("LLVMSharpIntro");
