@@ -1,31 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C1147A13-4174-410A-A891-335D858703B7}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KaleidoscopeLLVM</RootNamespace>
-    <AssemblyName>KaleidoscopeLLVM</AssemblyName>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>b8df454a</NuGetPackageImportStamp>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Kaleidoscope\Kaleidoscope.csproj" />
-  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="LLVMSharp" Version="5.0.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <Folder Include="Properties" />
+    <ProjectReference Include="..\Kaleidoscope\Kaleidoscope.csproj" />
   </ItemGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-			 Other similar extension points exist, see Microsoft.Common.targets.
-	<Target Name="BeforeBuild">
-	</Target>
-	<Target Name="AfterBuild">
-	</Target>
-	-->
 </Project>
