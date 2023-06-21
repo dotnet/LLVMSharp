@@ -27,4 +27,5 @@ public enum LLVMTypeKind
     LLVMScalableVectorTypeKind,
     LLVMBFloatTypeKind,
     LLVMX86_AMXTypeKind,
+    LLVMTargetExtTypeKind,
 }

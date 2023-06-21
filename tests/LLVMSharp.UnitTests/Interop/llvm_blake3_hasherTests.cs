@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace LLVMSharp.Interop.UnitTests;
 
 /// <summary>Provides validation of the <see cref="llvm_blake3_hasher" /> struct.</summary>
-public static unsafe partial class llvm_blake3_hasherTests
+public static unsafe partial class @llvm_blake3_hasherTests
 {
     /// <summary>Validates that the <see cref="llvm_blake3_hasher" /> struct is blittable.</summary>
     [Test]

@@ -33,4 +33,5 @@ public enum LLVMValueKind
     LLVMInlineAsmValueKind,
     LLVMInstructionValueKind,
     LLVMPoisonValueValueKind,
+    LLVMConstantTargetNoneValueKind,
 }
