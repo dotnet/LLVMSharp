@@ -700,8 +700,6 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public static LLVMValueRef CreateConstExtractElement(LLVMValueRef VectorConstant, LLVMValueRef IndexConstant) => LLVM.ConstExtractElement(VectorConstant, IndexConstant);
 
-    public static LLVMValueRef CreateConstFNeg(LLVMValueRef ConstantVal) => LLVM.ConstFNeg(ConstantVal);
-
     public static LLVMValueRef CreateConstFPCast(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstFPCast(ConstantVal, ToType);
 
     public static LLVMValueRef CreateConstFPExt(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstFPExt(ConstantVal, ToType);
@@ -712,18 +710,6 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
 
     public static LLVMValueRef CreateConstFPTrunc(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstFPTrunc(ConstantVal, ToType);
 
-    [Obsolete("Use CreateConstGEP2 instead to support opaque pointer")]
-    public static LLVMValueRef CreateConstGEP(LLVMValueRef ConstantVal, LLVMValueRef[] ConstantIndices) => CreateConstGEP(ConstantVal, ConstantIndices.AsSpan());
-
-    [Obsolete("Use CreateConstGEP2 instead to support opaque pointer")]
-    public static LLVMValueRef CreateConstGEP(LLVMValueRef ConstantVal, ReadOnlySpan<LLVMValueRef> ConstantIndices)
-    {
-        fixed (LLVMValueRef* pConstantIndices = ConstantIndices)
-        {
-            return LLVM.ConstGEP(ConstantVal, (LLVMOpaqueValue**)pConstantIndices, (uint)ConstantIndices.Length);
-        }
-    }
-
     public static LLVMValueRef CreateConstGEP2(LLVMTypeRef Ty, LLVMValueRef ConstantVal, LLVMValueRef[] ConstantIndices) => CreateConstGEP2(Ty, ConstantVal, ConstantIndices.AsSpan());
 
     public static LLVMValueRef CreateConstGEP2(LLVMTypeRef Ty, LLVMValueRef ConstantVal, ReadOnlySpan<LLVMValueRef> ConstantIndices)
@@ -731,18 +717,6 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
         fixed (LLVMValueRef* pConstantIndices = ConstantIndices)
         {
             return LLVM.ConstGEP2(Ty, ConstantVal, (LLVMOpaqueValue**)pConstantIndices, (uint)ConstantIndices.Length);
-        }
-    }
-
-    [Obsolete("Use CreateConstInBoundsGEP2 instead to support opaque pointer")]
-    public static LLVMValueRef CreateConstInBoundsGEP(LLVMValueRef ConstantVal, LLVMValueRef[] ConstantIndices) => CreateConstInBoundsGEP(ConstantVal, ConstantIndices.AsSpan());
-
-    [Obsolete("Use CreateConstInBoundsGEP2 instead to support opaque pointer")]
-    public static LLVMValueRef CreateConstInBoundsGEP(LLVMValueRef ConstantVal, ReadOnlySpan<LLVMValueRef> ConstantIndices)
-    {
-        fixed (LLVMValueRef* pConstantIndices = ConstantIndices)
-        {
-            return LLVM.ConstInBoundsGEP(ConstantVal, (LLVMOpaqueValue**)pConstantIndices, (uint)ConstantIndices.Length);
         }
     }
 
