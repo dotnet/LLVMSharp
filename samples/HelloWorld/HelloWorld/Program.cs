@@ -66,8 +66,8 @@ var constStr = mainBuilder.BuildGlobalStringPtr("Hello World!");
 var parameters = new[] { constStr };
 
 // Create function call and return instruction
-mainBuilder.BuildCall2(putsFuncTy, putsFunc, parameters);
-mainBuilder.BuildRet(LLVMValueRef.CreateConstInt(LLVMTypeRef.Int32, 0, true));
+_ = mainBuilder.BuildCall2(putsFuncTy, putsFunc, parameters);
+_ = mainBuilder.BuildRet(LLVMValueRef.CreateConstInt(LLVMTypeRef.Int32, 0, true));
 
 // Output LLVM IR //
 Console.WriteLine("[Output of LLVM IR]:\n");
