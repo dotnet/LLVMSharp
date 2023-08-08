@@ -953,6 +953,11 @@ public unsafe partial struct LLVMValueRef : IEquatable<LLVMValueRef>
         }
     }
 
+    public void AddAttributeAtIndex(LLVMAttributeIndex Idx, LLVMAttributeRef A)
+    {
+        LLVM.AddAttributeAtIndex(this, Idx, A);
+    }
+
     public LLVMAttributeRef[] GetAttributesAtIndex(LLVMAttributeIndex Idx)
     {
         var Attrs = new LLVMAttributeRef[GetAttributeCountAtIndex(Idx)];
