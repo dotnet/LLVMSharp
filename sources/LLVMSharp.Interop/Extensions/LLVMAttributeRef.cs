@@ -13,6 +13,10 @@ public unsafe partial struct LLVMAttributeRef : IEquatable<LLVMAttributeRef>
         Handle = handle;
     }
 
+    public readonly uint Kind => LLVM.GetEnumAttributeKind(this);
+
+    public readonly ulong Value => LLVM.GetEnumAttributeValue(this);
+
     public static implicit operator LLVMAttributeRef(LLVMOpaqueAttributeRef* value) => new LLVMAttributeRef((IntPtr)value);
 
     public static implicit operator LLVMOpaqueAttributeRef*(LLVMAttributeRef value) => (LLVMOpaqueAttributeRef*)value.Handle;

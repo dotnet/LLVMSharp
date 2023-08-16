@@ -86,6 +86,11 @@ public unsafe partial struct LLVMContextRef : IDisposable, IEquatable<LLVMContex
         return LLVM.StructCreateNamed(this, marshaledName);
     }
 
+    public LLVMAttributeRef CreateEnumAttribute(uint KindId, ulong Val)
+    {
+        return LLVM.CreateEnumAttribute(this, KindId, Val);
+    }
+
     public void Dispose()
     {
         if (Handle != IntPtr.Zero)
