@@ -8,6 +8,7 @@ public partial class Instruction
 {
     public enum MemoryOps
     {
+        Unknown = 0,
         Alloca = LLVMOpcode.LLVMAlloca,
         Load = LLVMOpcode.LLVMLoad,
         Store = LLVMOpcode.LLVMStore,

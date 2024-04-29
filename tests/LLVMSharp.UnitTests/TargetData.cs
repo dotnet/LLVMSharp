@@ -68,7 +68,7 @@ public sealed class TargetData
         Assert.AreEqual(4, target.PreferredAlignmentOfGlobal(global));
     }
 
-    private LLVMTargetDataRef TargetDataFromTriple(string triple)
+    private static LLVMTargetDataRef TargetDataFromTriple(string triple)
     {
         var target = LLVMTargetRef.GetTargetFromTriple(triple);
         var targetMachine = target.CreateTargetMachine(triple, "", "",

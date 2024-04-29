@@ -9,8 +9,8 @@ namespace LLVMSharp;
 
 public sealed class LLVMContext : IEquatable<LLVMContext>
 {
-    private readonly Dictionary<LLVMValueRef, WeakReference<Value>> _createdValues = new Dictionary<LLVMValueRef, WeakReference<Value>>();
-    private readonly Dictionary<LLVMTypeRef, WeakReference<Type>> _createdTypes = new Dictionary<LLVMTypeRef, WeakReference<Type>>();
+    private readonly Dictionary<LLVMValueRef, WeakReference<Value>> _createdValues = [];
+    private readonly Dictionary<LLVMTypeRef, WeakReference<Type>> _createdTypes = [];
 
     public LLVMContext()
     {

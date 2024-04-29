@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMPassRegistryRef : IEquatable<LLVMPassRegistryRef>
+public unsafe partial struct LLVMPassRegistryRef(IntPtr handle) : IEquatable<LLVMPassRegistryRef>
 {
-    public IntPtr Handle;
-
-    public LLVMPassRegistryRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMPassRegistryRef(LLVMOpaquePassRegistry* value) => new LLVMPassRegistryRef((IntPtr)value);
 
@@ -21,11 +16,11 @@ public unsafe partial struct LLVMPassRegistryRef : IEquatable<LLVMPassRegistryRe
 
     public static bool operator !=(LLVMPassRegistryRef left, LLVMPassRegistryRef right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMPassRegistryRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMPassRegistryRef other) && Equals(other);
 
-    public bool Equals(LLVMPassRegistryRef other) => this == other;
+    public readonly bool Equals(LLVMPassRegistryRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMPassRegistryRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMPassRegistryRef)}: {Handle:X}";
 }

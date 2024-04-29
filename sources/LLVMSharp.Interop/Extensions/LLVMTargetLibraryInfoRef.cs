@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMTargetLibraryInfoRef : IEquatable<LLVMTargetLibraryInfoRef>
+public unsafe partial struct LLVMTargetLibraryInfoRef(IntPtr handle) : IEquatable<LLVMTargetLibraryInfoRef>
 {
-    public IntPtr Handle;
-
-    public LLVMTargetLibraryInfoRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMTargetLibraryInfoRef(LLVMOpaqueTargetLibraryInfotData* value) => new LLVMTargetLibraryInfoRef((IntPtr)value);
 
@@ -21,11 +16,11 @@ public unsafe partial struct LLVMTargetLibraryInfoRef : IEquatable<LLVMTargetLib
 
     public static bool operator !=(LLVMTargetLibraryInfoRef left, LLVMTargetLibraryInfoRef right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMTargetLibraryInfoRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMTargetLibraryInfoRef other) && Equals(other);
 
-    public bool Equals(LLVMTargetLibraryInfoRef other) => this == other;
+    public readonly bool Equals(LLVMTargetLibraryInfoRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMTargetLibraryInfoRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMTargetLibraryInfoRef)}: {Handle:X}";
 }

@@ -5,18 +5,13 @@ using System.Runtime.InteropServices;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleRef>
+public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquatable<LLVMModuleRef>
 {
-    public IntPtr Handle;
+    public IntPtr Handle = handle;
 
-    public LLVMModuleRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public readonly LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetModuleContext(this) : default;
 
-    public LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetModuleContext(this) : default;
-
-    public string DataLayout
+    public readonly string DataLayout
     {
         get
         {
@@ -42,15 +37,15 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         }
     }
 
-    public LLVMValueRef FirstFunction => (Handle != IntPtr.Zero) ? LLVM.GetFirstFunction(this) : default;
+    public readonly LLVMValueRef FirstFunction => (Handle != IntPtr.Zero) ? LLVM.GetFirstFunction(this) : default;
 
-    public LLVMValueRef FirstGlobal => (Handle != IntPtr.Zero) ? LLVM.GetFirstGlobal(this) : default;
+    public readonly LLVMValueRef FirstGlobal => (Handle != IntPtr.Zero) ? LLVM.GetFirstGlobal(this) : default;
 
-    public LLVMValueRef LastFunction => (Handle != IntPtr.Zero) ? LLVM.GetLastFunction(this) : default;
+    public readonly LLVMValueRef LastFunction => (Handle != IntPtr.Zero) ? LLVM.GetLastFunction(this) : default;
 
-    public LLVMValueRef LastGlobal => (Handle != IntPtr.Zero) ? LLVM.GetLastGlobal(this) : default;
+    public readonly LLVMValueRef LastGlobal => (Handle != IntPtr.Zero) ? LLVM.GetLastGlobal(this) : default;
 
-    public string Target
+    public readonly string Target
     {
         get
         {
@@ -92,73 +87,73 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         return LLVM.ModuleCreateWithName(marshaledModuleID);
     }
 
-    public LLVMValueRef AddAlias2(LLVMTypeRef ValueTy, uint AddrSpace, LLVMValueRef Aliasee, string Name) => AddAlias2(ValueTy, AddrSpace, Aliasee, Name.AsSpan());
+    public readonly LLVMValueRef AddAlias2(LLVMTypeRef ValueTy, uint AddrSpace, LLVMValueRef Aliasee, string Name) => AddAlias2(ValueTy, AddrSpace, Aliasee, Name.AsSpan());
 
-    public LLVMValueRef AddAlias2(LLVMTypeRef ValueTy, uint AddrSpace, LLVMValueRef Aliasee, ReadOnlySpan<char> Name)
+    public readonly LLVMValueRef AddAlias2(LLVMTypeRef ValueTy, uint AddrSpace, LLVMValueRef Aliasee, ReadOnlySpan<char> Name)
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.AddAlias2(this, ValueTy, AddrSpace, Aliasee, marshaledName);
     }
 
-    public LLVMValueRef AddFunction(string Name, LLVMTypeRef FunctionTy) => AddFunction(Name.AsSpan(), FunctionTy);
+    public readonly LLVMValueRef AddFunction(string Name, LLVMTypeRef FunctionTy) => AddFunction(Name.AsSpan(), FunctionTy);
 
-    public LLVMValueRef AddFunction(ReadOnlySpan<char> Name, LLVMTypeRef FunctionTy)
+    public readonly LLVMValueRef AddFunction(ReadOnlySpan<char> Name, LLVMTypeRef FunctionTy)
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.AddFunction(this, marshaledName, FunctionTy);
     }
 
-    public LLVMValueRef AddGlobal(LLVMTypeRef Ty, string Name) => AddGlobal(Ty, Name.AsSpan());
+    public readonly LLVMValueRef AddGlobal(LLVMTypeRef Ty, string Name) => AddGlobal(Ty, Name.AsSpan());
 
-    public LLVMValueRef AddGlobal(LLVMTypeRef Ty, ReadOnlySpan<char> Name)
+    public readonly LLVMValueRef AddGlobal(LLVMTypeRef Ty, ReadOnlySpan<char> Name)
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.AddGlobal(this, Ty, marshaledName);
     }
 
-    public LLVMValueRef AddGlobalInAddressSpace(LLVMTypeRef Ty, string Name, uint AddressSpace) => AddGlobalInAddressSpace(Ty, Name.AsSpan(), AddressSpace);
+    public readonly LLVMValueRef AddGlobalInAddressSpace(LLVMTypeRef Ty, string Name, uint AddressSpace) => AddGlobalInAddressSpace(Ty, Name.AsSpan(), AddressSpace);
 
-    public LLVMValueRef AddGlobalInAddressSpace(LLVMTypeRef Ty, ReadOnlySpan<char> Name, uint AddressSpace)
+    public readonly LLVMValueRef AddGlobalInAddressSpace(LLVMTypeRef Ty, ReadOnlySpan<char> Name, uint AddressSpace)
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.AddGlobalInAddressSpace(this, Ty, marshaledName, AddressSpace);
     }
 
-    public void AddModuleFlag(string FlagName, LLVMModuleFlagBehavior Behavior, uint ValAsUInt)
+    public readonly void AddModuleFlag(string FlagName, LLVMModuleFlagBehavior Behavior, uint ValAsUInt)
     {
         LLVMOpaqueValue* valAsValueRef = LLVMValueRef.CreateConstInt(LLVMTypeRef.Int32, ValAsUInt);
         AddModuleFlag(FlagName, Behavior, valAsValueRef);
     }
 
-    public void AddModuleFlag(string FlagName, LLVMModuleFlagBehavior Behavior, LLVMValueRef ValAsValueRef)
+    public readonly void AddModuleFlag(string FlagName, LLVMModuleFlagBehavior Behavior, LLVMValueRef ValAsValueRef)
     {
         LLVMOpaqueMetadata* valAsMetadata = LLVM.ValueAsMetadata(ValAsValueRef);
         AddModuleFlag(FlagName, Behavior, valAsMetadata);
     }
 
-    public void AddModuleFlag(string FlagName, LLVMModuleFlagBehavior Behavior, LLVMMetadataRef ValAsMetadataRef) => AddModuleFlag(FlagName.AsSpan(), Behavior, ValAsMetadataRef);
+    public readonly void AddModuleFlag(string FlagName, LLVMModuleFlagBehavior Behavior, LLVMMetadataRef ValAsMetadataRef) => AddModuleFlag(FlagName.AsSpan(), Behavior, ValAsMetadataRef);
 
 
-    public void AddModuleFlag(ReadOnlySpan<char> FlagName, LLVMModuleFlagBehavior Behavior, LLVMMetadataRef ValAsMetadataRef)
+    public readonly void AddModuleFlag(ReadOnlySpan<char> FlagName, LLVMModuleFlagBehavior Behavior, LLVMMetadataRef ValAsMetadataRef)
     {
         using var marshaledName = new MarshaledString(FlagName);
         LLVM.AddModuleFlag(this, Behavior, marshaledName, (UIntPtr)FlagName.Length, ValAsMetadataRef);
     }
 
-    public void AddNamedMetadataOperand(string Name, LLVMValueRef Val) => AddNamedMetadataOperand(Name.AsSpan(), Val);
+    public readonly void AddNamedMetadataOperand(string Name, LLVMValueRef Val) => AddNamedMetadataOperand(Name.AsSpan(), Val);
 
-    public void AddNamedMetadataOperand(ReadOnlySpan<char> Name, LLVMValueRef Val)
+    public readonly void AddNamedMetadataOperand(ReadOnlySpan<char> Name, LLVMValueRef Val)
     {
         using var marshaledName = new MarshaledString(Name);
         LLVM.AddNamedMetadataOperand(this, marshaledName, Val);
     }
 
-    public LLVMDIBuilderRef CreateDIBuilder()
+    public readonly LLVMDIBuilderRef CreateDIBuilder()
     {
         return new LLVMDIBuilderRef((IntPtr)LLVM.CreateDIBuilder(this));
     }
 
-    public LLVMExecutionEngineRef CreateExecutionEngine()
+    public readonly LLVMExecutionEngineRef CreateExecutionEngine()
     {
         if (!TryCreateExecutionEngine(out LLVMExecutionEngineRef EE, out string Error))
         {
@@ -168,7 +163,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         return EE;
     }
 
-    public LLVMExecutionEngineRef CreateInterpreter()
+    public readonly LLVMExecutionEngineRef CreateInterpreter()
     {
         if (!TryCreateInterpreter(out LLVMExecutionEngineRef Interp, out string Error))
         {
@@ -178,7 +173,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         return Interp;
     }
 
-    public LLVMExecutionEngineRef CreateMCJITCompiler()
+    public readonly LLVMExecutionEngineRef CreateMCJITCompiler()
     {
         if (!TryCreateMCJITCompiler(out LLVMExecutionEngineRef JIT, out string Error))
         {
@@ -188,7 +183,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         return JIT;
     }
 
-    public LLVMExecutionEngineRef CreateMCJITCompiler(ref LLVMMCJITCompilerOptions Options)
+    public readonly LLVMExecutionEngineRef CreateMCJITCompiler(ref LLVMMCJITCompilerOptions Options)
     {
         if (!TryCreateMCJITCompiler(out LLVMExecutionEngineRef JIT, ref Options, out string Error))
         {
@@ -198,15 +193,15 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         return JIT;
     }
 
-    public LLVMModuleRef Clone() => LLVM.CloneModule(this);
+    public readonly LLVMModuleRef Clone() => LLVM.CloneModule(this);
 
-    public LLVMPassManagerRef CreateFunctionPassManager() => LLVM.CreateFunctionPassManagerForModule(this);
+    public readonly LLVMPassManagerRef CreateFunctionPassManager() => LLVM.CreateFunctionPassManagerForModule(this);
 
-    public LLVMModuleProviderRef CreateModuleProvider() => LLVM.CreateModuleProviderForExistingModule(this);
+    public readonly LLVMModuleProviderRef CreateModuleProvider() => LLVM.CreateModuleProviderForExistingModule(this);
 
-    public void AddNamedMetadataOperand(string Name, LLVMMetadataRef CompileUnitMetadata) => AddNamedMetadataOperand(Name.AsSpan(), CompileUnitMetadata);
+    public readonly void AddNamedMetadataOperand(string Name, LLVMMetadataRef CompileUnitMetadata) => AddNamedMetadataOperand(Name.AsSpan(), CompileUnitMetadata);
 
-    public void AddNamedMetadataOperand(ReadOnlySpan<char> Name, LLVMMetadataRef CompileUnitMetadata)
+    public readonly void AddNamedMetadataOperand(ReadOnlySpan<char> Name, LLVMMetadataRef CompileUnitMetadata)
     {
         using var marshaledName = new MarshaledString(Name);
         LLVM.AddNamedMetadataOperand(this, marshaledName, LLVM.MetadataAsValue(Context, CompileUnitMetadata));
@@ -221,33 +216,33 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         }
     }
 
-    public void Dump() => LLVM.DumpModule(this);
+    public readonly void Dump() => LLVM.DumpModule(this);
 
-    public override bool Equals(object? obj) => (obj is LLVMModuleRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMModuleRef other) && Equals(other);
 
-    public bool Equals(LLVMModuleRef other) => this == other;
+    public readonly bool Equals(LLVMModuleRef other) => this == other;
 
-    public LLVMValueRef GetNamedFunction(string Name) => GetNamedFunction(Name.AsSpan());
+    public readonly LLVMValueRef GetNamedFunction(string Name) => GetNamedFunction(Name.AsSpan());
 
-    public LLVMValueRef GetNamedFunction(ReadOnlySpan<char> Name)
+    public readonly LLVMValueRef GetNamedFunction(ReadOnlySpan<char> Name)
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.GetNamedFunction(this, marshaledName);
     }
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public LLVMValueRef GetNamedGlobal(string Name) => GetNamedGlobal(Name.AsSpan());
+    public readonly LLVMValueRef GetNamedGlobal(string Name) => GetNamedGlobal(Name.AsSpan());
 
-    public LLVMValueRef GetNamedGlobal(ReadOnlySpan<char> Name)
+    public readonly LLVMValueRef GetNamedGlobal(ReadOnlySpan<char> Name)
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.GetNamedGlobal(this, marshaledName);
     }
 
-    public LLVMValueRef[] GetNamedMetadataOperands(string Name) => GetNamedMetadataOperands(Name.AsSpan());
+    public readonly LLVMValueRef[] GetNamedMetadataOperands(string Name) => GetNamedMetadataOperands(Name.AsSpan());
 
-    public LLVMValueRef[] GetNamedMetadataOperands(ReadOnlySpan<char> Name)
+    public readonly LLVMValueRef[] GetNamedMetadataOperands(ReadOnlySpan<char> Name)
     {
         using var marshaledName = new MarshaledString(Name);
         var Dest = new LLVMValueRef[LLVM.GetNamedMetadataNumOperands(this, marshaledName)];
@@ -260,25 +255,25 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         return Dest;
     }
 
-    public uint GetNamedMetadataOperandsCount(string Name) => GetNamedMetadataOperandsCount(Name.AsSpan());
+    public readonly uint GetNamedMetadataOperandsCount(string Name) => GetNamedMetadataOperandsCount(Name.AsSpan());
 
-    public uint GetNamedMetadataOperandsCount(ReadOnlySpan<char> Name)
+    public readonly uint GetNamedMetadataOperandsCount(ReadOnlySpan<char> Name)
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.GetNamedMetadataNumOperands(this, marshaledName);
     }
 
-    public LLVMTypeRef GetTypeByName(string Name) => GetTypeByName(Name.AsSpan());
+    public readonly LLVMTypeRef GetTypeByName(string Name) => GetTypeByName(Name.AsSpan());
 
-    public LLVMTypeRef GetTypeByName(ReadOnlySpan<char> Name)
+    public readonly LLVMTypeRef GetTypeByName(ReadOnlySpan<char> Name)
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.GetTypeByName(this, marshaledName);
     }
 
-    public void PrintToFile(string Filename) => PrintToFile(Filename.AsSpan());
+    public readonly void PrintToFile(string Filename) => PrintToFile(Filename.AsSpan());
 
-    public void PrintToFile(ReadOnlySpan<char> Filename)
+    public readonly void PrintToFile(ReadOnlySpan<char> Filename)
     {
         if (!TryPrintToFile(Filename, out string ErrorMessage))
         {
@@ -286,7 +281,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         }
     }
 
-    public string PrintToString()
+    public readonly string PrintToString()
     {
         var pStr = LLVM.PrintModuleToString(this);
 
@@ -300,17 +295,17 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         return result;
     }
 
-    public void SetModuleInlineAsm(string Asm) => SetModuleInlineAsm(Asm.AsSpan());
+    public readonly void SetModuleInlineAsm(string Asm) => SetModuleInlineAsm(Asm.AsSpan());
 
-    public void SetModuleInlineAsm(ReadOnlySpan<char> Asm)
+    public readonly void SetModuleInlineAsm(ReadOnlySpan<char> Asm)
     {
         using var marshaledAsm = new MarshaledString(Asm);
         LLVM.SetModuleInlineAsm(this, marshaledAsm);
     }
 
-    public override string ToString() => (Handle != IntPtr.Zero) ? PrintToString() : string.Empty;
+    public override readonly string ToString() => (Handle != IntPtr.Zero) ? PrintToString() : string.Empty;
 
-    public bool TryCreateExecutionEngine(out LLVMExecutionEngineRef OutEE, out string OutError)
+    public readonly bool TryCreateExecutionEngine(out LLVMExecutionEngineRef OutEE, out string OutError)
     {
         fixed (LLVMExecutionEngineRef* pOutEE = &OutEE)
         {
@@ -330,7 +325,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         }
     }
 
-    public bool TryCreateInterpreter(out LLVMExecutionEngineRef OutInterp, out string OutError)
+    public readonly bool TryCreateInterpreter(out LLVMExecutionEngineRef OutInterp, out string OutError)
     {
         fixed (LLVMExecutionEngineRef* pOutInterp = &OutInterp)
         {
@@ -350,19 +345,19 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         }
     }
 
-    public bool TryCreateMCJITCompiler(out LLVMExecutionEngineRef OutJIT, out string OutError)
+    public readonly bool TryCreateMCJITCompiler(out LLVMExecutionEngineRef OutJIT, out string OutError)
     {
         var Options = LLVMMCJITCompilerOptions.Create();
         return TryCreateMCJITCompiler(out OutJIT, ref Options, out OutError);
     }
 
-    public bool TryCreateMCJITCompiler(out LLVMExecutionEngineRef OutJIT, ref LLVMMCJITCompilerOptions Options, out string OutError)
+    public readonly bool TryCreateMCJITCompiler(out LLVMExecutionEngineRef OutJIT, ref LLVMMCJITCompilerOptions Options, out string OutError)
     {
         fixed (LLVMExecutionEngineRef* pOutJIT = &OutJIT)
         fixed (LLVMMCJITCompilerOptions* pOptions = &Options)
         {
             sbyte* pError = null;
-            var result = LLVM.CreateMCJITCompilerForModule((LLVMOpaqueExecutionEngine**)pOutJIT, this, pOptions, (UIntPtr)Marshal.SizeOf<LLVMMCJITCompilerOptions>(), &pError);
+            var result = LLVM.CreateMCJITCompilerForModule((LLVMOpaqueExecutionEngine**)pOutJIT, this, pOptions, (uint)sizeof(LLVMMCJITCompilerOptions), &pError);
 
             if (pError == null)
             {
@@ -377,9 +372,9 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         }
     }
 
-    public bool TryPrintToFile(string Filename, out string ErrorMessage) => TryPrintToFile(Filename.AsSpan(), out ErrorMessage);
+    public readonly bool TryPrintToFile(string Filename, out string ErrorMessage) => TryPrintToFile(Filename.AsSpan(), out ErrorMessage);
 
-    public bool TryPrintToFile(ReadOnlySpan<char> Filename, out string ErrorMessage)
+    public readonly bool TryPrintToFile(ReadOnlySpan<char> Filename, out string ErrorMessage)
     {
         using var marshaledFilename = new MarshaledString(Filename);
 
@@ -390,11 +385,11 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         {
             result = LLVM.PrintModuleToFile(this, marshaledFilename, &pErrorMessage);
         }
-        catch (Exception)
+        catch
         {
         }
 
-        if (pErrorMessage == null)
+        if (pErrorMessage is null)
         {
             ErrorMessage = string.Empty;
         }
@@ -406,7 +401,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         return result == 0;
     }
 
-    public bool TryVerify(LLVMVerifierFailureAction Action, out string OutMessage)
+    public readonly bool TryVerify(LLVMVerifierFailureAction Action, out string OutMessage)
     {
         sbyte* pMessage = null;
         var result = LLVM.VerifyModule(this, Action, &pMessage);
@@ -423,7 +418,7 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         return result == 0;
     }
 
-    public void Verify(LLVMVerifierFailureAction Action)
+    public readonly void Verify(LLVMVerifierFailureAction Action)
     {
         if (!TryVerify(Action, out string Message))
         {
@@ -431,17 +426,17 @@ public unsafe partial struct LLVMModuleRef : IDisposable, IEquatable<LLVMModuleR
         }
     }
 
-    public int WriteBitcodeToFile(string Path) => WriteBitcodeToFile(Path.AsSpan());
+    public readonly int WriteBitcodeToFile(string Path) => WriteBitcodeToFile(Path.AsSpan());
 
-    public int WriteBitcodeToFile(ReadOnlySpan<char> Path)
+    public readonly int WriteBitcodeToFile(ReadOnlySpan<char> Path)
     {
         using var marshaledPath = new MarshaledString(Path);
         return LLVM.WriteBitcodeToFile(this, marshaledPath);
     }
 
-    public int WriteBitcodeToFD(int FD, int ShouldClose, int Unbuffered) => LLVM.WriteBitcodeToFD(this, FD, ShouldClose, Unbuffered);
+    public readonly int WriteBitcodeToFD(int FD, int ShouldClose, int Unbuffered) => LLVM.WriteBitcodeToFD(this, FD, ShouldClose, Unbuffered);
 
-    public int WriteBitcodeToFileHandle(int Handle) => LLVM.WriteBitcodeToFileHandle(this, Handle);
+    public readonly int WriteBitcodeToFileHandle(int Handle) => LLVM.WriteBitcodeToFileHandle(this, Handle);
 
-    public LLVMMemoryBufferRef WriteBitcodeToMemoryBuffer() => LLVM.WriteBitcodeToMemoryBuffer(this);
+    public readonly LLVMMemoryBufferRef WriteBitcodeToMemoryBuffer() => LLVM.WriteBitcodeToMemoryBuffer(this);
 }

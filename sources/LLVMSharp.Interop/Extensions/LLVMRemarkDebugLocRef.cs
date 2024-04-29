@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMRemarkDebugLocRef : IEquatable<LLVMRemarkDebugLocRef>
+public unsafe partial struct LLVMRemarkDebugLocRef(IntPtr handle) : IEquatable<LLVMRemarkDebugLocRef>
 {
-    public IntPtr Handle;
-
-    public LLVMRemarkDebugLocRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMRemarkDebugLocRef(LLVMRemarkOpaqueDebugLoc* value) => new LLVMRemarkDebugLocRef((IntPtr)value);
 
@@ -21,11 +16,11 @@ public unsafe partial struct LLVMRemarkDebugLocRef : IEquatable<LLVMRemarkDebugL
 
     public static bool operator !=(LLVMRemarkDebugLocRef left, LLVMRemarkDebugLocRef right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMRemarkDebugLocRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMRemarkDebugLocRef other) && Equals(other);
 
-    public bool Equals(LLVMRemarkDebugLocRef other) => this == other;
+    public readonly bool Equals(LLVMRemarkDebugLocRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMRemarkDebugLocRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMRemarkDebugLocRef)}: {Handle:X}";
 }

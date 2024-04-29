@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMMetadataRef : IEquatable<LLVMMetadataRef>
+public unsafe partial struct LLVMMetadataRef(IntPtr handle) : IEquatable<LLVMMetadataRef>
 {
-    public IntPtr Handle;
-
-    public LLVMMetadataRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMMetadataRef(LLVMOpaqueMetadata* value) => new LLVMMetadataRef((IntPtr)value);
 
@@ -21,11 +16,11 @@ public unsafe partial struct LLVMMetadataRef : IEquatable<LLVMMetadataRef>
 
     public static bool operator !=(LLVMMetadataRef left, LLVMMetadataRef right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMMetadataRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMMetadataRef other) && Equals(other);
 
-    public bool Equals(LLVMMetadataRef other) => this == other;
+    public readonly bool Equals(LLVMMetadataRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMMetadataRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMMetadataRef)}: {Handle:X}";
 }

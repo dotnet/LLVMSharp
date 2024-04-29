@@ -8,6 +8,7 @@ public partial class Instruction
 {
     public enum CastOps
     {
+        Unknown = 0,
         Trunc = LLVMOpcode.LLVMTrunc,
         ZExt = LLVMOpcode.LLVMZExt,
         SExt = LLVMOpcode.LLVMSExt,

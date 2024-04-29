@@ -24,7 +24,6 @@ public sealed class Attribute : IEquatable<Attribute>
 
 public enum AttributeKind
 {
-#pragma warning disable CA1069 // Enums values should not be duplicated
     None,
 
     FirstEnumAttr = 1,
@@ -120,5 +119,4 @@ public enum AttributeKind
     EndAttrKinds,
     EmptyKey,
     TombstoneKey,
-#pragma warning restore CA1069 // Enums values should not be duplicated
 }

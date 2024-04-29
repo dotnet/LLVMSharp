@@ -13,14 +13,14 @@ public class Functions
         var returnType = LLVMTypeRef.Int8;
         var parameterTypes = new[] { LLVMTypeRef.Double };
         var functionType = LLVMTypeRef.CreateFunction(returnType, parameterTypes);
-        Assert.AreEqual(parameterTypes, functionType.ParamTypes);
+        Assert.AreEqual(parameterTypes, functionType.GetParamTypes());
     }
 
     [Test]
     public void AddsAttributeAtIndex()
     {
         var module = LLVMModuleRef.CreateWithName("Test Module");
-        var functionType = LLVMTypeRef.CreateFunction(LLVMTypeRef.Int8, new[] { LLVMTypeRef.Double });
+        var functionType = LLVMTypeRef.CreateFunction(LLVMTypeRef.Int8, [LLVMTypeRef.Double]);
         var functionValue = module.AddFunction("test", functionType);
         var attr = module.Context.CreateEnumAttribute((uint)AttributeKind.ByVal, default);
         functionValue.AddAttributeAtIndex((LLVMAttributeIndex)1, attr);

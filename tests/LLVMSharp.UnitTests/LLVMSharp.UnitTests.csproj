@@ -2,9 +2,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <!-- CA1707: Identifiers should not contain underscores -->
+    <!-- CA1711: Identifiers should not have incorrect suffix -->
+    <!-- CA1724: Type names should not match namespaces -->
+    <NoWarn>$(NoWarn);CA1707;CA1711;CA1724</NoWarn>
+  </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\..\sources\LLVMSharp\LLVMSharp.csproj" />
   </ItemGroup>

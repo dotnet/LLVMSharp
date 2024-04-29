@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMMemoryBufferRef : IEquatable<LLVMMemoryBufferRef>
+public unsafe partial struct LLVMMemoryBufferRef(IntPtr handle) : IEquatable<LLVMMemoryBufferRef>
 {
-    public IntPtr Handle;
-
-    public LLVMMemoryBufferRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMMemoryBufferRef(LLVMOpaqueMemoryBuffer* MemoryBuffer) => new LLVMMemoryBufferRef((IntPtr)MemoryBuffer);
 
@@ -21,11 +16,11 @@ public unsafe partial struct LLVMMemoryBufferRef : IEquatable<LLVMMemoryBufferRe
 
     public static bool operator !=(LLVMMemoryBufferRef left, LLVMMemoryBufferRef right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMMemoryBufferRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMMemoryBufferRef other) && Equals(other);
 
-    public bool Equals(LLVMMemoryBufferRef other) => this == other;
+    public readonly bool Equals(LLVMMemoryBufferRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMMemoryBufferRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMMemoryBufferRef)}: {Handle:X}";
 }

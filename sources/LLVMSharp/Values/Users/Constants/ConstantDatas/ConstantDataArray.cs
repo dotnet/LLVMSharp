@@ -15,6 +15,7 @@ public sealed class ConstantDataArray : ConstantDataSequential
 
     public static Constant GetString(LLVMContext context, ReadOnlySpan<char> initializer, bool addNull)
     {
+        ArgumentNullException.ThrowIfNull(context);
         var handle = context.Handle.GetConstString(initializer, !addNull);
         return context.GetOrCreate<Constant>(handle);
     }

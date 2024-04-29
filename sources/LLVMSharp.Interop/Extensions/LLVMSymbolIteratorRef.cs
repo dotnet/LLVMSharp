@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMSymbolIteratorRef : IEquatable<LLVMSymbolIteratorRef>
+public unsafe partial struct LLVMSymbolIteratorRef(IntPtr handle) : IEquatable<LLVMSymbolIteratorRef>
 {
-    public IntPtr Handle;
-
-    public LLVMSymbolIteratorRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMSymbolIteratorRef(LLVMOpaqueSymbolIterator* value) => new LLVMSymbolIteratorRef((IntPtr)value);
 
@@ -21,11 +16,11 @@ public unsafe partial struct LLVMSymbolIteratorRef : IEquatable<LLVMSymbolIterat
 
     public static bool operator !=(LLVMSymbolIteratorRef left, LLVMSymbolIteratorRef right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMSymbolIteratorRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMSymbolIteratorRef other) && Equals(other);
 
-    public bool Equals(LLVMSymbolIteratorRef other) => this == other;
+    public readonly bool Equals(LLVMSymbolIteratorRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMSymbolIteratorRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMSymbolIteratorRef)}: {Handle:X}";
 }

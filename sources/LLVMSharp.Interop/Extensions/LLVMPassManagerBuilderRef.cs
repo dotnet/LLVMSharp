@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMPassManagerBuilderRef : IEquatable<LLVMPassManagerBuilderRef>, IDisposable
+public unsafe partial struct LLVMPassManagerBuilderRef(IntPtr handle) : IEquatable<LLVMPassManagerBuilderRef>, IDisposable
 {
-    public IntPtr Handle;
-
-    public LLVMPassManagerBuilderRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMPassManagerBuilderRef(LLVMOpaquePassManagerBuilder* value) => new LLVMPassManagerBuilderRef((IntPtr)value);
 
@@ -30,25 +25,25 @@ public unsafe partial struct LLVMPassManagerBuilderRef : IEquatable<LLVMPassMana
         }
     }
 
-    public override bool Equals(object? obj) => (obj is LLVMPassManagerBuilderRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMPassManagerBuilderRef other) && Equals(other);
 
-    public bool Equals(LLVMPassManagerBuilderRef other) => this == other;
+    public readonly bool Equals(LLVMPassManagerBuilderRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public void PopulateFunctionPassManager(LLVMPassManagerRef PM) => LLVM.PassManagerBuilderPopulateFunctionPassManager(this, PM);
+    public readonly void PopulateFunctionPassManager(LLVMPassManagerRef PM) => LLVM.PassManagerBuilderPopulateFunctionPassManager(this, PM);
 
-    public void PopulateModulePassManager(LLVMPassManagerRef PM) => LLVM.PassManagerBuilderPopulateModulePassManager(this, PM);
+    public readonly void PopulateModulePassManager(LLVMPassManagerRef PM) => LLVM.PassManagerBuilderPopulateModulePassManager(this, PM);
 
-    public void SetSizeLevel(uint SizeLevel) => LLVM.PassManagerBuilderSetSizeLevel(this, SizeLevel);
+    public readonly void SetSizeLevel(uint SizeLevel) => LLVM.PassManagerBuilderSetSizeLevel(this, SizeLevel);
 
-    public void SetDisableUnitAtATime(int Value) => LLVM.PassManagerBuilderSetDisableUnitAtATime(this, Value);
+    public readonly void SetDisableUnitAtATime(int Value) => LLVM.PassManagerBuilderSetDisableUnitAtATime(this, Value);
 
-    public void SetDisableUnrollLoops(int Value) => LLVM.PassManagerBuilderSetDisableUnrollLoops(this, Value);
+    public readonly void SetDisableUnrollLoops(int Value) => LLVM.PassManagerBuilderSetDisableUnrollLoops(this, Value);
 
-    public void SetDisableSimplifyLibCalls(int Value) => LLVM.PassManagerBuilderSetDisableSimplifyLibCalls(this, Value);
+    public readonly void SetDisableSimplifyLibCalls(int Value) => LLVM.PassManagerBuilderSetDisableSimplifyLibCalls(this, Value);
 
-    public override string ToString() => $"{nameof(LLVMPassManagerBuilderRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMPassManagerBuilderRef)}: {Handle:X}";
 
-    public void UseInlinerWithThreshold(uint Threshold) => LLVM.PassManagerBuilderUseInlinerWithThreshold(this, Threshold);
+    public readonly void UseInlinerWithThreshold(uint Threshold) => LLVM.PassManagerBuilderUseInlinerWithThreshold(this, Threshold);
 }

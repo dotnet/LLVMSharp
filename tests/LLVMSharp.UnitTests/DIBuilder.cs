@@ -25,7 +25,7 @@ public class DIBuilder
         module.AddNamedMetadataOperand("llvm.dbg.cu", compileUnitMetadata);
 
         var functionMetaType = dIBuilder.CreateSubroutineType(fileMetadata,
-            ReadOnlySpan<LLVMMetadataRef>.Empty, LLVMDIFlags.LLVMDIFlagZero);
+            [], LLVMDIFlags.LLVMDIFlagZero);
 
         uint lineNumber = 1;
         var debugFunction = dIBuilder.CreateFunction(fileMetadata, "CreateDebugLocation", "CreateDebugLocation",
@@ -34,7 +34,7 @@ public class DIBuilder
         var currentLine =
             module.Context.CreateDebugLocation(lineNumber, 0, debugFunction, default);
 
-        LLVMTypeRef[] fooParamTys = {LLVMTypeRef.Int64, LLVMTypeRef.Int64,};
+        LLVMTypeRef[] fooParamTys = [LLVMTypeRef.Int64, LLVMTypeRef.Int64,];
         var fooFuncTy = LLVMTypeRef.CreateFunction(LLVMTypeRef.Int64, fooParamTys);
         var fooFunction = module.AddFunction("foo", fooFuncTy);
 
