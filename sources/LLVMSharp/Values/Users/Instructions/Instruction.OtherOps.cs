@@ -8,6 +8,7 @@ public partial class Instruction
 {
     public enum OtherOps
     {
+        Unknown = 0,
         ICmp  = LLVMOpcode.LLVMICmp,
         FCmp = LLVMOpcode.LLVMFCmp,
         PHI = LLVMOpcode.LLVMPHI,

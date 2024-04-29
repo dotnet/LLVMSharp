@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct thinlto_code_gen_t : IEquatable<thinlto_code_gen_t>
+public unsafe partial struct thinlto_code_gen_t(IntPtr handle) : IEquatable<thinlto_code_gen_t>
 {
-    public IntPtr Handle;
-
-    public thinlto_code_gen_t(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator thinlto_code_gen_t(LLVMOpaqueThinLTOCodeGenerator* Comdat) => new thinlto_code_gen_t((IntPtr)Comdat);
 
@@ -21,11 +16,11 @@ public unsafe partial struct thinlto_code_gen_t : IEquatable<thinlto_code_gen_t>
 
     public static bool operator !=(thinlto_code_gen_t left, thinlto_code_gen_t right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is thinlto_code_gen_t other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is thinlto_code_gen_t other) && Equals(other);
 
-    public bool Equals(thinlto_code_gen_t other) => this == other;
+    public readonly bool Equals(thinlto_code_gen_t other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(thinlto_code_gen_t)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(thinlto_code_gen_t)}: {Handle:X}";
 }

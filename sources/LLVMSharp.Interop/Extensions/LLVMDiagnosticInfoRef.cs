@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMDiagnosticInfoRef : IEquatable<LLVMDiagnosticInfoRef>
+public unsafe partial struct LLVMDiagnosticInfoRef(IntPtr handle) : IEquatable<LLVMDiagnosticInfoRef>
 {
-    public IntPtr Handle;
-
-    public LLVMDiagnosticInfoRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMDiagnosticInfoRef(LLVMOpaqueDiagnosticInfo* value) => new LLVMDiagnosticInfoRef((IntPtr)value);
 
@@ -21,11 +16,11 @@ public unsafe partial struct LLVMDiagnosticInfoRef : IEquatable<LLVMDiagnosticIn
 
     public static bool operator !=(LLVMDiagnosticInfoRef left, LLVMDiagnosticInfoRef right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMDiagnosticInfoRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMDiagnosticInfoRef other) && Equals(other);
 
-    public bool Equals(LLVMDiagnosticInfoRef other) => this == other;
+    public readonly bool Equals(LLVMDiagnosticInfoRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMDiagnosticInfoRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMDiagnosticInfoRef)}: {Handle:X}";
 }

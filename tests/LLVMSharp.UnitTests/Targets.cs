@@ -17,7 +17,7 @@ public class Targets
         LLVM.InitializeX86TargetMC();
         LLVM.InitializeX86AsmParser();
         LLVM.InitializeX86AsmPrinter();
-    }, new[] { "x86" });
+    }, ["x86"]);
 
     [Test]
     public void InitializeARMTargets() => InitializeTargets(() =>
@@ -27,9 +27,9 @@ public class Targets
         LLVM.InitializeARMTargetMC();
         LLVM.InitializeARMAsmParser();
         LLVM.InitializeARMAsmPrinter();
-    }, new[] { "arm" });
+    }, ["arm"]);
    
-    private void InitializeTargets(Action init, string[] expectedTargets)
+    private static void InitializeTargets(Action init, string[] expectedTargets)
     {
         init();
 

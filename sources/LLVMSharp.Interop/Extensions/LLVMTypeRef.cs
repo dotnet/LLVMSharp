@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
+public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef>
 {
-    public IntPtr Handle;
-
-    public LLVMTypeRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static LLVMTypeRef BFloat => LLVM.BFloatType();
 
@@ -45,79 +40,39 @@ public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
 
     public static LLVMTypeRef X86AMX => LLVM.X86AMXType();
 
-    public LLVMValueRef AlignOf => (Handle != IntPtr.Zero) ? LLVM.AlignOf(this) : default;
+    public readonly LLVMValueRef AlignOf => (Handle != IntPtr.Zero) ? LLVM.AlignOf(this) : default;
 
-    public uint ArrayLength => (Kind == LLVMTypeKind.LLVMArrayTypeKind) ? LLVM.GetArrayLength(this) : default;
+    public readonly uint ArrayLength => (Kind == LLVMTypeKind.LLVMArrayTypeKind) ? LLVM.GetArrayLength(this) : default;
 
-    public LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetTypeContext(this) : default;
+    public readonly LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetTypeContext(this) : default;
 
-    public LLVMTypeRef ElementType => (((Kind == LLVMTypeKind.LLVMPointerTypeKind) && (SubtypesCount != 0)) || (Kind == LLVMTypeKind.LLVMArrayTypeKind) || (Kind == LLVMTypeKind.LLVMVectorTypeKind)) ? LLVM.GetElementType(this) : default;
+    public readonly LLVMTypeRef ElementType => (((Kind == LLVMTypeKind.LLVMPointerTypeKind) && (SubtypesCount != 0)) || (Kind == LLVMTypeKind.LLVMArrayTypeKind) || (Kind == LLVMTypeKind.LLVMVectorTypeKind)) ? LLVM.GetElementType(this) : default;
 
-    public uint IntWidth => (Kind == LLVMTypeKind.LLVMIntegerTypeKind) ? LLVM.GetIntTypeWidth(this) : default;
+    public readonly uint IntWidth => (Kind == LLVMTypeKind.LLVMIntegerTypeKind) ? LLVM.GetIntTypeWidth(this) : default;
 
-    public bool IsFunctionVarArg => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) && LLVM.IsFunctionVarArg(this) != 0;
+    public readonly bool IsFunctionVarArg => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) && LLVM.IsFunctionVarArg(this) != 0;
 
-    public bool IsOpaqueStruct => (Kind == LLVMTypeKind.LLVMStructTypeKind) && LLVM.IsOpaqueStruct(this) != 0;
+    public readonly bool IsOpaqueStruct => (Kind == LLVMTypeKind.LLVMStructTypeKind) && LLVM.IsOpaqueStruct(this) != 0;
 
-    public bool IsPackedStruct => (Kind == LLVMTypeKind.LLVMStructTypeKind) && LLVM.IsPackedStruct(this) != 0;
+    public readonly bool IsPackedStruct => (Kind == LLVMTypeKind.LLVMStructTypeKind) && LLVM.IsPackedStruct(this) != 0;
 
-    public bool IsSized => (Handle != IntPtr.Zero) && LLVM.TypeIsSized(this) != 0;
+    public readonly bool IsSized => (Handle != IntPtr.Zero) && LLVM.TypeIsSized(this) != 0;
 
-    public LLVMTypeKind Kind => (Handle != IntPtr.Zero) ? LLVM.GetTypeKind(this) : default;
+    public readonly LLVMTypeKind Kind => (Handle != IntPtr.Zero) ? LLVM.GetTypeKind(this) : default;
 
-    public LLVMTypeRef[] ParamTypes
-    {
-        get
-        {
-            if (Kind != LLVMTypeKind.LLVMFunctionTypeKind)
-            {
-                return Array.Empty<LLVMTypeRef>();
-            }
+    public readonly uint ParamTypesCount => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) ? LLVM.CountParamTypes(this) : default;
 
-            var Dest = new LLVMTypeRef[ParamTypesCount];
+    public readonly uint PointerAddressSpace => (Kind == LLVMTypeKind.LLVMPointerTypeKind) ? LLVM.GetPointerAddressSpace(this) : default;
 
-            fixed (LLVMTypeRef* pDest = Dest)
-            {
-                LLVM.GetParamTypes(this, (LLVMOpaqueType**)pDest);
-            }
+    public readonly LLVMValueRef Poison => (Handle != IntPtr.Zero) ? LLVM.GetPoison(this) : default;
 
-            return Dest;
-        }
-    }
+    public readonly LLVMTypeRef ReturnType => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) ? LLVM.GetReturnType(this) : default;
 
-    public uint ParamTypesCount => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) ? LLVM.CountParamTypes(this) : default;
+    public readonly LLVMValueRef SizeOf => (Handle != IntPtr.Zero) ? LLVM.SizeOf(this) : default;
 
-    public uint PointerAddressSpace => (Kind == LLVMTypeKind.LLVMPointerTypeKind) ? LLVM.GetPointerAddressSpace(this) : default;
+    public readonly uint StructElementTypesCount => (Kind == LLVMTypeKind.LLVMStructTypeKind) ? LLVM.CountStructElementTypes(this) : default;
 
-    public LLVMValueRef Poison => (Handle != IntPtr.Zero) ? LLVM.GetPoison(this) : default;
-
-    public LLVMTypeRef ReturnType => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) ? LLVM.GetReturnType(this) : default;
-
-    public LLVMValueRef SizeOf => (Handle != IntPtr.Zero) ? LLVM.SizeOf(this) : default;
-
-    public LLVMTypeRef[] StructElementTypes
-    {
-        get
-        {
-            if (Kind != LLVMTypeKind.LLVMStructTypeKind)
-            {
-                return Array.Empty<LLVMTypeRef>();
-            }
-
-            var Dest = new LLVMTypeRef[StructElementTypesCount];
-
-            fixed (LLVMTypeRef* pDest = Dest)
-            {
-                LLVM.GetStructElementTypes(this, (LLVMOpaqueType**)pDest);
-            }
-
-            return Dest;
-        }
-    }
-
-    public uint StructElementTypesCount => (Kind == LLVMTypeKind.LLVMStructTypeKind) ? LLVM.CountStructElementTypes(this) : default;
-
-    public string StructName
+    public readonly string StructName
     {
         get
         {
@@ -137,31 +92,11 @@ public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
         }
     }
 
-    public LLVMTypeRef[] Subtypes
-    {
-        get
-        {
-            if (Handle == IntPtr.Zero)
-            {
-                return Array.Empty<LLVMTypeRef>();
-            }
+    public readonly uint SubtypesCount => (Handle != IntPtr.Zero) ? LLVM.GetNumContainedTypes(this) : default;
 
-            var Arr = new LLVMTypeRef[SubtypesCount];
+    public readonly LLVMValueRef Undef => (Handle != IntPtr.Zero) ? LLVM.GetUndef(this) : default;
 
-            fixed (LLVMTypeRef* pArr = Arr)
-            {
-                LLVM.GetSubtypes(this, (LLVMOpaqueType**)pArr);
-            }
-
-            return Arr;
-        }
-    }
-
-    public uint SubtypesCount => (Handle != IntPtr.Zero) ? LLVM.GetNumContainedTypes(this) : default;
-
-    public LLVMValueRef Undef => (Handle != IntPtr.Zero) ? LLVM.GetUndef(this) : default;
-
-    public uint VectorSize => (Kind == LLVMTypeKind.LLVMVectorTypeKind) ? LLVM.GetVectorSize(this) : default;
+    public readonly uint VectorSize => (Kind == LLVMTypeKind.LLVMVectorTypeKind) ? LLVM.GetVectorSize(this) : default;
 
     public static implicit operator LLVMTypeRef(LLVMOpaqueType* value) => new LLVMTypeRef((IntPtr)value);
 
@@ -205,17 +140,98 @@ public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
 
     public static LLVMTypeRef CreateScalableVector(LLVMTypeRef ElementType, uint ElementCount) => LLVM.ScalableVectorType(ElementType, ElementCount);
 
-    public void Dump() => LLVM.DumpType(this);
+    public readonly void Dump() => LLVM.DumpType(this);
 
-    public override bool Equals(object? obj) => (obj is LLVMTypeRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMTypeRef other) && Equals(other);
 
-    public bool Equals(LLVMTypeRef other) => this == other;
+    public readonly bool Equals(LLVMTypeRef other) => this == other;
 
-    public double GenericValueToFloat(LLVMGenericValueRef GenVal) => LLVM.GenericValueToFloat(this, GenVal);
+    public readonly double GenericValueToFloat(LLVMGenericValueRef GenVal) => LLVM.GenericValueToFloat(this, GenVal);
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public string PrintToString()
+    public readonly LLVMTypeRef[] GetParamTypes()
+    {
+        if (Kind != LLVMTypeKind.LLVMFunctionTypeKind)
+        {
+            return [];
+        }
+
+        var destination = new LLVMTypeRef[ParamTypesCount];
+        GetParamTypes(destination);
+        return destination;
+    }
+
+    public readonly void GetParamTypes(Span<LLVMTypeRef> destination)
+    {
+        if (Kind != LLVMTypeKind.LLVMFunctionTypeKind)
+        {
+            return;
+        }
+
+        ArgumentOutOfRangeException.ThrowIfLessThan((uint)destination.Length, ParamTypesCount);
+
+        fixed (LLVMTypeRef* pDest = destination)
+        {
+            LLVM.GetParamTypes(this, (LLVMOpaqueType**)pDest);
+        }
+    }
+
+    public readonly LLVMTypeRef[] GetStructElementTypes()
+    {
+        if (Kind != LLVMTypeKind.LLVMStructTypeKind)
+        {
+            return [];
+        }
+
+        var destination = new LLVMTypeRef[StructElementTypesCount];
+        GetStructElementTypes(destination);
+        return destination;
+    }
+
+    public readonly void GetStructElementTypes(Span<LLVMTypeRef> destination)
+    {
+        if (Kind != LLVMTypeKind.LLVMStructTypeKind)
+        {
+            return;
+        }
+
+        ArgumentOutOfRangeException.ThrowIfLessThan((uint)destination.Length, StructElementTypesCount);
+
+        fixed (LLVMTypeRef* pDest = destination)
+        {
+            LLVM.GetStructElementTypes(this, (LLVMOpaqueType**)pDest);
+        }
+    }
+
+    public readonly LLVMTypeRef[] GetSubtypes()
+    {
+        if (Handle == IntPtr.Zero)
+        {
+            return [];
+        }
+
+        var destination = new LLVMTypeRef[SubtypesCount];
+        GetSubtypes(destination);
+        return destination;
+    }
+
+    public readonly void GetSubtypes(Span<LLVMTypeRef> destination)
+    {
+        if (Handle == IntPtr.Zero)
+        {
+            return;
+        }
+
+        ArgumentOutOfRangeException.ThrowIfLessThan((uint)destination.Length, SubtypesCount);
+
+        fixed (LLVMTypeRef* pArr = destination)
+        {
+            LLVM.GetSubtypes(this, (LLVMOpaqueType**)pArr);
+        }
+    }
+
+    public readonly string PrintToString()
     {
         var pStr = LLVM.PrintTypeToString(this);
 
@@ -229,11 +245,11 @@ public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
         return result;
     }
 
-    public LLVMTypeRef StructGetTypeAtIndex(uint index) => LLVM.StructGetTypeAtIndex(this, index);
+    public readonly LLVMTypeRef StructGetTypeAtIndex(uint index) => LLVM.StructGetTypeAtIndex(this, index);
 
-    public void StructSetBody(LLVMTypeRef[] ElementTypes, bool Packed) => StructSetBody(ElementTypes.AsSpan(), Packed);
+    public readonly void StructSetBody(LLVMTypeRef[] ElementTypes, bool Packed) => StructSetBody(ElementTypes.AsSpan(), Packed);
 
-    public void StructSetBody(ReadOnlySpan<LLVMTypeRef> ElementTypes, bool Packed)
+    public readonly void StructSetBody(ReadOnlySpan<LLVMTypeRef> ElementTypes, bool Packed)
     {
         fixed (LLVMTypeRef* pElementTypes = ElementTypes)
         {
@@ -241,5 +257,5 @@ public unsafe partial struct LLVMTypeRef : IEquatable<LLVMTypeRef>
         }
     }
 
-    public override string ToString() => (Handle != IntPtr.Zero) ? PrintToString() : string.Empty;
+    public override readonly string ToString() => (Handle != IntPtr.Zero) ? PrintToString() : string.Empty;
 }

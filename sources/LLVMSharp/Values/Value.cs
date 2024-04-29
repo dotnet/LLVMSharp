@@ -11,7 +11,7 @@ public class Value : IEquatable<Value>
     {
         if (handle.Kind != expectedValueKind)
         {
-            throw new ArgumentException(nameof(handle));
+            throw new ArgumentOutOfRangeException(nameof(handle));
         }
         Handle = handle;
     }

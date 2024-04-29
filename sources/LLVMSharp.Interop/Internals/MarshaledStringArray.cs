@@ -25,9 +25,9 @@ public unsafe ref struct MarshaledStringArray
         }
     }
 
-    public int Count => (_values is not null) ? _values.Length : 0;
+    public readonly int Count => Values.Length;
 
-    public ReadOnlySpan<MarshaledString> Values => _values;
+    public readonly ReadOnlySpan<MarshaledString> Values => _values;
 
     public void Dispose()
     {
@@ -42,7 +42,7 @@ public unsafe ref struct MarshaledStringArray
         }
     }
 
-    public void Fill(sbyte** pDestination)
+    public readonly void Fill(sbyte** pDestination)
     {
         if (_values != null)
         {

@@ -18,10 +18,10 @@ public class IR
         using var module = LLVMModuleRef.CreateWithName("test_add");
 
         (_, var def) = module.AddFunction(
-            LLVMTypeRef.Int32, "add", new[] { LLVMTypeRef.Int32, LLVMTypeRef.Int32 }, (f, b) =>
+            LLVMTypeRef.Int32, "add", [LLVMTypeRef.Int32, LLVMTypeRef.Int32], (f, b) =>
             {
-            var p1 = f.Params[0];
-            var p2 = f.Params[1];
+            var p1 = f.GetParam(0);
+            var p2 = f.GetParam(1);
             var add = b.BuildAdd(p1, p2);
             var ret = b.BuildRet(add);
             });
@@ -43,10 +43,10 @@ public class IR
         using var module = LLVMModuleRef.CreateWithName("test_lshift");
 
         (_, var def) = module.AddFunction(
-            LLVMTypeRef.Int32, "lshift", new[] { LLVMTypeRef.Int32, LLVMTypeRef.Int32 }, (f, b) =>
+            LLVMTypeRef.Int32, "lshift", [LLVMTypeRef.Int32, LLVMTypeRef.Int32], (f, b) =>
             {
-            var p1 = f.Params[0];
-            var p2 = f.Params[1];
+            var p1 = f.GetParam(0);
+            var p2 = f.GetParam(1);
             var shift = b.BuildLShr(p1, p2);
             var ret = b.BuildRet(shift);
             });
@@ -68,10 +68,10 @@ public class IR
         using var module = LLVMModuleRef.CreateWithName("test_greaterthan");
 
         (_, var def) = module.AddFunction(
-            LLVMTypeRef.Int1, "greaterthan", new[] { LLVMTypeRef.Int32, LLVMTypeRef.Int32 }, (f, b) =>
+            LLVMTypeRef.Int1, "greaterthan", [LLVMTypeRef.Int32, LLVMTypeRef.Int32], (f, b) =>
             {
-            var p1 = f.Params[0];
-            var p2 = f.Params[1];
+            var p1 = f.GetParam(0);
+            var p2 = f.GetParam(1);
             var cmp = b.BuildICmp(LLVMIntPredicate.LLVMIntSGT, p1, p2);
             var ret = b.BuildRet(cmp);
             });
@@ -93,17 +93,17 @@ public class IR
         using var module = LLVMModuleRef.CreateWithName("test_call");
 
         (var addType, var addDef) = module.AddFunction(
-            LLVMTypeRef.Int32, "add", new[] { LLVMTypeRef.Int32, LLVMTypeRef.Int32 }, (f, b) =>
+            LLVMTypeRef.Int32, "add", [LLVMTypeRef.Int32, LLVMTypeRef.Int32], (f, b) =>
             {
-            var p1 = f.Params[0];
-            var p2 = f.Params[1];
+            var p1 = f.GetParam(0);
+            var p2 = f.GetParam(1);
             var add = b.BuildAdd(p1, p2);
             var ret = b.BuildRet(add);
             });
         (_, var entryDef) = module.AddFunction(
-            LLVMTypeRef.Int32, "entry", new[] { LLVMTypeRef.Int32, LLVMTypeRef.Int32 }, (f, b) =>
+            LLVMTypeRef.Int32, "entry", [LLVMTypeRef.Int32, LLVMTypeRef.Int32], (f, b) =>
             {
-                var call = b.BuildCall2(addType, addDef, f.Params, ReadOnlySpan<char>.Empty);
+                var call = b.BuildCall2(addType, addDef, f.GetParams(), "");
                 var ret = b.BuildRet(call);
             });
         module.Verify(LLVMVerifierFailureAction.LLVMPrintMessageAction);
@@ -125,7 +125,7 @@ public class IR
         using var module = LLVMModuleRef.CreateWithName("test_constant");
 
         (_, var def) = module.AddFunction(
-            LLVMTypeRef.Int32, "constant", Array.Empty<LLVMTypeRef>(), (f, b) =>
+            LLVMTypeRef.Int32, "constant", [], (f, b) =>
             {
             var value = LLVMValueRef.CreateConstInt(LLVMTypeRef.Int32, uInput);
             var ret = b.BuildRet(value);
@@ -148,7 +148,7 @@ public class IR
 
         var str = LLVMTypeRef.CreateStruct(new[] { LLVMTypeRef.Int32, LLVMTypeRef.Int32 }, true);
         (_, var def) = module.AddFunction(
-            LLVMTypeRef.Int32, "structure", Array.Empty<LLVMTypeRef>(), (f, b) =>
+            LLVMTypeRef.Int32, "structure", [], (f, b) =>
             {
                 var sz = str.SizeOf;
                 var sz32 = b.BuildIntCast(sz, LLVMTypeRef.Int32);

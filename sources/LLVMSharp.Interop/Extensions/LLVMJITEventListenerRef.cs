@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMJITEventListenerRef : IEquatable<LLVMJITEventListenerRef>
+public unsafe partial struct LLVMJITEventListenerRef(IntPtr handle) : IEquatable<LLVMJITEventListenerRef>
 {
-    public IntPtr Handle;
-
-    public LLVMJITEventListenerRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMJITEventListenerRef(LLVMOpaqueJITEventListener* value) => new LLVMJITEventListenerRef((IntPtr)value);
 
@@ -21,11 +16,11 @@ public unsafe partial struct LLVMJITEventListenerRef : IEquatable<LLVMJITEventLi
 
     public static bool operator !=(LLVMJITEventListenerRef left, LLVMJITEventListenerRef right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMJITEventListenerRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMJITEventListenerRef other) && Equals(other);
 
-    public bool Equals(LLVMJITEventListenerRef other) => this == other;
+    public readonly bool Equals(LLVMJITEventListenerRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMJITEventListenerRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMJITEventListenerRef)}: {Handle:X}";
 }

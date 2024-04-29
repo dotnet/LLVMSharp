@@ -1,0 +1,10 @@
+<linker>
+    <assembly fullname="LLVMSharp.Interop">
+        <type fullname="LLVMSharp.Interop.Configuration" feature="LLVMSharp.Interop.DisableResolveLibraryHook" featurevalue="true">
+            <field name="s_disableResolveLibraryHook" value="true" initialize="true" />
+        </type>
+        <type fullname="LLVMSharp.Interop.Configuration" feature="LLVMSharp.Interop.DisableResolveLibraryHook" featurevalue="false">
+            <field name="s_disableResolveLibraryHook" value="false" initialize="true" />
+        </type>
+    </assembly>
+</linker>

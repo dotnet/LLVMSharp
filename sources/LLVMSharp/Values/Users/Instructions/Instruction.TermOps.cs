@@ -8,6 +8,7 @@ public partial class Instruction
 {
     public enum TermOps
     {
+        Unknown = 0,
         Ret = LLVMOpcode.LLVMRet,
         Br = LLVMOpcode.LLVMBr,
         Switch = LLVMOpcode.LLVMSwitch,

@@ -5,16 +5,15 @@ using LLVMSharp.Interop;
 
 namespace LLVMSharp;
 
-public sealed class IRBuilder : IRBuilderBase
+public sealed class IRBuilder(LLVMContext c) : IRBuilderBase(c)
 {
-    public IRBuilder(LLVMContext c) : base(c)
-    {
-    }
-
     public Value CreateAdd(Value lhs, Value rhs, string name ="") => CreateAdd(lhs, rhs, name.AsSpan());
 
     public Value CreateAdd(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildAdd(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -23,6 +22,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateAddrSpaceCast(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildAddrSpaceCast(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -40,6 +42,8 @@ public sealed class IRBuilder : IRBuilderBase
 
     public AllocaInst CreateAlloca(Type ty, Value? arraySize, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(ty);
+
         var handle = Handle.BuildArrayAlloca(ty.Handle, arraySize?.Handle ?? default, name);
         return Context.GetOrCreate<AllocaInst>(handle);
     }
@@ -48,6 +52,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateAnd(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildAnd(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -56,12 +63,18 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateAShr(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildAShr(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
 
     public AtomicRMWInst CreateAtomicRMW(AtomicRMWInst.BinOp op, Value ptr, Value val, AtomicOrdering ordering, SyncScopeID ssid = SyncScopeID.System)
     {
+        ArgumentNullException.ThrowIfNull(ptr);
+        ArgumentNullException.ThrowIfNull(val);
+
         var handle = Handle.BuildAtomicRMW((LLVMAtomicRMWBinOp)op, ptr.Handle, val.Handle, (LLVMAtomicOrdering)ordering, ssid == SyncScopeID.SingleThread);
         return Context.GetOrCreate<AtomicRMWInst>(handle);
     }
@@ -70,6 +83,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateBinOp(Instruction.BinaryOps opc, Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildBinOp((LLVMOpcode)opc, lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -78,12 +94,16 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateBitCast(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildBitCast(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
 
     public BranchInst CreateBr(BasicBlock dest)
     {
+        ArgumentNullException.ThrowIfNull(dest);
         var handle = Handle.BuildBr(dest.Handle);
         return Context.GetOrCreate<BranchInst>(handle);
     }
@@ -92,6 +112,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public CallInst CreateCall(FunctionType fTy, Value callee, ReadOnlySpan<Value> args, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(fTy);
+        ArgumentNullException.ThrowIfNull(callee);
+
         using var argHandles = new MarshaledArray<Value, LLVMValueRef>(args, (value) => value.Handle);
         var handle = Handle.BuildCall2(fTy.Handle, callee.Handle, argHandles.AsSpan(), name);
         return Context.GetOrCreate<CallInst>(handle);
@@ -101,12 +124,19 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateCast(Instruction.CastOps op, Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildCast((LLVMOpcode)op, v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
 
     public BranchInst CreateCondBr(Value cond, BasicBlock @true, BasicBlock @false)
     {
+        ArgumentNullException.ThrowIfNull(cond);
+        ArgumentNullException.ThrowIfNull(@true);
+        ArgumentNullException.ThrowIfNull(@false);
+
         var handle = Handle.BuildCondBr(cond.Handle, @true.Handle, @false.Handle);
         return Context.GetOrCreate<BranchInst>(handle);
     }
@@ -115,6 +145,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateExactSDiv(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildExactSDiv(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -123,6 +156,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateExtractElement(Value vec, Value idx, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(vec);
+        ArgumentNullException.ThrowIfNull(idx);
+
         var handle = Handle.BuildExtractElement(vec.Handle, idx.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -131,6 +167,7 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateExtractValue(Value agg, uint idx, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(agg);
         var handle = Handle.BuildExtractValue(agg.Handle, idx, name);
         return Context.GetOrCreate(handle);
     }
@@ -139,6 +176,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateFAdd(Value l, Value r, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(l);
+        ArgumentNullException.ThrowIfNull(r);
+
         var handle = Handle.BuildFAdd(l.Handle, r.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -147,6 +187,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateFCmp(CmpInst.Predicate p, Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildFCmp((LLVMRealPredicate)p, lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -155,6 +198,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateFDiv(Value l, Value r, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(l);
+        ArgumentNullException.ThrowIfNull(r);
+
         var handle = Handle.BuildFDiv(l.Handle, r.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -171,6 +217,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateFMul(Value l, Value r, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(l);
+        ArgumentNullException.ThrowIfNull(r);
+
         var handle = Handle.BuildFMul(l.Handle, r.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -179,6 +228,7 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateFNeg(Value v, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
         var handle = Handle.BuildFNeg(v.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -187,6 +237,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateFPCast(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildFPCast(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -195,6 +248,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateFPExt(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildFPExt(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -203,6 +259,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateFPToSI(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildFPToSI(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -211,6 +270,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateFPToUI(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildFPToUI(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -219,6 +281,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateFPTrunc(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildFPTrunc(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -227,6 +292,7 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateFreeze(Value v, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
         var handle = Handle.BuildFreeze(v.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -235,6 +301,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateFRem(Value l, Value r, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(l);
+        ArgumentNullException.ThrowIfNull(r);
+
         var handle = Handle.BuildFRem(l.Handle, r.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -243,6 +312,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateFSub(Value l, Value r, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(l);
+        ArgumentNullException.ThrowIfNull(r);
+
         var handle = Handle.BuildFSub(l.Handle, r.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -251,6 +323,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateGEP(Type ty, Value ptr, ReadOnlySpan<Value> idxList, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(ty);
+        ArgumentNullException.ThrowIfNull(ptr);
+
         using var idxListHandles = new MarshaledArray<Value, LLVMValueRef>(idxList, (value) => value.Handle);
         var handle = Handle.BuildGEP2(ty.Handle, ptr.Handle, idxListHandles.AsSpan(), name);
         return Context.GetOrCreate(handle);
@@ -268,6 +343,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateICmp(CmpInst.Predicate p, Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildICmp((LLVMIntPredicate)p, lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -276,6 +354,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateInBoundsGEP(Type ty, Value ptr, ReadOnlySpan<Value> idxList, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(ty);
+        ArgumentNullException.ThrowIfNull(ptr);
+
         using var idxListHandles = new MarshaledArray<Value, LLVMValueRef>(idxList, (value) => value.Handle);
         var handle = Handle.BuildInBoundsGEP2(ty.Handle, ptr.Handle, idxListHandles.AsSpan(), name);
         return Context.GetOrCreate(handle);
@@ -283,6 +364,7 @@ public sealed class IRBuilder : IRBuilderBase
 
     public IndirectBrInst CreateIndirectBr(Value addr, uint numDests = 10)
     {
+        ArgumentNullException.ThrowIfNull(addr);
         var handle = Handle.BuildIndirectBr(addr.Handle, numDests);
         return Context.GetOrCreate<IndirectBrInst>(handle);
     }
@@ -291,6 +373,10 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateInsertElement(Value vec, Value newElt, Value idx, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(vec);
+        ArgumentNullException.ThrowIfNull(newElt);
+        ArgumentNullException.ThrowIfNull(idx);
+
         var handle = Handle.BuildInsertElement(vec.Handle, newElt.Handle, idx.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -299,6 +385,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateInsertValue(Value agg, Value val, uint idx, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(agg);
+        ArgumentNullException.ThrowIfNull(val);
+
         var handle = Handle.BuildInsertValue(agg.Handle, val.Handle, idx, name);
         return Context.GetOrCreate(handle);
     }
@@ -307,6 +396,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateIntCast(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildIntCast(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -315,6 +407,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateIntToPtr(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildIntToPtr(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -323,6 +418,12 @@ public sealed class IRBuilder : IRBuilderBase
 
     public InvokeInst CreateInvoke(FunctionType ty, Value callee, BasicBlock normalDest, BasicBlock unwindDest, ReadOnlySpan<Value> args, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(ty);
+        ArgumentNullException.ThrowIfNull(callee);
+        ArgumentNullException.ThrowIfNull(normalDest);
+        ArgumentNullException.ThrowIfNull(unwindDest);
+
+
         using var argHandles = new MarshaledArray<Value, LLVMValueRef>(args, (value) => value.Handle);
         var handle = Handle.BuildInvoke2(ty.Handle, callee.Handle, argHandles.AsSpan(), normalDest.Handle, unwindDest.Handle, name);
         return Context.GetOrCreate<InvokeInst>(handle);
@@ -332,6 +433,7 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateIsNotNull(Value arg, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(arg);
         var handle = Handle.BuildIsNotNull(arg.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -340,6 +442,7 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateIsNull(Value arg, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(arg);
         var handle = Handle.BuildIsNull(arg.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -348,6 +451,7 @@ public sealed class IRBuilder : IRBuilderBase
 
     public LandingPadInst CreateLandingPad(Type ty, uint numClauses, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(ty);
         var handle = Handle.BuildLandingPad(ty.Handle, default, numClauses, name);
         return Context.GetOrCreate<LandingPadInst>(handle);
     }
@@ -356,6 +460,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public LoadInst CreateLoad(Type ty, Value ptr, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(ty);
+        ArgumentNullException.ThrowIfNull(ptr);
+
         var handle = Handle.BuildLoad2(ty.Handle, ptr.Handle, name);
         return Context.GetOrCreate<LoadInst>(handle);
     }
@@ -364,6 +471,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateLShr(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildLShr(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -372,6 +482,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateMul(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildMul(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -380,6 +493,7 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateNeg(Value v, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
         var handle = Handle.BuildNeg(v.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -388,6 +502,7 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateNot(Value v, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
         var handle = Handle.BuildNot(v.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -396,6 +511,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateNSWAdd(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildNSWAdd(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -404,6 +522,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateNSWMul(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildNSWMul(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -412,6 +533,7 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateNSWNeg(Value v, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
         var handle = Handle.BuildNSWNeg(v.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -420,6 +542,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateNSWSub(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildNSWSub(lhs.Handle, rhs.Handle, name); ;
         return Context.GetOrCreate(handle);
     }
@@ -428,6 +553,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateNUWAdd(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildNUWAdd(lhs.Handle, rhs.Handle, name); ;
         return Context.GetOrCreate(handle);
     }
@@ -436,6 +564,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateNUWMul(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildNUWMul(lhs.Handle, rhs.Handle, name); ;
         return Context.GetOrCreate(handle);
     }
@@ -444,6 +575,7 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateNUWNeg(Value v, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
         var handle = Handle.BuildNUWNeg(v.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -452,6 +584,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateNUWSub(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildNUWSub(lhs.Handle, rhs.Handle, name); ;
         return Context.GetOrCreate(handle);
     }
@@ -460,6 +595,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateOr(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildOr(lhs.Handle, rhs.Handle, name); ;
         return Context.GetOrCreate(handle);
     }
@@ -468,6 +606,7 @@ public sealed class IRBuilder : IRBuilderBase
 
     public PHINode CreatePHI(Type ty, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(ty);
         var handle = Handle.BuildPhi(ty.Handle, name);
         return Context.GetOrCreate<PHINode>(handle);
     }
@@ -476,6 +615,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreatePointerCast(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildPointerCast(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -484,6 +626,10 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreatePtrDiff(Type elemTy, Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(elemTy);
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildPtrDiff2(elemTy.Handle, lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -492,18 +638,23 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreatePtrToInt(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildPtrToInt(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
 
     public ResumeInst CreateResume(Value exn)
     {
+        ArgumentNullException.ThrowIfNull(exn);
         var handle = Handle.BuildResume(exn.Handle);
         return Context.GetOrCreate<ResumeInst>(handle);
     }
 
     public ReturnInst CreateRet(Value v)
     {
+        ArgumentNullException.ThrowIfNull(v);
         var handle = Handle.BuildRet(v.Handle);
         return Context.GetOrCreate<ReturnInst>(handle);
     }
@@ -518,6 +669,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateSDiv(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildSDiv(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -526,6 +680,10 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateSelect(Value c, Value @true, Value @false, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(c);
+        ArgumentNullException.ThrowIfNull(@true);
+        ArgumentNullException.ThrowIfNull(@false);
+
         var handle = Handle.BuildSelect(c.Handle, @true.Handle, @false.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -534,6 +692,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateSExt(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildSExt(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -542,6 +703,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateSExtOrBitCast(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildSExtOrBitCast(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -550,6 +714,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateShl(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildShl(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -558,6 +725,10 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateShuffleVector(Value v1, Value v2, Value mask, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v1);
+        ArgumentNullException.ThrowIfNull(v2);
+        ArgumentNullException.ThrowIfNull(mask);
+
         var handle = Handle.BuildShuffleVector(v1.Handle, v2.Handle, mask.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -566,6 +737,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateSIToFP(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildSIToFP(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -574,12 +748,18 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateSRem(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildSRem(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
 
     public StoreInst CreateStore(Value v, Value ptr)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(ptr);
+
         var handle = Handle.BuildStore(v.Handle, ptr.Handle);
         return Context.GetOrCreate<StoreInst>(handle);
     }
@@ -588,6 +768,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateStructGEP(Type ty, Value ptr, uint idx, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(ty);
+        ArgumentNullException.ThrowIfNull(ptr);
+
         var handle = Handle.BuildStructGEP2(ty.Handle, ptr.Handle, idx, name);
         return Context.GetOrCreate(handle);
     }
@@ -596,12 +779,18 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateSub(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildSub(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
 
     public SwitchInst CreateSwitch(Value v, BasicBlock dest, uint numCases = 10)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(dest);
+
         var handle = Handle.BuildSwitch(v.Handle, dest.Handle, numCases);
         return Context.GetOrCreate<SwitchInst>(handle);
     }
@@ -610,6 +799,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateTrunc(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildTrunc(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -618,6 +810,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateTruncOrBitCast(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildTruncOrBitCast(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -626,6 +821,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateUDiv(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildUDiv(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -634,6 +832,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateUIToFP(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildUIToFP(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -648,6 +849,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateURem(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildURem(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -656,6 +860,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public VAArgInst CreateVAArg(Value list, Type ty, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(list);
+        ArgumentNullException.ThrowIfNull(ty);
+
         var handle = Handle.BuildVAArg(list.Handle, ty.Handle, name);
         return Context.GetOrCreate<VAArgInst>(handle);
     }
@@ -664,6 +871,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateXor(Value lhs, Value rhs, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(lhs);
+        ArgumentNullException.ThrowIfNull(rhs);
+
         var handle = Handle.BuildXor(lhs.Handle, rhs.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -672,6 +882,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateZExt(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildZExt(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -680,6 +893,9 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Value CreateZExtOrBitCast(Value v, Type destTy, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(v);
+        ArgumentNullException.ThrowIfNull(destTy);
+
         var handle = Handle.BuildZExtOrBitCast(v.Handle, destTy.Handle, name);
         return Context.GetOrCreate(handle);
     }
@@ -688,6 +904,7 @@ public sealed class IRBuilder : IRBuilderBase
 
     public Instruction Insert(Instruction i, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(i);
         Handle.InsertWithName(i.Handle, name);
         return i;
     }

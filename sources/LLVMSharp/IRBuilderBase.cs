@@ -46,9 +46,17 @@ public unsafe class IRBuilderBase : IEquatable<IRBuilderBase>
 
     public override int GetHashCode() => Handle.GetHashCode();
 
-    public void SetInsertPoint(BasicBlock theBB) => Handle.PositionAtEnd(theBB.Handle);
+    public void SetInsertPoint(BasicBlock theBB)
+    {
+        ArgumentNullException.ThrowIfNull(theBB);
+        Handle.PositionAtEnd(theBB.Handle);
+    }
 
-    public void SetInstDebugLocation(Instruction i) => Handle.SetInstDebugLocation(i.Handle);
+    public void SetInstDebugLocation(Instruction i)
+    {
+        ArgumentNullException.ThrowIfNull(i);
+        Handle.SetInstDebugLocation(i.Handle);
+    }
 
     public override string ToString() => Handle.ToString();
 }

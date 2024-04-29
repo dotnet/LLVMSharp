@@ -5,14 +5,9 @@ using System.Runtime.InteropServices;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMTargetMachineRef : IEquatable<LLVMTargetMachineRef>
+public unsafe partial struct LLVMTargetMachineRef(IntPtr handle) : IEquatable<LLVMTargetMachineRef>
 {
-    public IntPtr Handle;
-
-    public LLVMTargetMachineRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMTargetMachineRef(LLVMOpaqueTargetMachine* value) => new LLVMTargetMachineRef((IntPtr)value);
 
@@ -22,11 +17,11 @@ public unsafe partial struct LLVMTargetMachineRef : IEquatable<LLVMTargetMachine
 
     public static bool operator !=(LLVMTargetMachineRef left, LLVMTargetMachineRef right) => !(left == right);
 
-    public LLVMTargetDataRef CreateTargetDataLayout() => LLVM.CreateTargetDataLayout(this);
+    public readonly LLVMTargetDataRef CreateTargetDataLayout() => LLVM.CreateTargetDataLayout(this);
 
-    public void EmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen) => EmitToFile(module, fileName.AsSpan(), codegen);
+    public readonly void EmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen) => EmitToFile(module, fileName.AsSpan(), codegen);
 
-    public void EmitToFile(LLVMModuleRef module, ReadOnlySpan<char> fileName, LLVMCodeGenFileType codegen)
+    public readonly void EmitToFile(LLVMModuleRef module, ReadOnlySpan<char> fileName, LLVMCodeGenFileType codegen)
     {
         if (!TryEmitToFile(module, fileName, codegen, out string Error))
         {
@@ -34,17 +29,17 @@ public unsafe partial struct LLVMTargetMachineRef : IEquatable<LLVMTargetMachine
         }
     }
 
-    public override bool Equals(object? obj) => (obj is LLVMTargetMachineRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMTargetMachineRef other) && Equals(other);
 
-    public bool Equals(LLVMTargetMachineRef other) => this == other;
+    public readonly bool Equals(LLVMTargetMachineRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMTargetMachineRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMTargetMachineRef)}: {Handle:X}";
 
-    public bool TryEmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen, out string message) => TryEmitToFile(module, fileName.AsSpan(), codegen, out message);
+    public readonly bool TryEmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen, out string message) => TryEmitToFile(module, fileName.AsSpan(), codegen, out message);
 
-    public bool TryEmitToFile(LLVMModuleRef module, ReadOnlySpan<char> fileName, LLVMCodeGenFileType codegen, out string message)
+    public readonly bool TryEmitToFile(LLVMModuleRef module, ReadOnlySpan<char> fileName, LLVMCodeGenFileType codegen, out string message)
     {
         using var marshaledFileName = new MarshaledString(fileName);
 

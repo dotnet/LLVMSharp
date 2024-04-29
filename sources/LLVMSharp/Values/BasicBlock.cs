@@ -20,6 +20,7 @@ public sealed class BasicBlock : Value
 
     public static BasicBlock Create(LLVMContext context, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(context);
         var handle = LLVMBasicBlockRef.CreateInContext(context.Handle, name);
         return new BasicBlock(handle);
     }
@@ -28,6 +29,9 @@ public sealed class BasicBlock : Value
 
     public static BasicBlock Create(LLVMContext context, ReadOnlySpan<char> name, Function parent)
     {
+        ArgumentNullException.ThrowIfNull(context);
+        ArgumentNullException.ThrowIfNull(parent);
+
         var handle = LLVMBasicBlockRef.AppendInContext(context.Handle, parent.Handle, name);
         return new BasicBlock(handle);
     }
@@ -36,6 +40,9 @@ public sealed class BasicBlock : Value
 
     public static BasicBlock Create(LLVMContext context, ReadOnlySpan<char> name, BasicBlock insertBefore)
     {
+        ArgumentNullException.ThrowIfNull(context);
+        ArgumentNullException.ThrowIfNull(insertBefore);
+
         var handle = LLVMBasicBlockRef.InsertInContext(context.Handle, insertBefore.Handle, name);
         return new BasicBlock(handle);
     }

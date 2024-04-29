@@ -8,6 +8,7 @@ public partial class Instruction
 {
     public enum UnaryOps
     {
+        Unknown = 0,
         FNeg = LLVMOpcode.LLVMFNeg,
     }
 }

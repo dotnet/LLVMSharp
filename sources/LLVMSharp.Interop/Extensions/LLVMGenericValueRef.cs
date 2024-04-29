@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMGenericValueRef : IEquatable<LLVMGenericValueRef>
+public unsafe partial struct LLVMGenericValueRef(IntPtr handle) : IEquatable<LLVMGenericValueRef>
 {
-    public IntPtr Handle;
-
-    public LLVMGenericValueRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMGenericValueRef(LLVMOpaqueGenericValue* GenericValue) => new LLVMGenericValueRef((IntPtr)GenericValue);
 
@@ -21,15 +16,15 @@ public unsafe partial struct LLVMGenericValueRef : IEquatable<LLVMGenericValueRe
 
     public static bool operator !=(LLVMGenericValueRef left, LLVMGenericValueRef right) => !(left == right);
 
-    public LLVMGenericValueRef CreateInt(LLVMTypeRef Ty, ulong N, bool IsSigned) => LLVM.CreateGenericValueOfInt(Ty, N, IsSigned ? 1 : 0);
+    public static LLVMGenericValueRef CreateInt(LLVMTypeRef Ty, ulong N, bool IsSigned) => LLVM.CreateGenericValueOfInt(Ty, N, IsSigned ? 1 : 0);
 
-    public LLVMGenericValueRef CreateFloat(LLVMTypeRef Ty, double N) => LLVM.CreateGenericValueOfFloat(Ty, N);
+    public static LLVMGenericValueRef CreateFloat(LLVMTypeRef Ty, double N) => LLVM.CreateGenericValueOfFloat(Ty, N);
 
-    public override bool Equals(object? obj) => (obj is LLVMGenericValueRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMGenericValueRef other) && Equals(other);
 
-    public bool Equals(LLVMGenericValueRef other) => this == other;
+    public readonly bool Equals(LLVMGenericValueRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMGenericValueRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMGenericValueRef)}: {Handle:X}";
 }

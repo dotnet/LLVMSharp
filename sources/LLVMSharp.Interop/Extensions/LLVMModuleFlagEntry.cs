@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMModuleFlagEntry : IEquatable<LLVMModuleFlagEntry>
+public unsafe partial struct LLVMModuleFlagEntry(IntPtr handle) : IEquatable<LLVMModuleFlagEntry>
 {
-    public IntPtr Handle;
-
-    public LLVMModuleFlagEntry(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMModuleFlagEntry(LLVMOpaqueModuleFlagEntry* Comdat) => new LLVMModuleFlagEntry((IntPtr)Comdat);
 
@@ -21,11 +16,11 @@ public unsafe partial struct LLVMModuleFlagEntry : IEquatable<LLVMModuleFlagEntr
 
     public static bool operator !=(LLVMModuleFlagEntry left, LLVMModuleFlagEntry right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMModuleFlagEntry other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMModuleFlagEntry other) && Equals(other);
 
-    public bool Equals(LLVMModuleFlagEntry other) => this == other;
+    public readonly bool Equals(LLVMModuleFlagEntry other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMModuleFlagEntry)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMModuleFlagEntry)}: {Handle:X}";
 }

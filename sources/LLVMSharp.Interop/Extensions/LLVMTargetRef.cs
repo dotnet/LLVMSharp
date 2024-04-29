@@ -6,14 +6,9 @@ using System.Runtime.InteropServices;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMTargetRef : IEquatable<LLVMTargetRef>
+public unsafe partial struct LLVMTargetRef(IntPtr handle) : IEquatable<LLVMTargetRef>
 {
-    public IntPtr Handle;
-
-    public LLVMTargetRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static string DefaultTriple
     {
@@ -80,7 +75,7 @@ public unsafe partial struct LLVMTargetRef : IEquatable<LLVMTargetRef>
         }
     }
 
-    public string Name
+    public readonly string Name
     {
         get
         {
@@ -108,17 +103,17 @@ public unsafe partial struct LLVMTargetRef : IEquatable<LLVMTargetRef>
 
     public static bool operator !=(LLVMTargetRef left, LLVMTargetRef right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMTargetRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMTargetRef other) && Equals(other);
 
-    public bool Equals(LLVMTargetRef other) => this == other;
+    public readonly bool Equals(LLVMTargetRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public LLVMTargetRef GetNext() => LLVM.GetNextTarget(this);
+    public readonly LLVMTargetRef GetNext() => LLVM.GetNextTarget(this);
 
-    public LLVMTargetMachineRef CreateTargetMachine(string triple, string cpu, string features, LLVMCodeGenOptLevel level, LLVMRelocMode reloc, LLVMCodeModel codeModel) => CreateTargetMachine(triple.AsSpan(), cpu.AsSpan(), features.AsSpan(), level, reloc, codeModel);
+    public readonly LLVMTargetMachineRef CreateTargetMachine(string triple, string cpu, string features, LLVMCodeGenOptLevel level, LLVMRelocMode reloc, LLVMCodeModel codeModel) => CreateTargetMachine(triple.AsSpan(), cpu.AsSpan(), features.AsSpan(), level, reloc, codeModel);
 
-    public LLVMTargetMachineRef CreateTargetMachine(ReadOnlySpan<char> triple, ReadOnlySpan<char> cpu, ReadOnlySpan<char> features, LLVMCodeGenOptLevel level, LLVMRelocMode reloc, LLVMCodeModel codeModel)
+    public readonly LLVMTargetMachineRef CreateTargetMachine(ReadOnlySpan<char> triple, ReadOnlySpan<char> cpu, ReadOnlySpan<char> features, LLVMCodeGenOptLevel level, LLVMRelocMode reloc, LLVMCodeModel codeModel)
     {
         using var marshaledTriple = new MarshaledString(triple);
         using var marshaledCPU = new MarshaledString(cpu);
@@ -126,5 +121,5 @@ public unsafe partial struct LLVMTargetRef : IEquatable<LLVMTargetRef>
         return LLVM.CreateTargetMachine(this, marshaledTriple, marshaledCPU, marshaledFeatures, level, reloc, codeModel);
     }
 
-    public override string ToString() => $"{nameof(LLVMTargetRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMTargetRef)}: {Handle:X}";
 }

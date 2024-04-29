@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct lto_input_t : IEquatable<lto_input_t>
+public unsafe partial struct lto_input_t(IntPtr handle) : IEquatable<lto_input_t>
 {
-    public IntPtr Handle;
-
-    public lto_input_t(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator lto_input_t(LLVMOpaqueLTOInput* Comdat) => new lto_input_t((IntPtr)Comdat);
 
@@ -21,11 +16,11 @@ public unsafe partial struct lto_input_t : IEquatable<lto_input_t>
 
     public static bool operator !=(lto_input_t left, lto_input_t right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is lto_input_t other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is lto_input_t other) && Equals(other);
 
-    public bool Equals(lto_input_t other) => this == other;
+    public readonly bool Equals(lto_input_t other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(lto_input_t)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(lto_input_t)}: {Handle:X}";
 }

@@ -2,7 +2,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- CA1027: Mark enums with FlagsAttribute -->
+    <!-- CA1069: Enums should not have duplicate values -->
+    <!-- CA1707: Identifiers should not contain underscores -->
+    <!-- CA1711: Identifiers should not have incorrect suffix -->
+    <!-- CA1716: Identifiers should not match keywords -->
+    <!-- CA1720: Identifiers should not contain type names -->
+    <!-- CA1724: Type names should not match namespaces -->
+    <NoWarn>$(NoWarn);CA1027;CA1069;CA1707;CA1711;CA1716;CA1720;CA1724</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

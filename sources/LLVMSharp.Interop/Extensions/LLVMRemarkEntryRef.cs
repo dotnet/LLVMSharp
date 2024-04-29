@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMRemarkEntryRef : IEquatable<LLVMRemarkEntryRef>
+public unsafe partial struct LLVMRemarkEntryRef(IntPtr handle) : IEquatable<LLVMRemarkEntryRef>
 {
-    public IntPtr Handle;
-
-    public LLVMRemarkEntryRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMRemarkEntryRef(LLVMRemarkOpaqueEntry* value) => new LLVMRemarkEntryRef((IntPtr)value);
 
@@ -21,11 +16,11 @@ public unsafe partial struct LLVMRemarkEntryRef : IEquatable<LLVMRemarkEntryRef>
 
     public static bool operator !=(LLVMRemarkEntryRef left, LLVMRemarkEntryRef right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMRemarkEntryRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMRemarkEntryRef other) && Equals(other);
 
-    public bool Equals(LLVMRemarkEntryRef other) => this == other;
+    public readonly bool Equals(LLVMRemarkEntryRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMRemarkEntryRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMRemarkEntryRef)}: {Handle:X}";
 }

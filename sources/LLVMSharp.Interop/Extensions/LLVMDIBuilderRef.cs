@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMDIBuilderRef : IEquatable<LLVMDIBuilderRef>
+public unsafe partial struct LLVMDIBuilderRef(IntPtr handle) : IEquatable<LLVMDIBuilderRef>
 {
-    public IntPtr Handle;
-
-    public LLVMDIBuilderRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMDIBuilderRef(LLVMOpaqueDIBuilder* value) => new LLVMDIBuilderRef((IntPtr)value);
 
@@ -21,10 +16,10 @@ public unsafe partial struct LLVMDIBuilderRef : IEquatable<LLVMDIBuilderRef>
 
     public static bool operator !=(LLVMDIBuilderRef left, LLVMDIBuilderRef right) => !(left == right);
 
-    public LLVMMetadataRef CreateCompileUnit(LLVMDWARFSourceLanguage SourceLanguage, LLVMMetadataRef FileMetadata, string Producer, int IsOptimized, string Flags, uint RuntimeVersion,
+    public readonly LLVMMetadataRef CreateCompileUnit(LLVMDWARFSourceLanguage SourceLanguage, LLVMMetadataRef FileMetadata, string Producer, int IsOptimized, string Flags, uint RuntimeVersion,
         string SplitName, LLVMDWARFEmissionKind DwarfEmissionKind, uint DWOld, int SplitDebugInlining, int DebugInfoForProfiling, string SysRoot, string SDK) => CreateCompileUnit(SourceLanguage, FileMetadata, Producer.AsSpan(), IsOptimized, Flags.AsSpan(), RuntimeVersion, SplitName.AsSpan(), DwarfEmissionKind, DWOld, SplitDebugInlining, DebugInfoForProfiling, SysRoot.AsSpan(), SDK.AsSpan());
 
-    public LLVMMetadataRef CreateCompileUnit(LLVMDWARFSourceLanguage SourceLanguage, LLVMMetadataRef FileMetadata, ReadOnlySpan<char> Producer, int IsOptimized, ReadOnlySpan<char> Flags, uint RuntimeVersion,
+    public readonly LLVMMetadataRef CreateCompileUnit(LLVMDWARFSourceLanguage SourceLanguage, LLVMMetadataRef FileMetadata, ReadOnlySpan<char> Producer, int IsOptimized, ReadOnlySpan<char> Flags, uint RuntimeVersion,
         ReadOnlySpan<char> SplitName, LLVMDWARFEmissionKind DwarfEmissionKind, uint DWOld, int SplitDebugInlining, int DebugInfoForProfiling, ReadOnlySpan<char> SysRoot, ReadOnlySpan<char> SDK)
     {
         using var marshaledProducer= new MarshaledString(Producer);
@@ -37,19 +32,19 @@ public unsafe partial struct LLVMDIBuilderRef : IEquatable<LLVMDIBuilderRef>
             RuntimeVersion, marshaledSplitNameFlags, (UIntPtr)marshaledSplitNameFlags.Length, DwarfEmissionKind, DWOld, SplitDebugInlining, DebugInfoForProfiling, marshaledSysRoot, (UIntPtr)marshaledSysRoot.Length, marshaledSDK, (UIntPtr)marshaledSDK.Length);
     }
 
-    public LLVMMetadataRef CreateFile(string FullPath, string Directory) => CreateFile(FullPath.AsSpan(), Directory.AsSpan());
+    public readonly LLVMMetadataRef CreateFile(string FullPath, string Directory) => CreateFile(FullPath.AsSpan(), Directory.AsSpan());
 
-    public LLVMMetadataRef CreateFile(ReadOnlySpan<char> FullPath, ReadOnlySpan<char> Directory)
+    public readonly LLVMMetadataRef CreateFile(ReadOnlySpan<char> FullPath, ReadOnlySpan<char> Directory)
     {
         using var marshaledFullPath = new MarshaledString(FullPath);
         using var marshaledDirectory = new MarshaledString(Directory);
         return LLVM.DIBuilderCreateFile(this, marshaledFullPath, (UIntPtr)marshaledFullPath.Length, marshaledDirectory, (UIntPtr)marshaledDirectory.Length);
     }
 
-    public LLVMMetadataRef CreateFunction(LLVMMetadataRef Scope, string Name, string LinkageName, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Type, int IsLocalToUnit, int IsDefinition,
+    public readonly LLVMMetadataRef CreateFunction(LLVMMetadataRef Scope, string Name, string LinkageName, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Type, int IsLocalToUnit, int IsDefinition,
         uint ScopeLine, LLVMDIFlags Flags, int IsOptimized) => CreateFunction(Scope, Name.AsSpan(), LinkageName.AsSpan(), File, LineNo, Type, IsLocalToUnit, IsDefinition, ScopeLine, Flags, IsOptimized);
 
-    public LLVMMetadataRef CreateFunction(LLVMMetadataRef Scope, ReadOnlySpan<char> Name, ReadOnlySpan<char> LinkageName, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Type, int IsLocalToUnit, int IsDefinition,
+    public readonly LLVMMetadataRef CreateFunction(LLVMMetadataRef Scope, ReadOnlySpan<char> Name, ReadOnlySpan<char> LinkageName, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Type, int IsLocalToUnit, int IsDefinition,
         uint ScopeLine, LLVMDIFlags Flags, int IsOptimized)
     {
         using var marshaledName = new MarshaledString(Name);
@@ -61,9 +56,9 @@ public unsafe partial struct LLVMDIBuilderRef : IEquatable<LLVMDIBuilderRef>
             LineNo, Type, IsLocalToUnit, IsDefinition, ScopeLine, Flags, IsOptimized);
     }
 
-    public LLVMMetadataRef CreateMacro(LLVMMetadataRef ParentMacroFile, uint Line, LLVMDWARFMacinfoRecordType RecordType, string Name, string Value) => CreateMacro(ParentMacroFile, Line, RecordType, Name.AsSpan(), Value.AsSpan());
+    public readonly LLVMMetadataRef CreateMacro(LLVMMetadataRef ParentMacroFile, uint Line, LLVMDWARFMacinfoRecordType RecordType, string Name, string Value) => CreateMacro(ParentMacroFile, Line, RecordType, Name.AsSpan(), Value.AsSpan());
 
-    public LLVMMetadataRef CreateMacro(LLVMMetadataRef ParentMacroFile, uint Line, LLVMDWARFMacinfoRecordType RecordType, ReadOnlySpan<char> Name, ReadOnlySpan<char> Value)
+    public readonly LLVMMetadataRef CreateMacro(LLVMMetadataRef ParentMacroFile, uint Line, LLVMDWARFMacinfoRecordType RecordType, ReadOnlySpan<char> Name, ReadOnlySpan<char> Value)
     {
         using var marshaledName = new MarshaledString(Name);
         using var marshaledValue = new MarshaledString(Value);
@@ -73,9 +68,9 @@ public unsafe partial struct LLVMDIBuilderRef : IEquatable<LLVMDIBuilderRef>
         return LLVM.DIBuilderCreateMacro(this, ParentMacroFile, Line, RecordType, marshaledName, (UIntPtr)nameLength, marshaledValue, (UIntPtr)valueLength);
     }
 
-    public LLVMMetadataRef CreateModule(LLVMMetadataRef ParentScope, string Name, string ConfigMacros, string IncludePath, string SysRoot) => CreateModule(ParentScope, Name.AsSpan(), ConfigMacros.AsSpan(), IncludePath.AsSpan(), SysRoot.AsSpan());
+    public readonly LLVMMetadataRef CreateModule(LLVMMetadataRef ParentScope, string Name, string ConfigMacros, string IncludePath, string SysRoot) => CreateModule(ParentScope, Name.AsSpan(), ConfigMacros.AsSpan(), IncludePath.AsSpan(), SysRoot.AsSpan());
 
-    public LLVMMetadataRef CreateModule(LLVMMetadataRef ParentScope, ReadOnlySpan<char> Name, ReadOnlySpan<char> ConfigMacros, ReadOnlySpan<char> IncludePath, ReadOnlySpan<char> SysRoot)
+    public readonly LLVMMetadataRef CreateModule(LLVMMetadataRef ParentScope, ReadOnlySpan<char> Name, ReadOnlySpan<char> ConfigMacros, ReadOnlySpan<char> IncludePath, ReadOnlySpan<char> SysRoot)
     {
         using var marshaledName = new MarshaledString(Name);
         using var marshaledConfigMacros = new MarshaledString(ConfigMacros);
@@ -89,9 +84,9 @@ public unsafe partial struct LLVMDIBuilderRef : IEquatable<LLVMDIBuilderRef>
         return LLVM.DIBuilderCreateModule(this, ParentScope, marshaledName, (UIntPtr)nameLength, marshaledConfigMacros, (UIntPtr)configMacrosLength, marshaledIncludePath, (UIntPtr)includePathLength, marshaledSysRoot, (UIntPtr)sysRootLength);
     }
 
-    public LLVMMetadataRef CreateSubroutineType(LLVMMetadataRef File, LLVMMetadataRef[] ParameterTypes, LLVMDIFlags Flags) => CreateSubroutineType(File, ParameterTypes.AsSpan(), Flags);
+    public readonly LLVMMetadataRef CreateSubroutineType(LLVMMetadataRef File, LLVMMetadataRef[] ParameterTypes, LLVMDIFlags Flags) => CreateSubroutineType(File, ParameterTypes.AsSpan(), Flags);
 
-    public LLVMMetadataRef CreateSubroutineType(LLVMMetadataRef File, ReadOnlySpan<LLVMMetadataRef> ParameterTypes, LLVMDIFlags Flags)
+    public readonly LLVMMetadataRef CreateSubroutineType(LLVMMetadataRef File, ReadOnlySpan<LLVMMetadataRef> ParameterTypes, LLVMDIFlags Flags)
     {
         fixed (LLVMMetadataRef* pParameterTypes = ParameterTypes)
         {
@@ -99,11 +94,11 @@ public unsafe partial struct LLVMDIBuilderRef : IEquatable<LLVMDIBuilderRef>
         }
     }
 
-    public LLVMMetadataRef CreateTempMacroFile(LLVMMetadataRef ParentMacroFile, uint Line, LLVMMetadataRef File) => LLVM.DIBuilderCreateTempMacroFile(this, ParentMacroFile, Line, File);
+    public readonly LLVMMetadataRef CreateTempMacroFile(LLVMMetadataRef ParentMacroFile, uint Line, LLVMMetadataRef File) => LLVM.DIBuilderCreateTempMacroFile(this, ParentMacroFile, Line, File);
 
-    public LLVMMetadataRef CreateTypedef(LLVMMetadataRef Type, string Name, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Scope, uint AlignInBits) => CreateTypedef(Type, Name.AsSpan(), File, LineNo, Scope, AlignInBits);
+    public readonly LLVMMetadataRef CreateTypedef(LLVMMetadataRef Type, string Name, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Scope, uint AlignInBits) => CreateTypedef(Type, Name.AsSpan(), File, LineNo, Scope, AlignInBits);
 
-    public LLVMMetadataRef CreateTypedef(LLVMMetadataRef Type, ReadOnlySpan<char> Name, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Scope, uint AlignInBits)
+    public readonly LLVMMetadataRef CreateTypedef(LLVMMetadataRef Type, ReadOnlySpan<char> Name, LLVMMetadataRef File, uint LineNo, LLVMMetadataRef Scope, uint AlignInBits)
     {
         using var marshaledName = new MarshaledString(Name);
         var nameLength = (uint)marshaledName.Length;
@@ -111,13 +106,13 @@ public unsafe partial struct LLVMDIBuilderRef : IEquatable<LLVMDIBuilderRef>
         return LLVM.DIBuilderCreateTypedef(this, Type, marshaledName, (UIntPtr)nameLength, File, LineNo, Scope, AlignInBits);
     }
 
-    public void DIBuilderFinalize() => LLVM.DIBuilderFinalize(this);
+    public readonly void DIBuilderFinalize() => LLVM.DIBuilderFinalize(this);
 
-    public override bool Equals(object? obj) => (obj is LLVMDIBuilderRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMDIBuilderRef other) && Equals(other);
 
-    public bool Equals(LLVMDIBuilderRef other) => this == other;
+    public readonly bool Equals(LLVMDIBuilderRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMDIBuilderRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMDIBuilderRef)}: {Handle:X}";
 }

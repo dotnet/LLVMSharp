@@ -18,10 +18,10 @@ public class Examples
         using var module = LLVMModuleRef.CreateWithName("LLVMSharpIntro");
 
         (_, var def) = module.AddFunction(
-            LLVMTypeRef.Int32, "sum", new[] { LLVMTypeRef.Int32, LLVMTypeRef.Int32 }, (f, b) =>
+            LLVMTypeRef.Int32, "sum", [LLVMTypeRef.Int32, LLVMTypeRef.Int32], (f, b) =>
             {
-                var p1 = f.Params[0];
-                var p2 = f.Params[1];
+                var p1 = f.GetParam(0);
+                var p2 = f.GetParam(1);
                 var add = b.BuildAdd(p1, p2);
                 var ret = b.BuildRet(add);
             });

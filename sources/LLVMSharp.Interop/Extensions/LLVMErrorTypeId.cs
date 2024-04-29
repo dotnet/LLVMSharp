@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMErrorTypeId : IEquatable<LLVMErrorTypeId>
+public unsafe partial struct LLVMErrorTypeId(IntPtr handle) : IEquatable<LLVMErrorTypeId>
 {
-    public IntPtr Handle;
-
-    public LLVMErrorTypeId(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static explicit operator LLVMErrorTypeId(void* value) => new LLVMErrorTypeId((IntPtr)value);
 
@@ -21,11 +16,11 @@ public unsafe partial struct LLVMErrorTypeId : IEquatable<LLVMErrorTypeId>
 
     public static bool operator !=(LLVMErrorTypeId left, LLVMErrorTypeId right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMErrorTypeId other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMErrorTypeId other) && Equals(other);
 
-    public bool Equals(LLVMErrorTypeId other) => this == other;
+    public readonly bool Equals(LLVMErrorTypeId other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMErrorTypeId)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMErrorTypeId)}: {Handle:X}";
 }

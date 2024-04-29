@@ -8,6 +8,7 @@ public partial class Instruction
 {
     public enum FuncletPadOps
     {
+        Unknown = 0,
         CleanupPad = LLVMOpcode.LLVMCleanupPad,
         CatchPad = LLVMOpcode.LLVMCatchPad,
     }

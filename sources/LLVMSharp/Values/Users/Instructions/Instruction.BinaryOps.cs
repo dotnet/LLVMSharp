@@ -8,6 +8,7 @@ public partial class Instruction
 {
     public enum BinaryOps
     {
+        Unknown = 0,
         Add = LLVMOpcode.LLVMAdd,
         FAdd = LLVMOpcode.LLVMFAdd,
         Sub = LLVMOpcode.LLVMSub,

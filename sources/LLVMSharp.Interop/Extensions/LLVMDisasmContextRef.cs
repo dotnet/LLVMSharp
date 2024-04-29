@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMDisasmContextRef : IEquatable<LLVMDisasmContextRef>
+public unsafe partial struct LLVMDisasmContextRef(IntPtr handle) : IEquatable<LLVMDisasmContextRef>
 {
-    public IntPtr Handle;
-
-    public LLVMDisasmContextRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static explicit operator LLVMDisasmContextRef(void* value) => new LLVMDisasmContextRef((IntPtr)value);
 
@@ -21,11 +16,11 @@ public unsafe partial struct LLVMDisasmContextRef : IEquatable<LLVMDisasmContext
 
     public static bool operator !=(LLVMDisasmContextRef left, LLVMDisasmContextRef right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMDisasmContextRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMDisasmContextRef other) && Equals(other);
 
-    public bool Equals(LLVMDisasmContextRef other) => this == other;
+    public readonly bool Equals(LLVMDisasmContextRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMDisasmContextRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMDisasmContextRef)}: {Handle:X}";
 }

@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMBinaryRef : IEquatable<LLVMBinaryRef>
+public unsafe partial struct LLVMBinaryRef(IntPtr handle) : IEquatable<LLVMBinaryRef>
 {
-    public IntPtr Handle;
-
-    public LLVMBinaryRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMBinaryRef(LLVMOpaqueBinary* Comdat) => new LLVMBinaryRef((IntPtr)Comdat);
 
@@ -21,11 +16,11 @@ public unsafe partial struct LLVMBinaryRef : IEquatable<LLVMBinaryRef>
 
     public static bool operator !=(LLVMBinaryRef left, LLVMBinaryRef right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMBinaryRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMBinaryRef other) && Equals(other);
 
-    public bool Equals(LLVMBinaryRef other) => this == other;
+    public readonly bool Equals(LLVMBinaryRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMBinaryRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMBinaryRef)}: {Handle:X}";
 }

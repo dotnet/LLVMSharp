@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct lto_code_gen_t : IEquatable<lto_code_gen_t>
+public unsafe partial struct lto_code_gen_t(IntPtr handle) : IEquatable<lto_code_gen_t>
 {
-    public IntPtr Handle;
-
-    public lto_code_gen_t(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator lto_code_gen_t(LLVMOpaqueLTOCodeGenerator* Comdat) => new lto_code_gen_t((IntPtr)Comdat);
 
@@ -21,11 +16,11 @@ public unsafe partial struct lto_code_gen_t : IEquatable<lto_code_gen_t>
 
     public static bool operator !=(lto_code_gen_t left, lto_code_gen_t right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is lto_code_gen_t other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is lto_code_gen_t other) && Equals(other);
 
-    public bool Equals(lto_code_gen_t other) => this == other;
+    public readonly bool Equals(lto_code_gen_t other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(lto_code_gen_t)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(lto_code_gen_t)}: {Handle:X}";
 }

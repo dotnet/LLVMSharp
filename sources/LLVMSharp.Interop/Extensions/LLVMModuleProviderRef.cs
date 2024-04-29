@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMModuleProviderRef : IEquatable<LLVMModuleProviderRef>
+public unsafe partial struct LLVMModuleProviderRef(IntPtr handle) : IEquatable<LLVMModuleProviderRef>
 {
-    public IntPtr Handle;
-
-    public LLVMModuleProviderRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMModuleProviderRef(LLVMOpaqueModuleProvider* value) => new LLVMModuleProviderRef((IntPtr)value);
 
@@ -21,13 +16,13 @@ public unsafe partial struct LLVMModuleProviderRef : IEquatable<LLVMModuleProvid
 
     public static bool operator !=(LLVMModuleProviderRef left, LLVMModuleProviderRef right) => !(left == right);
 
-    public LLVMPassManagerRef CreateFunctionPassManager() => LLVM.CreateFunctionPassManager(this);
+    public readonly LLVMPassManagerRef CreateFunctionPassManager() => LLVM.CreateFunctionPassManager(this);
 
-    public override bool Equals(object? obj) => (obj is LLVMModuleProviderRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMModuleProviderRef other) && Equals(other);
 
-    public bool Equals(LLVMModuleProviderRef other) => this == other;
+    public readonly bool Equals(LLVMModuleProviderRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMModuleProviderRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMModuleProviderRef)}: {Handle:X}";
 }

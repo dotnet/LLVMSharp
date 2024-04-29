@@ -15,6 +15,7 @@ public sealed class StructType : CompositeType
 
     public static StructType Create(LLVMContext context, ReadOnlySpan<char> name)
     {
+        ArgumentNullException.ThrowIfNull(context);
         var handle = context.Handle.CreateNamedStruct(name);
         return context.GetOrCreate<StructType>(handle);
     }

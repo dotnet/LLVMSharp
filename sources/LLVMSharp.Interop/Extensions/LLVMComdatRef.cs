@@ -4,14 +4,9 @@ using System;
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMComdatRef : IEquatable<LLVMComdatRef>
+public unsafe partial struct LLVMComdatRef(IntPtr handle) : IEquatable<LLVMComdatRef>
 {
-    public IntPtr Handle;
-
-    public LLVMComdatRef(IntPtr handle)
-    {
-        Handle = handle;
-    }
+    public IntPtr Handle = handle;
 
     public static implicit operator LLVMComdatRef(LLVMComdat* Comdat) => new LLVMComdatRef((IntPtr)Comdat);
 
@@ -21,11 +16,11 @@ public unsafe partial struct LLVMComdatRef : IEquatable<LLVMComdatRef>
 
     public static bool operator !=(LLVMComdatRef left, LLVMComdatRef right) => !(left == right);
 
-    public override bool Equals(object? obj) => (obj is LLVMComdatRef other) && Equals(other);
+    public override readonly bool Equals(object? obj) => (obj is LLVMComdatRef other) && Equals(other);
 
-    public bool Equals(LLVMComdatRef other) => this == other;
+    public readonly bool Equals(LLVMComdatRef other) => this == other;
 
-    public override int GetHashCode() => Handle.GetHashCode();
+    public override readonly int GetHashCode() => Handle.GetHashCode();
 
-    public override string ToString() => $"{nameof(LLVMComdatRef)}: {Handle:X}";
+    public override readonly string ToString() => $"{nameof(LLVMComdatRef)}: {Handle:X}";
 }
