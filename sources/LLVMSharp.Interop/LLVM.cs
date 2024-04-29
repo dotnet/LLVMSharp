@@ -41,8 +41,8 @@ public static unsafe partial class LLVM
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            return NativeLibrary.TryLoad("libLLVM.so.16", assembly, searchPath, out nativeLibrary)
-                || NativeLibrary.TryLoad("libLLVM-16", assembly, searchPath, out nativeLibrary)
+            return NativeLibrary.TryLoad("libLLVM.so.18", assembly, searchPath, out nativeLibrary)
+                || NativeLibrary.TryLoad("libLLVM-18", assembly, searchPath, out nativeLibrary)
                 || NativeLibrary.TryLoad("libLLVM.so.1", assembly, searchPath, out nativeLibrary);
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
