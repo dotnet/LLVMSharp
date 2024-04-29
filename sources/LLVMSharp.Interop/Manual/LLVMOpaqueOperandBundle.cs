@@ -5,6 +5,6 @@
 
 namespace LLVMSharp.Interop;
 
-public partial struct LLVMOrcOpaqueObjectLinkingLayer
+public partial struct LLVMOpaqueOperandBundle
 {
 }

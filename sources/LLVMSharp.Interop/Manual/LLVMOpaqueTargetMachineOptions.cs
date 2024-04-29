@@ -5,6 +5,6 @@
 
 namespace LLVMSharp.Interop;
 
-public partial struct LLVMOpaqueValueMetadataEntry
+public partial struct LLVMOpaqueTargetMachineOptions
 {
 }

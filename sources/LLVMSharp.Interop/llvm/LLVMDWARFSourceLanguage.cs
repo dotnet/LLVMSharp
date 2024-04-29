@@ -53,6 +53,7 @@ public enum LLVMDWARFSourceLanguage
     LLVMDWARFSourceLanguageFortran18,
     LLVMDWARFSourceLanguageAda2005,
     LLVMDWARFSourceLanguageAda2012,
+    LLVMDWARFSourceLanguageMojo,
     LLVMDWARFSourceLanguageMips_Assembler,
     LLVMDWARFSourceLanguageGOOGLE_RenderScript,
     LLVMDWARFSourceLanguageBORLAND_Delphi,

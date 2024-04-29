@@ -5,6 +5,9 @@
 
 namespace LLVMSharp.Interop;
 
-public partial struct LLVMOpaquePassManagerBuilder
+public enum LLVMGlobalISelAbortMode
 {
+    LLVMGlobalISelAbortEnable,
+    LLVMGlobalISelAbortDisable,
+    LLVMGlobalISelAbortDisableWithDiag,
 }
