@@ -1,7 +1,6 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
 using System;
-using System.Linq;
 using LLVMSharp.Interop;
 using NUnit.Framework;
 
@@ -39,7 +38,7 @@ public class Targets
         }
         foreach (var t in expectedTargets)
         {
-            Assert.IsTrue(LLVMTargetRef.Targets.Any(x => x.Name == t));
+            Assert.That(LLVMTargetRef.Targets, Has.Some.With.Property("Name").EqualTo(t));
         }
     }
 
@@ -47,6 +46,6 @@ public class Targets
     public void DefaultTargetTriple()
     {
         var str = LLVMTargetRef.DefaultTriple;
-        Assert.Greater(str.Length, 0);
+        Assert.That(str.Length, Is.GreaterThan(0));
     }
 }

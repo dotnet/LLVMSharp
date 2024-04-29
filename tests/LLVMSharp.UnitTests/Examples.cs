@@ -34,7 +34,7 @@ public class Examples
         var engine = module.CreateMCJITCompiler();
         var function = engine.GetPointerToGlobal<BinaryInt32Operation>(def);
         var result = function(2, 2);
-        Assert.AreEqual(4, result);
+        Assert.That(result, Is.EqualTo(4));
     }
 }
 

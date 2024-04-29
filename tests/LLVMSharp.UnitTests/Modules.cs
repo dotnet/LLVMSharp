@@ -14,7 +14,7 @@ public class Modules
         {
             const string ExampleDataLayout = "e-m:e-p:32:32-f64:32:64-f80:32-n8:16:32-S128";
             module.DataLayout = ExampleDataLayout;
-            Assert.AreEqual(ExampleDataLayout, module.DataLayout);
+            Assert.That(module.DataLayout, Is.EqualTo(ExampleDataLayout));
         }
         module.Dispose();
     }
@@ -26,7 +26,7 @@ public class Modules
         {
             const string ExampleTarget = "x86_64-pc-windows-msvc";
             module.Target = ExampleTarget;
-            Assert.AreEqual(ExampleTarget, module.Target);
+            Assert.That(module.Target, Is.EqualTo(ExampleTarget));
         }
         module.Dispose();
     }
