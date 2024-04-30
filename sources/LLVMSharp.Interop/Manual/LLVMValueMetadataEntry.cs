@@ -5,9 +5,6 @@
 
 namespace LLVMSharp.Interop;
 
-public enum LLVMVisibility
+public partial struct LLVMValueMetadataEntry
 {
-    LLVMDefaultVisibility,
-    LLVMHiddenVisibility,
-    LLVMProtectedVisibility,
 }

@@ -1,6 +1,6 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
-// Ported from https://github.com/llvm/llvm-project/tree/llvmorg-16.0.6/llvm/include/llvm-c
+// Ported from https://github.com/llvm/llvm-project/tree/llvmorg-18.1.3/llvm/include/llvm-c
 // Original source is Copyright (c) the LLVM Project and Contributors. Licensed under the Apache License v2.0 with LLVM Exceptions. See NOTICE.txt in the project root for license information.
 
 using System.Runtime.InteropServices;
@@ -357,11 +357,7 @@ public static unsafe partial class LLVM
             }
 
             case Architecture.Arm:
-#if NET7_0_OR_GREATER
             case Architecture.Armv6:
-#else
-            case (Architecture)(7):
-#endif
             {
                 InitializeARMTargetInfo();
                 InitializeARMTarget();
@@ -377,11 +373,7 @@ public static unsafe partial class LLVM
                 return 0;
             }
 
-#if NET6_0_OR_GREATER
             case Architecture.Wasm:
-#else
-            case (Architecture)(4):
-#endif
             {
                 InitializeWebAssemblyTargetInfo();
                 InitializeWebAssemblyTarget();
@@ -389,11 +381,7 @@ public static unsafe partial class LLVM
                 return 0;
             }
 
-#if NET6_0_OR_GREATER
             case Architecture.S390x:
-#else
-            case (Architecture)(5):
-#endif
             {
                 InitializeSystemZTargetInfo();
                 InitializeSystemZTarget();
@@ -401,11 +389,7 @@ public static unsafe partial class LLVM
                 return 0;
             }
 
-#if NET7_0_OR_GREATER
             case Architecture.LoongArch64:
-#else
-            case (Architecture)(6):
-#endif
             {
                 InitializeLoongArchTargetInfo();
                 InitializeLoongArchTarget();
@@ -413,11 +397,7 @@ public static unsafe partial class LLVM
                 return 0;
             }
 
-#if NET7_0_OR_GREATER
             case Architecture.Ppc64le:
-#else
-            case (Architecture)(8):
-#endif
             {
                 InitializePowerPCTargetInfo();
                 InitializePowerPCTarget();
@@ -446,11 +426,7 @@ public static unsafe partial class LLVM
             }
 
             case Architecture.Arm:
-#if NET7_0_OR_GREATER
             case Architecture.Armv6:
-#else
-            case (Architecture)(7):
-#endif
             {
                 InitializeARMAsmParser();
                 return 0;
@@ -462,41 +438,25 @@ public static unsafe partial class LLVM
                 return 0;
             }
 
-#if NET6_0_OR_GREATER
             case Architecture.Wasm:
-#else
-            case (Architecture)(4):
-#endif
             {
                 InitializeWebAssemblyAsmParser();
                 return 0;
             }
 
-#if NET6_0_OR_GREATER
             case Architecture.S390x:
-#else
-            case (Architecture)(5):
-#endif
             {
                 InitializeSystemZAsmParser();
                 return 0;
             }
 
-#if NET7_0_OR_GREATER
             case Architecture.LoongArch64:
-#else
-            case (Architecture)(6):
-#endif
             {
                 InitializeLoongArchAsmParser();
                 return 0;
             }
 
-#if NET7_0_OR_GREATER
             case Architecture.Ppc64le:
-#else
-            case (Architecture)(8):
-#endif
             {
                 InitializePowerPCAsmParser();
                 return 0;
@@ -523,11 +483,7 @@ public static unsafe partial class LLVM
             }
 
             case Architecture.Arm:
-#if NET7_0_OR_GREATER
             case Architecture.Armv6:
-#else
-            case (Architecture)(7):
-#endif
             {
                 InitializeARMAsmPrinter();
                 return 0;
@@ -539,41 +495,25 @@ public static unsafe partial class LLVM
                 return 0;
             }
 
-#if NET6_0_OR_GREATER
             case Architecture.Wasm:
-#else
-            case (Architecture)(4):
-#endif
             {
                 InitializeWebAssemblyAsmPrinter();
                 return 0;
             }
 
-#if NET6_0_OR_GREATER
             case Architecture.S390x:
-#else
-            case (Architecture)(5):
-#endif
             {
                 InitializeSystemZAsmPrinter();
                 return 0;
             }
 
-#if NET7_0_OR_GREATER
             case Architecture.LoongArch64:
-#else
-            case (Architecture)(6):
-#endif
             {
                 InitializeLoongArchAsmPrinter();
                 return 0;
             }
 
-#if NET7_0_OR_GREATER
             case Architecture.Ppc64le:
-#else
-            case (Architecture)(8):
-#endif
             {
                 InitializePowerPCAsmPrinter();
                 return 0;
@@ -600,11 +540,7 @@ public static unsafe partial class LLVM
             }
 
             case Architecture.Arm:
-#if NET7_0_OR_GREATER
             case Architecture.Armv6:
-#else
-            case (Architecture)(7):
-#endif
             {
                 InitializeARMDisassembler();
                 return 0;
@@ -616,41 +552,25 @@ public static unsafe partial class LLVM
                 return 0;
             }
 
-#if NET6_0_OR_GREATER
             case Architecture.Wasm:
-#else
-            case (Architecture)(4):
-#endif
             {
                 InitializeWebAssemblyDisassembler();
                 return 0;
             }
 
-#if NET6_0_OR_GREATER
             case Architecture.S390x:
-#else
-            case (Architecture)(5):
-#endif
             {
                 InitializeSystemZDisassembler();
                 return 0;
             }
 
-#if NET7_0_OR_GREATER
             case Architecture.LoongArch64:
-#else
-            case (Architecture)(6):
-#endif
             {
                 InitializeLoongArchDisassembler();
                 return 0;
             }
 
-#if NET7_0_OR_GREATER
             case Architecture.Ppc64le:
-#else
-            case (Architecture)(8):
-#endif
             {
                 InitializePowerPCDisassembler();
                 return 0;

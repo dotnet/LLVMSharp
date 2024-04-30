@@ -13,7 +13,7 @@ public class Functions
         var returnType = LLVMTypeRef.Int8;
         var parameterTypes = new[] { LLVMTypeRef.Double };
         var functionType = LLVMTypeRef.CreateFunction(returnType, parameterTypes);
-        Assert.AreEqual(parameterTypes, functionType.GetParamTypes());
+        Assert.That(functionType.GetParamTypes(), Is.EquivalentTo(parameterTypes));
     }
 
     [Test]
@@ -26,6 +26,6 @@ public class Functions
         functionValue.AddAttributeAtIndex((LLVMAttributeIndex)1, attr);
 
         var attrs = functionValue.GetAttributesAtIndex((LLVMAttributeIndex)1);
-        Assert.AreEqual(attrs[0].Kind, (uint)AttributeKind.ByVal);
+        Assert.That((AttributeKind)attrs[0].Kind, Is.EqualTo(AttributeKind.ByVal));
     }
 }

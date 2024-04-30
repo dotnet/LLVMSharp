@@ -1,6 +1,7 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
 using System;
+using static LLVMSharp.Interop.LLVMTailCallKind;
 
 namespace LLVMSharp.Interop;
 
@@ -354,6 +355,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMValueRef IsAVAArgInst => LLVM.IsAVAArgInst(this);
 
+    public readonly LLVMValueRef IsAValueAsMetadata => LLVM.IsAValueAsMetadata(this);
+
     public readonly LLVMValueRef IsAZExtInst => LLVM.IsAZExtInst(this);
 
     public readonly bool IsBasicBlock => (Handle != IntPtr.Zero) && LLVM.ValueIsBasicBlock(this) != 0;
@@ -418,7 +421,7 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
         set
         {
-            LLVM.SetTailCall(this, IsTailCall ? 1 : 0);
+            LLVM.SetTailCall(this, value ? 1 : 0);
         }
     }
 
@@ -549,6 +552,19 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMBasicBlockRef SwitchDefaultDest => (IsASwitchInst != null) ? LLVM.GetSwitchDefaultDest(this) : default;
 
+    public readonly LLVMTailCallKind TailCallKind
+    {
+        get
+        {
+            return (IsACallInst != null) ? LLVM.GetTailCallKind(this) : LLVMTailCallKindNone;
+        }
+
+        set
+        {
+            LLVM.SetTailCallKind(this, value);
+        }
+    }
+
     public readonly LLVMThreadLocalMode ThreadLocalMode
     {
         get
@@ -617,8 +633,6 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public static LLVMValueRef CreateConstAllOnes(LLVMTypeRef Ty) => LLVM.ConstAllOnes(Ty);
 
-    public static LLVMValueRef CreateConstAnd(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstAnd(LHSConstant, RHSConstant);
-
     public static LLVMValueRef CreateConstArray(LLVMTypeRef ElementTy, LLVMValueRef[] ConstantVals) => CreateConstArray(ElementTy, ConstantVals.AsSpan());
 
     public static LLVMValueRef CreateConstArray(LLVMTypeRef ElementTy, ReadOnlySpan<LLVMValueRef> ConstantVals)
@@ -629,21 +643,9 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         }
     }
 
-    public static LLVMValueRef CreateConstAShr(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstAShr(LHSConstant, RHSConstant);
-
     public static LLVMValueRef CreateConstBitCast(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstBitCast(ConstantVal, ToType);
 
     public static LLVMValueRef CreateConstExtractElement(LLVMValueRef VectorConstant, LLVMValueRef IndexConstant) => LLVM.ConstExtractElement(VectorConstant, IndexConstant);
-
-    public static LLVMValueRef CreateConstFPCast(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstFPCast(ConstantVal, ToType);
-
-    public static LLVMValueRef CreateConstFPExt(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstFPExt(ConstantVal, ToType);
-
-    public static LLVMValueRef CreateConstFPToSI(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstFPToSI(ConstantVal, ToType);
-
-    public static LLVMValueRef CreateConstFPToUI(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstFPToUI(ConstantVal, ToType);
-
-    public static LLVMValueRef CreateConstFPTrunc(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstFPTrunc(ConstantVal, ToType);
 
     public static LLVMValueRef CreateConstGEP2(LLVMTypeRef Ty, LLVMValueRef ConstantVal, LLVMValueRef[] ConstantIndices) => CreateConstGEP2(Ty, ConstantVal, ConstantIndices.AsSpan());
 
@@ -678,8 +680,6 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public static LLVMValueRef CreateConstInt(LLVMTypeRef IntTy, ulong N, bool SignExtend = false) => LLVM.ConstInt(IntTy, N, SignExtend ? 1 : 0);
 
-    public static LLVMValueRef CreateConstIntCast(LLVMValueRef ConstantVal, LLVMTypeRef ToType, bool isSigned) => LLVM.ConstIntCast(ConstantVal, ToType, isSigned ? 1 : 0);
-
     public static LLVMValueRef CreateConstIntOfArbitraryPrecision(LLVMTypeRef IntTy, ulong[] Words) => CreateConstIntOfArbitraryPrecision(IntTy, Words.AsSpan());
 
     public static LLVMValueRef CreateConstIntOfArbitraryPrecision(LLVMTypeRef IntTy, ReadOnlySpan<ulong> Words)
@@ -707,8 +707,6 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     }
 
     public static LLVMValueRef CreateConstIntToPtr(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstIntToPtr(ConstantVal, ToType);
-
-    public static LLVMValueRef CreateConstLShr(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstLShr(LHSConstant, RHSConstant);
 
     public static LLVMValueRef CreateConstMul(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstMul(LHSConstant, RHSConstant);
 
@@ -744,8 +742,6 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public static LLVMValueRef CreateConstNUWSub(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstNUWSub(LHSConstant, RHSConstant);
 
-    public static LLVMValueRef CreateConstOr(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstOr(LHSConstant, RHSConstant);
-
     public static LLVMValueRef CreateConstPointerCast(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstPointerCast(ConstantVal, ToType);
 
     public static LLVMValueRef CreateConstPointerNull(LLVMTypeRef Ty) => LLVM.ConstPointerNull(Ty);
@@ -770,17 +766,9 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         return LLVM.ConstRealOfStringAndSize(RealTy, marshaledText, (uint)marshaledText.Length);
     }
 
-    public static LLVMValueRef CreateConstSelect(LLVMValueRef ConstantCondition, LLVMValueRef ConstantIfTrue, LLVMValueRef ConstantIfFalse) => LLVM.ConstSelect(ConstantCondition, ConstantIfTrue, ConstantIfFalse);
-
-    public static LLVMValueRef CreateConstSExt(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstSExt(ConstantVal, ToType);
-
-    public static LLVMValueRef CreateConstSExtOrBitCast(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstSExtOrBitCast(ConstantVal, ToType);
-
     public static LLVMValueRef CreateConstShl(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstShl(LHSConstant, RHSConstant);
 
     public static LLVMValueRef CreateConstShuffleVector(LLVMValueRef VectorAConstant, LLVMValueRef VectorBConstant, LLVMValueRef MaskConstant) => LLVM.ConstShuffleVector(VectorAConstant, VectorBConstant, MaskConstant);
-
-    public static LLVMValueRef CreateConstSIToFP(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstSIToFP(ConstantVal, ToType);
 
     public static LLVMValueRef CreateConstStruct(LLVMValueRef[] ConstantVals, bool Packed) => CreateConstStruct(ConstantVals.AsSpan(), Packed);
 
@@ -798,8 +786,6 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public static LLVMValueRef CreateConstTruncOrBitCast(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstTruncOrBitCast(ConstantVal, ToType);
 
-    public static LLVMValueRef CreateConstUIToFP(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstUIToFP(ConstantVal, ToType);
-
     public static LLVMValueRef CreateConstVector(LLVMValueRef[] ScalarConstantVars) => CreateConstVector(ScalarConstantVars.AsSpan());
 
     public static LLVMValueRef CreateConstVector(ReadOnlySpan<LLVMValueRef> ScalarConstantVars)
@@ -811,10 +797,6 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     }
 
     public static LLVMValueRef CreateConstXor(LLVMValueRef LHSConstant, LLVMValueRef RHSConstant) => LLVM.ConstXor(LHSConstant, RHSConstant);
-
-    public static LLVMValueRef CreateConstZExt(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstZExt(ConstantVal, ToType);
-
-    public static LLVMValueRef CreateConstZExtOrBitCast(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstZExtOrBitCast(ConstantVal, ToType);
 
     public static LLVMValueRef CreateMDNode(LLVMValueRef[] Vals) => CreateMDNode(Vals.AsSpan());
 
@@ -1067,6 +1049,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     }
 
     public readonly void ReplaceAllUsesWith(LLVMValueRef NewVal) => LLVM.ReplaceAllUsesWith(this, NewVal);
+
+    public readonly void ReplaceMDNodeOperandWith(uint Index, LLVMMetadataRef Replacement) => LLVM.ReplaceMDNodeOperandWith(this, Index, Replacement);
 
     public void SetAlignment(uint Bytes)
     {

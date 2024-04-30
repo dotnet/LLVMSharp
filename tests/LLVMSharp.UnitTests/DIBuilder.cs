@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using LLVMSharp.Interop;
 using NUnit.Framework;
@@ -59,6 +58,6 @@ public class DIBuilder
 
         _ = module.TryVerify(LLVMVerifierFailureAction.LLVMPrintMessageAction, out var message);
 
-        Assert.AreEqual("", message);
+        Assert.That(message, Is.Empty);
     }
 }

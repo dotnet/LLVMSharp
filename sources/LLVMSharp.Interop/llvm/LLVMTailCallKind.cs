@@ -5,9 +5,10 @@
 
 namespace LLVMSharp.Interop;
 
-public enum LLVMVisibility
+public enum LLVMTailCallKind
 {
-    LLVMDefaultVisibility,
-    LLVMHiddenVisibility,
-    LLVMProtectedVisibility,
+    LLVMTailCallKindNone = 0,
+    LLVMTailCallKindTail = 1,
+    LLVMTailCallKindMustTail = 2,
+    LLVMTailCallKindNoTail = 3,
 }

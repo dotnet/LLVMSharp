@@ -44,6 +44,8 @@ public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef
 
     public readonly uint ArrayLength => (Kind == LLVMTypeKind.LLVMArrayTypeKind) ? LLVM.GetArrayLength(this) : default;
 
+    public readonly ulong ArrayLength2 => (Kind == LLVMTypeKind.LLVMArrayTypeKind) ? LLVM.GetArrayLength2(this) : default;
+
     public readonly LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetTypeContext(this) : default;
 
     public readonly LLVMTypeRef ElementType => (((Kind == LLVMTypeKind.LLVMPointerTypeKind) && (SubtypesCount != 0)) || (Kind == LLVMTypeKind.LLVMArrayTypeKind) || (Kind == LLVMTypeKind.LLVMVectorTypeKind)) ? LLVM.GetElementType(this) : default;
@@ -117,6 +119,8 @@ public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef
     }
 
     public static LLVMTypeRef CreateArray(LLVMTypeRef ElementType, uint ElementCount) => LLVM.ArrayType(ElementType, ElementCount);
+
+    public static LLVMTypeRef CreateArray2(LLVMTypeRef ElementType, ulong ElementCount) => LLVM.ArrayType2(ElementType, ElementCount);
 
     public static LLVMTypeRef CreateInt(uint NumBits) => LLVM.IntType(NumBits);
 

@@ -20,11 +20,11 @@ public sealed class TargetData
                 LLVMTypeRef.Int32
             }, true);
 
-        Assert.AreEqual(0, target.OffsetOfElement(testStruct, 0));
-        Assert.AreEqual(2, target.OffsetOfElement(testStruct, 1));
+        Assert.That(target.OffsetOfElement(testStruct, 0), Is.EqualTo(0));
+        Assert.That(target.OffsetOfElement(testStruct, 1), Is.EqualTo(2));
 
-        Assert.AreEqual(target.ElementAtOffset(testStruct, 0), 0);
-        Assert.AreEqual(target.ElementAtOffset(testStruct, 2), 1);
+        Assert.That(target.ElementAtOffset(testStruct, 0), Is.EqualTo(0));
+        Assert.That(target.ElementAtOffset(testStruct, 2), Is.EqualTo(1));
     }
 
     [Test]
@@ -40,9 +40,9 @@ public sealed class TargetData
                 LLVMTypeRef.Int32
             }, true);
 
-        Assert.AreEqual(48, target.SizeOfTypeInBits(testStruct));
-        Assert.AreEqual(6, target.StoreSizeOfType(testStruct));
-        Assert.AreEqual(6, target.ABISizeOfType(testStruct));
+        Assert.That(target.SizeOfTypeInBits(testStruct), Is.EqualTo(48));
+        Assert.That(target.StoreSizeOfType(testStruct), Is.EqualTo(6));
+        Assert.That(target.ABISizeOfType(testStruct), Is.EqualTo(6));
     }
 
     [Test]
@@ -60,12 +60,12 @@ public sealed class TargetData
                 LLVMTypeRef.Int32
             }, true);
 
-        Assert.AreEqual(1, target.ABIAlignmentOfType(testStruct));
-        Assert.AreEqual(1, target.CallFrameAlignmentOfType(testStruct));
-        Assert.AreEqual(8, target.PreferredAlignmentOfType(testStruct));
+        Assert.That(target.ABIAlignmentOfType(testStruct), Is.EqualTo(1));
+        Assert.That(target.CallFrameAlignmentOfType(testStruct), Is.EqualTo(1));
+        Assert.That(target.PreferredAlignmentOfType(testStruct), Is.EqualTo(8));
 
         var global = m.AddGlobal(LLVMTypeRef.CreatePointer(LLVMTypeRef.Int8, 0), "someGlobal");
-        Assert.AreEqual(4, target.PreferredAlignmentOfGlobal(global));
+        Assert.That(target.PreferredAlignmentOfGlobal(global), Is.EqualTo(4));
     }
 
     private static LLVMTargetDataRef TargetDataFromTriple(string triple)
@@ -88,7 +88,7 @@ public sealed class TargetData
         var x86 = TargetDataFromTriple("i386-unknown-unknown");
         var x86_64 = TargetDataFromTriple("amd64-unknown-unknown");
 
-        Assert.AreEqual(4, x86.ABISizeOfType(pointerType));
-        Assert.AreEqual(8, x86_64.ABISizeOfType(pointerType));
+        Assert.That(x86.ABISizeOfType(pointerType), Is.EqualTo(4));
+        Assert.That(x86_64.ABISizeOfType(pointerType), Is.EqualTo(8));
     }
 }

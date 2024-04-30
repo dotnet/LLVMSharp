@@ -13,7 +13,7 @@ public class Types
     {
         var uWidth = (uint)width;
         var t = LLVMContextRef.Global.GetIntType(uWidth);
-        Assert.AreEqual(uWidth, t.IntWidth);
+        Assert.That(t.IntWidth, Is.EqualTo(uWidth));
     }
 
     [Test]
@@ -35,7 +35,7 @@ public class Types
         };
         foreach (var p in dic.Keys)
         {
-            Assert.AreEqual(dic[p], p.Kind);
+            Assert.That(p.Kind, Is.EqualTo(dic[p]));
         }
     }
 }
