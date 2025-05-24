@@ -71,11 +71,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.linux-arm64
 		packages\libLLVM\libLLVM.runtime.linux-arm64\libLLVM.runtime.linux-arm64.nuspec = packages\libLLVM\libLLVM.runtime.linux-arm64\libLLVM.runtime.linux-arm64.nuspec
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.osx-x64", "libLLVM.runtime.osx-x64", "{D4550E5E-9485-4480-B2B6-9503EEC935BF}"
-	ProjectSection(SolutionItems) = preProject
-		packages\libLLVM\libLLVM.runtime.osx-x64\libLLVM.runtime.osx-x64.nuspec = packages\libLLVM\libLLVM.runtime.osx-x64\libLLVM.runtime.osx-x64.nuspec
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.win-x64", "libLLVM.runtime.win-x64", "{E785DDD0-B9CD-4412-8A3C-4E65C601168C}"
 	ProjectSection(SolutionItems) = preProject
 		packages\libLLVM\libLLVM.runtime.win-x64\libLLVM.runtime.win-x64.nuspec = packages\libLLVM\libLLVM.runtime.win-x64\libLLVM.runtime.win-x64.nuspec
@@ -133,7 +128,6 @@ Global
 		{9D46FF1C-E09F-4063-A97D-C09F26310B67} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
 		{568A07AC-AF60-4A3E-ABD3-2B51D9DD4EBF} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{16539CB8-8AC7-4AD0-9D54-8EE615B2FCF3} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
-		{D4550E5E-9485-4480-B2B6-9503EEC935BF} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{E785DDD0-B9CD-4412-8A3C-4E65C601168C} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{19DB05E9-59B6-45E9-B47D-62913F7DF9A8} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{CEA0F0C9-DF25-446B-8F55-FB629BD1D3E6} = {62B5C536-C224-4EE1-972F-05F732B5980B}
