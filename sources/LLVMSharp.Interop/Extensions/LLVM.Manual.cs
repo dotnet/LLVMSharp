@@ -51,6 +51,9 @@ public static unsafe partial class LLVM
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSparcTargetInfo", ExactSpelling = true)]
     public static extern void InitializeSparcTargetInfo();
 
+    [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSPIRVTargetInfo", ExactSpelling = true)]
+    public static extern void InitializeSPIRVTargetInfo();
+
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSystemZTargetInfo", ExactSpelling = true)]
     public static extern void InitializeSystemZTargetInfo();
 
@@ -107,6 +110,9 @@ public static unsafe partial class LLVM
 
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSparcTarget", ExactSpelling = true)]
     public static extern void InitializeSparcTarget();
+
+    [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSPIRVTarget", ExactSpelling = true)]
+    public static extern void InitializeSPIRVTarget();
 
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSystemZTarget", ExactSpelling = true)]
     public static extern void InitializeSystemZTarget();
@@ -165,6 +171,9 @@ public static unsafe partial class LLVM
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSparcTargetMC", ExactSpelling = true)]
     public static extern void InitializeSparcTargetMC();
 
+    [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSPIRVTargetMC", ExactSpelling = true)]
+    public static extern void InitializeSPIRVTargetMC();
+
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSystemZTargetMC", ExactSpelling = true)]
     public static extern void InitializeSystemZTargetMC();
 
@@ -221,6 +230,9 @@ public static unsafe partial class LLVM
 
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSparcAsmPrinter", ExactSpelling = true)]
     public static extern void InitializeSparcAsmPrinter();
+
+    [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSPIRVAsmPrinter", ExactSpelling = true)]
+    public static extern void InitializeSPIRVAsmPrinter();
 
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeSystemZAsmPrinter", ExactSpelling = true)]
     public static extern void InitializeSystemZAsmPrinter();

@@ -34,4 +34,5 @@ public enum LLVMValueKind
     LLVMInstructionValueKind,
     LLVMPoisonValueValueKind,
     LLVMConstantTargetNoneValueKind,
+    LLVMConstantPtrAuthValueKind,
 }

@@ -21,5 +21,12 @@ public partial class AtomicRMWInst
         UMin = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpUMin,
         FAdd = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpFAdd,
         FSub = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpFSub,
+        FMax = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpFMax,
+        FMin = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpFMin,
+        UIncWrap = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpUIncWrap,
+        UDecWrap = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpUDecWrap,
+        USubCond = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpUSubCond,
+        USubSat = LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpUSubSat,
+
     }
 }

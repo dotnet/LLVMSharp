@@ -23,7 +23,6 @@ public class Types
         {
             { LLVMContextRef.Global.VoidType, LLVMTypeKind.LLVMVoidTypeKind },
             { LLVMContextRef.Global.Int32Type, LLVMTypeKind.LLVMIntegerTypeKind },
-            { LLVMContextRef.Global.X86MMXType, LLVMTypeKind.LLVMX86_MMXTypeKind },
             { LLVMContextRef.Global.LabelType, LLVMTypeKind.LLVMLabelTypeKind },
 
             { LLVMContextRef.Global.HalfType, LLVMTypeKind.LLVMHalfTypeKind },
