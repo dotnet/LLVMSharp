@@ -39,8 +39,6 @@ public unsafe partial struct LLVMContextRef(IntPtr handle) : IDisposable, IEquat
 
     public readonly LLVMTypeRef X86FP80Type => (Handle != IntPtr.Zero) ? LLVM.X86FP80TypeInContext(this) : default;
 
-    public readonly LLVMTypeRef X86MMXType => (Handle != IntPtr.Zero) ? LLVM.X86MMXTypeInContext(this) : default;
-
     public readonly LLVMTypeRef X86AMXType => (Handle != IntPtr.Zero) ? LLVM.X86AMXTypeInContext(this) : default;
 
     public static implicit operator LLVMContextRef(LLVMOpaqueContext* value) => new LLVMContextRef((IntPtr)value);

@@ -5,11 +5,6 @@
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMOrcCSymbolsList
+public partial struct LLVMOpaqueDbgRecord
 {
-    [NativeTypeName("LLVMOrcSymbolStringPoolEntryRef *")]
-    public LLVMOrcOpaqueSymbolStringPoolEntry** Symbols;
-
-    [NativeTypeName("size_t")]
-    public nuint Length;
 }

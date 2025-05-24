@@ -491,14 +491,6 @@ public unsafe partial struct LLVMBuilderRef(IntPtr handle) : IDisposable, IEquat
         return LLVM.BuildNUWMul(this, LHS, RHS, marshaledName);
     }
 
-    public readonly LLVMValueRef BuildNUWNeg(LLVMValueRef V, string Name = "") => BuildNUWNeg(V, Name.AsSpan());
-
-    public readonly LLVMValueRef BuildNUWNeg(LLVMValueRef V, ReadOnlySpan<char> Name)
-    {
-        using var marshaledName = new MarshaledString(Name);
-        return LLVM.BuildNUWNeg(this, V, marshaledName);
-    }
-
     public readonly LLVMValueRef BuildNUWSub(LLVMValueRef LHS, LLVMValueRef RHS, string Name = "") => BuildNUWSub(LHS, RHS, Name.AsSpan());
 
     public readonly LLVMValueRef BuildNUWSub(LLVMValueRef LHS, LLVMValueRef RHS, ReadOnlySpan<char> Name)

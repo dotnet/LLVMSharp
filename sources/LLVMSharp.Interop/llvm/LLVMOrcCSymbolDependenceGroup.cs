@@ -5,11 +5,13 @@
 
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMOrcCSymbolsList
+public unsafe partial struct LLVMOrcCSymbolDependenceGroup
 {
-    [NativeTypeName("LLVMOrcSymbolStringPoolEntryRef *")]
-    public LLVMOrcOpaqueSymbolStringPoolEntry** Symbols;
+    public LLVMOrcCSymbolsList Symbols;
+
+    [NativeTypeName("LLVMOrcCDependenceMapPairs")]
+    public LLVMOrcCDependenceMapPair* Dependencies;
 
     [NativeTypeName("size_t")]
-    public nuint Length;
+    public nuint NumDependencies;
 }

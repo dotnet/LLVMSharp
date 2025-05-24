@@ -36,8 +36,6 @@ public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef
 
     public static LLVMTypeRef X86FP80 => LLVM.X86FP80Type();
 
-    public static LLVMTypeRef X86MMX => LLVM.X86MMXType();
-
     public static LLVMTypeRef X86AMX => LLVM.X86AMXType();
 
     public readonly LLVMValueRef AlignOf => (Handle != IntPtr.Zero) ? LLVM.AlignOf(this) : default;

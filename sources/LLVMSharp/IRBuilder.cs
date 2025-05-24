@@ -571,15 +571,6 @@ public sealed class IRBuilder(LLVMContext c) : IRBuilderBase(c)
         return Context.GetOrCreate(handle);
     }
 
-    public Value CreateNUWNeg(Value v, string name = "") => CreateNUWNeg(v, name.AsSpan());
-
-    public Value CreateNUWNeg(Value v, ReadOnlySpan<char> name)
-    {
-        ArgumentNullException.ThrowIfNull(v);
-        var handle = Handle.BuildNUWNeg(v.Handle, name);
-        return Context.GetOrCreate(handle);
-    }
-
     public Value CreateNUWSub(Value lhs, Value rhs, string name = "") => CreateNUWSub(lhs, rhs, name.AsSpan());
 
     public Value CreateNUWSub(Value lhs, Value rhs, ReadOnlySpan<char> name)

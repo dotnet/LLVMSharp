@@ -3,13 +3,14 @@
 // Ported from https://github.com/llvm/llvm-project/tree/llvmorg-20.1.2/llvm/include/llvm-c
 // Original source is Copyright (c) the LLVM Project and Contributors. Licensed under the Apache License v2.0 with LLVM Exceptions. See NOTICE.txt in the project root for license information.
 
+using System;
+
 namespace LLVMSharp.Interop;
 
-public unsafe partial struct LLVMOrcCSymbolsList
+[Flags]
+public enum LLVMGEPNoWrapFlags
 {
-    [NativeTypeName("LLVMOrcSymbolStringPoolEntryRef *")]
-    public LLVMOrcOpaqueSymbolStringPoolEntry** Symbols;
-
-    [NativeTypeName("size_t")]
-    public nuint Length;
+    LLVMGEPFlagInBounds = (1 << 0),
+    LLVMGEPFlagNUSW = (1 << 1),
+    LLVMGEPFlagNUW = (1 << 2),
 }
