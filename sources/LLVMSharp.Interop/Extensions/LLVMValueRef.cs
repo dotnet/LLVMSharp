@@ -1,6 +1,7 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
 using System;
+using System.Diagnostics;
 using static LLVMSharp.Interop.LLVMTailCallKind;
 
 namespace LLVMSharp.Interop;
@@ -167,6 +168,7 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         }
     }
 
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)] // Justification: causes native allocation
     public readonly LLVMValueRef InstructionClone => (Handle != IntPtr.Zero) ? LLVM.InstructionClone(this) : default;
 
     public readonly LLVMOpcode InstructionOpcode => (Handle != IntPtr.Zero) ? LLVM.GetInstructionOpcode(this) : default;
@@ -548,6 +550,7 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         }
     }
 
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)] // Justification: can throw
     public readonly uint SuccessorsCount => (IsAInstruction != null) ? LLVM.GetNumSuccessors(this) : default;
 
     public readonly LLVMBasicBlockRef SwitchDefaultDest => (IsASwitchInst != null) ? LLVM.GetSwitchDefaultDest(this) : default;
