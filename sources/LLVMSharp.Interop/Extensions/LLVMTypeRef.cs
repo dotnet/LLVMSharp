@@ -46,7 +46,7 @@ public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef
 
     public readonly LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetTypeContext(this) : default;
 
-    public readonly LLVMTypeRef ElementType => (((Kind == LLVMTypeKind.LLVMPointerTypeKind) && (SubtypesCount != 0)) || (Kind == LLVMTypeKind.LLVMArrayTypeKind) || (Kind == LLVMTypeKind.LLVMVectorTypeKind)) ? LLVM.GetElementType(this) : default;
+    public readonly LLVMTypeRef ElementType => (((Kind == LLVMTypeKind.LLVMPointerTypeKind) && (SubtypesCount != 0)) || (Kind is LLVMTypeKind.LLVMArrayTypeKind or LLVMTypeKind.LLVMVectorTypeKind or LLVMTypeKind.LLVMScalableVectorTypeKind)) ? LLVM.GetElementType(this) : default;
 
     public readonly uint IntWidth => (Kind == LLVMTypeKind.LLVMIntegerTypeKind) ? LLVM.GetIntTypeWidth(this) : default;
 
