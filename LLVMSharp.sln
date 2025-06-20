@@ -100,6 +100,41 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVM.runtime.osx-arm64",
 		packages\libLLVM\libLLVM.runtime.osx-arm64\libLLVM.runtime.osx-arm64.nuspec = packages\libLLVM\libLLVM.runtime.osx-arm64\libLLVM.runtime.osx-arm64.nuspec
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVMSharp", "libLLVMSharp", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVMSharp", "libLLVMSharp", "{0682D98B-82C9-4EC9-8207-70C142418BB2}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVMSharp\libLLVMSharp\libLLVMSharp.nuspec = packages\libLLVMSharp\libLLVMSharp\libLLVMSharp.nuspec
+		packages\libLLVMSharp\libLLVMSharp\LICENSE.TXT = packages\libLLVMSharp\libLLVMSharp\LICENSE.TXT
+		packages\libLLVMSharp\libLLVMSharp\NOTICE.txt = packages\libLLVMSharp\libLLVMSharp\NOTICE.txt
+		packages\libLLVMSharp\libLLVMSharp\runtime.json = packages\libLLVMSharp\libLLVMSharp\runtime.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVMSharp.runtime.linux-arm64", "libLLVMSharp.runtime.linux-arm64", "{50AABB72-FDA0-417B-875D-3DB2EE7C3BAF}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVMSharp\libLLVMSharp.runtime.linux-arm64\libLLVMSharp.runtime.linux-arm64.nuspec = packages\libLLVMSharp\libLLVMSharp.runtime.linux-arm64\libLLVMSharp.runtime.linux-arm64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVMSharp.runtime.linux-x64", "libLLVMSharp.runtime.linux-x64", "{C7FC1228-24FC-4353-8676-F48CBAAB39F2}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVMSharp\libLLVMSharp.runtime.linux-x64\libLLVMSharp.runtime.linux-x64.nuspec = packages\libLLVMSharp\libLLVMSharp.runtime.linux-x64\libLLVMSharp.runtime.linux-x64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVMSharp.runtime.osx-arm64", "libLLVMSharp.runtime.osx-arm64", "{5C3AF6C4-561B-4261-9E7C-6643F95253AF}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVMSharp\libLLVMSharp.runtime.osx-arm64\libLLVMSharp.runtime.osx-arm64.nuspec = packages\libLLVMSharp\libLLVMSharp.runtime.osx-arm64\libLLVMSharp.runtime.osx-arm64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVMSharp.runtime.win-arm64", "libLLVMSharp.runtime.win-arm64", "{DD215D09-65A9-4CA2-8D08-1451193194C1}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVMSharp\libLLVMSharp.runtime.win-arm64\libLLVMSharp.runtime.win-arm64.nuspec = packages\libLLVMSharp\libLLVMSharp.runtime.win-arm64\libLLVMSharp.runtime.win-arm64.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libLLVMSharp.runtime.win-x64", "libLLVMSharp.runtime.win-x64", "{AB31A11D-2B8A-405A-A70A-FD94E99689E5}"
+	ProjectSection(SolutionItems) = preProject
+		packages\libLLVMSharp\libLLVMSharp.runtime.win-x64\libLLVMSharp.runtime.win-x64.nuspec = packages\libLLVMSharp\libLLVMSharp.runtime.win-x64\libLLVMSharp.runtime.win-x64.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -134,6 +169,13 @@ Global
 		{706334B8-BB91-49A4-BC9C-DFFDF3DCD770} = {E8ADE5A7-4363-43B7-B104-6B0E5510CAF0}
 		{C8508256-2EC1-4C88-B61D-AFB86569FBCD} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
 		{3870145D-F6DC-4082-A3F5-2316D49ADD43} = {9D46FF1C-E09F-4063-A97D-C09F26310B67}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {CD611531-75EA-4328-8C25-8D0496E61EC2}
+		{0682D98B-82C9-4EC9-8207-70C142418BB2} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{50AABB72-FDA0-417B-875D-3DB2EE7C3BAF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{C7FC1228-24FC-4353-8676-F48CBAAB39F2} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{5C3AF6C4-561B-4261-9E7C-6643F95253AF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{DD215D09-65A9-4CA2-8D08-1451193194C1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{AB31A11D-2B8A-405A-A70A-FD94E99689E5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {75550D8C-A492-4ED3-8387-206830F8B21E}

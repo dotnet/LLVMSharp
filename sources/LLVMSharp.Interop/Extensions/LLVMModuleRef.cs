@@ -222,6 +222,8 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
 
     public readonly bool Equals(LLVMModuleRef other) => this == other;
 
+    public readonly LLVMTypeRef[] GetIdentifiedStructTypes() => llvmsharp.Module_GetIdentifiedStructTypes(this);
+
     public readonly LLVMValueRef GetNamedFunction(string Name) => GetNamedFunction(Name.AsSpan());
 
     public readonly LLVMValueRef GetNamedFunction(ReadOnlySpan<char> Name)

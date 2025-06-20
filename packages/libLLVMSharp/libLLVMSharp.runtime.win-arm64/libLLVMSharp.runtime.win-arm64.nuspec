@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata minClientVersion="2.12">
+    <id>libLLVMSharp.runtime.win-arm64</id>
+    <version>20.1.2</version>
+    <authors>.NET Foundation and Contributors</authors>
+    <owners>.NET Foundation and Contributors</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/dotnet/llvmsharp</projectUrl>
+    <description>win arm64 native library for libLLVMSharp.</description>
+    <copyright>Copyright © .NET Foundation and Contributors</copyright>
+    <repository type="git" url="https://github.com/dotnet/llvmsharp" branch="main" />
+  </metadata>
+  <files>
+    <file src="..\..\..\LICENSE.md" target="LICENSE.md" />
+    <file src="..\..\..\NOTICE.md" target="NOTICE.md" />
+    <file src="libLLVMSharp.dll" target="runtimes\win-arm64\native\libLLVMSharp.dll" />
+  </files>
+</package>
