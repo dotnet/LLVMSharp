@@ -63,6 +63,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetValueContext(this) : default;
 
+    public readonly string? DemangledName => (Handle != IntPtr.Zero) ? llvmsharp.Value_getDemangledName(this) : default;
+
     public readonly LLVMDLLStorageClass DLLStorageClass
     {
         get
@@ -99,6 +101,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         }
     }
 
+    public readonly LLVMTypeRef FunctionType => (IsAFunction != null) ? llvmsharp.Function_getFunctionType(this) : default;
+
     public readonly string GC
     {
         get
@@ -128,6 +132,10 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     public readonly LLVMModuleRef GlobalParent => (IsAGlobalValue != null) ? LLVM.GetGlobalParent(this) : default;
 
     public readonly bool HasMetadata => (IsAInstruction != null) && LLVM.HasMetadata(this) != 0;
+
+    public readonly bool HasNoSignedWrap => (IsAInstruction != null) && llvmsharp.Instruction_hasNoSignedWrap(this) != 0;
+
+    public readonly bool HasNoUnsignedWrap => (IsAInstruction != null) && llvmsharp.Instruction_hasNoUnsignedWrap(this) != 0;
 
     public readonly bool HasPersonalityFn => (IsAFunction != null) && LLVM.HasPersonalityFn(this) != 0;
 
@@ -539,6 +547,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     public readonly LLVMValueRef PreviousParam => (IsAArgument != null) ? LLVM.GetPreviousParam(this) : default;
 
     public readonly LLVMValueRef PreviousFunction => (IsAFunction != null) ? LLVM.GetPreviousFunction(this) : default;
+
+    public readonly LLVMTypeRef ReturnType => (IsAFunction != null) ? llvmsharp.Function_getReturnType(this) : default;
 
     public readonly string Section
     {
