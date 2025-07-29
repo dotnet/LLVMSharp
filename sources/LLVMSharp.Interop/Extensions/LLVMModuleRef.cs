@@ -1,10 +1,12 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace LLVMSharp.Interop;
 
+[DebuggerDisplay(nameof(LLVMModuleRef))] // ToString() will provide the actual content, which might be huge.
 public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquatable<LLVMModuleRef>
 {
     public IntPtr Handle = handle;
