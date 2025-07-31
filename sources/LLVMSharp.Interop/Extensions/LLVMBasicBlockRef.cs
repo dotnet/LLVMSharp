@@ -1,6 +1,7 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
 using System;
+using System.Collections.Generic;
 
 namespace LLVMSharp.Interop;
 
@@ -9,6 +10,19 @@ public unsafe partial struct LLVMBasicBlockRef(IntPtr handle) : IEquatable<LLVMB
     public IntPtr Handle = handle;
 
     public readonly LLVMValueRef FirstInstruction => (Handle != IntPtr.Zero) ? LLVM.GetFirstInstruction(this) : default;
+
+    public readonly IEnumerable<LLVMValueRef> Instructions
+    {
+        get
+        {
+            var instruction = FirstInstruction;
+            while (instruction.Handle != IntPtr.Zero)
+            {
+                yield return instruction;
+                instruction = instruction.NextInstruction;
+            }
+        }
+    }
 
     public readonly LLVMValueRef LastInstruction => (Handle != IntPtr.Zero) ? LLVM.GetLastInstruction(this) : default;
 

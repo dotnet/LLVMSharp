@@ -1,6 +1,7 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace LLVMSharp.Interop;
@@ -41,9 +42,86 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
 
     public readonly LLVMValueRef FirstGlobal => (Handle != IntPtr.Zero) ? LLVM.GetFirstGlobal(this) : default;
 
+    public readonly LLVMValueRef FirstGlobalAlias => (Handle != IntPtr.Zero) ? LLVM.GetFirstGlobalAlias(this) : default;
+
+    public readonly LLVMValueRef FirstGlobalIFunc => (Handle != IntPtr.Zero) ? LLVM.GetFirstGlobalIFunc(this) : default;
+
+    public readonly LLVMNamedMDNodeRef FirstNamedMetadata => (Handle != IntPtr.Zero) ? LLVM.GetFirstNamedMetadata(this) : default;
+
+    public readonly IEnumerable<LLVMValueRef> Functions
+    {
+        get
+        {
+            LLVMValueRef function = FirstFunction;
+            while (function.Handle != 0)
+            {
+                yield return function;
+                function = function.NextFunction;
+            }
+        }
+    }
+
+    public readonly IEnumerable<LLVMValueRef> Globals
+    {
+        get
+        {
+            LLVMValueRef global = FirstGlobal;
+            while (global.Handle != 0)
+            {
+                yield return global;
+                global = global.NextGlobal;
+            }
+        }
+    }
+
+    public readonly IEnumerable<LLVMValueRef> GlobalAliases
+    {
+        get
+        {
+            LLVMValueRef alias = FirstGlobalAlias;
+            while (alias.Handle != 0)
+            {
+                yield return alias;
+                alias = alias.NextGlobalAlias;
+            }
+        }
+    }
+
+    public readonly IEnumerable<LLVMValueRef> GlobalIFuncs
+    {
+        get
+        {
+            LLVMValueRef ifunc = FirstGlobalIFunc;
+            while (ifunc.Handle != 0)
+            {
+                yield return ifunc;
+                ifunc = ifunc.NextGlobalIFunc;
+            }
+        }
+    }
+
     public readonly LLVMValueRef LastFunction => (Handle != IntPtr.Zero) ? LLVM.GetLastFunction(this) : default;
 
     public readonly LLVMValueRef LastGlobal => (Handle != IntPtr.Zero) ? LLVM.GetLastGlobal(this) : default;
+
+    public readonly LLVMValueRef LastGlobalAlias => (Handle != IntPtr.Zero) ? LLVM.GetLastGlobalAlias(this) : default;
+
+    public readonly LLVMValueRef LastGlobalIFunc => (Handle != IntPtr.Zero) ? LLVM.GetLastGlobalIFunc(this) : default;
+
+    public readonly LLVMNamedMDNodeRef LastNamedMetadata => (Handle != IntPtr.Zero) ? LLVM.GetLastNamedMetadata(this) : default;
+
+    public readonly IEnumerable<LLVMNamedMDNodeRef> NamedMetadata
+    {
+        get
+        {
+            LLVMNamedMDNodeRef namedMetadata = FirstNamedMetadata;
+            while (namedMetadata.Handle != 0)
+            {
+                yield return namedMetadata;
+                namedMetadata = namedMetadata.NextNamedMetadata;
+            }
+        }
+    }
 
     public readonly string Target
     {

@@ -1,6 +1,7 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
 using System;
+using System.Collections.Generic;
 using static LLVMSharp.Interop.LLVMTailCallKind;
 
 namespace LLVMSharp.Interop;
@@ -55,6 +56,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     public readonly long ConstIntSExt => (IsAConstantInt != null) ? LLVM.ConstIntGetSExtValue(this) : default;
 
     public readonly LLVMOpcode ConstOpcode => (IsAConstantExpr != null) ? LLVM.GetConstOpcode(this) : default;
+
+    public readonly double ConstRealDouble => (IsAConstantFP != null) ? GetConstRealDouble(out _) : default;
 
     public readonly LLVMDLLStorageClass DLLStorageClass
     {
@@ -491,9 +494,15 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMValueRef NextGlobal => (IsAGlobalVariable != null) ? LLVM.GetNextGlobal(this) : default;
 
+    public readonly LLVMValueRef NextGlobalAlias => (IsAGlobalAlias != null) ? LLVM.GetNextGlobalAlias(this) : default;
+
+    public readonly LLVMValueRef NextGlobalIFunc => (IsAGlobalIFunc != null) ? LLVM.GetNextGlobalIFunc(this) : default;
+
     public readonly LLVMValueRef NextInstruction => (IsAInstruction != null) ? LLVM.GetNextInstruction(this) : default;
 
     public readonly LLVMValueRef NextParam => (IsAArgument != null) ? LLVM.GetNextParam(this) : default;
+
+    public readonly LLVMOpcode Opcode => Kind is LLVMValueKind.LLVMInstructionValueKind ? InstructionOpcode : ConstOpcode;
 
     public readonly int OperandCount => ((Kind == LLVMValueKind.LLVMMetadataAsValueValueKind) || (IsAUser != null)) ? LLVM.GetNumOperands(this) : default;
 
@@ -515,6 +524,10 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     }
 
     public readonly LLVMValueRef PreviousGlobal => (IsAGlobalVariable != null) ? LLVM.GetPreviousGlobal(this) : default;
+
+    public readonly LLVMValueRef PreviousGlobalAlias => (IsAGlobalAlias != null) ? LLVM.GetPreviousGlobalAlias(this) : default;
+
+    public readonly LLVMValueRef PreviousGlobalIFunc => (IsAGlobalIFunc != null) ? LLVM.GetPreviousGlobalIFunc(this) : default;
 
     public readonly LLVMValueRef PreviousInstruction => (IsAInstruction != null) ? LLVM.GetPreviousInstruction(this) : default;
 
@@ -548,6 +561,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         }
     }
 
+    public readonly LLVMMetadataRef Subprogram => (IsAFunction != null) ? LLVM.GetSubprogram(this) : default;
+
     public readonly uint SuccessorsCount => (IsAInstruction != null) ? LLVM.GetNumSuccessors(this) : default;
 
     public readonly LLVMBasicBlockRef SwitchDefaultDest => (IsASwitchInst != null) ? LLVM.GetSwitchDefaultDest(this) : default;
@@ -579,6 +594,19 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     }
 
     public readonly LLVMTypeRef TypeOf => (Handle != IntPtr.Zero) ? LLVM.TypeOf(this) : default;
+
+    public readonly IEnumerable<LLVMValueRef> Uses
+    {
+        get
+        {
+            var use = FirstUse;
+            while (use.Handle != IntPtr.Zero)
+            {
+                yield return use.User;
+                use = use.Next;
+            }
+        }
+    }
 
     public readonly LLVMVisibility Visibility
     {
@@ -1021,6 +1049,22 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     public readonly LLVMValueRef GetMetadata(uint KindID) => LLVM.GetMetadata(this, KindID);
 
     public readonly LLVMValueRef GetOperand(uint Index) => LLVM.GetOperand(this, Index);
+
+    public readonly LLVMValueRef[] GetOperands()
+    {
+        int numOperands = OperandCount;
+        if (numOperands == 0)
+        {
+            return [];
+        }
+
+        LLVMValueRef[] operands = new LLVMValueRef[numOperands];
+        for (int i = 0; i < numOperands; i++)
+        {
+            operands[i] = GetOperand((uint)i);
+        }
+        return operands;
+    }
 
     public readonly LLVMUseRef GetOperandUse(uint Index) => LLVM.GetOperandUse(this, Index);
 

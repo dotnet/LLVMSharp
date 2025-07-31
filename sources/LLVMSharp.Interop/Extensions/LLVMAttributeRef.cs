@@ -8,9 +8,57 @@ public unsafe partial struct LLVMAttributeRef(IntPtr handle) : IEquatable<LLVMAt
 {
     public IntPtr Handle = handle;
 
-    public readonly uint Kind => LLVM.GetEnumAttributeKind(this);
+    public readonly uint EnumKind => IsEnumAttribute ? LLVM.GetEnumAttributeKind(this) : default;
 
-    public readonly ulong Value => LLVM.GetEnumAttributeValue(this);
+    public readonly ulong EnumValue => IsEnumAttribute ? LLVM.GetEnumAttributeValue(this) : default;
+
+    public readonly bool IsEnumAttribute => Handle != IntPtr.Zero && LLVM.IsEnumAttribute(this) != 0;
+
+    public readonly bool IsStringAttribute => Handle != IntPtr.Zero && LLVM.IsStringAttribute(this) != 0;
+
+    public readonly bool IsTypeAttribute => Handle != IntPtr.Zero && LLVM.IsTypeAttribute(this) != 0;
+
+    public readonly string StringKind
+    {
+        get
+        {
+            if (!IsStringAttribute)
+            {
+                return string.Empty;
+            }
+
+            uint length = 0;
+            var kindPtr = LLVM.GetStringAttributeKind(this, &length);
+            if (kindPtr == null)
+            {
+                return string.Empty;
+            }
+
+            return new ReadOnlySpan<byte>(kindPtr, (int)length).AsString();
+        }
+    }
+
+    public readonly string StringValue
+    {
+        get
+        {
+            if (!IsStringAttribute)
+            {
+                return string.Empty;
+            }
+
+            uint length = 0;
+            var valuePtr = LLVM.GetStringAttributeValue(this, &length);
+            if (valuePtr == null)
+            {
+                return string.Empty;
+            }
+
+            return new ReadOnlySpan<byte>(valuePtr, (int)length).AsString();
+        }
+    }
+
+    public readonly LLVMTypeRef TypeValue => IsTypeAttribute ? LLVM.GetTypeAttributeValue(this) : default;
 
     public static implicit operator LLVMAttributeRef(LLVMOpaqueAttributeRef* value) => new LLVMAttributeRef((IntPtr)value);
 
