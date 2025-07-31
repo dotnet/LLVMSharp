@@ -176,6 +176,40 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMBasicBlockRef InstructionParent => (IsAInstruction != null) ? LLVM.GetInstructionParent(this) : default;
 
+    public readonly IEnumerable<LLVMValueRef> Instructions
+    {
+        get
+        {
+            if (IsAFunction != default)
+            {
+                return GetFunctionInstructions(this);
+            }
+            else if (IsABasicBlock != default)
+            {
+                return AsBasicBlock().Instructions;
+            }
+            else if (IsAInstruction != default)
+            {
+                return [this];
+            }
+            else
+            {
+                return [];
+            }
+
+            static IEnumerable<LLVMValueRef> GetFunctionInstructions(LLVMValueRef function)
+            {
+                foreach (LLVMBasicBlockRef basicBlock in function.GetBasicBlocks())
+                {
+                    foreach (LLVMValueRef instruction in basicBlock.Instructions)
+                    {
+                        yield return instruction;
+                    }
+                }
+            }
+        }
+    }
+
     public readonly uint IntrinsicID => (Handle != IntPtr.Zero) ? LLVM.GetIntrinsicID(this) : default;
 
     public readonly LLVMValueRef IsAAddrSpaceCastInst => LLVM.IsAAddrSpaceCastInst(this);
