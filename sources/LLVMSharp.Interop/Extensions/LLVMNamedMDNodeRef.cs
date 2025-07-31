@@ -8,6 +8,16 @@ public unsafe partial struct LLVMNamedMDNodeRef(IntPtr handle) : IEquatable<LLVM
 {
     public IntPtr Handle = handle;
 
+    public readonly string Name
+    {
+        get
+        {
+            nuint nameLength = 0;
+            var namePtr = LLVM.GetNamedMetadataName(this, &nameLength);
+            return new ReadOnlySpan<byte>(namePtr, (int)nameLength).AsString();
+        }
+    }
+
     public static implicit operator LLVMNamedMDNodeRef(LLVMOpaqueNamedMDNode* value) => new LLVMNamedMDNodeRef((IntPtr)value);
 
     public static implicit operator LLVMOpaqueNamedMDNode*(LLVMNamedMDNodeRef value) => (LLVMOpaqueNamedMDNode*)value.Handle;
@@ -23,14 +33,4 @@ public unsafe partial struct LLVMNamedMDNodeRef(IntPtr handle) : IEquatable<LLVM
     public override readonly int GetHashCode() => Handle.GetHashCode();
 
     public override readonly string ToString() => $"{nameof(LLVMNamedMDNodeRef)}: {Handle:X}";
-
-    public readonly string Name
-    {
-        get
-        {
-            nuint nameLength = 0;
-            var namePtr = LLVM.GetNamedMetadataName(this, &nameLength);
-            return new ReadOnlySpan<byte>(namePtr, (int)nameLength).AsString();
-        }
-    }
 }
