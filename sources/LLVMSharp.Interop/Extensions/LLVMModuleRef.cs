@@ -48,57 +48,13 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
 
     public readonly LLVMNamedMDNodeRef FirstNamedMetadata => (Handle != IntPtr.Zero) ? LLVM.GetFirstNamedMetadata(this) : default;
 
-    public readonly IEnumerable<LLVMValueRef> Functions
-    {
-        get
-        {
-            LLVMValueRef function = FirstFunction;
-            while (function.Handle != 0)
-            {
-                yield return function;
-                function = function.NextFunction;
-            }
-        }
-    }
+    public readonly LLVMModuleFunctionsEnumerable Functions => new(this);
 
-    public readonly IEnumerable<LLVMValueRef> Globals
-    {
-        get
-        {
-            LLVMValueRef global = FirstGlobal;
-            while (global.Handle != 0)
-            {
-                yield return global;
-                global = global.NextGlobal;
-            }
-        }
-    }
+    public readonly LLVMModuleGlobalsEnumerable Globals => new(this);
 
-    public readonly IEnumerable<LLVMValueRef> GlobalAliases
-    {
-        get
-        {
-            LLVMValueRef alias = FirstGlobalAlias;
-            while (alias.Handle != 0)
-            {
-                yield return alias;
-                alias = alias.NextGlobalAlias;
-            }
-        }
-    }
+    public readonly LLVMModuleGlobalAliasesEnumerable GlobalAliases => new(this);
 
-    public readonly IEnumerable<LLVMValueRef> GlobalIFuncs
-    {
-        get
-        {
-            LLVMValueRef ifunc = FirstGlobalIFunc;
-            while (ifunc.Handle != 0)
-            {
-                yield return ifunc;
-                ifunc = ifunc.NextGlobalIFunc;
-            }
-        }
-    }
+    public readonly LLVMModuleGlobalIFuncsEnumerable GlobalIFuncs => new(this);
 
     public readonly LLVMValueRef LastFunction => (Handle != IntPtr.Zero) ? LLVM.GetLastFunction(this) : default;
 
@@ -110,18 +66,7 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
 
     public readonly LLVMNamedMDNodeRef LastNamedMetadata => (Handle != IntPtr.Zero) ? LLVM.GetLastNamedMetadata(this) : default;
 
-    public readonly IEnumerable<LLVMNamedMDNodeRef> NamedMetadata
-    {
-        get
-        {
-            LLVMNamedMDNodeRef namedMetadata = FirstNamedMetadata;
-            while (namedMetadata.Handle != 0)
-            {
-                yield return namedMetadata;
-                namedMetadata = namedMetadata.NextNamedMetadata;
-            }
-        }
-    }
+    public readonly LLVMModuleNamedMetadataEnumerable NamedMetadata => new(this);
 
     public readonly string Target
     {

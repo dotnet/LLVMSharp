@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static LLVMSharp.Interop.LLVMTailCallKind;
 
 namespace LLVMSharp.Interop;
@@ -182,7 +183,7 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         {
             if (IsAFunction != default)
             {
-                return GetFunctionInstructions(this);
+                return GetBasicBlocks().SelectMany(b => b.Instructions);
             }
             else if (IsABasicBlock != default)
             {
@@ -195,17 +196,6 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
             else
             {
                 return [];
-            }
-
-            static IEnumerable<LLVMValueRef> GetFunctionInstructions(LLVMValueRef function)
-            {
-                foreach (LLVMBasicBlockRef basicBlock in function.GetBasicBlocks())
-                {
-                    foreach (LLVMValueRef instruction in basicBlock.Instructions)
-                    {
-                        yield return instruction;
-                    }
-                }
             }
         }
     }
@@ -629,18 +619,7 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMTypeRef TypeOf => (Handle != IntPtr.Zero) ? LLVM.TypeOf(this) : default;
 
-    public readonly IEnumerable<LLVMValueRef> Uses
-    {
-        get
-        {
-            var use = FirstUse;
-            while (use.Handle != IntPtr.Zero)
-            {
-                yield return use.User;
-                use = use.Next;
-            }
-        }
-    }
+    public readonly LLVMValueUsesEnumerable Uses => new(this);
 
     public readonly LLVMVisibility Visibility
     {
