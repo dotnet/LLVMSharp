@@ -9,12 +9,12 @@ public unsafe partial struct LLVMAttributeRef(IntPtr handle) : IEquatable<LLVMAt
     public IntPtr Handle = handle;
 
     /// <summary>
-    /// <see href="https://github.com/llvm/llvm-project/blob/a64e6f49284a7ffd5401183d0e94a94a7de39cfb/llvm/include/llvm/IR/Attributes.h#L233"/>
+    /// This returns true for all attributes except string attributes.
     /// </summary>
     public readonly bool HasKindAsEnum => (Handle != IntPtr.Zero) && (LLVM.IsStringAttribute(this) == 0);
 
     /// <summary>
-    /// <see href="https://github.com/llvm/llvm-project/blob/de7bac6426e7f544189dfba7ae658dcf3d7be5f6/llvm/lib/IR/Core.cpp#L231">This returns true for enum attributes and int attributes.</see>
+    /// This returns true for enum attributes and int attributes.
     /// </summary>
     public readonly bool IsEnumAttribute => Handle != IntPtr.Zero && LLVM.IsEnumAttribute(this) != 0;
 
@@ -44,9 +44,6 @@ public unsafe partial struct LLVMAttributeRef(IntPtr handle) : IEquatable<LLVMAt
         }
     }
 
-    /// <summary>
-    /// <see href="https://github.com/llvm/llvm-project/blob/a64e6f49284a7ffd5401183d0e94a94a7de39cfb/llvm/lib/IR/Core.cpp#L175"/>
-    /// </summary>
     public readonly ulong ValueAsInt => IsEnumAttribute ? LLVM.GetEnumAttributeValue(this) : default;
 
     public readonly string ValueAsString
