@@ -8,7 +8,7 @@ namespace LLVMSharp.Interop;
 
 public readonly record struct LLVMValueUsesEnumerable(LLVMValueRef Module) : IEnumerable<LLVMUseRef>
 {
-    public Enumerator GetEnumerator() => new(Module);
+    public Enumerator GetEnumerator() => new Enumerator(Module);
     IEnumerator<LLVMUseRef> IEnumerable<LLVMUseRef>.GetEnumerator() => GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

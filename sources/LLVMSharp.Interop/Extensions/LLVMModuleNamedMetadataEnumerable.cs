@@ -8,7 +8,7 @@ namespace LLVMSharp.Interop;
 
 public readonly record struct LLVMModuleNamedMetadataEnumerable(LLVMModuleRef Module) : IEnumerable<LLVMNamedMDNodeRef>
 {
-    public Enumerator GetEnumerator() => new(Module);
+    public Enumerator GetEnumerator() => new Enumerator(Module);
     IEnumerator<LLVMNamedMDNodeRef> IEnumerable<LLVMNamedMDNodeRef>.GetEnumerator() => GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
