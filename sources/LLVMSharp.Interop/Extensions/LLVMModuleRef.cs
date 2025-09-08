@@ -48,13 +48,13 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
 
     public readonly LLVMNamedMDNodeRef FirstNamedMetadata => (Handle != IntPtr.Zero) ? LLVM.GetFirstNamedMetadata(this) : default;
 
-    public readonly LLVMModuleFunctionsEnumerable Functions => new(this);
+    public readonly LLVMModuleFunctionsEnumerable Functions => new LLVMModuleFunctionsEnumerable(this);
 
-    public readonly LLVMModuleGlobalsEnumerable Globals => new(this);
+    public readonly LLVMModuleGlobalsEnumerable Globals => new LLVMModuleGlobalsEnumerable(this);
 
-    public readonly LLVMModuleGlobalAliasesEnumerable GlobalAliases => new(this);
+    public readonly LLVMModuleGlobalAliasesEnumerable GlobalAliases => new LLVMModuleGlobalAliasesEnumerable(this);
 
-    public readonly LLVMModuleGlobalIFuncsEnumerable GlobalIFuncs => new(this);
+    public readonly LLVMModuleGlobalIFuncsEnumerable GlobalIFuncs => new LLVMModuleGlobalIFuncsEnumerable(this);
 
     public readonly LLVMValueRef LastFunction => (Handle != IntPtr.Zero) ? LLVM.GetLastFunction(this) : default;
 
@@ -66,7 +66,7 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
 
     public readonly LLVMNamedMDNodeRef LastNamedMetadata => (Handle != IntPtr.Zero) ? LLVM.GetLastNamedMetadata(this) : default;
 
-    public readonly LLVMModuleNamedMetadataEnumerable NamedMetadata => new(this);
+    public readonly LLVMModuleNamedMetadataEnumerable NamedMetadata => new LLVMModuleNamedMetadataEnumerable(this);
 
     public readonly string Target
     {

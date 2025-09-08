@@ -619,7 +619,7 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMTypeRef TypeOf => (Handle != IntPtr.Zero) ? LLVM.TypeOf(this) : default;
 
-    public readonly LLVMValueUsesEnumerable Uses => new(this);
+    public readonly LLVMValueUsesEnumerable Uses => new LLVMValueUsesEnumerable(this);
 
     public readonly LLVMVisibility Visibility
     {
