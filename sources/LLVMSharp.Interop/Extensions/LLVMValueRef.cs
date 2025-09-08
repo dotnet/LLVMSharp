@@ -177,29 +177,6 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMBasicBlockRef InstructionParent => (IsAInstruction != null) ? LLVM.GetInstructionParent(this) : default;
 
-    public readonly IEnumerable<LLVMValueRef> Instructions
-    {
-        get
-        {
-            if (IsAFunction != default)
-            {
-                return GetBasicBlocks().SelectMany(b => b.Instructions);
-            }
-            else if (IsABasicBlock != default)
-            {
-                return AsBasicBlock().Instructions;
-            }
-            else if (IsAInstruction != default)
-            {
-                return [this];
-            }
-            else
-            {
-                return [];
-            }
-        }
-    }
-
     public readonly uint IntrinsicID => (Handle != IntPtr.Zero) ? LLVM.GetIntrinsicID(this) : default;
 
     public readonly LLVMValueRef IsAAddrSpaceCastInst => LLVM.IsAAddrSpaceCastInst(this);
@@ -931,6 +908,26 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         fixed (LLVMBasicBlockRef* pBasicBlocks = destination)
         {
             LLVM.GetBasicBlocks(this, (LLVMOpaqueBasicBlock**)pBasicBlocks);
+        }
+    }
+
+    public readonly IEnumerable<LLVMValueRef> GetInstructions()
+    {
+        if (IsAFunction != default)
+        {
+            return GetBasicBlocks().SelectMany(b => b.Instructions);
+        }
+        else if (IsABasicBlock != default)
+        {
+            return AsBasicBlock().Instructions;
+        }
+        else if (IsAInstruction != default)
+        {
+            return [this];
+        }
+        else
+        {
+            return [];
         }
     }
 
