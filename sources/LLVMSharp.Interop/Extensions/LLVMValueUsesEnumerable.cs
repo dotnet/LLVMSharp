@@ -9,14 +9,21 @@ namespace LLVMSharp.Interop;
 public readonly record struct LLVMValueUsesEnumerable(LLVMValueRef Module) : IEnumerable<LLVMUseRef>
 {
     public Enumerator GetEnumerator() => new Enumerator(Module);
+
     IEnumerator<LLVMUseRef> IEnumerable<LLVMUseRef>.GetEnumerator() => GetEnumerator();
+
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     public struct Enumerator(LLVMValueRef module) : IEnumerator<LLVMUseRef>
     {
         public LLVMUseRef Current { get; private set; }
+
         readonly object IEnumerator.Current => Current;
-        readonly void IDisposable.Dispose() { }
+
+        readonly void IDisposable.Dispose()
+        {
+        }
+
         public bool MoveNext()
         {
             if (Current.Handle == 0)
@@ -29,6 +36,7 @@ public readonly record struct LLVMValueUsesEnumerable(LLVMValueRef Module) : IEn
             }
             return Current.Handle != 0;
         }
+
         public void Reset() => Current = default;
     }
 }
