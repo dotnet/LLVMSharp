@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace LLVMSharp.Interop;
 
-public readonly record struct LLVMBasicBlockInstructionsEnumerable(LLVMBasicBlockRef BasicBlock) : IEnumerable<LLVMValueRef>
+public readonly struct LLVMBasicBlockInstructionsEnumerable(LLVMBasicBlockRef basicBlock) : IEnumerable<LLVMValueRef>
 {
-    public Enumerator GetEnumerator() => new Enumerator(BasicBlock);
+    public Enumerator GetEnumerator() => new Enumerator(basicBlock);
 
     IEnumerator<LLVMValueRef> IEnumerable<LLVMValueRef>.GetEnumerator() => GetEnumerator();
 

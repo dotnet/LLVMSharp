@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace LLVMSharp.Interop;
 
-public readonly record struct LLVMModuleGlobalAliasesEnumerable(LLVMModuleRef Module) : IEnumerable<LLVMValueRef>
+public readonly struct LLVMModuleGlobalAliasesEnumerable(LLVMModuleRef module) : IEnumerable<LLVMValueRef>
 {
-    public Enumerator GetEnumerator() => new Enumerator(Module);
+    public Enumerator GetEnumerator() => new Enumerator(module);
 
     IEnumerator<LLVMValueRef> IEnumerable<LLVMValueRef>.GetEnumerator() => GetEnumerator();
 

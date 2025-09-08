@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace LLVMSharp.Interop;
 
-public readonly record struct LLVMModuleNamedMetadataEnumerable(LLVMModuleRef Module) : IEnumerable<LLVMNamedMDNodeRef>
+public readonly struct LLVMModuleNamedMetadataEnumerable(LLVMModuleRef module) : IEnumerable<LLVMNamedMDNodeRef>
 {
-    public Enumerator GetEnumerator() => new Enumerator(Module);
+    public Enumerator GetEnumerator() => new Enumerator(module);
 
     IEnumerator<LLVMNamedMDNodeRef> IEnumerable<LLVMNamedMDNodeRef>.GetEnumerator() => GetEnumerator();
 
