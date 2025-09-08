@@ -16,11 +16,11 @@ public unsafe partial struct LLVMAttributeRef(IntPtr handle) : IEquatable<LLVMAt
     /// <summary>
     /// This returns true for enum attributes and int attributes.
     /// </summary>
-    public readonly bool IsEnumAttribute => Handle != IntPtr.Zero && LLVM.IsEnumAttribute(this) != 0;
+    public readonly bool IsEnumAttribute => (Handle != IntPtr.Zero) && LLVM.IsEnumAttribute(this) != 0;
 
-    public readonly bool IsStringAttribute => Handle != IntPtr.Zero && LLVM.IsStringAttribute(this) != 0;
+    public readonly bool IsStringAttribute => (Handle != IntPtr.Zero) && LLVM.IsStringAttribute(this) != 0;
 
-    public readonly bool IsTypeAttribute => Handle != IntPtr.Zero && LLVM.IsTypeAttribute(this) != 0;
+    public readonly bool IsTypeAttribute => (Handle != IntPtr.Zero) && LLVM.IsTypeAttribute(this) != 0;
 
     public readonly uint KindAsEnum => HasKindAsEnum ? LLVM.GetEnumAttributeKind(this) : default;
 
