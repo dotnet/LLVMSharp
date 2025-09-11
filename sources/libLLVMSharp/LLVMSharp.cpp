@@ -194,6 +194,24 @@ void llvmsharp_DISubroutineType_getTypeArray(LLVMMetadataRef subroutine_type, LL
     *out_size = size;
 }
 
+LLVMMetadataRef llvmsharp_DITemplateParameter_getType(LLVMMetadataRef parameter)
+{
+    DITemplateParameter* unwrapped = unwrap<DITemplateParameter>(parameter);
+    if (unwrapped == nullptr)
+        return nullptr;
+
+    return wrap(unwrapped->getType());
+}
+
+LLVMMetadataRef llvmsharp_DITemplateValueParameter_getValue(LLVMMetadataRef parameter)
+{
+    DITemplateValueParameter* unwrapped = unwrap<DITemplateValueParameter>(parameter);
+    if (unwrapped == nullptr)
+        return nullptr;
+
+    return wrap(unwrapped->getValue());
+}
+
 const char* llvmsharp_DIVariable_getName(LLVMMetadataRef variable, size_t* out_size)
 {
     DIVariable* unwrapped = unwrap<DIVariable>(variable);
