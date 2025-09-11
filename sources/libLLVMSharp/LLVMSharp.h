@@ -55,17 +55,45 @@ LLVMSHARP_LINKAGE uint64_t llvmsharp_DIEnumerator_getValue_ZExt(LLVMMetadataRef 
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_DIEnumerator_isUnsigned(LLVMMetadataRef enumerator);
 
+LLVMSHARP_LINKAGE const char* llvmsharp_DIFile_getDirectory(LLVMMetadataRef file, size_t* out_size);
+
+LLVMSHARP_LINKAGE const char* llvmsharp_DIFile_getFilename(LLVMMetadataRef file, size_t* out_size);
+
+LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DIImportedEntity_getEntity(LLVMMetadataRef node);
+
+LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DIImportedEntity_getFile(LLVMMetadataRef node);
+
+LLVMSHARP_LINKAGE uint32_t llvmsharp_DIImportedEntity_getLine(LLVMMetadataRef node);
+
+LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DIImportedEntity_getScope(LLVMMetadataRef node);
+
+LLVMSHARP_LINKAGE uint32_t llvmsharp_DILexicalBlock_getLine(LLVMMetadataRef block);
+
+LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DILexicalBlock_getScope(LLVMMetadataRef block);
+
+LLVMSHARP_LINKAGE const char* llvmsharp_DINamespace_getName(LLVMMetadataRef node, size_t* out_size);
+
+LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DINamespace_getScope(LLVMMetadataRef node);
+
 LLVMSHARP_LINKAGE const char* llvmsharp_DINode_getTagString(LLVMMetadataRef node, size_t* out_size);
 
-LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DISubprogram_getType(LLVMMetadataRef subprogram);
+LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DISubprogram_getContainingType(LLVMMetadataRef subprogram);
 
 LLVMSHARP_LINKAGE uint32_t llvmsharp_DISubprogram_getFlags(LLVMMetadataRef subprogram);
 
+LLVMSHARP_LINKAGE const char* llvmsharp_DISubprogram_getLinkageName(LLVMMetadataRef subprogram, size_t* out_size);
+
 LLVMSHARP_LINKAGE const char* llvmsharp_DISubprogram_getName(LLVMMetadataRef subprogram, size_t* out_size);
+
+LLVMSHARP_LINKAGE uint32_t llvmsharp_DISubprogram_getScopeLine(LLVMMetadataRef subprogram);
 
 LLVMSHARP_LINKAGE uint32_t llvmsharp_DISubprogram_getSPFlags(LLVMMetadataRef subprogram);
 
 LLVMSHARP_LINKAGE void llvmsharp_DISubprogram_getTemplateParams(LLVMMetadataRef subprogram, LLVMMetadataRef** out_buffer, int32_t* out_size);
+
+LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DISubprogram_getType(LLVMMetadataRef subprogram);
+
+LLVMSHARP_LINKAGE uint32_t llvmsharp_DISubprogram_getVirtualIndex(LLVMMetadataRef subprogram);
 
 LLVMSHARP_LINKAGE void llvmsharp_DISubroutineType_getTypeArray(LLVMMetadataRef subroutine_type, LLVMMetadataRef** out_buffer, int32_t* out_size);
 
