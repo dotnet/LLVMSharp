@@ -60,13 +60,15 @@ llvm-c/TargetMachine.h
 llvm-c/Types.h
 llvm-c/Transforms/PassBuilder.h
 --headerFile
-./Properties/GenerateLLVM-LICENSE.txt
+./sources/GenerateLLVM-LICENSE.txt
+--include-directory
+../llvm-project/artifacts/install/include
 --methodClassName
 LLVM
 --namespace
 LLVMSharp.Interop
 --output
-./sources/LLVMSharp/Interop
+./sources/LLVMSharp.Interop/llvm
 --prefixStrip
 LLVM
 --remap
