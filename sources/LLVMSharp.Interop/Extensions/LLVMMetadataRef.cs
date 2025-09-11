@@ -36,13 +36,18 @@ public unsafe partial struct LLVMMetadataRef(IntPtr handle) : IEquatable<LLVMMet
 
     public readonly bool IsDINode => Kind is >= LLVMMetadataKind.LLVMDILocationMetadataKind and <= LLVMMetadataKind.LLVMDIAssignIDMetadataKind;
 
+    public readonly bool IsTemplateParameter => Kind switch {
+        LLVMMetadataKind.LLVMDITemplateTypeParameterMetadataKind => true,
+        LLVMMetadataKind.LLVMDITemplateValueParameterMetadataKind => true,
+        _ => false,
+    };
+
     public readonly bool IsType => Kind switch {
         LLVMMetadataKind.LLVMDICompositeTypeMetadataKind => true,
         LLVMMetadataKind.LLVMDIDerivedTypeMetadataKind => true,
         LLVMMetadataKind.LLVMDIStringTypeMetadataKind => true,
         LLVMMetadataKind.LLVMDIBasicTypeMetadataKind => true,
         LLVMMetadataKind.LLVMDISubroutineTypeMetadataKind => true,
-        LLVMMetadataKind.LLVMDITemplateTypeParameterMetadataKind => true,
         _ => false,
     };
 
