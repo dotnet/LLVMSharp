@@ -52,6 +52,15 @@ const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef ConstantDataArrayRe
     }
 }
 
+uint32_t llvmsharp_DIBasicType_getEncoding(LLVMMetadataRef type)
+{
+    DIBasicType* unwrapped = unwrap<DIBasicType>(type);
+    if (unwrapped == nullptr)
+        return 0;
+
+    return unwrapped->getEncoding();
+}
+
 LLVMMetadataRef llvmsharp_DICompositeType_getBaseType(LLVMMetadataRef type)
 {
     DICompositeType* unwrapped = unwrap<DICompositeType>(type);
@@ -114,13 +123,54 @@ LLVMMetadataRef llvmsharp_DIDerivedType_getBaseType(LLVMMetadataRef type)
     return wrap(unwrapped->getBaseType());
 }
 
-uint32_t llvmsharp_DIDerivedType_getEncoding(LLVMMetadataRef type)
+LLVMMetadataRef llvmsharp_DIDerivedType_getExtraData(LLVMMetadataRef type)
 {
-    DIBasicType* unwrapped = unwrap<DIBasicType>(type);
+    DIDerivedType* unwrapped = unwrap<DIDerivedType>(type);
+    if (unwrapped == nullptr)
+        return nullptr;
+
+    return wrap(unwrapped->getExtraData());
+}
+
+const char* llvmsharp_DIEnumerator_getName(LLVMMetadataRef enumerator, size_t* out_size)
+{
+    DIEnumerator* unwrapped = unwrap<DIEnumerator>(enumerator);
+    if (unwrapped == nullptr)
+    {
+        *out_size = 0;
+        return nullptr;
+    }
+
+    StringRef name = unwrapped->getName();
+    *out_size = (int32_t)name.size();
+    return name.data();
+}
+
+int64_t llvmsharp_DIEnumerator_getValue_SExt(LLVMMetadataRef enumerator)
+{
+    DIEnumerator* unwrapped = unwrap<DIEnumerator>(enumerator);
     if (unwrapped == nullptr)
         return 0;
 
-    return unwrapped->getEncoding();
+    return unwrapped->getValue().getSExtValue();
+}
+
+uint64_t llvmsharp_DIEnumerator_getValue_ZExt(LLVMMetadataRef enumerator)
+{
+    DIEnumerator* unwrapped = unwrap<DIEnumerator>(enumerator);
+    if (unwrapped == nullptr)
+        return 0;
+
+    return unwrapped->getValue().getZExtValue();
+}
+
+uint8_t llvmsharp_DIEnumerator_isUnsigned(LLVMMetadataRef enumerator)
+{
+    DIEnumerator* unwrapped = unwrap<DIEnumerator>(enumerator);
+    if (unwrapped == nullptr)
+        return 0;
+
+    return unwrapped->isUnsigned();
 }
 
 LLVMMetadataRef llvmsharp_DISubprogram_getType(LLVMMetadataRef subprogram)
