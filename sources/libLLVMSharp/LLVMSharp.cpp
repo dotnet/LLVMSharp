@@ -71,8 +71,8 @@ void llvmsharp_DICompositeType_getElements(LLVMMetadataRef type, LLVMMetadataRef
         return;
     }
 
-    DINodeArray nodeArray = unwrapped->getElements();
-    int32_t size = nodeArray.size();
+    DINodeArray array = unwrapped->getElements();
+    int32_t size = array.size();
 
     LLVMMetadataRef* buffer = (LLVMMetadataRef*)malloc(size * sizeof(LLVMMetadataRef));
     if (buffer == nullptr)
@@ -84,7 +84,7 @@ void llvmsharp_DICompositeType_getElements(LLVMMetadataRef type, LLVMMetadataRef
 
     for (int32_t i = 0; i < size; ++i)
     {
-        buffer[i] = wrap(nodeArray[i]);
+        buffer[i] = wrap(array[i]);
     }
 
     *out_buffer = buffer;
@@ -164,9 +164,9 @@ uint32_t llvmsharp_DISubprogram_getSPFlags(LLVMMetadataRef subprogram)
     return unwrapped->getSPFlags();
 }
 
-void llvmsharp_DISubroutineType_getTypeArray(LLVMMetadataRef subroutine_type, LLVMMetadataRef** out_buffer, int32_t* out_size)
+void llvmsharp_DISubprogram_getTemplateParams(LLVMMetadataRef subprogram, LLVMMetadataRef** out_buffer, int32_t* out_size)
 {
-    DISubroutineType* unwrapped = unwrap<DISubroutineType>(subroutine_type);
+    DISubprogram* unwrapped = unwrap<DISubprogram>(subprogram);
     if (unwrapped == nullptr)
     {
         *out_buffer = nullptr;
@@ -174,8 +174,8 @@ void llvmsharp_DISubroutineType_getTypeArray(LLVMMetadataRef subroutine_type, LL
         return;
     }
 
-    DITypeRefArray typeArray = unwrapped->getTypeArray();
-    int32_t size = typeArray.size();
+    DITemplateParameterArray array = unwrapped->getTemplateParams();
+    int32_t size = array.size();
 
     LLVMMetadataRef* buffer = (LLVMMetadataRef*)malloc(size * sizeof(LLVMMetadataRef));
     if (buffer == nullptr)
@@ -187,7 +187,37 @@ void llvmsharp_DISubroutineType_getTypeArray(LLVMMetadataRef subroutine_type, LL
 
     for (int32_t i = 0; i < size; ++i)
     {
-        buffer[i] = wrap(typeArray[i]);
+        buffer[i] = wrap(array[i]);
+    }
+
+    *out_buffer = buffer;
+    *out_size = size;
+}
+
+void llvmsharp_DISubroutineType_getTypeArray(LLVMMetadataRef subroutine_type, LLVMMetadataRef** out_buffer, int32_t* out_size)
+{
+    DISubroutineType* unwrapped = unwrap<DISubroutineType>(subroutine_type);
+    if (unwrapped == nullptr)
+    {
+        *out_buffer = nullptr;
+        *out_size = 0;
+        return;
+    }
+
+    DITypeRefArray array = unwrapped->getTypeArray();
+    int32_t size = array.size();
+
+    LLVMMetadataRef* buffer = (LLVMMetadataRef*)malloc(size * sizeof(LLVMMetadataRef));
+    if (buffer == nullptr)
+    {
+        *out_buffer = nullptr;
+        *out_size = 0;
+        return; // Memory allocation failed
+    }
+
+    for (int32_t i = 0; i < size; ++i)
+    {
+        buffer[i] = wrap(array[i]);
     }
 
     *out_buffer = buffer;
