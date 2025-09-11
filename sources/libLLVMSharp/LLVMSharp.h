@@ -33,21 +33,45 @@ LLVM_CLANG_C_EXTERN_C_BEGIN
 
 // Function declarations
 
-// Need: getReturnType, getFunctionType, getStructsFromModule?, and demangling
+LLVMSHARP_LINKAGE const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef ConstantDataArrayRef, int32_t* out_size);
 
-LLVMSHARP_LINKAGE LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef FnRef);
+LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DICompositeType_getBaseType(LLVMMetadataRef type);
+
+LLVMSHARP_LINKAGE void llvmsharp_DICompositeType_getElements(LLVMMetadataRef type, LLVMMetadataRef** out_buffer, int32_t* out_size);
+
+LLVMSHARP_LINKAGE const char* llvmsharp_DICompositeType_getIdentifier(LLVMMetadataRef type, size_t* out_size);
+
+LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DIDerivedType_getBaseType(LLVMMetadataRef type);
+
+LLVMSHARP_LINKAGE uint32_t llvmsharp_DIDerivedType_getEncoding(LLVMMetadataRef type);
+
+LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DISubprogram_getType(LLVMMetadataRef subprogram);
+
+LLVMSHARP_LINKAGE uint32_t llvmsharp_DISubprogram_getFlags(LLVMMetadataRef subprogram);
+
+LLVMSHARP_LINKAGE const char* llvmsharp_DISubprogram_getName(LLVMMetadataRef subprogram, size_t* out_size);
+
+LLVMSHARP_LINKAGE uint32_t llvmsharp_DISubprogram_getSPFlags(LLVMMetadataRef subprogram);
+
+LLVMSHARP_LINKAGE void llvmsharp_DISubroutineType_getTypeArray(LLVMMetadataRef subroutine_type, LLVMMetadataRef** out_buffer, int32_t* out_size);
+
+LLVMSHARP_LINKAGE const char* llvmsharp_DIVariable_getName(LLVMMetadataRef variable, size_t* out_size);
+
+LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DIVariable_getType(LLVMMetadataRef variable);
 
 LLVMSHARP_LINKAGE LLVMTypeRef llvmsharp_Function_getFunctionType(LLVMValueRef FnRef);
+
+LLVMSHARP_LINKAGE LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef FnRef);
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_hasNoSignedWrap(LLVMValueRef InstructionRef);
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_hasNoUnsignedWrap(LLVMValueRef InstructionRef);
 
-LLVMSHARP_LINKAGE const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef ConstantDataArrayRef, int32_t* out_size);
-
-LLVMSHARP_LINKAGE int32_t llvmsharp_Value_getDemangledName(LLVMValueRef ValueRef, char* buffer, int32_t buffer_size);
+LLVMSHARP_LINKAGE void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef module, LLVMTypeRef** out_buffer, int32_t* out_size);
 
 LLVMSHARP_LINKAGE void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass);
+
+LLVMSHARP_LINKAGE int32_t llvmsharp_Value_getDemangledName(LLVMValueRef ValueRef, char* buffer, int32_t buffer_size);
 
 LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createDeadCodeEliminationPass();
 
@@ -81,9 +105,7 @@ LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createLoopSimplifyPass();
 
 LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createUnifyLoopExitsPass();
 
-LLVMSHARP_LINKAGE void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef module, LLVMTypeRef** out_buffer, int32_t* out_size);
-
-LLVMSHARP_LINKAGE void llvmsharp_FreeTypeBuffer(LLVMTypeRef* buffer);
+LLVMSHARP_LINKAGE void llvmsharp_Free(void* obj);
 
 LLVM_CLANG_C_EXTERN_C_END
 
