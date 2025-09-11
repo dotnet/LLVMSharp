@@ -55,6 +55,8 @@ LLVMSHARP_LINKAGE uint64_t llvmsharp_DIEnumerator_getValue_ZExt(LLVMMetadataRef 
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_DIEnumerator_isUnsigned(LLVMMetadataRef enumerator);
 
+LLVMSHARP_LINKAGE const char* llvmsharp_DINode_getTagString(LLVMMetadataRef node, size_t* out_size);
+
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DISubprogram_getType(LLVMMetadataRef subprogram);
 
 LLVMSHARP_LINKAGE uint32_t llvmsharp_DISubprogram_getFlags(LLVMMetadataRef subprogram);

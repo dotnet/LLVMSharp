@@ -50,6 +50,10 @@ public static unsafe partial class llvmsharp
     [return: NativeTypeName("uint8_t")]
     public static extern byte DIEnumerator_isUnsigned([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* enumerator);
 
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DINode_getTagString", ExactSpelling = true)]
+    [return: NativeTypeName("const char *")]
+    public static extern sbyte* DINode_getTagString([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* node, [NativeTypeName("size_t *")] nuint* out_size);
+
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DISubprogram_getType", ExactSpelling = true)]
     [return: NativeTypeName("LLVMMetadataRef")]
     public static extern LLVMOpaqueMetadata* DISubprogram_getType([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* subprogram);

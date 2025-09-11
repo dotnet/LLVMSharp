@@ -23,6 +23,7 @@
 #include <string_view>
 #include <llvm/Transforms/Scalar.h>
 #include <llvm/Transforms/Utils.h>
+#include <llvm/BinaryFormat/Dwarf.h>
 
 #ifdef _MSC_VER
 #pragma warning(pop)
@@ -171,6 +172,21 @@ uint8_t llvmsharp_DIEnumerator_isUnsigned(LLVMMetadataRef enumerator)
         return 0;
 
     return unwrapped->isUnsigned();
+}
+
+const char* llvmsharp_DINode_getTagString(LLVMMetadataRef node, size_t* out_size)
+{
+    DINode* unwrapped = unwrap<DINode>(node);
+    if (unwrapped == nullptr)
+    {
+        *out_size = 0;
+        return nullptr;
+    }
+
+    uint16_t tag = unwrapped->getTag();
+    StringRef name = dwarf::TagString(tag);
+    *out_size = (int32_t)name.size();
+    return name.data();
 }
 
 LLVMMetadataRef llvmsharp_DISubprogram_getType(LLVMMetadataRef subprogram)
