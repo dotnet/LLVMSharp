@@ -10,6 +10,7 @@
 
 // Library includes (<> instead of "")
 #include <llvm/IR/Constants.h>
+#include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/LegacyPassManager.h>
@@ -35,32 +36,6 @@ DEFINE_ISA_CONVERSION_FUNCTIONS(Pass, LLVMPassRef)
 
 // Implementation code
 
-LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef FnRef)
-{
-    Function* Fn = unwrap<Function>(FnRef);
-    Type* type = Fn->getReturnType();
-    return wrap(type);
-}
-
-LLVMTypeRef llvmsharp_Function_getFunctionType(LLVMValueRef FnRef)
-{
-    Function* Fn = unwrap<Function>(FnRef);
-    Type* type = Fn->getFunctionType();
-    return wrap(type);
-}
-
-uint8_t llvmsharp_Instruction_hasNoSignedWrap(LLVMValueRef InstructionRef)
-{
-    Instruction* instruction = unwrap<Instruction>(InstructionRef);
-    return instruction->hasNoSignedWrap() ? 1 : 0;
-}
-
-uint8_t llvmsharp_Instruction_hasNoUnsignedWrap(LLVMValueRef InstructionRef)
-{
-    Instruction* instruction = unwrap<Instruction>(InstructionRef);
-    return instruction->hasNoUnsignedWrap() ? 1 : 0;
-}
-
 const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef ConstantDataArrayRef, int32_t* out_size)
 {
     Constant* constant = unwrap<Constant>(ConstantDataArrayRef);
@@ -77,6 +52,224 @@ const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef ConstantDataArrayRe
     }
 }
 
+LLVMMetadataRef llvmsharp_DICompositeType_getBaseType(LLVMMetadataRef type)
+{
+    DICompositeType* unwrapped = unwrap<DICompositeType>(type);
+    if (unwrapped == nullptr)
+        return nullptr;
+
+    return wrap(unwrapped->getBaseType());
+}
+
+void llvmsharp_DICompositeType_getElements(LLVMMetadataRef type, LLVMMetadataRef** out_buffer, int32_t* out_size)
+{
+    DICompositeType* unwrapped = unwrap<DICompositeType>(type);
+    if (unwrapped == nullptr)
+    {
+        *out_buffer = nullptr;
+        *out_size = 0;
+        return;
+    }
+
+    DINodeArray nodeArray = unwrapped->getElements();
+    int32_t size = nodeArray.size();
+
+    LLVMMetadataRef* buffer = (LLVMMetadataRef*)malloc(size * sizeof(LLVMMetadataRef));
+    if (buffer == nullptr)
+    {
+        *out_buffer = nullptr;
+        *out_size = 0;
+        return; // Memory allocation failed
+    }
+
+    for (int32_t i = 0; i < size; ++i)
+    {
+        buffer[i] = wrap(nodeArray[i]);
+    }
+
+    *out_buffer = buffer;
+    *out_size = size;
+}
+
+const char* llvmsharp_DICompositeType_getIdentifier(LLVMMetadataRef type, size_t* out_size)
+{
+    DICompositeType* unwrapped = unwrap<DICompositeType>(type);
+    if (unwrapped == nullptr)
+    {
+        *out_size = 0;
+        return nullptr;
+    }
+
+    StringRef identifier = unwrapped->getIdentifier();
+    *out_size = (int32_t)identifier.size();
+    return identifier.data();
+}
+
+LLVMMetadataRef llvmsharp_DIDerivedType_getBaseType(LLVMMetadataRef type)
+{
+    DIDerivedType* unwrapped = unwrap<DIDerivedType>(type);
+    if (unwrapped == nullptr)
+        return nullptr;
+
+    return wrap(unwrapped->getBaseType());
+}
+
+uint32_t llvmsharp_DIDerivedType_getEncoding(LLVMMetadataRef type)
+{
+    DIBasicType* unwrapped = unwrap<DIBasicType>(type);
+    if (unwrapped == nullptr)
+        return 0;
+
+    return unwrapped->getEncoding();
+}
+
+LLVMMetadataRef llvmsharp_DISubprogram_getType(LLVMMetadataRef subprogram)
+{
+    DISubprogram* unwrapped = unwrap<DISubprogram>(subprogram);
+    if (unwrapped == nullptr)
+        return nullptr;
+
+    return wrap(unwrapped->getType());
+}
+
+uint32_t llvmsharp_DISubprogram_getFlags(LLVMMetadataRef subprogram)
+{
+    DISubprogram* unwrapped = unwrap<DISubprogram>(subprogram);
+    if (unwrapped == nullptr)
+        return 0;
+
+    return unwrapped->getFlags();
+}
+
+const char* llvmsharp_DISubprogram_getName(LLVMMetadataRef subprogram, size_t* out_size)
+{
+    DISubprogram* unwrapped = unwrap<DISubprogram>(subprogram);
+    if (unwrapped == nullptr)
+    {
+        *out_size = 0;
+        return nullptr;
+    }
+
+    StringRef name = unwrapped->getName();
+    *out_size = (int32_t)name.size();
+    return name.data();
+}
+
+uint32_t llvmsharp_DISubprogram_getSPFlags(LLVMMetadataRef subprogram)
+{
+    DISubprogram* unwrapped = unwrap<DISubprogram>(subprogram);
+    if (unwrapped == nullptr)
+        return 0;
+
+    return unwrapped->getSPFlags();
+}
+
+void llvmsharp_DISubroutineType_getTypeArray(LLVMMetadataRef subroutine_type, LLVMMetadataRef** out_buffer, int32_t* out_size)
+{
+    DISubroutineType* unwrapped = unwrap<DISubroutineType>(subroutine_type);
+    if (unwrapped == nullptr)
+    {
+        *out_buffer = nullptr;
+        *out_size = 0;
+        return;
+    }
+
+    DITypeRefArray typeArray = unwrapped->getTypeArray();
+    int32_t size = typeArray.size();
+
+    LLVMMetadataRef* buffer = (LLVMMetadataRef*)malloc(size * sizeof(LLVMMetadataRef));
+    if (buffer == nullptr)
+    {
+        *out_buffer = nullptr;
+        *out_size = 0;
+        return; // Memory allocation failed
+    }
+
+    for (int32_t i = 0; i < size; ++i)
+    {
+        buffer[i] = wrap(typeArray[i]);
+    }
+
+    *out_buffer = buffer;
+    *out_size = size;
+}
+
+const char* llvmsharp_DIVariable_getName(LLVMMetadataRef variable, size_t* out_size)
+{
+    DIVariable* unwrapped = unwrap<DIVariable>(variable);
+    if (unwrapped == nullptr)
+    {
+        *out_size = 0;
+        return nullptr;
+    }
+
+    StringRef name = unwrapped->getName();
+    *out_size = (int32_t)name.size();
+    return name.data();
+}
+
+LLVMMetadataRef llvmsharp_DIVariable_getType(LLVMMetadataRef variable)
+{
+    DIVariable* unwrapped = unwrap<DIVariable>(variable);
+    if (unwrapped == nullptr)
+        return nullptr;
+
+    return wrap(unwrapped->getType());
+}
+
+LLVMTypeRef llvmsharp_Function_getFunctionType(LLVMValueRef FnRef)
+{
+    Function* Fn = unwrap<Function>(FnRef);
+    Type* type = Fn->getFunctionType();
+    return wrap(type);
+}
+
+LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef FnRef)
+{
+    Function* Fn = unwrap<Function>(FnRef);
+    Type* type = Fn->getReturnType();
+    return wrap(type);
+}
+
+uint8_t llvmsharp_Instruction_hasNoSignedWrap(LLVMValueRef InstructionRef)
+{
+    Instruction* instruction = unwrap<Instruction>(InstructionRef);
+    return instruction->hasNoSignedWrap() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Instruction_hasNoUnsignedWrap(LLVMValueRef InstructionRef)
+{
+    Instruction* instruction = unwrap<Instruction>(InstructionRef);
+    return instruction->hasNoUnsignedWrap() ? 1 : 0;
+}
+
+void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef module, LLVMTypeRef** out_buffer, int32_t* out_size)
+{
+    Module* M = unwrap(module);
+    std::vector<StructType*> types = M->getIdentifiedStructTypes();
+
+    LLVMTypeRef* buffer = (LLVMTypeRef*)malloc(types.size() * sizeof(LLVMTypeRef));
+    if (buffer == nullptr)
+    {
+        *out_buffer = nullptr;
+        *out_size = 0;
+        return; // Memory allocation failed
+    }
+
+    for (size_t i = 0; i < types.size(); ++i)
+    {
+        buffer[i] = wrap(types[i]);
+    }
+
+    *out_buffer = buffer;
+    *out_size = (int32_t)types.size();
+}
+
+void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass)
+{
+    unwrap(pass_manager)->add(unwrap(pass));
+}
+
 int32_t llvmsharp_Value_getDemangledName(LLVMValueRef ValueRef, char* buffer, int32_t buffer_size)
 {
     const char* mangled = LLVMGetValueName(ValueRef);
@@ -85,26 +278,6 @@ int32_t llvmsharp_Value_getDemangledName(LLVMValueRef ValueRef, char* buffer, in
     int32_t size = length < buffer_size ? length : buffer_size;
     memcpy(buffer, result.c_str(), size);
     return size;
-}
-
-LLVMTypeRef llvmsharp_Instruction_getAllocatedType(LLVMValueRef InstructionRef)
-{
-    Instruction* instruction = unwrap<Instruction>(InstructionRef);
-    Type* type;
-    if (AllocaInst* AI = dyn_cast<AllocaInst>(instruction))
-    {
-        type = AI->getAllocatedType();
-    }
-    else
-    {
-        type = nullptr;
-    }
-    return wrap(type);
-}
-
-void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass)
-{
-    unwrap(pass_manager)->add(unwrap(pass));
 }
 
 LLVMPassRef llvmsharp_createDeadCodeEliminationPass()
@@ -187,29 +360,7 @@ LLVMPassRef llvmsharp_createUnifyLoopExitsPass()
     return wrap((Pass*)createUnifyLoopExitsPass());
 }
 
-void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef module, LLVMTypeRef** out_buffer, int32_t* out_size)
+void llvmsharp_Free(void* obj)
 {
-    Module* M = unwrap(module);
-    std::vector<StructType*> types = M->getIdentifiedStructTypes();
-    
-    LLVMTypeRef* buffer = (LLVMTypeRef*)malloc(types.size() * sizeof(LLVMTypeRef));
-    if (buffer == nullptr)
-    {
-        *out_buffer = nullptr;
-        *out_size = 0;
-        return; // Memory allocation failed
-    }
-
-    for (size_t i = 0; i < types.size(); ++i)
-    {
-        buffer[i] = wrap(types[i]);
-    }
-    
-    *out_buffer = buffer;
-    *out_size = (int32_t)types.size();
-}
-
-void llvmsharp_FreeTypeBuffer(LLVMTypeRef* buffer)
-{
-    free(buffer);
+    free(obj);
 }
