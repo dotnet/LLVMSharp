@@ -35,6 +35,8 @@ LLVM_CLANG_C_EXTERN_C_BEGIN
 
 LLVMSHARP_LINKAGE const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef ConstantDataArrayRef, int32_t* out_size);
 
+LLVMSHARP_LINKAGE uint32_t llvmsharp_DIBasicType_getEncoding(LLVMMetadataRef type);
+
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DICompositeType_getBaseType(LLVMMetadataRef type);
 
 LLVMSHARP_LINKAGE void llvmsharp_DICompositeType_getElements(LLVMMetadataRef type, LLVMMetadataRef** out_buffer, int32_t* out_size);
@@ -43,7 +45,15 @@ LLVMSHARP_LINKAGE const char* llvmsharp_DICompositeType_getIdentifier(LLVMMetada
 
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DIDerivedType_getBaseType(LLVMMetadataRef type);
 
-LLVMSHARP_LINKAGE uint32_t llvmsharp_DIDerivedType_getEncoding(LLVMMetadataRef type);
+LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DIDerivedType_getExtraData(LLVMMetadataRef type);
+
+LLVMSHARP_LINKAGE const char* llvmsharp_DIEnumerator_getName(LLVMMetadataRef enumerator, size_t* out_size);
+
+LLVMSHARP_LINKAGE int64_t llvmsharp_DIEnumerator_getValue_SExt(LLVMMetadataRef enumerator);
+
+LLVMSHARP_LINKAGE uint64_t llvmsharp_DIEnumerator_getValue_ZExt(LLVMMetadataRef enumerator);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_DIEnumerator_isUnsigned(LLVMMetadataRef enumerator);
 
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DISubprogram_getType(LLVMMetadataRef subprogram);
 
