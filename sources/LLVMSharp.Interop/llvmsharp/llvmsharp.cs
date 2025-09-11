@@ -50,21 +50,69 @@ public static unsafe partial class llvmsharp
     [return: NativeTypeName("uint8_t")]
     public static extern byte DIEnumerator_isUnsigned([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* enumerator);
 
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DIFile_getDirectory", ExactSpelling = true)]
+    [return: NativeTypeName("const char *")]
+    public static extern sbyte* DIFile_getDirectory([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* file, [NativeTypeName("size_t *")] nuint* out_size);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DIFile_getFilename", ExactSpelling = true)]
+    [return: NativeTypeName("const char *")]
+    public static extern sbyte* DIFile_getFilename([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* file, [NativeTypeName("size_t *")] nuint* out_size);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DIImportedEntity_getEntity", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* DIImportedEntity_getEntity([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* node);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DIImportedEntity_getFile", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* DIImportedEntity_getFile([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* node);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DIImportedEntity_getLine", ExactSpelling = true)]
+    [return: NativeTypeName("uint32_t")]
+    public static extern uint DIImportedEntity_getLine([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* node);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DIImportedEntity_getScope", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* DIImportedEntity_getScope([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* node);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DILexicalBlock_getLine", ExactSpelling = true)]
+    [return: NativeTypeName("uint32_t")]
+    public static extern uint DILexicalBlock_getLine([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* block);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DILexicalBlock_getScope", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* DILexicalBlock_getScope([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* block);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DINamespace_getName", ExactSpelling = true)]
+    [return: NativeTypeName("const char *")]
+    public static extern sbyte* DINamespace_getName([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* node, [NativeTypeName("size_t *")] nuint* out_size);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DINamespace_getScope", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* DINamespace_getScope([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* node);
+
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DINode_getTagString", ExactSpelling = true)]
     [return: NativeTypeName("const char *")]
     public static extern sbyte* DINode_getTagString([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* node, [NativeTypeName("size_t *")] nuint* out_size);
 
-    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DISubprogram_getType", ExactSpelling = true)]
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DISubprogram_getContainingType", ExactSpelling = true)]
     [return: NativeTypeName("LLVMMetadataRef")]
-    public static extern LLVMOpaqueMetadata* DISubprogram_getType([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* subprogram);
+    public static extern LLVMOpaqueMetadata* DISubprogram_getContainingType([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* subprogram);
 
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DISubprogram_getFlags", ExactSpelling = true)]
     [return: NativeTypeName("uint32_t")]
     public static extern uint DISubprogram_getFlags([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* subprogram);
 
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DISubprogram_getLinkageName", ExactSpelling = true)]
+    [return: NativeTypeName("const char *")]
+    public static extern sbyte* DISubprogram_getLinkageName([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* subprogram, [NativeTypeName("size_t *")] nuint* out_size);
+
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DISubprogram_getName", ExactSpelling = true)]
     [return: NativeTypeName("const char *")]
     public static extern sbyte* DISubprogram_getName([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* subprogram, [NativeTypeName("size_t *")] nuint* out_size);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DISubprogram_getScopeLine", ExactSpelling = true)]
+    [return: NativeTypeName("uint32_t")]
+    public static extern uint DISubprogram_getScopeLine([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* subprogram);
 
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DISubprogram_getSPFlags", ExactSpelling = true)]
     [return: NativeTypeName("uint32_t")]
@@ -72,6 +120,14 @@ public static unsafe partial class llvmsharp
 
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DISubprogram_getTemplateParams", ExactSpelling = true)]
     public static extern void DISubprogram_getTemplateParams([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* subprogram, [NativeTypeName("LLVMMetadataRef **")] LLVMOpaqueMetadata*** out_buffer, [NativeTypeName("int32_t *")] int* out_size);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DISubprogram_getType", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* DISubprogram_getType([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* subprogram);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DISubprogram_getVirtualIndex", ExactSpelling = true)]
+    [return: NativeTypeName("uint32_t")]
+    public static extern uint DISubprogram_getVirtualIndex([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* subprogram);
 
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DISubroutineType_getTypeArray", ExactSpelling = true)]
     public static extern void DISubroutineType_getTypeArray([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* subroutine_type, [NativeTypeName("LLVMMetadataRef **")] LLVMOpaqueMetadata*** out_buffer, [NativeTypeName("int32_t *")] int* out_size);

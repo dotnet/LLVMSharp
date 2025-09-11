@@ -174,6 +174,111 @@ uint8_t llvmsharp_DIEnumerator_isUnsigned(LLVMMetadataRef enumerator)
     return unwrapped->isUnsigned();
 }
 
+const char* llvmsharp_DIFile_getDirectory(LLVMMetadataRef file, size_t* out_size)
+{
+    DIFile* unwrapped = unwrap<DIFile>(file);
+    if (unwrapped == nullptr)
+    {
+        *out_size = 0;
+        return nullptr;
+    }
+
+    StringRef name = unwrapped->getDirectory();
+    *out_size = (int32_t)name.size();
+    return name.data();
+}
+
+const char* llvmsharp_DIFile_getFilename(LLVMMetadataRef file, size_t* out_size)
+{
+    DIFile* unwrapped = unwrap<DIFile>(file);
+    if (unwrapped == nullptr)
+    {
+        *out_size = 0;
+        return nullptr;
+    }
+
+    StringRef name = unwrapped->getFilename();
+    *out_size = (int32_t)name.size();
+    return name.data();
+}
+
+LLVMMetadataRef llvmsharp_DIImportedEntity_getEntity(LLVMMetadataRef node)
+{
+    DIImportedEntity* unwrapped = unwrap<DIImportedEntity>(node);
+    if (unwrapped == nullptr)
+        return nullptr;
+
+    return wrap(unwrapped->getEntity());
+}
+
+LLVMMetadataRef llvmsharp_DIImportedEntity_getFile(LLVMMetadataRef node)
+{
+    DIImportedEntity* unwrapped = unwrap<DIImportedEntity>(node);
+    if (unwrapped == nullptr)
+        return nullptr;
+
+    return wrap(unwrapped->getFile());
+}
+
+uint32_t llvmsharp_DIImportedEntity_getLine(LLVMMetadataRef node)
+{
+    DIImportedEntity* unwrapped = unwrap<DIImportedEntity>(node);
+    if (unwrapped == nullptr)
+        return 0;
+
+    return unwrapped->getLine();
+}
+
+LLVMMetadataRef llvmsharp_DIImportedEntity_getScope(LLVMMetadataRef node)
+{
+    DIImportedEntity* unwrapped = unwrap<DIImportedEntity>(node);
+    if (unwrapped == nullptr)
+        return nullptr;
+
+    return wrap(unwrapped->getScope());
+}
+
+uint32_t llvmsharp_DILexicalBlock_getLine(LLVMMetadataRef block)
+{
+    DILexicalBlock* unwrapped = unwrap<DILexicalBlock>(block);
+    if (unwrapped == nullptr)
+        return 0;
+
+    return unwrapped->getLine();
+}
+
+LLVMMetadataRef llvmsharp_DILexicalBlock_getScope(LLVMMetadataRef block)
+{
+    DILexicalBlock* unwrapped = unwrap<DILexicalBlock>(block);
+    if (unwrapped == nullptr)
+        return nullptr;
+
+    return wrap(unwrapped->getScope());
+}
+
+const char* llvmsharp_DINamespace_getName(LLVMMetadataRef node, size_t* out_size)
+{
+    DINamespace* unwrapped = unwrap<DINamespace>(node);
+    if (unwrapped == nullptr)
+    {
+        *out_size = 0;
+        return nullptr;
+    }
+
+    StringRef name = unwrapped->getName();
+    *out_size = (int32_t)name.size();
+    return name.data();
+}
+
+LLVMMetadataRef llvmsharp_DINamespace_getScope(LLVMMetadataRef node)
+{
+    DINamespace* unwrapped = unwrap<DINamespace>(node);
+    if (unwrapped == nullptr)
+        return nullptr;
+
+    return wrap(unwrapped->getScope());
+}
+
 const char* llvmsharp_DINode_getTagString(LLVMMetadataRef node, size_t* out_size)
 {
     DINode* unwrapped = unwrap<DINode>(node);
@@ -189,13 +294,13 @@ const char* llvmsharp_DINode_getTagString(LLVMMetadataRef node, size_t* out_size
     return name.data();
 }
 
-LLVMMetadataRef llvmsharp_DISubprogram_getType(LLVMMetadataRef subprogram)
+LLVMMetadataRef llvmsharp_DISubprogram_getContainingType(LLVMMetadataRef subprogram)
 {
     DISubprogram* unwrapped = unwrap<DISubprogram>(subprogram);
     if (unwrapped == nullptr)
         return nullptr;
 
-    return wrap(unwrapped->getType());
+    return wrap(unwrapped->getContainingType());
 }
 
 uint32_t llvmsharp_DISubprogram_getFlags(LLVMMetadataRef subprogram)
@@ -205,6 +310,20 @@ uint32_t llvmsharp_DISubprogram_getFlags(LLVMMetadataRef subprogram)
         return 0;
 
     return unwrapped->getFlags();
+}
+
+const char* llvmsharp_DISubprogram_getLinkageName(LLVMMetadataRef subprogram, size_t* out_size)
+{
+    DISubprogram* unwrapped = unwrap<DISubprogram>(subprogram);
+    if (unwrapped == nullptr)
+    {
+        *out_size = 0;
+        return nullptr;
+    }
+
+    StringRef name = unwrapped->getLinkageName();
+    *out_size = (int32_t)name.size();
+    return name.data();
 }
 
 const char* llvmsharp_DISubprogram_getName(LLVMMetadataRef subprogram, size_t* out_size)
@@ -219,6 +338,15 @@ const char* llvmsharp_DISubprogram_getName(LLVMMetadataRef subprogram, size_t* o
     StringRef name = unwrapped->getName();
     *out_size = (int32_t)name.size();
     return name.data();
+}
+
+uint32_t llvmsharp_DISubprogram_getScopeLine(LLVMMetadataRef subprogram)
+{
+    DISubprogram* unwrapped = unwrap<DISubprogram>(subprogram);
+    if (unwrapped == nullptr)
+        return 0;
+
+    return unwrapped->getScopeLine();
 }
 
 uint32_t llvmsharp_DISubprogram_getSPFlags(LLVMMetadataRef subprogram)
@@ -258,6 +386,24 @@ void llvmsharp_DISubprogram_getTemplateParams(LLVMMetadataRef subprogram, LLVMMe
 
     *out_buffer = buffer;
     *out_size = size;
+}
+
+LLVMMetadataRef llvmsharp_DISubprogram_getType(LLVMMetadataRef subprogram)
+{
+    DISubprogram* unwrapped = unwrap<DISubprogram>(subprogram);
+    if (unwrapped == nullptr)
+        return nullptr;
+
+    return wrap(unwrapped->getType());
+}
+
+uint32_t llvmsharp_DISubprogram_getVirtualIndex(LLVMMetadataRef subprogram)
+{
+    DISubprogram* unwrapped = unwrap<DISubprogram>(subprogram);
+    if (unwrapped == nullptr)
+        return 0;
+
+    return unwrapped->getVirtualIndex();
 }
 
 void llvmsharp_DISubroutineType_getTypeArray(LLVMMetadataRef subroutine_type, LLVMMetadataRef** out_buffer, int32_t* out_size)
