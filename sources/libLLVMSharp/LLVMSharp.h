@@ -53,6 +53,8 @@ LLVMSHARP_LINKAGE const char* llvmsharp_DISubprogram_getName(LLVMMetadataRef sub
 
 LLVMSHARP_LINKAGE uint32_t llvmsharp_DISubprogram_getSPFlags(LLVMMetadataRef subprogram);
 
+LLVMSHARP_LINKAGE void llvmsharp_DISubprogram_getTemplateParams(LLVMMetadataRef subprogram, LLVMMetadataRef** out_buffer, int32_t* out_size);
+
 LLVMSHARP_LINKAGE void llvmsharp_DISubroutineType_getTypeArray(LLVMMetadataRef subroutine_type, LLVMMetadataRef** out_buffer, int32_t* out_size);
 
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DITemplateParameter_getType(LLVMMetadataRef parameter);
