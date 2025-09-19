@@ -459,7 +459,7 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         }
     }
 
-    public readonly uint MDNodeOperandsCount => (Kind == LLVMValueKind.LLVMMetadataAsValueValueKind) ? LLVM.GetMDNodeNumOperands(this) : default;
+    public readonly uint MDNodeOperandsCount => (IsAMDNode == null) ? LLVM.GetMDNodeNumOperands(this) : default;
 
     public readonly string Name
     {
@@ -895,19 +895,20 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMValueRef[] GetMDNodeOperands()
     {
-        if (Kind != LLVMValueKind.LLVMMetadataAsValueValueKind)
+        uint count = MDNodeOperandsCount;
+        if (count == 0)
         {
             return [];
         }
 
-        var destination = new LLVMValueRef[MDNodeOperandsCount];
+        var destination = new LLVMValueRef[count];
         GetMDNodeOperands(destination);
         return destination;
     }
 
     public readonly void GetMDNodeOperands(Span<LLVMValueRef> destination)
     {
-        if (Kind != LLVMValueKind.LLVMMetadataAsValueValueKind)
+        if (IsAMDNode == null)
         {
             return;
         }
