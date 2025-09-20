@@ -151,7 +151,7 @@ LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createBreakCriticalEdgesPass();
 
 LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createLCSSAPass();
 
-LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createPromoteMemoryToRegisterPass(uint8_t IsForced);
+LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createPromoteMemoryToRegisterPass();
 
 LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createLoopSimplifyPass();
 

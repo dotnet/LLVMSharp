@@ -486,7 +486,7 @@ LLVMPassRef llvmsharp_createLCSSAPass()
     return wrap(createLCSSAPass());
 }
 
-LLVMPassRef llvmsharp_createPromoteMemoryToRegisterPass(uint8_t IsForced)
+LLVMPassRef llvmsharp_createPromoteMemoryToRegisterPass()
 {
     return wrap((Pass*)createPromoteMemoryToRegisterPass());
 }
