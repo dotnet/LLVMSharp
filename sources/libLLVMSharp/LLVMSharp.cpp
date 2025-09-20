@@ -13,6 +13,7 @@
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/Function.h>
+#include <llvm/IR/GlobalVariable.h>
 #include <llvm/IR/LegacyPassManager.h>
 #include <llvm/IR/Module.h>
 #include <llvm-c/Core.h>
@@ -489,6 +490,27 @@ LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef FnRef)
     Function* Fn = unwrap<Function>(FnRef);
     Type* type = Fn->getReturnType();
     return wrap(type);
+}
+
+LLVMMetadataRef llvmsharp_GlobalVariable_getGlobalVariableExpression(LLVMValueRef global_variable)
+{
+    LLVMMetadataRef metadataRef = llvmsharp_GlobalVariable_getMetadata(global_variable, LLVMContext::MD_dbg);
+    if (isa<Metadata, DIGlobalVariableExpression>(unwrap<Metadata>(metadataRef)))
+    {
+        return metadataRef;
+    }
+    else
+    {
+        return nullptr;
+    }
+}
+
+LLVMMetadataRef llvmsharp_GlobalVariable_getMetadata(LLVMValueRef global_variable, uint32_t KindID)
+{
+    GlobalVariable* unwrapped = unwrap<GlobalVariable>(global_variable);
+    if (unwrapped == nullptr)
+        return nullptr;
+    return wrap(unwrapped->getMetadata(KindID));
 }
 
 uint8_t llvmsharp_Instruction_hasNoSignedWrap(LLVMValueRef InstructionRef)

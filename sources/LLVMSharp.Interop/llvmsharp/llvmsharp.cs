@@ -156,6 +156,14 @@ public static unsafe partial class llvmsharp
     [return: NativeTypeName("LLVMTypeRef")]
     public static extern LLVMOpaqueType* Function_getReturnType([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* FnRef);
 
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_GlobalVariable_getGlobalVariableExpression", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* GlobalVariable_getGlobalVariableExpression([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* global_variable);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_GlobalVariable_getMetadata", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* GlobalVariable_getMetadata([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* global_variable, [NativeTypeName("uint32_t")] uint KindID);
+
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Instruction_hasNoSignedWrap", ExactSpelling = true)]
     [return: NativeTypeName("uint8_t")]
     public static extern byte Instruction_hasNoSignedWrap([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* InstructionRef);
