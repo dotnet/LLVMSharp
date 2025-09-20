@@ -60,6 +60,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly double ConstRealDouble => (IsAConstantFP != null) ? GetConstRealDouble(out _) : default;
 
+    public readonly LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetValueContext(this) : default;
+
     public readonly LLVMDLLStorageClass DLLStorageClass
     {
         get
