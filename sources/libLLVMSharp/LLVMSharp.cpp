@@ -418,7 +418,7 @@ int32_t llvmsharp_Value_getDemangledName(LLVMValueRef value, char* buffer, int32
     int32_t length = (int32_t)result.length();
     int32_t size = length < buffer_size ? length : buffer_size;
     memcpy(buffer, result.c_str(), size);
-    return size;
+    return length;
 }
 
 LLVMPassRef llvmsharp_createDeadCodeEliminationPass()
