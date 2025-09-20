@@ -858,6 +858,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMBasicBlockRef AsBasicBlock() => LLVM.ValueAsBasicBlock(this);
 
+    public readonly LLVMMetadataRef AsMetadata() => LLVM.ValueAsMetadata(this);
+
     public readonly void DeleteFunction() => LLVM.DeleteFunction(this);
 
     public readonly void DeleteGlobal() => LLVM.DeleteGlobal(this);

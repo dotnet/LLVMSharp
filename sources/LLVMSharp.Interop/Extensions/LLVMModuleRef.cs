@@ -38,6 +38,8 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
         }
     }
 
+    public readonly uint DebugMetadataVersion => (Handle != IntPtr.Zero) ? LLVM.GetModuleDebugMetadataVersion(this) : default;
+
     public readonly LLVMValueRef FirstFunction => (Handle != IntPtr.Zero) ? LLVM.GetFirstFunction(this) : default;
 
     public readonly LLVMValueRef FirstGlobal => (Handle != IntPtr.Zero) ? LLVM.GetFirstGlobal(this) : default;
