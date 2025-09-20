@@ -40,18 +40,10 @@ DEFINE_ISA_CONVERSION_FUNCTIONS(Pass, LLVMPassRef)
 
 const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef ConstantDataArrayRef, int32_t* out_size)
 {
-    Constant* constant = unwrap<Constant>(ConstantDataArrayRef);
-    if (ConstantDataArray* value = dyn_cast<ConstantDataArray>(constant))
-    {
-        StringRef stringRef = value->getRawDataValues();
-        *out_size = (int32_t)stringRef.size();
-        return stringRef.data();
-    }
-    else
-    {
-        *out_size = 0;
-        return nullptr;
-    }
+    ConstantDataArray* unwrapped = unwrap<ConstantDataArray>(ConstantDataArrayRef);
+    StringRef stringRef = unwrapped->getRawDataValues();
+    *out_size = (int32_t)stringRef.size();
+    return stringRef.data();
 }
 
 uint32_t llvmsharp_DIBasicType_getEncoding(LLVMMetadataRef type)
