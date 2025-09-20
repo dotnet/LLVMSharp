@@ -876,13 +876,24 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         }
 
         nuint metadataCount = 0;
-        var metadataEntries = LLVM.InstructionGetAllMetadataOtherThanDebugLoc(this, &metadataCount);
-        var metadataArray = new LLVMMetadataRef[metadataCount];
-        for (uint i = 0; i < metadataCount; i++)
+        var ptr = LLVM.InstructionGetAllMetadataOtherThanDebugLoc(this, &metadataCount);
+
+        LLVMMetadataRef[] metadataArray;
+        if (metadataCount == 0)
         {
-            metadataArray[i] = LLVM.ValueMetadataEntriesGetMetadata(metadataEntries, i);
+            metadataArray = [];
         }
-        LLVM.DisposeValueMetadataEntries(metadataEntries);
+        else
+        {
+            metadataArray = new LLVMMetadataRef[metadataCount];
+            for (uint i = 0; i < metadataCount; i++)
+            {
+                metadataArray[i] = LLVM.ValueMetadataEntriesGetMetadata(ptr, i);
+            }
+            LLVM.DisposeValueMetadataEntries(ptr);
+        }
+
+        LLVM.DisposeValueMetadataEntries(ptr);
         return metadataArray;
     }
 
