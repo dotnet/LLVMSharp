@@ -95,6 +95,8 @@ LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DISubprogram_getType(LLVMMetadataRef
 
 LLVMSHARP_LINKAGE uint32_t llvmsharp_DISubprogram_getVirtualIndex(LLVMMetadataRef subprogram);
 
+LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_DISubrange_getCount(LLVMMetadataRef subrange);
+
 LLVMSHARP_LINKAGE void llvmsharp_DISubroutineType_getTypeArray(LLVMMetadataRef subroutine_type, LLVMMetadataRef** out_buffer, int32_t* out_size);
 
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DITemplateParameter_getType(LLVMMetadataRef parameter);
