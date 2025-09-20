@@ -285,6 +285,19 @@ uint32_t llvmsharp_DISubprogram_getVirtualIndex(LLVMMetadataRef subprogram)
     return unwrapped->getVirtualIndex();
 }
 
+LLVMValueRef llvmsharp_DISubrange_getCount(LLVMMetadataRef subrange)
+{
+    DISubrange* unwrapped = unwrap<DISubrange>(subrange);
+    Metadata* countNode = unwrapped->getRawCountNode();
+    if (isa<ConstantAsMetadata>(countNode))
+    {
+        ConstantAsMetadata* constantAsMetadata = cast<ConstantAsMetadata>(countNode);
+        Constant* constant = constantAsMetadata->getValue();
+        return wrap(constant);
+    }
+    return nullptr;
+}
+
 void llvmsharp_DISubroutineType_getTypeArray(LLVMMetadataRef subroutine_type, LLVMMetadataRef** out_buffer, int32_t* out_size)
 {
     DISubroutineType* unwrapped = unwrap<DISubroutineType>(subroutine_type);
