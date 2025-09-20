@@ -38,9 +38,9 @@ DEFINE_ISA_CONVERSION_FUNCTIONS(Pass, LLVMPassRef)
 
 // Implementation code
 
-const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef ConstantDataArrayRef, int32_t* out_size)
+const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef array, int32_t* out_size)
 {
-    ConstantDataArray* unwrapped = unwrap<ConstantDataArray>(ConstantDataArrayRef);
+    ConstantDataArray* unwrapped = unwrap<ConstantDataArray>(array);
     StringRef stringRef = unwrapped->getRawDataValues();
     *out_size = (int32_t)stringRef.size();
     return stringRef.data();
@@ -339,26 +339,26 @@ LLVMMetadataRef llvmsharp_DIVariable_getType(LLVMMetadataRef variable)
     return wrap(unwrapped->getType());
 }
 
-LLVMTypeRef llvmsharp_Function_getFunctionType(LLVMValueRef FnRef)
+LLVMTypeRef llvmsharp_Function_getFunctionType(LLVMValueRef function)
 {
-    Function* Fn = unwrap<Function>(FnRef);
-    Type* type = Fn->getFunctionType();
+    Function* unwrapped = unwrap<Function>(function);
+    Type* type = unwrapped->getFunctionType();
     return wrap(type);
 }
 
-LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef FnRef)
+LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef function)
 {
-    Function* Fn = unwrap<Function>(FnRef);
-    Type* type = Fn->getReturnType();
+    Function* unwrapped = unwrap<Function>(function);
+    Type* type = unwrapped->getReturnType();
     return wrap(type);
 }
 
 LLVMMetadataRef llvmsharp_GlobalVariable_getGlobalVariableExpression(LLVMValueRef global_variable)
 {
-    LLVMMetadataRef metadataRef = llvmsharp_GlobalVariable_getMetadata(global_variable, LLVMContext::MD_dbg);
-    if (isa<Metadata, DIGlobalVariableExpression>(unwrap<Metadata>(metadataRef)))
+    LLVMMetadataRef unwrapped = llvmsharp_GlobalVariable_getMetadata(global_variable, LLVMContext::MD_dbg);
+    if (isa<Metadata, DIGlobalVariableExpression>(unwrap<Metadata>(unwrapped)))
     {
-        return metadataRef;
+        return unwrapped;
     }
     else
     {
@@ -372,22 +372,22 @@ LLVMMetadataRef llvmsharp_GlobalVariable_getMetadata(LLVMValueRef global_variabl
     return wrap(unwrapped->getMetadata(KindID));
 }
 
-uint8_t llvmsharp_Instruction_hasNoSignedWrap(LLVMValueRef InstructionRef)
+uint8_t llvmsharp_Instruction_hasNoSignedWrap(LLVMValueRef instruction)
 {
-    Instruction* instruction = unwrap<Instruction>(InstructionRef);
-    return instruction->hasNoSignedWrap() ? 1 : 0;
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->hasNoSignedWrap() ? 1 : 0;
 }
 
-uint8_t llvmsharp_Instruction_hasNoUnsignedWrap(LLVMValueRef InstructionRef)
+uint8_t llvmsharp_Instruction_hasNoUnsignedWrap(LLVMValueRef instruction)
 {
-    Instruction* instruction = unwrap<Instruction>(InstructionRef);
-    return instruction->hasNoUnsignedWrap() ? 1 : 0;
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->hasNoUnsignedWrap() ? 1 : 0;
 }
 
 void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef module, LLVMTypeRef** out_buffer, int32_t* out_size)
 {
-    Module* M = unwrap(module);
-    std::vector<StructType*> types = M->getIdentifiedStructTypes();
+    Module* unwrapped = unwrap(module);
+    std::vector<StructType*> types = unwrapped->getIdentifiedStructTypes();
 
     LLVMTypeRef* buffer = (LLVMTypeRef*)malloc(types.size() * sizeof(LLVMTypeRef));
     if (buffer == nullptr)
@@ -411,9 +411,9 @@ void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass
     unwrap(pass_manager)->add(unwrap(pass));
 }
 
-int32_t llvmsharp_Value_getDemangledName(LLVMValueRef ValueRef, char* buffer, int32_t buffer_size)
+int32_t llvmsharp_Value_getDemangledName(LLVMValueRef value, char* buffer, int32_t buffer_size)
 {
-    const char* mangled = LLVMGetValueName(ValueRef);
+    const char* mangled = LLVMGetValueName(value);
     std::string result = llvm::demangle(std::string_view(mangled));
     int32_t length = (int32_t)result.length();
     int32_t size = length < buffer_size ? length : buffer_size;
