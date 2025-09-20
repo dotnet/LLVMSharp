@@ -120,5 +120,11 @@ public unsafe partial struct LLVMMetadataRef(IntPtr handle) : IEquatable<LLVMMet
 
     public override readonly int GetHashCode() => Handle.GetHashCode();
 
+    public readonly string GetMDString(LLVMContextRef context, out uint length)
+    {
+        var value = context.MetadataAsValue(this);
+        return value.GetMDString(out length);
+    }
+
     public override readonly string ToString() => $"{nameof(LLVMMetadataRef)}: {Handle:X}";
 }
