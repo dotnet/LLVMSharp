@@ -868,6 +868,24 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly bool Equals(LLVMValueRef other) => this == other;
 
+    public readonly LLVMMetadataRef[] GetAllMetadataOtherThanDebugLoc()
+    {
+        if (IsAInstruction == null)
+        {
+            return [];
+        }
+
+        nuint metadataCount = 0;
+        var metadataEntries = LLVM.InstructionGetAllMetadataOtherThanDebugLoc(this, &metadataCount);
+        var metadataArray = new LLVMMetadataRef[metadataCount];
+        for (uint i = 0; i < metadataCount; i++)
+        {
+            metadataArray[i] = LLVM.ValueMetadataEntriesGetMetadata(metadataEntries, i);
+        }
+        LLVM.DisposeValueMetadataEntries(metadataEntries);
+        return metadataArray;
+    }
+
     public readonly string GetAsString(out UIntPtr Length)
     {
         fixed (UIntPtr* pLength = &Length)
@@ -983,24 +1001,6 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         {
             LLVM.GetParams(this, (LLVMOpaqueValue**)pParams);
         }
-    }
-
-    public readonly LLVMMetadataRef[] GetAllMetadataOtherThanDebugLoc()
-    {
-        if (IsAInstruction == null)
-        {
-            return [];
-        }
-
-        nuint metadataCount = 0;
-        var metadataEntries = LLVM.InstructionGetAllMetadataOtherThanDebugLoc(this, &metadataCount);
-        var metadataArray = new LLVMMetadataRef[metadataCount];
-        for (uint i = 0; i < metadataCount; i++)
-        {
-            metadataArray[i] = LLVM.ValueMetadataEntriesGetMetadata(metadataEntries, i);
-        }
-        LLVM.DisposeValueMetadataEntries(metadataEntries);
-        return metadataArray;
     }
 
     public readonly void AddAttributeAtIndex(LLVMAttributeIndex Idx, LLVMAttributeRef A)
