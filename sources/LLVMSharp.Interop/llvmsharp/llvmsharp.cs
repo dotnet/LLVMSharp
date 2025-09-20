@@ -240,7 +240,7 @@ public static unsafe partial class llvmsharp
 
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_createPromoteMemoryToRegisterPass", ExactSpelling = true)]
     [return: NativeTypeName("LLVMPassRef")]
-    public static extern LLVMOpaquePass* createPromoteMemoryToRegisterPass([NativeTypeName("uint8_t")] byte IsForced);
+    public static extern LLVMOpaquePass* createPromoteMemoryToRegisterPass();
 
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_createLoopSimplifyPass", ExactSpelling = true)]
     [return: NativeTypeName("LLVMPassRef")]
