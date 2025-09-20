@@ -56,6 +56,19 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
 
     public readonly LLVMModuleGlobalIFuncsEnumerable GlobalIFuncs => new LLVMModuleGlobalIFuncsEnumerable(this);
 
+    public readonly int IsNewDbgInfoFormat
+    {
+        get
+        {
+            return (Handle != IntPtr.Zero) ? LLVM.IsNewDbgInfoFormat(this) : 0;
+        }
+
+        set
+        {
+            LLVM.SetIsNewDbgInfoFormat(this, value);
+        }
+    }
+
     public readonly LLVMValueRef LastFunction => (Handle != IntPtr.Zero) ? LLVM.GetLastFunction(this) : default;
 
     public readonly LLVMValueRef LastGlobal => (Handle != IntPtr.Zero) ? LLVM.GetLastGlobal(this) : default;
