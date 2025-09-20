@@ -126,7 +126,7 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMModuleRef GlobalParent => (IsAGlobalValue != null) ? LLVM.GetGlobalParent(this) : default;
 
-    public readonly bool HasMetadata => (IsAInstruction != null) && LLVM.HasMetadata(this) != 0;
+    public readonly bool HasMetadata => ((IsAInstruction != null) || (IsAFunction != null) || (IsAGlobalVariable != null)) && LLVM.HasMetadata(this) != 0;
 
     public readonly bool HasPersonalityFn => (IsAFunction != null) && LLVM.HasPersonalityFn(this) != 0;
 
