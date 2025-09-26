@@ -167,6 +167,8 @@ LLVMSHARP_LINKAGE uint32_t llvmsharp_MDNode_getNumOperands(LLVMMetadataRef metad
 
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_MDNode_getOperand(LLVMMetadataRef metadata, uint32_t index);
 
+LLVMSHARP_LINKAGE const char* llvmsharp_MDString_getString(LLVMMetadataRef mdstring, int32_t* out_size);
+
 #define LLVMSHARP_METADATA_ISA(CPP_TYPE) LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_Metadata_IsA##CPP_TYPE(LLVMMetadataRef metadata);
 
 LLVM_FOR_EACH_METADATA_SUBCLASS(LLVMSHARP_METADATA_ISA)
