@@ -81,7 +81,7 @@ void llvmsharp_DICompositeType_getElements(LLVMMetadataRef type, LLVMMetadataRef
     *out_size = size;
 }
 
-const char* llvmsharp_DICompositeType_getIdentifier(LLVMMetadataRef type, size_t* out_size)
+const char* llvmsharp_DICompositeType_getIdentifier(LLVMMetadataRef type, int32_t* out_size)
 {
     DICompositeType* unwrapped = unwrap<DICompositeType>(type);
     StringRef identifier = unwrapped->getIdentifier();
@@ -101,7 +101,7 @@ LLVMMetadataRef llvmsharp_DIDerivedType_getExtraData(LLVMMetadataRef type)
     return wrap(unwrapped->getExtraData());
 }
 
-const char* llvmsharp_DIEnumerator_getName(LLVMMetadataRef enumerator, size_t* out_size)
+const char* llvmsharp_DIEnumerator_getName(LLVMMetadataRef enumerator, int32_t* out_size)
 {
     DIEnumerator* unwrapped = unwrap<DIEnumerator>(enumerator);
     StringRef name = unwrapped->getName();
@@ -127,7 +127,7 @@ uint8_t llvmsharp_DIEnumerator_isUnsigned(LLVMMetadataRef enumerator)
     return unwrapped->isUnsigned();
 }
 
-const char* llvmsharp_DIFile_getDirectory(LLVMMetadataRef file, size_t* out_size)
+const char* llvmsharp_DIFile_getDirectory(LLVMMetadataRef file, int32_t* out_size)
 {
     DIFile* unwrapped = unwrap<DIFile>(file);
     StringRef name = unwrapped->getDirectory();
@@ -135,7 +135,7 @@ const char* llvmsharp_DIFile_getDirectory(LLVMMetadataRef file, size_t* out_size
     return name.data();
 }
 
-const char* llvmsharp_DIFile_getFilename(LLVMMetadataRef file, size_t* out_size)
+const char* llvmsharp_DIFile_getFilename(LLVMMetadataRef file, int32_t* out_size)
 {
     DIFile* unwrapped = unwrap<DIFile>(file);
     StringRef name = unwrapped->getFilename();
@@ -179,7 +179,7 @@ LLVMMetadataRef llvmsharp_DILexicalBlock_getScope(LLVMMetadataRef block)
     return wrap(unwrapped->getScope());
 }
 
-const char* llvmsharp_DINamespace_getName(LLVMMetadataRef node, size_t* out_size)
+const char* llvmsharp_DINamespace_getName(LLVMMetadataRef node, int32_t* out_size)
 {
     DINamespace* unwrapped = unwrap<DINamespace>(node);
     StringRef name = unwrapped->getName();
@@ -193,7 +193,7 @@ LLVMMetadataRef llvmsharp_DINamespace_getScope(LLVMMetadataRef node)
     return wrap(unwrapped->getScope());
 }
 
-const char* llvmsharp_DINode_getTagString(LLVMMetadataRef node, size_t* out_size)
+const char* llvmsharp_DINode_getTagString(LLVMMetadataRef node, int32_t* out_size)
 {
     DINode* unwrapped = unwrap<DINode>(node);
     uint16_t tag = unwrapped->getTag();
@@ -214,7 +214,7 @@ uint32_t llvmsharp_DISubprogram_getFlags(LLVMMetadataRef subprogram)
     return unwrapped->getFlags();
 }
 
-const char* llvmsharp_DISubprogram_getLinkageName(LLVMMetadataRef subprogram, size_t* out_size)
+const char* llvmsharp_DISubprogram_getLinkageName(LLVMMetadataRef subprogram, int32_t* out_size)
 {
     DISubprogram* unwrapped = unwrap<DISubprogram>(subprogram);
     StringRef name = unwrapped->getLinkageName();
@@ -222,7 +222,7 @@ const char* llvmsharp_DISubprogram_getLinkageName(LLVMMetadataRef subprogram, si
     return name.data();
 }
 
-const char* llvmsharp_DISubprogram_getName(LLVMMetadataRef subprogram, size_t* out_size)
+const char* llvmsharp_DISubprogram_getName(LLVMMetadataRef subprogram, int32_t* out_size)
 {
     DISubprogram* unwrapped = unwrap<DISubprogram>(subprogram);
     StringRef name = unwrapped->getName();
@@ -325,7 +325,7 @@ LLVMMetadataRef llvmsharp_DITemplateValueParameter_getValue(LLVMMetadataRef para
     return wrap(unwrapped->getValue());
 }
 
-const char* llvmsharp_DIVariable_getName(LLVMMetadataRef variable, size_t* out_size)
+const char* llvmsharp_DIVariable_getName(LLVMMetadataRef variable, int32_t* out_size)
 {
     DIVariable* unwrapped = unwrap<DIVariable>(variable);
     StringRef name = unwrapped->getName();
