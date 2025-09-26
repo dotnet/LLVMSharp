@@ -18,6 +18,50 @@
 
 #include "LLVMSharp_export.h"
 
+// Copied from the LLVMMetadataKind enum
+#define LLVM_FOR_EACH_METADATA_SUBCLASS(macro) \
+    macro(MDNode) \
+    macro(DINode) \
+    macro(DITemplateParameter) \
+    macro(DIType) \
+    macro(DIVariable) \
+    macro(MDString) \
+    macro(ConstantAsMetadata) \
+    macro(LocalAsMetadata) \
+    macro(DistinctMDOperandPlaceholder) \
+    macro(MDTuple) \
+    macro(DILocation) \
+    macro(DIExpression) \
+    macro(DIGlobalVariableExpression) \
+    macro(GenericDINode) \
+    macro(DISubrange) \
+    macro(DIEnumerator) \
+    macro(DIBasicType) \
+    macro(DIDerivedType) \
+    macro(DICompositeType) \
+    macro(DISubroutineType) \
+    macro(DIFile) \
+    macro(DICompileUnit) \
+    macro(DISubprogram) \
+    macro(DILexicalBlock) \
+    macro(DILexicalBlockFile) \
+    macro(DINamespace) \
+    macro(DIModule) \
+    macro(DITemplateTypeParameter) \
+    macro(DITemplateValueParameter) \
+    macro(DIGlobalVariable) \
+    macro(DILocalVariable) \
+    macro(DILabel) \
+    macro(DIObjCProperty) \
+    macro(DIImportedEntity) \
+    macro(DIMacro) \
+    macro(DIMacroFile) \
+    macro(DICommonBlock) \
+    macro(DIStringType) \
+    macro(DIGenericSubrange) \
+    macro(DIArgList) \
+    macro(DIAssignID) \
+
 /**
  * Represents an individual value in LLVM IR.
  *
@@ -122,6 +166,12 @@ LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_hasNoUnsignedWrap(LLVMValueRef i
 LLVMSHARP_LINKAGE uint32_t llvmsharp_MDNode_getNumOperands(LLVMMetadataRef metadata);
 
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_MDNode_getOperand(LLVMMetadataRef metadata, uint32_t index);
+
+#define LLVMSHARP_METADATA_ISA(CPP_TYPE) LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_Metadata_IsA##CPP_TYPE(LLVMMetadataRef metadata);
+
+LLVM_FOR_EACH_METADATA_SUBCLASS(LLVMSHARP_METADATA_ISA)
+
+#undef LLVMSHARP_METADATA_ISA
 
 LLVMSHARP_LINKAGE void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef module, LLVMTypeRef** out_buffer, int32_t* out_size);
 
