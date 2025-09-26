@@ -400,6 +400,16 @@ LLVMMetadataRef llvmsharp_MDNode_getOperand(LLVMMetadataRef metadata, uint32_t i
     return wrap(unwrapped->getOperand(index));
 }
 
+#define LLVMSHARP_METADATA_ISA(CPP_TYPE) \
+LLVMMetadataRef llvmsharp_Metadata_IsA##CPP_TYPE(LLVMMetadataRef metadata) \
+{ \
+    return wrap(static_cast<Metadata*>(dyn_cast_or_null<CPP_TYPE>(unwrap(metadata)))); \
+}
+
+LLVM_FOR_EACH_METADATA_SUBCLASS(LLVMSHARP_METADATA_ISA)
+
+#undef LLVMSHARP_METADATA_ISA
+
 void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef module, LLVMTypeRef** out_buffer, int32_t* out_size)
 {
     Module* unwrapped = unwrap(module);

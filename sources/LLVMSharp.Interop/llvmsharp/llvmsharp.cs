@@ -184,6 +184,170 @@ public static unsafe partial class llvmsharp
     [return: NativeTypeName("LLVMMetadataRef")]
     public static extern LLVMOpaqueMetadata* MDNode_getOperand([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata, [NativeTypeName("uint32_t")] uint index);
 
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsAMDNode", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsAMDNode([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADINode", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADINode([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADITemplateParameter", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADITemplateParameter([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIType", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIType([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIVariable", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIVariable([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsAMDString", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsAMDString([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsAConstantAsMetadata", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsAConstantAsMetadata([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsALocalAsMetadata", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsALocalAsMetadata([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADistinctMDOperandPlaceholder", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADistinctMDOperandPlaceholder([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsAMDTuple", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsAMDTuple([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADILocation", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADILocation([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIExpression", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIExpression([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIGlobalVariableExpression", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIGlobalVariableExpression([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsAGenericDINode", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsAGenericDINode([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADISubrange", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADISubrange([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIEnumerator", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIEnumerator([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIBasicType", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIBasicType([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIDerivedType", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIDerivedType([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADICompositeType", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADICompositeType([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADISubroutineType", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADISubroutineType([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIFile", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIFile([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADICompileUnit", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADICompileUnit([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADISubprogram", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADISubprogram([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADILexicalBlock", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADILexicalBlock([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADILexicalBlockFile", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADILexicalBlockFile([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADINamespace", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADINamespace([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIModule", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIModule([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADITemplateTypeParameter", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADITemplateTypeParameter([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADITemplateValueParameter", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADITemplateValueParameter([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIGlobalVariable", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIGlobalVariable([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADILocalVariable", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADILocalVariable([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADILabel", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADILabel([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIObjCProperty", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIObjCProperty([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIImportedEntity", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIImportedEntity([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIMacro", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIMacro([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIMacroFile", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIMacroFile([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADICommonBlock", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADICommonBlock([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIStringType", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIStringType([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIGenericSubrange", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIGenericSubrange([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIArgList", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIArgList([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIAssignID", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIAssignID([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Module_GetIdentifiedStructTypes", ExactSpelling = true)]
     public static extern void Module_GetIdentifiedStructTypes([NativeTypeName("LLVMModuleRef")] LLVMOpaqueModule* module, [NativeTypeName("LLVMTypeRef **")] LLVMOpaqueType*** out_buffer, [NativeTypeName("int32_t *")] int* out_size);
 
