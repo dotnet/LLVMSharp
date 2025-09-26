@@ -179,8 +179,6 @@ LLVMSHARP_LINKAGE void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef m
 
 LLVMSHARP_LINKAGE void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass);
 
-LLVMSHARP_LINKAGE int32_t llvmsharp_Value_getDemangledName(LLVMValueRef value, char* buffer, int32_t buffer_size);
-
 LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createDeadCodeEliminationPass();
 
 LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createSROAPass(uint8_t PreserveCFG);
@@ -212,6 +210,8 @@ LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createPromoteMemoryToRegisterPass();
 LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createLoopSimplifyPass();
 
 LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createUnifyLoopExitsPass();
+
+LLVMSHARP_LINKAGE int32_t llvmsharp_Demangle(const char* mangled_string, int32_t mangled_string_size, char* buffer, int32_t buffer_size);
 
 LLVMSHARP_LINKAGE void llvmsharp_Free(void* obj);
 

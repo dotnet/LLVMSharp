@@ -358,10 +358,6 @@ public static unsafe partial class llvmsharp
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_PassManager_add", ExactSpelling = true)]
     public static extern void PassManager_add([NativeTypeName("LLVMPassManagerRef")] LLVMOpaquePassManager* pass_manager, [NativeTypeName("LLVMPassRef")] LLVMOpaquePass* pass);
 
-    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Value_getDemangledName", ExactSpelling = true)]
-    [return: NativeTypeName("int32_t")]
-    public static extern int Value_getDemangledName([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* value, [NativeTypeName("char *")] sbyte* buffer, [NativeTypeName("int32_t")] int buffer_size);
-
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_createDeadCodeEliminationPass", ExactSpelling = true)]
     [return: NativeTypeName("LLVMPassRef")]
     public static extern LLVMOpaquePass* createDeadCodeEliminationPass();
@@ -425,6 +421,10 @@ public static unsafe partial class llvmsharp
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_createUnifyLoopExitsPass", ExactSpelling = true)]
     [return: NativeTypeName("LLVMPassRef")]
     public static extern LLVMOpaquePass* createUnifyLoopExitsPass();
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Demangle", ExactSpelling = true)]
+    [return: NativeTypeName("int32_t")]
+    public static extern int Demangle([NativeTypeName("const char *")] sbyte* mangled_string, [NativeTypeName("int32_t")] int mangled_string_size, [NativeTypeName("char *")] sbyte* buffer, [NativeTypeName("int32_t")] int buffer_size);
 
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Free", ExactSpelling = true)]
     public static extern void Free(void* obj);

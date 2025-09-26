@@ -445,16 +445,6 @@ void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass
     unwrap(pass_manager)->add(unwrap(pass));
 }
 
-int32_t llvmsharp_Value_getDemangledName(LLVMValueRef value, char* buffer, int32_t buffer_size)
-{
-    const char* mangled = LLVMGetValueName(value);
-    std::string result = llvm::demangle(std::string_view(mangled));
-    int32_t length = (int32_t)result.length();
-    int32_t size = length < buffer_size ? length : buffer_size;
-    memcpy(buffer, result.c_str(), size);
-    return length;
-}
-
 LLVMPassRef llvmsharp_createDeadCodeEliminationPass()
 {
     return wrap((Pass*)createDeadCodeEliminationPass());
@@ -533,6 +523,15 @@ LLVMPassRef llvmsharp_createLoopSimplifyPass()
 LLVMPassRef llvmsharp_createUnifyLoopExitsPass()
 {
     return wrap((Pass*)createUnifyLoopExitsPass());
+}
+
+int32_t llvmsharp_Demangle(const char* mangled_string, int32_t mangled_string_size, char* buffer, int32_t buffer_size)
+{
+    std::string result = llvm::demangle(std::string_view(mangled_string, mangled_string_size));
+    int32_t length = (int32_t)result.length();
+    int32_t size = length < buffer_size ? length : buffer_size;
+    memcpy(buffer, result.c_str(), size);
+    return length;
 }
 
 void llvmsharp_Free(void* obj)
