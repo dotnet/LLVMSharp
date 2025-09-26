@@ -384,6 +384,22 @@ uint8_t llvmsharp_Instruction_hasNoUnsignedWrap(LLVMValueRef instruction)
     return unwrapped->hasNoUnsignedWrap() ? 1 : 0;
 }
 
+uint32_t llvmsharp_MDNode_getNumOperands(LLVMMetadataRef metadata)
+{
+    MDNode* unwrapped = unwrap<MDNode>(metadata);
+    return unwrapped->getNumOperands();
+}
+
+LLVMMetadataRef llvmsharp_MDNode_getOperand(LLVMMetadataRef metadata, uint32_t index)
+{
+    MDNode* unwrapped = unwrap<MDNode>(metadata);
+    if (index >= unwrapped->getNumOperands())
+    {
+        return nullptr; // Index out of bounds
+    }
+    return wrap(unwrapped->getOperand(index));
+}
+
 void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef module, LLVMTypeRef** out_buffer, int32_t* out_size)
 {
     Module* unwrapped = unwrap(module);
