@@ -184,6 +184,10 @@ public static unsafe partial class llvmsharp
     [return: NativeTypeName("LLVMMetadataRef")]
     public static extern LLVMOpaqueMetadata* MDNode_getOperand([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata, [NativeTypeName("uint32_t")] uint index);
 
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_MDString_getString", ExactSpelling = true)]
+    [return: NativeTypeName("const char *")]
+    public static extern sbyte* MDString_getString([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* mdstring, [NativeTypeName("int32_t *")] int* out_size);
+
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsAMDNode", ExactSpelling = true)]
     [return: NativeTypeName("LLVMMetadataRef")]
     public static extern LLVMOpaqueMetadata* Metadata_IsAMDNode([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);

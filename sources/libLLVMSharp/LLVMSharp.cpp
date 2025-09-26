@@ -400,6 +400,14 @@ LLVMMetadataRef llvmsharp_MDNode_getOperand(LLVMMetadataRef metadata, uint32_t i
     return wrap(unwrapped->getOperand(index));
 }
 
+const char* llvmsharp_MDString_getString(LLVMMetadataRef mdstring, int32_t* out_size)
+{
+    MDString* unwrapped = unwrap<MDString>(mdstring);
+    StringRef str = unwrapped->getString();
+    *out_size = (int32_t)str.size();
+    return str.data();
+}
+
 #define LLVMSHARP_METADATA_ISA(CPP_TYPE) \
 LLVMMetadataRef llvmsharp_Metadata_IsA##CPP_TYPE(LLVMMetadataRef metadata) \
 { \
