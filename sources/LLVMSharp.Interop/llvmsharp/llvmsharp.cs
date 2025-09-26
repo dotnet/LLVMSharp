@@ -176,6 +176,14 @@ public static unsafe partial class llvmsharp
     [return: NativeTypeName("uint8_t")]
     public static extern byte Instruction_hasNoUnsignedWrap([NativeTypeName("LLVMValueRef")] LLVMOpaqueValue* instruction);
 
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_MDNode_getNumOperands", ExactSpelling = true)]
+    [return: NativeTypeName("uint32_t")]
+    public static extern uint MDNode_getNumOperands([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_MDNode_getOperand", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* MDNode_getOperand([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata, [NativeTypeName("uint32_t")] uint index);
+
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Module_GetIdentifiedStructTypes", ExactSpelling = true)]
     public static extern void Module_GetIdentifiedStructTypes([NativeTypeName("LLVMModuleRef")] LLVMOpaqueModule* module, [NativeTypeName("LLVMTypeRef **")] LLVMOpaqueType*** out_buffer, [NativeTypeName("int32_t *")] int* out_size);
 
