@@ -31,10 +31,13 @@ public class IR
         _ = LLVM.InitializeNativeAsmParser();
         _ = LLVM.InitializeNativeAsmPrinter();
 
-        var engine = module.CreateMCJITCompiler();
+        using var engine = module.CreateMCJITCompiler();
         var func = engine.GetPointerToGlobal<Int32Int32Int32Delegate>(def);
         var result = op1 + op2;
         Assert.That(func(op1, op2), Is.EqualTo(result));
+
+        engine.FreeMachineCodeForFunction(def);
+        _ = engine.RemoveModule(module);
     }
 
     [Test]
@@ -56,10 +59,13 @@ public class IR
         _ = LLVM.InitializeNativeAsmParser();
         _ = LLVM.InitializeNativeAsmPrinter();
 
-        var engine = module.CreateMCJITCompiler();
+        using var engine = module.CreateMCJITCompiler();
         var func = engine.GetPointerToGlobal<Int32Int32Int32Delegate>(def);
         var result = op1 >> op2;
         Assert.That(func(op1, op2), Is.EqualTo(result));
+
+        engine.FreeMachineCodeForFunction(def);
+        _ = engine.RemoveModule(module);
     }
 
     [Test]
@@ -81,10 +87,13 @@ public class IR
         _ = LLVM.InitializeNativeAsmParser();
         _ = LLVM.InitializeNativeAsmPrinter();
 
-        var engine = module.CreateMCJITCompiler();
+        using var engine = module.CreateMCJITCompiler();
         var func = engine.GetPointerToGlobal<Int32Int32Int8Delegate>(def);
         var result = op1 > op2 ? 1 : 0;
         Assert.That(func(op1, op2), Is.EqualTo(result));
+
+        engine.FreeMachineCodeForFunction(def);
+        _ = engine.RemoveModule(module);
     }
 
     [Test]
@@ -112,10 +121,14 @@ public class IR
         _ = LLVM.InitializeNativeAsmParser();
         _ = LLVM.InitializeNativeAsmPrinter();
 
-        var engine = module.CreateMCJITCompiler();
+        using var engine = module.CreateMCJITCompiler();
         var func = engine.GetPointerToGlobal<Int32Int32Int32Delegate>(entryDef);
         var result = op1 + op2;
         Assert.That(func(op1, op2), Is.EqualTo(result));
+
+        engine.FreeMachineCodeForFunction(entryDef);
+        engine.FreeMachineCodeForFunction(addDef);
+        _ = engine.RemoveModule(module);
     }
 
     [Test]
@@ -136,9 +149,12 @@ public class IR
         _ = LLVM.InitializeNativeAsmParser();
         _ = LLVM.InitializeNativeAsmPrinter();
 
-        var engine = module.CreateMCJITCompiler();
+        using var engine = module.CreateMCJITCompiler();
         var func = engine.GetPointerToGlobal<Int32Delegate>(def);
         Assert.That(func(), Is.EqualTo(input));
+
+        engine.FreeMachineCodeForFunction(def);
+        _ = engine.RemoveModule(module);
     }
 
     [Test]
@@ -160,8 +176,11 @@ public class IR
         _ = LLVM.InitializeNativeAsmParser();
         _ = LLVM.InitializeNativeAsmPrinter();
 
-        var engine = module.CreateMCJITCompiler();
+        using var engine = module.CreateMCJITCompiler();
         var func = engine.GetPointerToGlobal<Int32Delegate>(def);
         Assert.That(func(), Is.EqualTo(8));
+
+        engine.FreeMachineCodeForFunction(def);
+        _ = engine.RemoveModule(module);
     }
 }

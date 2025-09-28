@@ -1,10 +1,13 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace LLVMSharp.Interop;
 
+[DebuggerDisplay(nameof(LLVMModuleRef))] // ToString() will provide the actual content, which might be huge.
 public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquatable<LLVMModuleRef>
 {
     public IntPtr Handle = handle;
@@ -37,13 +40,50 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
         }
     }
 
+    public readonly uint DebugMetadataVersion => (Handle != IntPtr.Zero) ? LLVM.GetModuleDebugMetadataVersion(this) : default;
+
     public readonly LLVMValueRef FirstFunction => (Handle != IntPtr.Zero) ? LLVM.GetFirstFunction(this) : default;
 
     public readonly LLVMValueRef FirstGlobal => (Handle != IntPtr.Zero) ? LLVM.GetFirstGlobal(this) : default;
 
+    public readonly LLVMValueRef FirstGlobalAlias => (Handle != IntPtr.Zero) ? LLVM.GetFirstGlobalAlias(this) : default;
+
+    public readonly LLVMValueRef FirstGlobalIFunc => (Handle != IntPtr.Zero) ? LLVM.GetFirstGlobalIFunc(this) : default;
+
+    public readonly LLVMNamedMDNodeRef FirstNamedMetadata => (Handle != IntPtr.Zero) ? LLVM.GetFirstNamedMetadata(this) : default;
+
+    public readonly LLVMModuleFunctionsEnumerable Functions => new LLVMModuleFunctionsEnumerable(this);
+
+    public readonly LLVMModuleGlobalsEnumerable Globals => new LLVMModuleGlobalsEnumerable(this);
+
+    public readonly LLVMModuleGlobalAliasesEnumerable GlobalAliases => new LLVMModuleGlobalAliasesEnumerable(this);
+
+    public readonly LLVMModuleGlobalIFuncsEnumerable GlobalIFuncs => new LLVMModuleGlobalIFuncsEnumerable(this);
+
+    public readonly int IsNewDbgInfoFormat
+    {
+        get
+        {
+            return (Handle != IntPtr.Zero) ? LLVM.IsNewDbgInfoFormat(this) : 0;
+        }
+
+        set
+        {
+            LLVM.SetIsNewDbgInfoFormat(this, value);
+        }
+    }
+
     public readonly LLVMValueRef LastFunction => (Handle != IntPtr.Zero) ? LLVM.GetLastFunction(this) : default;
 
     public readonly LLVMValueRef LastGlobal => (Handle != IntPtr.Zero) ? LLVM.GetLastGlobal(this) : default;
+
+    public readonly LLVMValueRef LastGlobalAlias => (Handle != IntPtr.Zero) ? LLVM.GetLastGlobalAlias(this) : default;
+
+    public readonly LLVMValueRef LastGlobalIFunc => (Handle != IntPtr.Zero) ? LLVM.GetLastGlobalIFunc(this) : default;
+
+    public readonly LLVMNamedMDNodeRef LastNamedMetadata => (Handle != IntPtr.Zero) ? LLVM.GetLastNamedMetadata(this) : default;
+
+    public readonly LLVMModuleNamedMetadataEnumerable NamedMetadata => new LLVMModuleNamedMetadataEnumerable(this);
 
     public readonly string Target
     {

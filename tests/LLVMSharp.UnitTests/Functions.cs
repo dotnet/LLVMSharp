@@ -26,6 +26,6 @@ public class Functions
         functionValue.AddAttributeAtIndex((LLVMAttributeIndex)1, attr);
 
         var attrs = functionValue.GetAttributesAtIndex((LLVMAttributeIndex)1);
-        Assert.That((AttributeKind)attrs[0].Kind, Is.EqualTo(AttributeKind.ByVal));
+        Assert.That((AttributeKind)attrs[0].KindAsEnum, Is.EqualTo(AttributeKind.ByVal));
     }
 }

@@ -8,6 +8,30 @@ public unsafe partial struct LLVMNamedMDNodeRef(IntPtr handle) : IEquatable<LLVM
 {
     public IntPtr Handle = handle;
 
+    public readonly string Name
+    {
+        get
+        {
+            if (Handle == IntPtr.Zero)
+            {
+                return string.Empty;
+            }
+
+            nuint nameLength = 0;
+            var namePtr = LLVM.GetNamedMetadataName(this, &nameLength);
+            if (namePtr == null)
+            {
+                return string.Empty;
+            }
+
+            return new ReadOnlySpan<byte>(namePtr, (int)nameLength).AsString();
+        }
+    }
+
+    public readonly LLVMNamedMDNodeRef NextNamedMetadata => (Handle != IntPtr.Zero) ? LLVM.GetNextNamedMetadata(this) : default;
+
+    public readonly LLVMNamedMDNodeRef PreviousNamedMetadata => (Handle != IntPtr.Zero) ? LLVM.GetPreviousNamedMetadata(this) : default;
+
     public static implicit operator LLVMNamedMDNodeRef(LLVMOpaqueNamedMDNode* value) => new LLVMNamedMDNodeRef((IntPtr)value);
 
     public static implicit operator LLVMOpaqueNamedMDNode*(LLVMNamedMDNodeRef value) => (LLVMOpaqueNamedMDNode*)value.Handle;

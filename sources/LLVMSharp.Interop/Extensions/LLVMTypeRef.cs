@@ -1,6 +1,7 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
 using System;
+using System.Diagnostics;
 
 namespace LLVMSharp.Interop;
 
@@ -38,6 +39,7 @@ public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef
 
     public static LLVMTypeRef X86AMX => LLVM.X86AMXType();
 
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)] // Justification: causes native allocation
     public readonly LLVMValueRef AlignOf => (Handle != IntPtr.Zero) ? LLVM.AlignOf(this) : default;
 
     public readonly uint ArrayLength => (Kind == LLVMTypeKind.LLVMArrayTypeKind) ? LLVM.GetArrayLength(this) : default;
@@ -46,7 +48,7 @@ public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef
 
     public readonly LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetTypeContext(this) : default;
 
-    public readonly LLVMTypeRef ElementType => (((Kind == LLVMTypeKind.LLVMPointerTypeKind) && (SubtypesCount != 0)) || (Kind == LLVMTypeKind.LLVMArrayTypeKind) || (Kind == LLVMTypeKind.LLVMVectorTypeKind)) ? LLVM.GetElementType(this) : default;
+    public readonly LLVMTypeRef ElementType => (((Kind == LLVMTypeKind.LLVMPointerTypeKind) && (SubtypesCount != 0)) || (Kind is LLVMTypeKind.LLVMArrayTypeKind or LLVMTypeKind.LLVMVectorTypeKind or LLVMTypeKind.LLVMScalableVectorTypeKind)) ? LLVM.GetElementType(this) : default;
 
     public readonly uint IntWidth => (Kind == LLVMTypeKind.LLVMIntegerTypeKind) ? LLVM.GetIntTypeWidth(this) : default;
 
@@ -64,10 +66,12 @@ public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef
 
     public readonly uint PointerAddressSpace => (Kind == LLVMTypeKind.LLVMPointerTypeKind) ? LLVM.GetPointerAddressSpace(this) : default;
 
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)] // Justification: causes native allocation
     public readonly LLVMValueRef Poison => (Handle != IntPtr.Zero) ? LLVM.GetPoison(this) : default;
 
     public readonly LLVMTypeRef ReturnType => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) ? LLVM.GetReturnType(this) : default;
 
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)] // Justification: causes native allocation
     public readonly LLVMValueRef SizeOf => (Handle != IntPtr.Zero) ? LLVM.SizeOf(this) : default;
 
     public readonly uint StructElementTypesCount => (Kind == LLVMTypeKind.LLVMStructTypeKind) ? LLVM.CountStructElementTypes(this) : default;
@@ -94,9 +98,10 @@ public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef
 
     public readonly uint SubtypesCount => (Handle != IntPtr.Zero) ? LLVM.GetNumContainedTypes(this) : default;
 
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)] // Justification: causes native allocation
     public readonly LLVMValueRef Undef => (Handle != IntPtr.Zero) ? LLVM.GetUndef(this) : default;
 
-    public readonly uint VectorSize => (Kind == LLVMTypeKind.LLVMVectorTypeKind) ? LLVM.GetVectorSize(this) : default;
+    public readonly uint VectorSize => (Kind is LLVMTypeKind.LLVMVectorTypeKind or LLVMTypeKind.LLVMScalableVectorTypeKind) ? LLVM.GetVectorSize(this) : default;
 
     public static implicit operator LLVMTypeRef(LLVMOpaqueType* value) => new LLVMTypeRef((IntPtr)value);
 

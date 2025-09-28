@@ -10,6 +10,8 @@ public unsafe partial struct LLVMBasicBlockRef(IntPtr handle) : IEquatable<LLVMB
 
     public readonly LLVMValueRef FirstInstruction => (Handle != IntPtr.Zero) ? LLVM.GetFirstInstruction(this) : default;
 
+    public readonly LLVMBasicBlockInstructionsEnumerable Instructions => new LLVMBasicBlockInstructionsEnumerable(this);
+
     public readonly LLVMValueRef LastInstruction => (Handle != IntPtr.Zero) ? LLVM.GetLastInstruction(this) : default;
 
     public readonly LLVMBasicBlockRef Next => (Handle != IntPtr.Zero) ? LLVM.GetNextBasicBlock(this) : default;

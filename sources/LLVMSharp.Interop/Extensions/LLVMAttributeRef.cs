@@ -8,9 +8,65 @@ public unsafe partial struct LLVMAttributeRef(IntPtr handle) : IEquatable<LLVMAt
 {
     public IntPtr Handle = handle;
 
-    public readonly uint Kind => LLVM.GetEnumAttributeKind(this);
+    /// <summary>
+    /// This returns true for all attributes except string attributes.
+    /// </summary>
+    public readonly bool HasKindAsEnum => (Handle != IntPtr.Zero) && (LLVM.IsStringAttribute(this) == 0);
 
-    public readonly ulong Value => LLVM.GetEnumAttributeValue(this);
+    /// <summary>
+    /// This returns true for enum attributes and int attributes.
+    /// </summary>
+    public readonly bool IsEnumAttribute => (Handle != IntPtr.Zero) && LLVM.IsEnumAttribute(this) != 0;
+
+    public readonly bool IsStringAttribute => (Handle != IntPtr.Zero) && LLVM.IsStringAttribute(this) != 0;
+
+    public readonly bool IsTypeAttribute => (Handle != IntPtr.Zero) && LLVM.IsTypeAttribute(this) != 0;
+
+    public readonly uint KindAsEnum => HasKindAsEnum ? LLVM.GetEnumAttributeKind(this) : default;
+
+    public readonly string KindAsString
+    {
+        get
+        {
+            if (!IsStringAttribute)
+            {
+                return string.Empty;
+            }
+
+            uint length = 0;
+            var kindPtr = LLVM.GetStringAttributeKind(this, &length);
+            if (kindPtr == null)
+            {
+                return string.Empty;
+            }
+
+            return new ReadOnlySpan<byte>(kindPtr, (int)length).AsString();
+        }
+    }
+
+    public readonly ulong ValueAsInt => IsEnumAttribute ? LLVM.GetEnumAttributeValue(this) : default;
+
+    public readonly string ValueAsString
+    {
+        get
+        {
+            if (!IsStringAttribute)
+            {
+                return string.Empty;
+            }
+
+            uint length = 0;
+            var valuePtr = LLVM.GetStringAttributeValue(this, &length);
+            if (valuePtr == null)
+            {
+                return string.Empty;
+            }
+
+            return new ReadOnlySpan<byte>(valuePtr, (int)length).AsString();
+        }
+    }
+
+    public readonly LLVMTypeRef ValueAsType => IsTypeAttribute ? LLVM.GetTypeAttributeValue(this) : default;
 
     public static implicit operator LLVMAttributeRef(LLVMOpaqueAttributeRef* value) => new LLVMAttributeRef((IntPtr)value);
 
