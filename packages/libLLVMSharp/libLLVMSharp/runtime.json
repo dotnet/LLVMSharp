@@ -1,0 +1,29 @@
+{
+  "runtimes": {
+    "linux-arm64": {
+      "libLLVMSharp": {
+        "libLLVMSharp.runtime.linux-arm64": "20.1.2"
+      }
+    },
+    "linux-x64": {
+      "libLLVMSharp": {
+        "libLLVMSharp.runtime.linux-x64": "20.1.2"
+      }
+    },
+    "osx-arm64": {
+      "libLLVMSharp": {
+        "libLLVMSharp.runtime.osx-arm64": "20.1.2"
+      }
+    },
+    "win-arm64": {
+      "libLLVMSharp": {
+        "libLLVMSharp.runtime.win-arm64": "20.1.2"
+      }
+    },
+    "win-x64": {
+      "libLLVMSharp": {
+        "libLLVMSharp.runtime.win-x64": "20.1.2"
+      }
+    }
+  }
+}

@@ -16,6 +16,8 @@ public unsafe partial struct LLVMPassManagerRef(IntPtr handle) : IDisposable, IE
 
     public static bool operator !=(LLVMPassManagerRef left, LLVMPassManagerRef right) => !(left == right);
 
+    public readonly void Add(LLVMPassRef passRef) => llvmsharp.PassManager_add(this, passRef);
+
     public static LLVMPassManagerRef Create() => LLVM.CreatePassManager();
 
     public void Dispose()
