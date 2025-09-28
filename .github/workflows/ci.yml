@@ -139,8 +139,8 @@ jobs:
     steps:
     - uses: actions/download-artifact@v4
       with:
-        name: sign-nuget
-        path: ./artifacts
+        name: sign_nuget
+        path: ./artifacts/pkg
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
@@ -151,12 +151,12 @@ jobs:
   publish-nightlies-github:
     runs-on: ubuntu-latest
     if: false
-    needs: [ windows-x64, linux-x64, macos-arm64, sign-nuget-preview, sign-nuget-release ]
+    needs: [ sign-nuget ]
     steps:
     - uses: actions/download-artifact@v4
       with:
-        name: sign-nuget
-        path: ./artifacts
+        name: sign_nuget
+        path: ./artifacts/pkg
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
