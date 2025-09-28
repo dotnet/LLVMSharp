@@ -34,7 +34,7 @@ public class Targets
 
         foreach (var u in LLVMTargetRef.Targets)
         {
-            u.EnsurePropertiesWork();
+            u.EnsurePropertiesWork(typeof(LLVMTargetRef));
         }
         foreach (var t in expectedTargets)
         {

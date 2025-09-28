@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using LLVMSharp.Interop;
 
@@ -9,13 +10,14 @@ namespace LLVMSharp.UnitTests;
 
 public static class Utilities
 {
-    public static void EnsurePropertiesWork(this object obj)
+    public static void EnsurePropertiesWork(this object obj, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] System.Type type)
     {
         ArgumentNullException.ThrowIfNull(obj);
+        ArgumentNullException.ThrowIfNull(type);
 
         var map = new Dictionary<string, object?>();
 
-        foreach(var p in obj.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
+        foreach(var p in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
         {
             map.Add(p.Name, p.GetValue(obj));
         }
