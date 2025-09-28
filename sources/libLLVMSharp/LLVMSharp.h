@@ -22,6 +22,7 @@
 #define LLVM_FOR_EACH_METADATA_SUBCLASS(macro) \
     macro(MDNode) \
     macro(DINode) \
+    macro(DIScope) \
     macro(DITemplateParameter) \
     macro(DIType) \
     macro(DIVariable) \
@@ -98,10 +99,6 @@ LLVMSHARP_LINKAGE int64_t llvmsharp_DIEnumerator_getValue_SExt(LLVMMetadataRef e
 LLVMSHARP_LINKAGE uint64_t llvmsharp_DIEnumerator_getValue_ZExt(LLVMMetadataRef enumerator);
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_DIEnumerator_isUnsigned(LLVMMetadataRef enumerator);
-
-LLVMSHARP_LINKAGE const char* llvmsharp_DIFile_getDirectory(LLVMMetadataRef file, int32_t* out_size);
-
-LLVMSHARP_LINKAGE const char* llvmsharp_DIFile_getFilename(LLVMMetadataRef file, int32_t* out_size);
 
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DIImportedEntity_getEntity(LLVMMetadataRef node);
 
