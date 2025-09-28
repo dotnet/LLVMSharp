@@ -2,10 +2,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace LLVMSharp.Interop;
 
+[DebuggerDisplay(nameof(LLVMModuleRef))] // ToString() will provide the actual content, which might be huge.
 public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquatable<LLVMModuleRef>
 {
     public IntPtr Handle = handle;
