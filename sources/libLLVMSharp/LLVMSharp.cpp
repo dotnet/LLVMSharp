@@ -127,22 +127,6 @@ uint8_t llvmsharp_DIEnumerator_isUnsigned(LLVMMetadataRef enumerator)
     return unwrapped->isUnsigned();
 }
 
-const char* llvmsharp_DIFile_getDirectory(LLVMMetadataRef file, int32_t* out_size)
-{
-    DIFile* unwrapped = unwrap<DIFile>(file);
-    StringRef name = unwrapped->getDirectory();
-    *out_size = (int32_t)name.size();
-    return name.data();
-}
-
-const char* llvmsharp_DIFile_getFilename(LLVMMetadataRef file, int32_t* out_size)
-{
-    DIFile* unwrapped = unwrap<DIFile>(file);
-    StringRef name = unwrapped->getFilename();
-    *out_size = (int32_t)name.size();
-    return name.data();
-}
-
 LLVMMetadataRef llvmsharp_DIImportedEntity_getEntity(LLVMMetadataRef node)
 {
     DIImportedEntity* unwrapped = unwrap<DIImportedEntity>(node);

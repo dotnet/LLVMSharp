@@ -50,14 +50,6 @@ public static unsafe partial class llvmsharp
     [return: NativeTypeName("uint8_t")]
     public static extern byte DIEnumerator_isUnsigned([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* enumerator);
 
-    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DIFile_getDirectory", ExactSpelling = true)]
-    [return: NativeTypeName("const char *")]
-    public static extern sbyte* DIFile_getDirectory([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* file, [NativeTypeName("int32_t *")] int* out_size);
-
-    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DIFile_getFilename", ExactSpelling = true)]
-    [return: NativeTypeName("const char *")]
-    public static extern sbyte* DIFile_getFilename([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* file, [NativeTypeName("int32_t *")] int* out_size);
-
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_DIImportedEntity_getEntity", ExactSpelling = true)]
     [return: NativeTypeName("LLVMMetadataRef")]
     public static extern LLVMOpaqueMetadata* DIImportedEntity_getEntity([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* node);
@@ -195,6 +187,10 @@ public static unsafe partial class llvmsharp
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADINode", ExactSpelling = true)]
     [return: NativeTypeName("LLVMMetadataRef")]
     public static extern LLVMOpaqueMetadata* Metadata_IsADINode([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
+
+    [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADIScope", ExactSpelling = true)]
+    [return: NativeTypeName("LLVMMetadataRef")]
+    public static extern LLVMOpaqueMetadata* Metadata_IsADIScope([NativeTypeName("LLVMMetadataRef")] LLVMOpaqueMetadata* metadata);
 
     [DllImport("libLLVMSharp", CallingConvention = CallingConvention.Cdecl, EntryPoint = "llvmsharp_Metadata_IsADITemplateParameter", ExactSpelling = true)]
     [return: NativeTypeName("LLVMMetadataRef")]

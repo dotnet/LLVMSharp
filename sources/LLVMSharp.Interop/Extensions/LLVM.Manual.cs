@@ -3,12 +3,46 @@
 // Ported from https://github.com/llvm/llvm-project/tree/llvmorg-20.1.2/llvm/include/llvm-c
 // Original source is Copyright (c) the LLVM Project and Contributors. Licensed under the Apache License v2.0 with LLVM Exceptions. See NOTICE.txt in the project root for license information.
 
+using System;
 using System.Runtime.InteropServices;
 
 namespace LLVMSharp.Interop;
 
 public static unsafe partial class LLVM
 {
+    public static string DIFileGetDirectory(LLVMMetadataRef file)
+    {
+        uint length = 0;
+        sbyte* directory = DIFileGetDirectory(file, &length);
+        if (directory == null)
+        {
+            return "";
+        }
+        return new ReadOnlySpan<byte>(directory, (int)length).AsString();
+    }
+
+    public static string DIFileGetFilename(LLVMMetadataRef file)
+    {
+        uint length = 0;
+        sbyte* filename = DIFileGetFilename(file, &length);
+        if (filename == null)
+        {
+            return "";
+        }
+        return new ReadOnlySpan<byte>(filename, (int)length).AsString();
+    }
+
+    public static string DITypeGetName(LLVMMetadataRef type)
+    {
+        nuint length = 0;
+        sbyte* name = DITypeGetName(type, &length);
+        if (name == null)
+        {
+            return "";
+        }
+        return new ReadOnlySpan<byte>(name, (int)length).AsString();
+    }
+
     [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMInitializeAArch64TargetInfo", ExactSpelling = true)]
     public static extern void InitializeAArch64TargetInfo();
 
