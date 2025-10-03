@@ -1161,4 +1161,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     public readonly void ViewFunctionCFG() => LLVM.ViewFunctionCFG(this);
 
     public readonly void ViewFunctionCFGOnly() => LLVM.ViewFunctionCFGOnly(this);
+
+    public readonly LLVMTypeRef GetFunctionType() => LLVM.TypeOf(this);
+
+    public readonly LLVMTypeRef GetReturnType() => LLVM.GetReturnType(LLVM.TypeOf(this));
 }
