@@ -28,4 +28,36 @@ public class Functions
         var attrs = functionValue.GetAttributesAtIndex((LLVMAttributeIndex)1);
         Assert.That((AttributeKind)attrs[0].KindAsEnum, Is.EqualTo(AttributeKind.ByVal));
     }
+
+    [Test]
+    public void LibLLVMSharp_GetFunctionType()
+    {
+        var module = LLVMModuleRef.CreateWithName("Test Module");
+        var returnType = LLVMTypeRef.Int32;
+        var paramTypes = new[] { LLVMTypeRef.Int32, LLVMTypeRef.Int32 };
+        var functionType = LLVMTypeRef.CreateFunction(returnType, paramTypes);
+        var functionValue = module.AddFunction("add", functionType);
+        
+        var retrievedFunctionType = functionValue.GetFunctionType();
+        
+        Assert.That(retrievedFunctionType.Kind, Is.EqualTo(LLVMTypeKind.LLVMFunctionTypeKind));
+        
+        Assert.That(retrievedFunctionType.GetReturnType().Kind, Is.EqualTo(LLVMTypeKind.LLVMIntegerTypeKind));
+        
+        Assert.That(retrievedFunctionType.ParamTypesCount, Is.EqualTo(2));
+    }
+
+    [Test]
+    public void LibLLVMSharp_GetReturnType()
+    {
+        var module = LLVMModuleRef.CreateWithName("Test Module");
+        var returnType = LLVMTypeRef.Int32;
+        var functionType = LLVMTypeRef.CreateFunction(returnType, [LLVMTypeRef.Int32, LLVMTypeRef.Int32]);
+        var functionValue = module.AddFunction("add", functionType);
+        
+        var retrievedReturnType = functionValue.GetReturnType();
+        
+        Assert.That(retrievedReturnType.Kind, Is.EqualTo(LLVMTypeKind.LLVMIntegerTypeKind));
+        Assert.That(retrievedReturnType.Handle, Is.EqualTo(returnType.Handle));
+    }
 }
