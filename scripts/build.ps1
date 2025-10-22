@@ -103,7 +103,7 @@ try {
   $RepoRoot = Join-Path -Path $PSScriptRoot -ChildPath ".."
 
   if ($solution -eq "") {
-    $solution = Join-Path -Path $RepoRoot -ChildPath "LLVMSharp.sln"
+    $solution = Join-Path -Path $RepoRoot -ChildPath "LLVMSharp.slnx"
   }
 
   $ArtifactsDir = Join-Path -Path $RepoRoot -ChildPath "artifacts"
