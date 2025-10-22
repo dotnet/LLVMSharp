@@ -184,7 +184,7 @@ fi
 RepoRoot="$ScriptRoot/.."
 
 if [[ -z "$solution" ]]; then
-  solution="$RepoRoot/LLVMSharp.sln"
+  solution="$RepoRoot/LLVMSharp.slnx"
 fi
 
 ArtifactsDir="$RepoRoot/artifacts"
