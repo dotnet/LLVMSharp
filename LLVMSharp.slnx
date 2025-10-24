@@ -25,6 +25,28 @@
     <File Path="packages/libLLVM/libLLVM/LICENSE.TXT" />
     <File Path="packages/libLLVM/libLLVM/runtime.json" />
   </Folder>
+  <Folder Name="/packages/libLLVMSharp/" />
+  <Folder Name="/packages/libLLVMSharp/libLLVMSharp.runtime.linux-arm64/">
+    <File Path="packages/libLLVMSharp/libLLVMSharp.runtime.linux-arm64/libLLVMSharp.runtime.linux-arm64.nuspec" />
+  </Folder>
+  <Folder Name="/packages/libLLVMSharp/libLLVMSharp.runtime.linux-x64/">
+    <File Path="packages/libLLVMSharp/libLLVMSharp.runtime.linux-x64/libLLVMSharp.runtime.linux-x64.nuspec" />
+  </Folder>
+  <Folder Name="/packages/libLLVMSharp/libLLVMSharp.runtime.osx-arm64/">
+    <File Path="packages/libLLVMSharp/libLLVMSharp.runtime.osx-arm64/libLLVMSharp.runtime.osx-arm64.nuspec" />
+  </Folder>
+  <Folder Name="/packages/libLLVMSharp/libLLVMSharp.runtime.win-arm64/">
+    <File Path="packages/libLLVMSharp/libLLVMSharp.runtime.win-arm64/libLLVMSharp.runtime.win-arm64.nuspec" />
+  </Folder>
+  <Folder Name="/packages/libLLVMSharp/libLLVMSharp.runtime.win-x64/">
+    <File Path="packages/libLLVMSharp/libLLVMSharp.runtime.win-x64/libLLVMSharp.runtime.win-x64.nuspec" />
+  </Folder>
+  <Folder Name="/packages/libLLVMSharp/libLLVMSharp/">
+    <File Path="packages/libLLVMSharp/libLLVMSharp/libLLVMSharp.nuspec" />
+    <File Path="packages/libLLVMSharp/libLLVMSharp/LICENSE.TXT" />
+    <File Path="packages/libLLVMSharp/libLLVMSharp/NOTICE.txt" />
+    <File Path="packages/libLLVMSharp/libLLVMSharp/runtime.json" />
+  </Folder>
   <Folder Name="/scripts/">
     <File Path="scripts/build.ps1" />
     <File Path="scripts/build.sh" />
