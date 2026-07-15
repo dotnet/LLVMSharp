@@ -22,4 +22,6 @@ public sealed class AllocaInst : UnaryInstruction
             Handle.SetAlignment(value);
         }
     }
+
+    public Type AllocatedType => Context.GetOrCreate(Handle.AllocatedType);
 }

@@ -10,6 +10,20 @@ public class CallInst : CallBase
     {
     }
 
+    public bool IsTailCall
+    {
+        get
+        {
+            return Handle.IsTailCall;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.IsTailCall = value;
+        }
+    }
+
     internal static new CallInst Create(LLVMValueRef handle) => handle switch
     {
         _ when handle.IsAIntrinsicInst != null => IntrinsicInst.Create(handle),

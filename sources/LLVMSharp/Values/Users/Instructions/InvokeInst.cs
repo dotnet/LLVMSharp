@@ -9,4 +9,8 @@ public sealed class InvokeInst : CallBase
     internal InvokeInst(LLVMValueRef handle) : base(handle.IsAInvokeInst)
     {
     }
+
+    public BasicBlock NormalDest => Context.GetOrCreate(Handle.NormalDest);
+
+    public BasicBlock UnwindDest => Context.GetOrCreate(Handle.UnwindDest);
 }

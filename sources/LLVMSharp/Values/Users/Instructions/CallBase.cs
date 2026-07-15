@@ -11,6 +11,8 @@ public class CallBase : Instruction
     {
     }
 
+    public uint ArgOperandsCount => Handle.ArgOperandsCount;
+
     public LLVMCallConv CallingConvention
     {
         get
@@ -43,4 +45,10 @@ public class CallBase : Instruction
 
         return attributes;
     }
+
+    public FunctionType CalledFunctionType => Context.GetOrCreate<FunctionType>(Handle.CalledFunctionType);
+
+    public Value CalledOperand => Context.GetOrCreate(Handle.CalledValue);
+
+    public Value GetArgOperand(uint index) => Context.GetOrCreate(Handle.GetArgOperand(index));
 }

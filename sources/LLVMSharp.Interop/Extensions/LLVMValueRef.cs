@@ -39,6 +39,10 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         }
     }
 
+    public readonly LLVMTypeRef AllocatedType => (IsAAllocaInst != null) ? LLVM.GetAllocatedType(this) : default;
+
+    public readonly uint ArgOperandsCount => ((IsACallInst != null) || (IsAInvokeInst != null) || (IsACallBrInst != null)) ? LLVM.GetNumArgOperands(this) : default;
+
     public readonly LLVMAtomicRMWBinOp AtomicRMWBinOp
     {
         get
@@ -57,6 +61,36 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     public readonly LLVMBasicBlockRef BlockAddressBasicBlock => (IsABlockAddress != null) ? LLVM.GetBlockAddressBasicBlock(this) : default;
 
     public readonly LLVMValueRef BlockAddressFunction => (IsABlockAddress != null) ? LLVM.GetBlockAddressFunction(this) : default;
+
+    public readonly LLVMTypeRef CalledFunctionType => ((IsACallInst != null) || (IsAInvokeInst != null) || (IsACallBrInst != null)) ? LLVM.GetCalledFunctionType(this) : default;
+
+    public readonly LLVMValueRef CalledValue => ((IsACallInst != null) || (IsAInvokeInst != null) || (IsACallBrInst != null)) ? LLVM.GetCalledValue(this) : default;
+
+    public readonly LLVMAtomicOrdering CmpXchgFailureOrdering
+    {
+        get
+        {
+            return (IsAAtomicCmpXchgInst != null) ? LLVM.GetCmpXchgFailureOrdering(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetCmpXchgFailureOrdering(this, value);
+        }
+    }
+
+    public readonly LLVMAtomicOrdering CmpXchgSuccessOrdering
+    {
+        get
+        {
+            return (IsAAtomicCmpXchgInst != null) ? LLVM.GetCmpXchgSuccessOrdering(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetCmpXchgSuccessOrdering(this, value);
+        }
+    }
 
     public readonly LLVMValueRef Condition
     {
@@ -166,6 +200,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
             LLVM.SetGC(this, marshaledName);
         }
     }
+
+    public readonly LLVMTypeRef GEPSourceElementType => (IsAGetElementPtrInst != null) ? LLVM.GetGEPSourceElementType(this) : default;
 
     public readonly LLVMValueRef GlobalIFuncResolver
     {
@@ -570,9 +606,26 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMValueRef NextParam => (IsAArgument != null) ? LLVM.GetNextParam(this) : default;
 
+    public readonly LLVMBasicBlockRef NormalDest => (IsAInvokeInst != null) ? LLVM.GetNormalDest(this) : default;
+
+    public readonly uint NumClauses => (IsALandingPadInst != null) ? LLVM.GetNumClauses(this) : default;
+
     public readonly LLVMOpcode Opcode => Kind is LLVMValueKind.LLVMInstructionValueKind ? InstructionOpcode : ConstOpcode;
 
     public readonly int OperandCount => ((Kind == LLVMValueKind.LLVMMetadataAsValueValueKind) || (IsAUser != null)) ? LLVM.GetNumOperands(this) : default;
+
+    public readonly LLVMAtomicOrdering Ordering
+    {
+        get
+        {
+            return ((IsALoadInst != null) || (IsAStoreInst != null) || (IsAFenceInst != null) || (IsAAtomicRMWInst != null)) ? LLVM.GetOrdering(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetOrdering(this, value);
+        }
+    }
 
     public readonly uint ParamsCount => (IsAFunction != null) ? LLVM.CountParams(this) : default;
 
@@ -678,6 +731,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
             LLVM.SetUnnamedAddress(this, value);
         }
     }
+
+    public readonly LLVMBasicBlockRef UnwindDest => ((IsAInvokeInst != null) || (IsACatchSwitchInst != null) || (IsACleanupReturnInst != null)) ? LLVM.GetUnwindDest(this) : default;
 
     public readonly LLVMValueUsesEnumerable Uses => new LLVMValueUsesEnumerable(this);
 
@@ -1234,6 +1289,10 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     }
 
     public readonly LLVMValueRef GetAggregateElement(uint idx) => LLVM.GetAggregateElement(this, idx);
+
+    public readonly LLVMValueRef GetArgOperand(uint index) => LLVM.GetArgOperand(this, index);
+
+    public readonly LLVMValueRef GetClause(uint index) => LLVM.GetClause(this, index);
 
     [Obsolete("Use GetAggregateElement instead")]
     public readonly LLVMValueRef GetElementAsConstant(uint idx) => LLVM.GetElementAsConstant(this, idx);

@@ -9,4 +9,6 @@ public sealed class ReturnInst : Instruction
     internal ReturnInst(LLVMValueRef handle) : base(handle.IsAReturnInst)
     {
     }
+
+    public Value? ReturnValue => (NumOperands == 0) ? null : GetOperand(0);
 }

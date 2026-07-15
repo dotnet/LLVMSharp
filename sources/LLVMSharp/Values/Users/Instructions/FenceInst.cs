@@ -9,4 +9,18 @@ public sealed class FenceInst : Instruction
     internal FenceInst(LLVMValueRef handle) : base(handle.IsAFenceInst)
     {
     }
+
+    public AtomicOrdering Ordering
+    {
+        get
+        {
+            return (AtomicOrdering)Handle.Ordering;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.Ordering = (LLVMAtomicOrdering)value;
+        }
+    }
 }

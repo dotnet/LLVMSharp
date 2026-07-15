@@ -9,4 +9,6 @@ public sealed class GetElementPtrInst : Instruction
     internal GetElementPtrInst(LLVMValueRef handle) : base(handle.IsAGetElementPtrInst)
     {
     }
+
+    public Type SourceElementType => Context.GetOrCreate(Handle.GEPSourceElementType);
 }
