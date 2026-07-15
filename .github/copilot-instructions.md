@@ -13,7 +13,7 @@ so you edit the right layer and validate correctly.
 | `sources/LLVMSharp.Interop/llvm/` | **Auto-generated** raw LLVM-C interop (from `sources/GenerateLLVM.rsp`; headers `Ported from llvm-project`). | **No** — regenerate, don't hand-edit. |
 | `sources/LLVMSharp.Interop/llvmsharp/` | **Auto-generated** raw interop for the `libLLVMSharp` native helper (from `sources/GenerateLLVMSharp.rsp`). | **No** — regenerate. |
 | `sources/LLVMSharp.Interop/{Manual,Extensions,Internals}/` | Hand-written interop helpers (typed handles like `LLVMValueRef`, extension methods, marshalling). | Yes. |
-| `sources/libLLVMSharp/` | Native C++ helper (CMake) exposing APIs missing from the LLVM-C API. Nascent; not yet packaged. Requires building LLVM. | Yes, for native surface. |
+| `sources/libLLVMSharp/` | Native C++ helper (CMake) exposing APIs missing from the LLVM-C API. Packaged as `libLLVMSharp.runtime.*` via `regenerate-native.yml`. Requires an LLVM release to build against. | Yes, for native surface. |
 | `tests/LLVMSharp.UnitTests/` | NUnit tests. `Interop/` + `InteropTests/` are generated interop tests; the rest are hand-written. | Yes. |
 
 If a change belongs in `sources/LLVMSharp.Interop/llvm/` (or `.../llvmsharp/`), it almost always belongs
@@ -78,10 +78,17 @@ these in the rsp; don't drop them expecting an external profile to supply them.
 ## Sibling repo — keep infra in sync with ClangSharp
 
 LLVMSharp shares its build/packaging infrastructure with **ClangSharp** and should stay in sync with it
-(props/targets, `scripts/`, `.github/workflows/ci.yml`, `global.json`), adjusting only for genuine per-repo
-differences. Notably, LLVMSharp publishes only agnostic managed packages (`LLVMSharp`,
-`LLVMSharp.Interop`) — it has no per-RID runtime packages — so it does **not** carry ClangSharp's
-per-platform package upload globs, and it has no `win32metadata` regression test.
+(props/targets, `scripts/`, `.github/workflows/*.yml`, `global.json`), adjusting only for genuine per-repo
+differences. Notably, LLVMSharp's `ci.yml` publishes only agnostic managed packages (`LLVMSharp`,
+`LLVMSharp.Interop`) — it has no per-RID runtime packages in that pipeline, so it does **not** carry
+ClangSharp's per-platform package upload globs there, and it has no `win32metadata` regression test.
+
+The native runtime packages (`libLLVM.runtime.*`, `libLLVMSharp.runtime.*`) are produced by the separate
+`.github/workflows/regenerate-native.yml` (mirroring ClangSharp's), with a key divergence: the official
+LLVM releases only ship a shared `libLLVM` on Windows (`LLVM-C.dll`), so Linux/macOS are lifted from
+apt.llvm.org (`libllvm<major>`) and Homebrew (`llvm`) respectively — which makes libLLVM a native-runner
+matrix rather than ClangSharp's single-Windows-runner libclang lift. `libLLVMSharp` compiles against the
+LLVM release the same way ClangSharp's `libClangSharp` does. See README's "Regenerating native binaries".
 
 Target the **same LLVM release that ClangSharp targets for Clang**. Version/packaging lives in
 `Directory.Build.props` (`VersionPrefix`) and `Directory.Packages.props` (`libLLVM` pin); bump them together,
