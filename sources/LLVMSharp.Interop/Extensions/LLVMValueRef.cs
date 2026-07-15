@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using static LLVMSharp.Interop.LLVMTailCallKind;
 
@@ -852,9 +853,13 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
                                             or LLVMTypeKind.LLVMFP128TypeKind
                                             or LLVMTypeKind.LLVMPPC_FP128TypeKind))
         {
-            throw new ArgumentException($"Expected a floating-point type, but was given '{RealTy.Kind}'. Use {nameof(CreateConstInt)} to create integer constants.", paramName);
+            ThrowNotFloatingPointType(RealTy, paramName);
         }
     }
+
+    [DoesNotReturn]
+    private static void ThrowNotFloatingPointType(LLVMTypeRef RealTy, string paramName) =>
+        throw new ArgumentException($"Expected a floating-point type, but was given '{RealTy.Kind}'. Use {nameof(CreateConstInt)} to create integer constants.", paramName);
 
     // libLLVM's ConstInt family maps onto ConstantInt::get via unwrap<IntegerType>, so it requires
     // an integer type; anything else silently produces corrupt IR (e.g. 'i0 0' for a double type)
@@ -864,27 +869,39 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     {
         if (IntTy.Kind is not LLVMTypeKind.LLVMIntegerTypeKind)
         {
-            throw new ArgumentException($"Expected an integer type, but was given '{IntTy.Kind}'. Use {nameof(CreateConstReal)} to create floating-point constants.", paramName);
+            ThrowNotIntegerType(IntTy, paramName);
         }
     }
+
+    [DoesNotReturn]
+    private static void ThrowNotIntegerType(LLVMTypeRef IntTy, string paramName) =>
+        throw new ArgumentException($"Expected an integer type, but was given '{IntTy.Kind}'. Use {nameof(CreateConstReal)} to create floating-point constants.", paramName);
 
     // Mirrors LLVM's isIntOrIntVectorTy assert on ConstantExpr::getIntToPtr/getPtrToInt.
     private static void ThrowIfNotIntOrIntVectorType(LLVMTypeRef Ty, string paramName)
     {
         if (GetScalarType(Ty).Kind is not LLVMTypeKind.LLVMIntegerTypeKind)
         {
-            throw new ArgumentException($"Expected an integer or integer vector type, but was given '{Ty.Kind}'.", paramName);
+            ThrowNotIntOrIntVectorType(Ty, paramName);
         }
     }
+
+    [DoesNotReturn]
+    private static void ThrowNotIntOrIntVectorType(LLVMTypeRef Ty, string paramName) =>
+        throw new ArgumentException($"Expected an integer or integer vector type, but was given '{Ty.Kind}'.", paramName);
 
     // Mirrors LLVM's isPtrOrPtrVectorTy assert on ConstantExpr::getIntToPtr/getPtrToInt.
     private static void ThrowIfNotPtrOrPtrVectorType(LLVMTypeRef Ty, string paramName)
     {
         if (GetScalarType(Ty).Kind is not LLVMTypeKind.LLVMPointerTypeKind)
         {
-            throw new ArgumentException($"Expected a pointer or pointer vector type, but was given '{Ty.Kind}'.", paramName);
+            ThrowNotPtrOrPtrVectorType(Ty, paramName);
         }
     }
+
+    [DoesNotReturn]
+    private static void ThrowNotPtrOrPtrVectorType(LLVMTypeRef Ty, string paramName) =>
+        throw new ArgumentException($"Expected a pointer or pointer vector type, but was given '{Ty.Kind}'.", paramName);
 
     private static LLVMTypeRef GetScalarType(LLVMTypeRef Ty) => Ty.Kind is LLVMTypeKind.LLVMVectorTypeKind or LLVMTypeKind.LLVMScalableVectorTypeKind ? Ty.ElementType : Ty;
 
