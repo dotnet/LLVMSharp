@@ -768,7 +768,13 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         return LLVM.ConstIntOfStringAndSize(IntTy, marshaledText, (uint)marshaledText.Length, Radix);
     }
 
-    public static LLVMValueRef CreateConstIntToPtr(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstIntToPtr(ConstantVal, ToType);
+    public static LLVMValueRef CreateConstIntToPtr(LLVMValueRef ConstantVal, LLVMTypeRef ToType)
+    {
+        // Mirrors ConstantExpr::getIntToPtr: integer source, pointer destination.
+        ThrowIfNotIntOrIntVectorType(ConstantVal.TypeOf, nameof(ConstantVal));
+        ThrowIfNotPtrOrPtrVectorType(ToType, nameof(ToType));
+        return LLVM.ConstIntToPtr(ConstantVal, ToType);
+    }
 
     public static LLVMValueRef CreateConstNamedStruct(LLVMTypeRef StructTy, LLVMValueRef[] ConstantVals) => CreateConstNamedStruct(StructTy, ConstantVals.AsSpan());
 
@@ -800,7 +806,13 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public static LLVMValueRef CreateConstPointerNull(LLVMTypeRef Ty) => LLVM.ConstPointerNull(Ty);
 
-    public static LLVMValueRef CreateConstPtrToInt(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstPtrToInt(ConstantVal, ToType);
+    public static LLVMValueRef CreateConstPtrToInt(LLVMValueRef ConstantVal, LLVMTypeRef ToType)
+    {
+        // Mirrors ConstantExpr::getPtrToInt: pointer source, integer destination.
+        ThrowIfNotPtrOrPtrVectorType(ConstantVal.TypeOf, nameof(ConstantVal));
+        ThrowIfNotIntOrIntVectorType(ToType, nameof(ToType));
+        return LLVM.ConstPtrToInt(ConstantVal, ToType);
+    }
 
     public static LLVMValueRef CreateConstReal(LLVMTypeRef RealTy, double N)
     {
@@ -832,15 +844,13 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     // a clear error instead of the raw binding corrupting IR or crashing.
     private static void ThrowIfNotFloatingPointType(LLVMTypeRef RealTy, string paramName)
     {
-        var scalarTy = RealTy.Kind is LLVMTypeKind.LLVMVectorTypeKind or LLVMTypeKind.LLVMScalableVectorTypeKind ? RealTy.ElementType : RealTy;
-
-        if (scalarTy.Kind is not (LLVMTypeKind.LLVMHalfTypeKind
-                               or LLVMTypeKind.LLVMBFloatTypeKind
-                               or LLVMTypeKind.LLVMFloatTypeKind
-                               or LLVMTypeKind.LLVMDoubleTypeKind
-                               or LLVMTypeKind.LLVMX86_FP80TypeKind
-                               or LLVMTypeKind.LLVMFP128TypeKind
-                               or LLVMTypeKind.LLVMPPC_FP128TypeKind))
+        if (GetScalarType(RealTy).Kind is not (LLVMTypeKind.LLVMHalfTypeKind
+                                            or LLVMTypeKind.LLVMBFloatTypeKind
+                                            or LLVMTypeKind.LLVMFloatTypeKind
+                                            or LLVMTypeKind.LLVMDoubleTypeKind
+                                            or LLVMTypeKind.LLVMX86_FP80TypeKind
+                                            or LLVMTypeKind.LLVMFP128TypeKind
+                                            or LLVMTypeKind.LLVMPPC_FP128TypeKind))
         {
             throw new ArgumentException($"Expected a floating-point type, but was given '{RealTy.Kind}'. Use {nameof(CreateConstInt)} to create integer constants.", paramName);
         }
@@ -857,6 +867,26 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
             throw new ArgumentException($"Expected an integer type, but was given '{IntTy.Kind}'. Use {nameof(CreateConstReal)} to create floating-point constants.", paramName);
         }
     }
+
+    // Mirrors LLVM's isIntOrIntVectorTy assert on ConstantExpr::getIntToPtr/getPtrToInt.
+    private static void ThrowIfNotIntOrIntVectorType(LLVMTypeRef Ty, string paramName)
+    {
+        if (GetScalarType(Ty).Kind is not LLVMTypeKind.LLVMIntegerTypeKind)
+        {
+            throw new ArgumentException($"Expected an integer or integer vector type, but was given '{Ty.Kind}'.", paramName);
+        }
+    }
+
+    // Mirrors LLVM's isPtrOrPtrVectorTy assert on ConstantExpr::getIntToPtr/getPtrToInt.
+    private static void ThrowIfNotPtrOrPtrVectorType(LLVMTypeRef Ty, string paramName)
+    {
+        if (GetScalarType(Ty).Kind is not LLVMTypeKind.LLVMPointerTypeKind)
+        {
+            throw new ArgumentException($"Expected a pointer or pointer vector type, but was given '{Ty.Kind}'.", paramName);
+        }
+    }
+
+    private static LLVMTypeRef GetScalarType(LLVMTypeRef Ty) => Ty.Kind is LLVMTypeKind.LLVMVectorTypeKind or LLVMTypeKind.LLVMScalableVectorTypeKind ? Ty.ElementType : Ty;
 
     public static LLVMValueRef CreateConstShuffleVector(LLVMValueRef VectorAConstant, LLVMValueRef VectorBConstant, LLVMValueRef MaskConstant) => LLVM.ConstShuffleVector(VectorAConstant, VectorBConstant, MaskConstant);
 

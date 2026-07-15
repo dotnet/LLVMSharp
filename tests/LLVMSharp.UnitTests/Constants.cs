@@ -39,4 +39,41 @@ public class Constants
         var value = LLVMValueRef.CreateConstInt(LLVMTypeRef.Int32, 8);
         Assert.That(value.Handle, Is.Not.EqualTo(IntPtr.Zero));
     }
+
+    [Test]
+    public void CreateConstIntToPtrRejectsNonIntegerSource()
+    {
+        // Mirrors ConstantExpr::getIntToPtr's "source must be integer" assert.
+        var ptrTy = LLVMTypeRef.CreatePointer(LLVMTypeRef.Int8, 0);
+        var notAnInt = LLVMValueRef.CreateConstNull(ptrTy);
+        var ex = Assert.Throws<ArgumentException>(() => LLVMValueRef.CreateConstIntToPtr(notAnInt, ptrTy));
+        Assert.That(ex!.ParamName, Is.EqualTo("ConstantVal"));
+    }
+
+    [Test]
+    public void CreateConstIntToPtrRejectsNonPointerDestination()
+    {
+        // Mirrors ConstantExpr::getIntToPtr's "destination must be a pointer" assert.
+        var intVal = LLVMValueRef.CreateConstInt(LLVMTypeRef.Int64, 0);
+        var ex = Assert.Throws<ArgumentException>(() => LLVMValueRef.CreateConstIntToPtr(intVal, LLVMTypeRef.Int32));
+        Assert.That(ex!.ParamName, Is.EqualTo("ToType"));
+    }
+
+    [Test]
+    public void CreateConstPtrToIntRejectsNonPointerSource()
+    {
+        // Mirrors ConstantExpr::getPtrToInt's "source must be pointer" assert.
+        var intVal = LLVMValueRef.CreateConstInt(LLVMTypeRef.Int64, 0);
+        var ex = Assert.Throws<ArgumentException>(() => LLVMValueRef.CreateConstPtrToInt(intVal, LLVMTypeRef.Int32));
+        Assert.That(ex!.ParamName, Is.EqualTo("ConstantVal"));
+    }
+
+    [Test]
+    public void CreateConstPtrToIntAcceptsPointerSourceAndIntegerDestination()
+    {
+        var ptrTy = LLVMTypeRef.CreatePointer(LLVMTypeRef.Int8, 0);
+        var ptrVal = LLVMValueRef.CreateConstNull(ptrTy);
+        var value = LLVMValueRef.CreateConstPtrToInt(ptrVal, LLVMTypeRef.Int64);
+        Assert.That(value.Handle, Is.Not.EqualTo(IntPtr.Zero));
+    }
 }
