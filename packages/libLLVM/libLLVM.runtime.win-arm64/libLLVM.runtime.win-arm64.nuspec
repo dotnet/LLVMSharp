@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata minClientVersion="2.12">
     <id>libLLVM.runtime.win-arm64</id>
-    <version>20.1.2</version>
+    <version>21.1.8</version>
     <authors>.NET Foundation and Contributors</authors>
     <owners>.NET Foundation and Contributors</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -10,10 +10,10 @@
     <projectUrl>https://github.com/dotnet/llvmsharp</projectUrl>
     <description>win arm64 native library for libLLVM.</description>
     <copyright>Copyright © LLVM Project</copyright>
-    <repository type="git" url="https://github.com/llvm/llvm-project" branch="llvmorg-20.1.2" />
+    <repository type="git" url="https://github.com/llvm/llvm-project" branch="llvmorg-21.1.8" />
   </metadata>
   <files>
     <file src="..\libLLVM\LICENSE.TXT" target="LICENSE.TXT" />
-    <file src="libLLVM.dll" target="runtimes\win-arm64\native\libLLVM.dll" />
+    <file src="LLVM-C.dll" target="runtimes\win-arm64\native\LLVM-C.dll" />
   </files>
 </package>

@@ -1,0 +1,2 @@
+**/LLVM-C.dll
+**/libLLVMSharp.dll
