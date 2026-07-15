@@ -39,6 +39,8 @@ public class Parser(Lexer lexer, IDictionary<char, int> binaryOpPrecedence) : Ch
     //   ::= 'binary' <op> [precedence] '(' id id ')'
     protected override PrototypeAST? ParsePrototype()
     {
+        int line = CurrentLocation.Line;
+
         string functionName;
         int kind; // 0 = identifier, 1 = unary operator, 2 = binary operator.
         int binaryPrecedence = 30;
@@ -123,7 +125,7 @@ public class Parser(Lexer lexer, IDictionary<char, int> binaryOpPrecedence) : Ch
             return LogErrorProto("Invalid number of operands for operator");
         }
 
-        var prototype = new PrototypeAST(functionName, argNames, IsOperator: kind != 0, binaryPrecedence);
+        var prototype = new PrototypeAST(functionName, argNames, IsOperator: kind != 0, binaryPrecedence) { Line = line };
 
         // Make a user-defined binary operator usable in the input that follows its definition.
         if (prototype.IsBinaryOperator)

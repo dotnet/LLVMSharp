@@ -3,7 +3,14 @@
 namespace Kaleidoscope.AST;
 
 /// <summary>Base class for all expression nodes.</summary>
-public abstract record ExprAST;
+public abstract record ExprAST
+{
+    /// <summary>
+    /// Where this node came from in the source. The parser stamps it (chapter 9); a
+    /// <see cref="SourceLocation.Line"/> of 0 means untracked, and earlier chapters simply ignore it.
+    /// </summary>
+    public SourceLocation Location { get; init; }
+}
 
 /// <summary>A numeric literal, e.g. <c>1.0</c> (chapter 3).</summary>
 public sealed record NumberExprAST(double Value) : ExprAST;

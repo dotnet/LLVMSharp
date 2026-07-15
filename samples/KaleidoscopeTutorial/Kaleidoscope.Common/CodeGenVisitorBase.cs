@@ -34,18 +34,32 @@ public abstract class CodeGenVisitorBase
     }
 
     /// <summary>Generates code for an expression, dispatching to the chapter-specific override.</summary>
-    public LLVMValueRef Codegen(ExprAST node) => node switch
+    public LLVMValueRef Codegen(ExprAST node)
     {
-        NumberExprAST n => CodegenNumber(n),
-        VariableExprAST n => CodegenVariable(n),
-        BinaryExprAST n => CodegenBinary(n),
-        UnaryExprAST n => CodegenUnary(n),
-        CallExprAST n => CodegenCall(n),
-        IfExprAST n => CodegenIf(n),
-        ForExprAST n => CodegenFor(n),
-        VarExprAST n => CodegenVar(n),
-        _ => throw Unsupported(node),
-    };
+        // Chapter 9 overrides this to attach a debug location before the node's code is emitted.
+        EmitLocation(node);
+
+        return node switch
+        {
+            NumberExprAST n => CodegenNumber(n),
+            VariableExprAST n => CodegenVariable(n),
+            BinaryExprAST n => CodegenBinary(n),
+            UnaryExprAST n => CodegenUnary(n),
+            CallExprAST n => CodegenCall(n),
+            IfExprAST n => CodegenIf(n),
+            ForExprAST n => CodegenFor(n),
+            VarExprAST n => CodegenVar(n),
+            _ => throw Unsupported(node),
+        };
+    }
+
+    /// <summary>
+    /// Hook called for every expression just before its code is generated. The debug-info chapter
+    /// overrides it to set the builder's current debug location; other chapters leave it a no-op.
+    /// </summary>
+    protected virtual void EmitLocation(ExprAST node)
+    {
+    }
 
     /// <summary>Emits a declaration for an <c>extern</c> and remembers it for later modules.</summary>
     public LLVMValueRef CodegenExtern(PrototypeAST node)

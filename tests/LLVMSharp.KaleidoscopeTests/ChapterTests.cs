@@ -135,6 +135,34 @@ public sealed class ChapterTests
         }
     }
 
+    [Test]
+    public void Chapter9_EmitsDebugInfo()
+    {
+        var workingDirectory = Directory.CreateTempSubdirectory("kaleidoscope-ch9-").FullName;
+
+        try
+        {
+            var output = RunChapter("Chapter9", "def fib(n) if n < 3 then 1 else fib(n - 1) + fib(n - 2);", workingDirectory);
+            var objectFile = Path.Combine(workingDirectory, "output.o");
+
+            Assert.Multiple(() =>
+            {
+                // The emitted IR carries DWARF metadata: a compile unit, a subprogram, a parameter
+                // variable, and a source location on the function's instructions.
+                Assert.That(output, Does.Contain("!DICompileUnit"));
+                Assert.That(output, Does.Contain("!DISubprogram(name: \"fib\""));
+                Assert.That(output, Does.Contain("!DILocalVariable(name: \"n\""));
+                Assert.That(output, Does.Contain("!dbg"));
+                Assert.That(File.Exists(objectFile), Is.True, "expected output.o to be emitted");
+                Assert.That(new FileInfo(objectFile).Length, Is.GreaterThan(0), "output.o should not be empty");
+            });
+        }
+        finally
+        {
+            Directory.Delete(workingDirectory, recursive: true);
+        }
+    }
+
     private static string RunChapter(string chapter, string input, string? workingDirectory = null)
     {
         var assembly = LocateChapterAssembly(chapter);
