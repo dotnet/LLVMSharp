@@ -2,13 +2,11 @@
 
 LLVMSharp is a multi-platform .NET Standard library for accessing the LLVM infrastructure. The bindings are auto-generated using [ClangSharp](https://github.com/dotnet/clangsharp) parsing LLVM-C header files.
 
-![ci](https://github.com/dotnet/clangsharp/workflows/ci/badge.svg?branch=main&event=push)
+![ci](https://github.com/dotnet/llvmsharp/workflows/ci/badge.svg?branch=main&event=push)
 
 A nuget package for the project is provided here: https://www.nuget.org/packages/llvmsharp.
 
 A convenience package which provides the native libLLVM library for several platforms is provided here: https://www.nuget.org/packages/libLLVM
-
-Nightly packages are available via the NuGet Feed URL: https://pkgs.clangsharp.dev/index.json
 
 Source browsing is available via: https://source.clangsharp.dev/
 
