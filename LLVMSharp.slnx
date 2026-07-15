@@ -47,6 +47,17 @@
     <File Path="packages/libLLVMSharp/libLLVMSharp/NOTICE.txt" />
     <File Path="packages/libLLVMSharp/libLLVMSharp/runtime.json" />
   </Folder>
+  <Folder Name="/samples/">
+    <File Path="samples/KaleidoscopeTutorial/Directory.Build.props" />
+    <File Path="samples/KaleidoscopeTutorial/README.md" />
+    <Project Path="samples/KaleidoscopeTutorial/Kaleidoscope.Common/Kaleidoscope.Common.csproj" />
+    <Project Path="samples/KaleidoscopeTutorial/Chapter3/Chapter3.csproj" />
+    <Project Path="samples/KaleidoscopeTutorial/Chapter4/Chapter4.csproj" />
+    <Project Path="samples/KaleidoscopeTutorial/Chapter5/Chapter5.csproj" />
+    <Project Path="samples/KaleidoscopeTutorial/Chapter6/Chapter6.csproj" />
+    <Project Path="samples/KaleidoscopeTutorial/Chapter7/Chapter7.csproj" />
+    <Project Path="samples/KaleidoscopeTutorial/Chapter8/Chapter8.csproj" />
+  </Folder>
   <Folder Name="/scripts/">
     <File Path="scripts/build.ps1" />
     <File Path="scripts/build.sh" />
@@ -89,5 +100,6 @@
     <File Path="tests/Directory.Build.props" />
     <File Path="tests/Directory.Build.targets" />
     <Project Path="tests/LLVMSharp.UnitTests/LLVMSharp.UnitTests.csproj" />
+    <Project Path="tests/LLVMSharp.KaleidoscopeTests/LLVMSharp.KaleidoscopeTests.csproj" />
   </Folder>
 </Solution>

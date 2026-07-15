@@ -78,6 +78,17 @@ echo "def average(x y) (x + y) * 0.5;" | dotnet run --project Chapter8 -c Releas
 The resulting object exports `average` with C ABI (`double average(double, double)`), so it can be
 linked into a C/C++ program.
 
+## Tests
+
+These samples are part of the root `LLVMSharp.slnx`, so they build and are validated in CI. The
+`LLVMSharp.KaleidoscopeTests` project under `tests/` launches each chapter as a subprocess, feeds it a
+Kaleidoscope script, and asserts on the emitted IR / evaluated results / object file. Run them with:
+
+```
+dotnet build -c Release
+dotnet test -c Release --no-build --filter "FullyQualifiedName~KaleidoscopeTests"
+```
+
 ## Notes
 
 - **JIT.** Execution uses ORC LLJIT (`Kaleidoscope.Common/KaleidoscopeJit.cs`). Each top-level
