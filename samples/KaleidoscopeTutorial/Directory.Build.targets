@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <!--
+    Imported late (after the SDK targets), so $(NETCoreSdkRuntimeIdentifier) is populated here.
+    The native libLLVM package is a RID-specific metapackage, so a RuntimeIdentifier is required
+    for the native binary to flow into each chapter's output. This mirrors the repo-root targets.
+  -->
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == ''">
+    <RuntimeIdentifier>$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>
+  </PropertyGroup>
+
+</Project>

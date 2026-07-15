@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="Kaleidoscope.Common/Kaleidoscope.Common.csproj" />
+  <Project Path="Chapter3/Chapter3.csproj" />
+  <Project Path="Chapter4/Chapter4.csproj" />
+  <Project Path="Chapter5/Chapter5.csproj" />
+  <Project Path="Chapter6/Chapter6.csproj" />
+  <Project Path="Chapter7/Chapter7.csproj" />
+  <Project Path="Chapter8/Chapter8.csproj" />
+</Solution>
