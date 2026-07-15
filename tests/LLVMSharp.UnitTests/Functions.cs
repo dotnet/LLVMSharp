@@ -28,4 +28,17 @@ public class Functions
         var attrs = functionValue.GetAttributesAtIndex((LLVMAttributeIndex)1);
         Assert.That((AttributeKind)attrs[0].KindAsEnum, Is.EqualTo(AttributeKind.ByVal));
     }
+
+    [Test]
+    public void GlobalValueTypeReturnsFunctionType()
+    {
+        var module = LLVMModuleRef.CreateWithName("Test Module");
+        var functionType = LLVMTypeRef.CreateFunction(LLVMTypeRef.Int32, [LLVMTypeRef.CreatePointer(LLVMTypeRef.Int8, 0)], IsVarArg: true);
+        var functionValue = module.AddFunction("printf", functionType);
+
+        // Under opaque pointers TypeOf is an opaque pointer, so callers need
+        // GlobalValueType to recover the actual function type for BuildCall2.
+        Assert.That(functionValue.TypeOf.Kind, Is.EqualTo(LLVMTypeKind.LLVMPointerTypeKind));
+        Assert.That(functionValue.GlobalValueType, Is.EqualTo(functionType));
+    }
 }
