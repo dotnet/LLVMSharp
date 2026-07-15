@@ -47,6 +47,13 @@ public static unsafe class LlvmSupport
             LLVMCodeModel.LLVMCodeModelDefault);
     }
 
+    /// <summary>Stamps a module with the target triple and data layout for object-file emission.</summary>
+    public static void PrepareModuleForEmit(LLVMModuleRef module, LLVMTargetMachineRef targetMachine)
+    {
+        module.Target = LLVMTargetRef.DefaultTriple;
+        LLVM.SetModuleDataLayout(module, targetMachine.CreateTargetDataLayout());
+    }
+
     /// <summary>Throws if <paramref name="error"/> is non-null, consuming and freeing the error message.</summary>
     public static void ThrowIfError(LLVMOpaqueError* error, string context)
     {

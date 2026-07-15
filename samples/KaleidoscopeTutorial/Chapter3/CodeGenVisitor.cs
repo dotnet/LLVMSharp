@@ -120,11 +120,7 @@ public class CodeGenVisitor : CodeGenVisitorBase
         LLVMBasicBlockRef entry = function.AppendBasicBlock("entry");
         Builder.PositionAtEnd(entry);
 
-        NamedValues.Clear();
-        for (int i = 0; i < node.Proto.Arguments.Count; i++)
-        {
-            NamedValues[node.Proto.Arguments[i]] = function.GetParam((uint)i);
-        }
+        CreateParameterBindings(function, node.Proto);
 
         try
         {
@@ -138,6 +134,20 @@ public class CodeGenVisitor : CodeGenVisitorBase
             // Remove the half-built function so the REPL can keep going after an error.
             function.DeleteFunction();
             throw;
+        }
+    }
+
+    /// <summary>
+    /// Binds the function's parameters into <see cref="CodeGenVisitorBase.NamedValues"/> before the body
+    /// is generated. Chapter 3 binds the SSA parameter values directly; chapter 7 overrides this to give
+    /// each parameter a stack slot so it can be reassigned.
+    /// </summary>
+    protected virtual void CreateParameterBindings(LLVMValueRef function, PrototypeAST proto)
+    {
+        NamedValues.Clear();
+        for (int i = 0; i < proto.Arguments.Count; i++)
+        {
+            NamedValues[proto.Arguments[i]] = function.GetParam((uint)i);
         }
     }
 }
