@@ -16,6 +16,9 @@ public sealed record PrototypeAST(
 
     public bool IsBinaryOperator => IsOperator && Arguments.Count == 2;
 
+    /// <summary>Source line the definition starts on, stamped by the parser (chapter 9); 0 if untracked.</summary>
+    public int Line { get; init; }
+
     /// <summary>The operator character for an operator prototype (the last char of the name).</summary>
     public char OperatorName => Name[^1];
 }

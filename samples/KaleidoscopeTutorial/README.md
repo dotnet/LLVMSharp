@@ -21,11 +21,13 @@ Chapter5/                Add control flow: if/then/else and for loops.
 Chapter6/                Add user-defined unary and binary operators.
 Chapter7/                Add mutable variables (alloca + mem2reg) and assignment.
 Chapter8/                Compile a whole program to a native object file.
+Chapter9/                Emit DWARF debug information alongside the object file.
 ```
 
 Each chapter references the previous one, so `Chapter7` transitively sees `Chapter3`–`Chapter6` and
 `Kaleidoscope.Common`. Chapters 4 and 8 are purely a new driver over the previous chapter's frontend;
-Chapters 5–7 add grammar and codegen.
+Chapters 5–7 add grammar and codegen. Chapter 9 is chapter 8's batch compiler with debug info layered
+on, so it references both Chapter 7 (frontend + codegen) and Chapter 8 (the object-file driver).
 
 ### Chapter ↔ tutorial mapping
 
@@ -37,8 +39,12 @@ Chapters 5–7 add grammar and codegen.
 | 6 | Ch. 6 | User-defined operators, operator precedence |
 | 7 | Ch. 7 | Mutable variables, `var`/`in`, `=` assignment |
 | 8 | Ch. 8 | Native object-file emission |
+| 9 | Ch. 9 | DWARF debug information (compile unit, subprograms, locals, locations) |
 
-The tutorial's Chapter 9 (debug info / DWARF) and Chapter 10 (conclusion) are not ported.
+The tutorial's [Chapter 10](https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/LangImpl10.html) is a
+prose conclusion (properties of SSA, tail calls, garbage collection, exception handling, and other places
+to take a language) rather than a code delta, so there is no `Chapter10` project — see
+[Where to go from here](#where-to-go-from-here) below.
 
 ## Running
 
@@ -78,6 +84,30 @@ echo "def average(x y) (x + y) * 0.5;" | dotnet run --project Chapter8 -c Releas
 The resulting object exports `average` with C ABI (`double average(double, double)`), so it can be
 linked into a C/C++ program.
 
+Chapter 9 is the same batch compiler with debug information: the emitted IR carries a `DICompileUnit`,
+one `DISubprogram` per function, a `DILocalVariable` per parameter, and a `!dbg` source location on every
+instruction, so the resulting object can be stepped through in a debugger.
+
+```
+echo "def fib(n) if n < 3 then 1 else fib(n - 1) + fib(n - 2);" | dotnet run --project Chapter9 -c Release
+```
+
+## Where to go from here
+
+The upstream tutorial's Chapter 10 has no accompanying code — it is a conclusion pointing at directions a
+real language would explore next. All of these are expressible with LLVMSharp's interop:
+
+- **Global variables, typed values, and aggregates** — Kaleidoscope only has `double`; a real frontend
+  tracks types and builds structs/arrays with `LLVMTypeRef`/`BuildGEP2`.
+- **Garbage collection** — LLVM's statepoint/`gc` intrinsics and stack maps are exposed through the C API.
+- **Exception handling** — `invoke`/`landingpad` and the `llvm.eh.*` intrinsics.
+- **Debugger integration and optimization** — build on Chapter 9's debug info and tune the pass pipeline
+  in `Kaleidoscope.Common`.
+
+See the upstream
+[Chapter 10 write-up](https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/LangImpl10.html) for the full
+discussion.
+
 ## Tests
 
 These samples are part of the root `LLVMSharp.slnx`, so they build and are validated in CI. The
@@ -99,5 +129,8 @@ dotnet test -c Release --no-build --filter "FullyQualifiedName~KaleidoscopeTests
   so the tutorial's `printstar`/`printd` examples work.
 - **Optimizer.** Chapters 4+ run the new pass-manager pipeline
   (`mem2reg,instcombine,reassociate,gvn,simplifycfg`) via `LLVM.RunPasses`.
+- **Debug info.** Chapter 9 threads a `SourceLocation` through the shared lexer/parser/AST and translates
+  it into DWARF via `LLVMDIBuilderRef`. The location plumbing lives in `Kaleidoscope.Common` (an inert
+  `EmitLocation` hook on the base `CodeGenVisitor`), so chapters 3–8 are unaffected.
 - The interop under `../../sources/LLVMSharp.Interop/llvm` is auto-generated; these samples only use the
   hand-written friendly wrappers and the raw ORC C API.

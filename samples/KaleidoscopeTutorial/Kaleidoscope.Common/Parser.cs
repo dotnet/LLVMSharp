@@ -19,6 +19,9 @@ public class Parser
 
     protected Lexer Lexer { get; }
 
+    /// <summary>Source location of the token the lexer is currently sitting on (chapter 9).</summary>
+    protected SourceLocation CurrentLocation => Lexer.TokenLocation;
+
     // definition ::= 'def' prototype expression
     public FunctionAST? ParseDefinition()
     {
@@ -51,7 +54,7 @@ public class Parser
         }
 
         // Make an anonymous prototype so a top-level expression can be JIT-compiled and called.
-        var proto = new PrototypeAST(AnonymousExpressionName, Array.Empty<string>());
+        var proto = new PrototypeAST(AnonymousExpressionName, Array.Empty<string>()) { Line = expr.Location.Line };
         return new FunctionAST(proto, expr);
     }
 
@@ -70,8 +73,17 @@ public class Parser
     // expression ::= unary binoprhs
     protected ExprAST? ParseExpression()
     {
+        SourceLocation location = CurrentLocation;
+
         ExprAST? lhs = ParseUnary();
-        return lhs is null ? null : ParseBinOpRHS(0, lhs);
+        if (lhs is null)
+        {
+            return null;
+        }
+
+        // Stamp the outermost node (e.g. a chapter-6 unary) with the start of the expression when a
+        // more specific production hasn't already recorded a location.
+        return StampLocation(ParseBinOpRHS(0, lhs), location);
     }
 
     // primary
@@ -81,13 +93,15 @@ public class Parser
     //   ::= <chapter-specific keyword forms>
     protected virtual ExprAST? ParsePrimary()
     {
+        SourceLocation location = CurrentLocation;
+
         switch (Lexer.CurrentToken)
         {
             case (int)Token.Identifier:
-                return ParseIdentifierExpr();
+                return StampLocation(ParseIdentifierExpr(), location);
 
             case (int)Token.Number:
-                return ParseNumberExpr();
+                return StampLocation(ParseNumberExpr(), location);
 
             case '(':
                 return ParseParenExpr();
@@ -95,12 +109,19 @@ public class Parser
             default:
                 if (TryParseKeywordPrimary(Lexer.CurrentToken, out ExprAST? result))
                 {
-                    return result;
+                    return StampLocation(result, location);
                 }
 
                 return LogError("unknown token when expecting an expression");
         }
     }
+
+    /// <summary>
+    /// Records <paramref name="location"/> on <paramref name="node"/> unless it already carries one.
+    /// Chapter 9 uses these locations to emit debug info; earlier chapters ignore them entirely.
+    /// </summary>
+    protected static ExprAST? StampLocation(ExprAST? node, SourceLocation location) =>
+        node is null || node.Location.Line != 0 ? node : node with { Location = location };
 
     /// <summary>Hook for chapters that add primary forms (if/for in ch5, var in ch7).</summary>
     protected virtual bool TryParseKeywordPrimary(int token, out ExprAST? result)
@@ -126,6 +147,7 @@ public class Parser
             }
 
             int binaryOp = Lexer.CurrentToken;
+            SourceLocation operatorLocation = CurrentLocation;
             Lexer.GetNextToken(); // eat binop.
 
             ExprAST? rhs = ParseUnary();
@@ -145,13 +167,15 @@ public class Parser
                 }
             }
 
-            lhs = new BinaryExprAST((char)binaryOp, lhs, rhs);
+            lhs = new BinaryExprAST((char)binaryOp, lhs, rhs) { Location = operatorLocation };
         }
     }
 
     // prototype ::= id '(' id* ')'. Chapter 6 overrides this to parse operator prototypes.
     protected virtual PrototypeAST? ParsePrototype()
     {
+        int line = CurrentLocation.Line;
+
         if (Lexer.CurrentToken != (int)Token.Identifier)
         {
             return LogErrorProto("Expected function name in prototype");
@@ -177,7 +201,7 @@ public class Parser
         }
 
         Lexer.GetNextToken(); // eat ')'.
-        return new PrototypeAST(fnName, argNames);
+        return new PrototypeAST(fnName, argNames) { Line = line };
     }
 
     // numberexpr ::= number

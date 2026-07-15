@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chapter7\Chapter7.csproj" />
+    <ProjectReference Include="..\Chapter8\Chapter8.csproj" />
+  </ItemGroup>
+</Project>

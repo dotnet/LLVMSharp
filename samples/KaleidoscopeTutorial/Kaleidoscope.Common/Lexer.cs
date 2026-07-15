@@ -2,6 +2,7 @@
 
 using System.Globalization;
 using System.Text;
+using Kaleidoscope.AST;
 
 namespace Kaleidoscope;
 
@@ -19,6 +20,8 @@ public sealed class Lexer
     private readonly StringBuilder _builder = new();
 
     private int _lastChar = ' ';
+    private int _line = 1;
+    private int _column;
 
     public Lexer(TextReader reader, IReadOnlyDictionary<char, int> binaryOpPrecedence)
     {
@@ -28,6 +31,12 @@ public sealed class Lexer
 
     /// <summary>The most recently scanned token. Positive values are literal characters.</summary>
     public int CurrentToken { get; private set; }
+
+    /// <summary>
+    /// Source location of the token in <see cref="CurrentToken"/> (chapter 9). Only the debug-info
+    /// chapter consults it; every other chapter ignores it.
+    /// </summary>
+    public SourceLocation TokenLocation { get; private set; } = new(1, 0);
 
     /// <summary>The identifier text for the most recent <see cref="Token.Identifier"/>.</summary>
     public string LastIdentifier { get; private set; } = string.Empty;
@@ -58,8 +67,11 @@ public sealed class Lexer
         // Skip any whitespace.
         while (char.IsWhiteSpace((char)_lastChar))
         {
-            _lastChar = _reader.Read();
+            _lastChar = Advance();
         }
+
+        // Record where this token begins so chapter 9 can attach debug locations.
+        TokenLocation = new SourceLocation(_line, _column);
 
         // identifier: [a-zA-Z][a-zA-Z0-9]*
         if (char.IsLetter((char)_lastChar))
@@ -68,7 +80,7 @@ public sealed class Lexer
             do
             {
                 _builder.Append((char)_lastChar);
-                _lastChar = _reader.Read();
+                _lastChar = Advance();
             }
             while (char.IsLetterOrDigit((char)_lastChar));
 
@@ -97,7 +109,7 @@ public sealed class Lexer
             do
             {
                 _builder.Append((char)_lastChar);
-                _lastChar = _reader.Read();
+                _lastChar = Advance();
             }
             while (char.IsDigit((char)_lastChar) || _lastChar == '.');
 
@@ -110,7 +122,7 @@ public sealed class Lexer
         {
             do
             {
-                _lastChar = _reader.Read();
+                _lastChar = Advance();
             }
             while (_lastChar != Eof && _lastChar != '\n' && _lastChar != '\r');
 
@@ -128,7 +140,25 @@ public sealed class Lexer
 
         // Otherwise, return the character as its ASCII value.
         int thisChar = _lastChar;
-        _lastChar = _reader.Read();
+        _lastChar = Advance();
         return thisChar;
+    }
+
+    /// <summary>Reads the next character, tracking line and column for <see cref="TokenLocation"/>.</summary>
+    private int Advance()
+    {
+        int next = _reader.Read();
+
+        if (next == '\n')
+        {
+            _line++;
+            _column = 0;
+        }
+        else if (next != Eof)
+        {
+            _column++;
+        }
+
+        return next;
     }
 }
