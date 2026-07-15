@@ -19,6 +19,14 @@ public sealed class LLVMContext : IEquatable<LLVMContext>
 
     public LLVMContextRef Handle { get; }
 
+    public Attribute CreateEnumAttribute(uint kindId, ulong value) => new Attribute(Handle.CreateEnumAttribute(kindId, value));
+
+    public Attribute CreateEnumAttribute(ReadOnlySpan<char> name, ulong value) => new Attribute(Handle.CreateEnumAttribute(name, value));
+
+    public Attribute CreateStringAttribute(ReadOnlySpan<char> kind, ReadOnlySpan<char> value) => new Attribute(Handle.CreateStringAttribute(kind, value));
+
+    public static uint GetEnumAttributeKindForName(ReadOnlySpan<char> name) => LLVMContextRef.GetEnumAttributeKindForName(name);
+
     public static bool operator ==(LLVMContext? left, LLVMContext? right) => ReferenceEquals(left, right) || (left?.Handle == right?.Handle);
 
     public static bool operator !=(LLVMContext? left, LLVMContext? right) => !(left == right);
