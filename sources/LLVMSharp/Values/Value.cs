@@ -18,6 +18,12 @@ public class Value : IEquatable<Value>
 
     public LLVMValueRef Handle { get; }
 
+    public void ReplaceAllUsesWith(Value newValue)
+    {
+        ArgumentNullException.ThrowIfNull(newValue);
+        Handle.ReplaceAllUsesWith(newValue.Handle);
+    }
+
     public static bool operator ==(Value? left, Value? right) => ReferenceEquals(left, right) || (left?.Handle == right?.Handle);
 
     public static bool operator !=(Value? left, Value? right) => !(left == right);

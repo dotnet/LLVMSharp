@@ -1149,6 +1149,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly void InstructionEraseFromParent() => LLVM.InstructionEraseFromParent(this);
 
+    public readonly void InstructionRemoveFromParent() => LLVM.InstructionRemoveFromParent(this);
+
     public readonly string PrintToString()
     {
         var pStr = LLVM.PrintValueToString(this);

@@ -10,6 +10,10 @@ public partial class Instruction : User
     {
     }
 
+    public void EraseFromParent() => Handle.InstructionEraseFromParent();
+
+    public void RemoveFromParent() => Handle.InstructionRemoveFromParent();
+
     internal static new Instruction Create(LLVMValueRef handle) => handle switch
     {
         _ when handle.IsAUnaryOperator != null => new UnaryOperator(handle),
