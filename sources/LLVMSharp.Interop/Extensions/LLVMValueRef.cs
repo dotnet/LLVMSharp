@@ -795,12 +795,17 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public static LLVMValueRef CreateConstPtrToInt(LLVMValueRef ConstantVal, LLVMTypeRef ToType) => LLVM.ConstPtrToInt(ConstantVal, ToType);
 
-    public static LLVMValueRef CreateConstReal(LLVMTypeRef RealTy, double N) => LLVM.ConstReal(RealTy, N);
+    public static LLVMValueRef CreateConstReal(LLVMTypeRef RealTy, double N)
+    {
+        ThrowIfNotFloatingPointType(RealTy, nameof(RealTy));
+        return LLVM.ConstReal(RealTy, N);
+    }
 
     public static LLVMValueRef CreateConstRealOfString(LLVMTypeRef RealTy, string Text) => CreateConstRealOfString(RealTy, Text.AsSpan());
 
     public static LLVMValueRef CreateConstRealOfString(LLVMTypeRef RealTy, ReadOnlySpan<char> Text)
     {
+        ThrowIfNotFloatingPointType(RealTy, nameof(RealTy));
         using var marshaledText = new MarshaledString(Text);
         return LLVM.ConstRealOfString(RealTy, marshaledText);
     }
@@ -809,8 +814,29 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public static LLVMValueRef CreateConstRealOfStringAndSize(LLVMTypeRef RealTy, ReadOnlySpan<char> Text)
     {
+        ThrowIfNotFloatingPointType(RealTy, nameof(RealTy));
         using var marshaledText = new MarshaledString(Text);
         return LLVM.ConstRealOfStringAndSize(RealTy, marshaledText, (uint)marshaledText.Length);
+    }
+
+    // libLLVM's ConstReal family maps onto ConstantFP::get, which requires a floating-point
+    // (or floating-point vector) type; anything else asserts in a checked build and is undefined
+    // behavior otherwise -- see dotnet/LLVMSharp#194. Catch it here so the safer wrapper surfaces
+    // a clear error instead of the raw binding corrupting IR or crashing.
+    private static void ThrowIfNotFloatingPointType(LLVMTypeRef RealTy, string paramName)
+    {
+        var scalarTy = RealTy.Kind is LLVMTypeKind.LLVMVectorTypeKind or LLVMTypeKind.LLVMScalableVectorTypeKind ? RealTy.ElementType : RealTy;
+
+        if (scalarTy.Kind is not (LLVMTypeKind.LLVMHalfTypeKind
+                               or LLVMTypeKind.LLVMBFloatTypeKind
+                               or LLVMTypeKind.LLVMFloatTypeKind
+                               or LLVMTypeKind.LLVMDoubleTypeKind
+                               or LLVMTypeKind.LLVMX86_FP80TypeKind
+                               or LLVMTypeKind.LLVMFP128TypeKind
+                               or LLVMTypeKind.LLVMPPC_FP128TypeKind))
+        {
+            throw new ArgumentException($"Expected a floating-point type, but was given '{RealTy.Kind}'. Use {nameof(CreateConstInt)} to create integer constants.", paramName);
+        }
     }
 
     public static LLVMValueRef CreateConstShuffleVector(LLVMValueRef VectorAConstant, LLVMValueRef VectorBConstant, LLVMValueRef MaskConstant) => LLVM.ConstShuffleVector(VectorAConstant, VectorBConstant, MaskConstant);
