@@ -13,13 +13,17 @@
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/Function.h>
+#include <llvm/IR/GlobalValue.h>
 #include <llvm/IR/GlobalVariable.h>
+#include <llvm/IR/InstrTypes.h>
 #include <llvm/IR/LegacyPassManager.h>
 #include <llvm/IR/Module.h>
 #include <llvm-c/Core.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/Demangle/Demangle.h>
+#include <llvm/Support/TypeSize.h>
 #include <cstddef>
+#include <cstring>
 #include <string>
 #include <string_view>
 #include <llvm/Transforms/Scalar.h>
@@ -37,6 +41,56 @@ using namespace llvm;
 DEFINE_ISA_CONVERSION_FUNCTIONS(Pass, LLVMPassRef)
 
 // Implementation code
+
+uint8_t llvmsharp_CallBase_isIndirectCall(LLVMValueRef call)
+{
+    CallBase* unwrapped = unwrap<CallBase>(call);
+    return unwrapped->isIndirectCall() ? 1 : 0;
+}
+
+int32_t llvmsharp_CmpInst_getInversePredicate(LLVMValueRef instruction)
+{
+    CmpInst* unwrapped = unwrap<CmpInst>(instruction);
+    return (int32_t)unwrapped->getInversePredicate();
+}
+
+const char* llvmsharp_CmpInst_getPredicateName(LLVMValueRef instruction, int32_t* out_size)
+{
+    CmpInst* unwrapped = unwrap<CmpInst>(instruction);
+    StringRef name = CmpInst::getPredicateName(unwrapped->getPredicate());
+    *out_size = (int32_t)name.size();
+    return name.data();
+}
+
+int32_t llvmsharp_CmpInst_getSwappedPredicate(LLVMValueRef instruction)
+{
+    CmpInst* unwrapped = unwrap<CmpInst>(instruction);
+    return (int32_t)unwrapped->getSwappedPredicate();
+}
+
+uint8_t llvmsharp_CmpInst_isFalseWhenEqual(LLVMValueRef instruction)
+{
+    CmpInst* unwrapped = unwrap<CmpInst>(instruction);
+    return unwrapped->isFalseWhenEqual() ? 1 : 0;
+}
+
+uint8_t llvmsharp_CmpInst_isSigned(LLVMValueRef instruction)
+{
+    CmpInst* unwrapped = unwrap<CmpInst>(instruction);
+    return unwrapped->isSigned() ? 1 : 0;
+}
+
+uint8_t llvmsharp_CmpInst_isTrueWhenEqual(LLVMValueRef instruction)
+{
+    CmpInst* unwrapped = unwrap<CmpInst>(instruction);
+    return unwrapped->isTrueWhenEqual() ? 1 : 0;
+}
+
+uint8_t llvmsharp_CmpInst_isUnsigned(LLVMValueRef instruction)
+{
+    CmpInst* unwrapped = unwrap<CmpInst>(instruction);
+    return unwrapped->isUnsigned() ? 1 : 0;
+}
 
 const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef array, int32_t* out_size)
 {
@@ -337,6 +391,18 @@ LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef function)
     return wrap(type);
 }
 
+uint32_t llvmsharp_GlobalValue_getAddressSpace(LLVMValueRef global_value)
+{
+    GlobalValue* unwrapped = unwrap<GlobalValue>(global_value);
+    return unwrapped->getAddressSpace();
+}
+
+uint8_t llvmsharp_GlobalValue_isDSOLocal(LLVMValueRef global_value)
+{
+    GlobalValue* unwrapped = unwrap<GlobalValue>(global_value);
+    return unwrapped->isDSOLocal() ? 1 : 0;
+}
+
 LLVMMetadataRef llvmsharp_GlobalVariable_getGlobalVariableExpression(LLVMValueRef global_variable)
 {
     LLVMMetadataRef unwrapped = llvmsharp_GlobalVariable_getMetadata(global_variable, LLVMContext::MD_dbg);
@@ -356,16 +422,36 @@ LLVMMetadataRef llvmsharp_GlobalVariable_getMetadata(LLVMValueRef global_variabl
     return wrap(unwrapped->getMetadata(KindID));
 }
 
-uint8_t llvmsharp_Instruction_hasNoSignedWrap(LLVMValueRef instruction)
+const char* llvmsharp_Instruction_getOpcodeName(LLVMValueRef instruction, int32_t* out_size)
 {
     Instruction* unwrapped = unwrap<Instruction>(instruction);
-    return unwrapped->hasNoSignedWrap() ? 1 : 0;
+    const char* name = unwrapped->getOpcodeName();
+    *out_size = (int32_t)strlen(name);
+    return name;
 }
 
-uint8_t llvmsharp_Instruction_hasNoUnsignedWrap(LLVMValueRef instruction)
+uint8_t llvmsharp_Instruction_isCommutative(LLVMValueRef instruction)
 {
     Instruction* unwrapped = unwrap<Instruction>(instruction);
-    return unwrapped->hasNoUnsignedWrap() ? 1 : 0;
+    return unwrapped->isCommutative() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Instruction_mayHaveSideEffects(LLVMValueRef instruction)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->mayHaveSideEffects() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Instruction_mayReadFromMemory(LLVMValueRef instruction)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->mayReadFromMemory() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Instruction_mayWriteToMemory(LLVMValueRef instruction)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->mayWriteToMemory() ? 1 : 0;
 }
 
 uint32_t llvmsharp_MDNode_getNumOperands(LLVMMetadataRef metadata)
@@ -427,6 +513,32 @@ void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef module, LLVMTypeRef
 void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass)
 {
     unwrap(pass_manager)->add(unwrap(pass));
+}
+
+uint64_t llvmsharp_Type_getPrimitiveSizeInBits(LLVMTypeRef type, uint8_t* out_isScalable)
+{
+    Type* unwrapped = unwrap(type);
+    TypeSize size = unwrapped->getPrimitiveSizeInBits();
+    *out_isScalable = size.isScalable() ? 1 : 0;
+    return size.getKnownMinValue();
+}
+
+uint32_t llvmsharp_Type_getScalarSizeInBits(LLVMTypeRef type)
+{
+    Type* unwrapped = unwrap(type);
+    return unwrapped->getScalarSizeInBits();
+}
+
+uint32_t llvmsharp_Value_getNumUses(LLVMValueRef value)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    return (uint32_t)unwrapped->getNumUses();
+}
+
+LLVMValueRef llvmsharp_Value_stripPointerCasts(LLVMValueRef value)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    return wrap(unwrapped->stripPointerCasts());
 }
 
 LLVMPassRef llvmsharp_createDeadCodeEliminationPass()

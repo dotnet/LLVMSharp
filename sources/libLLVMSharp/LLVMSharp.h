@@ -78,6 +78,22 @@ LLVM_CLANG_C_EXTERN_C_BEGIN
 
 // Function declarations
 
+LLVMSHARP_LINKAGE uint8_t llvmsharp_CallBase_isIndirectCall(LLVMValueRef call);
+
+LLVMSHARP_LINKAGE int32_t llvmsharp_CmpInst_getInversePredicate(LLVMValueRef instruction);
+
+LLVMSHARP_LINKAGE const char* llvmsharp_CmpInst_getPredicateName(LLVMValueRef instruction, int32_t* out_size);
+
+LLVMSHARP_LINKAGE int32_t llvmsharp_CmpInst_getSwappedPredicate(LLVMValueRef instruction);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_CmpInst_isFalseWhenEqual(LLVMValueRef instruction);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_CmpInst_isSigned(LLVMValueRef instruction);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_CmpInst_isTrueWhenEqual(LLVMValueRef instruction);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_CmpInst_isUnsigned(LLVMValueRef instruction);
+
 LLVMSHARP_LINKAGE const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef array, int32_t* out_size);
 
 LLVMSHARP_LINKAGE uint32_t llvmsharp_DIBasicType_getEncoding(LLVMMetadataRef type);
@@ -152,13 +168,23 @@ LLVMSHARP_LINKAGE LLVMTypeRef llvmsharp_Function_getFunctionType(LLVMValueRef fu
 
 LLVMSHARP_LINKAGE LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef function);
 
+LLVMSHARP_LINKAGE uint32_t llvmsharp_GlobalValue_getAddressSpace(LLVMValueRef global_value);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_GlobalValue_isDSOLocal(LLVMValueRef global_value);
+
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_GlobalVariable_getGlobalVariableExpression(LLVMValueRef global_variable);
 
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_GlobalVariable_getMetadata(LLVMValueRef global_variable, uint32_t KindID);
 
-LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_hasNoSignedWrap(LLVMValueRef instruction);
+LLVMSHARP_LINKAGE const char* llvmsharp_Instruction_getOpcodeName(LLVMValueRef instruction, int32_t* out_size);
 
-LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_hasNoUnsignedWrap(LLVMValueRef instruction);
+LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_isCommutative(LLVMValueRef instruction);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_mayHaveSideEffects(LLVMValueRef instruction);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_mayReadFromMemory(LLVMValueRef instruction);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_mayWriteToMemory(LLVMValueRef instruction);
 
 LLVMSHARP_LINKAGE uint32_t llvmsharp_MDNode_getNumOperands(LLVMMetadataRef metadata);
 
@@ -175,6 +201,14 @@ LLVM_FOR_EACH_METADATA_SUBCLASS(LLVMSHARP_METADATA_ISA)
 LLVMSHARP_LINKAGE void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef module, LLVMTypeRef** out_buffer, int32_t* out_size);
 
 LLVMSHARP_LINKAGE void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass);
+
+LLVMSHARP_LINKAGE uint64_t llvmsharp_Type_getPrimitiveSizeInBits(LLVMTypeRef type, uint8_t* out_isScalable);
+
+LLVMSHARP_LINKAGE uint32_t llvmsharp_Type_getScalarSizeInBits(LLVMTypeRef type);
+
+LLVMSHARP_LINKAGE uint32_t llvmsharp_Value_getNumUses(LLVMValueRef value);
+
+LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_Value_stripPointerCasts(LLVMValueRef value);
 
 LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createDeadCodeEliminationPass();
 
