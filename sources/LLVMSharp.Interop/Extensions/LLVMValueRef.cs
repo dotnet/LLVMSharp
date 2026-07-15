@@ -1067,6 +1067,10 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly uint GetAttributeCountAtIndex(LLVMAttributeIndex Idx) => LLVM.GetAttributeCountAtIndex(this, Idx);
 
+    public readonly LLVMAttributeRef GetEnumAttributeAtIndex(LLVMAttributeIndex Idx, uint KindId) => LLVM.GetEnumAttributeAtIndex(this, Idx, KindId);
+
+    public readonly void RemoveEnumAttributeAtIndex(LLVMAttributeIndex Idx, uint KindId) => LLVM.RemoveEnumAttributeAtIndex(this, Idx, KindId);
+
     public readonly LLVMValueRef GetBlockAddress(LLVMBasicBlockRef BB) => LLVM.BlockAddress(this, BB);
 
     public readonly uint GetCallSiteAttributeCount(LLVMAttributeIndex Idx) => LLVM.GetCallSiteAttributeCount(this, Idx);

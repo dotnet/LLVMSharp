@@ -84,6 +84,24 @@ public unsafe partial struct LLVMContextRef(IntPtr handle) : IDisposable, IEquat
         return LLVM.CreateEnumAttribute(this, KindId, Val);
     }
 
+    public static uint GetEnumAttributeKindForName(ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.GetEnumAttributeKindForName(marshaledName, (nuint)marshaledName.Length);
+    }
+
+    public readonly LLVMAttributeRef CreateEnumAttribute(ReadOnlySpan<char> Name, ulong Val)
+    {
+        return CreateEnumAttribute(GetEnumAttributeKindForName(Name), Val);
+    }
+
+    public readonly LLVMAttributeRef CreateStringAttribute(ReadOnlySpan<char> Kind, ReadOnlySpan<char> Value)
+    {
+        using var marshaledKind = new MarshaledString(Kind);
+        using var marshaledValue = new MarshaledString(Value);
+        return LLVM.CreateStringAttribute(this, marshaledKind, (uint)marshaledKind.Length, marshaledValue, (uint)marshaledValue.Length);
+    }
+
     public void Dispose()
     {
         if (Handle != IntPtr.Zero)

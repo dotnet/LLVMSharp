@@ -7,7 +7,26 @@ namespace LLVMSharp;
 
 public sealed class Attribute : IEquatable<Attribute>
 {
+    internal Attribute(LLVMAttributeRef handle)
+    {
+        Handle = handle;
+    }
+
     public LLVMAttributeRef Handle { get; }
+
+    public bool IsEnumAttribute => Handle.IsEnumAttribute;
+
+    public bool IsStringAttribute => Handle.IsStringAttribute;
+
+    public bool IsTypeAttribute => Handle.IsTypeAttribute;
+
+    public uint KindAsEnum => Handle.KindAsEnum;
+
+    public string KindAsString => Handle.KindAsString;
+
+    public ulong ValueAsInt => Handle.ValueAsInt;
+
+    public string ValueAsString => Handle.ValueAsString;
 
     public static bool operator ==(Attribute? left, Attribute? right) => ReferenceEquals(left, right) || (left?.Handle == right?.Handle);
 
