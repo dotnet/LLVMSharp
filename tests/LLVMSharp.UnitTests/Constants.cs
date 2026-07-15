@@ -24,4 +24,19 @@ public class Constants
         var value = LLVMValueRef.CreateConstReal(ty, 8);
         Assert.That(value.Handle, Is.Not.EqualTo(IntPtr.Zero));
     }
+
+    [Test]
+    public void CreateConstIntRejectsNonIntegerType()
+    {
+        // Integer-side analogue of #194: ConstInt on a non-integer type silently produced 'i0 0'.
+        var ex = Assert.Throws<ArgumentException>(() => LLVMValueRef.CreateConstInt(LLVMTypeRef.Double, 8));
+        Assert.That(ex!.ParamName, Is.EqualTo("IntTy"));
+    }
+
+    [Test]
+    public void CreateConstIntAcceptsIntegerType()
+    {
+        var value = LLVMValueRef.CreateConstInt(LLVMTypeRef.Int32, 8);
+        Assert.That(value.Handle, Is.Not.EqualTo(IntPtr.Zero));
+    }
 }

@@ -733,12 +733,17 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public static LLVMValueRef CreateConstInsertElement(LLVMValueRef VectorConstant, LLVMValueRef ElementValueConstant, LLVMValueRef IndexConstant) => LLVM.ConstInsertElement(VectorConstant, ElementValueConstant, IndexConstant);
 
-    public static LLVMValueRef CreateConstInt(LLVMTypeRef IntTy, ulong N, bool SignExtend = false) => LLVM.ConstInt(IntTy, N, SignExtend ? 1 : 0);
+    public static LLVMValueRef CreateConstInt(LLVMTypeRef IntTy, ulong N, bool SignExtend = false)
+    {
+        ThrowIfNotIntegerType(IntTy, nameof(IntTy));
+        return LLVM.ConstInt(IntTy, N, SignExtend ? 1 : 0);
+    }
 
     public static LLVMValueRef CreateConstIntOfArbitraryPrecision(LLVMTypeRef IntTy, ulong[] Words) => CreateConstIntOfArbitraryPrecision(IntTy, Words.AsSpan());
 
     public static LLVMValueRef CreateConstIntOfArbitraryPrecision(LLVMTypeRef IntTy, ReadOnlySpan<ulong> Words)
     {
+        ThrowIfNotIntegerType(IntTy, nameof(IntTy));
         fixed (ulong* pWords = Words)
         {
             return LLVM.ConstIntOfArbitraryPrecision(IntTy, (uint)Words.Length, pWords);
@@ -749,6 +754,7 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public static LLVMValueRef CreateConstIntOfString(LLVMTypeRef IntTy, ReadOnlySpan<char> Text, byte Radix)
     {
+        ThrowIfNotIntegerType(IntTy, nameof(IntTy));
         using var marshaledText = new MarshaledString(Text);
         return LLVM.ConstIntOfString(IntTy, marshaledText, Radix);
     }
@@ -757,6 +763,7 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public static LLVMValueRef CreateConstIntOfStringAndSize(LLVMTypeRef IntTy, ReadOnlySpan<char> Text, byte Radix)
     {
+        ThrowIfNotIntegerType(IntTy, nameof(IntTy));
         using var marshaledText = new MarshaledString(Text);
         return LLVM.ConstIntOfStringAndSize(IntTy, marshaledText, (uint)marshaledText.Length, Radix);
     }
@@ -836,6 +843,18 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
                                or LLVMTypeKind.LLVMPPC_FP128TypeKind))
         {
             throw new ArgumentException($"Expected a floating-point type, but was given '{RealTy.Kind}'. Use {nameof(CreateConstInt)} to create integer constants.", paramName);
+        }
+    }
+
+    // libLLVM's ConstInt family maps onto ConstantInt::get via unwrap<IntegerType>, so it requires
+    // an integer type; anything else silently produces corrupt IR (e.g. 'i0 0' for a double type)
+    // rather than erroring -- the integer-side analogue of dotnet/LLVMSharp#194. Unlike ConstReal,
+    // these don't accept vector types.
+    private static void ThrowIfNotIntegerType(LLVMTypeRef IntTy, string paramName)
+    {
+        if (IntTy.Kind is not LLVMTypeKind.LLVMIntegerTypeKind)
+        {
+            throw new ArgumentException($"Expected an integer type, but was given '{IntTy.Kind}'. Use {nameof(CreateConstReal)} to create floating-point constants.", paramName);
         }
     }
 
