@@ -23,6 +23,66 @@ public class GlobalValue : Constant
         }
     }
 
+    public LLVMDLLStorageClass DLLStorageClass
+    {
+        get
+        {
+            return Handle.DLLStorageClass;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.DLLStorageClass = value;
+        }
+    }
+
+    public bool IsDeclaration => Handle.IsDeclaration;
+
+    public LLVMLinkage Linkage
+    {
+        get
+        {
+            return Handle.Linkage;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.Linkage = value;
+        }
+    }
+
+    public LLVMUnnamedAddr UnnamedAddress
+    {
+        get
+        {
+            return Handle.UnnamedAddress;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.UnnamedAddress = value;
+        }
+    }
+
+    public Type ValueType => Context.GetOrCreate(Handle.GlobalValueType);
+
+    public LLVMVisibility Visibility
+    {
+        get
+        {
+            return Handle.Visibility;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.Visibility = value;
+        }
+    }
+
     internal static new GlobalValue Create(LLVMValueRef handle) => handle switch
     {
         _ when handle.IsAGlobalAlias != null => new GlobalAlias(handle),

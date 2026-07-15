@@ -10,6 +10,14 @@ public class Constant : User
     {
     }
 
+    public bool IsNullValue => Handle.IsNull;
+
+    public Constant? GetAggregateElement(uint index)
+    {
+        var handle = Handle.GetAggregateElement(index);
+        return (handle == null) ? null : Context.GetOrCreate<Constant>(handle);
+    }
+
     internal static new Constant Create(LLVMValueRef handle) => handle switch
     {
         _ when handle.IsABlockAddress != null => new BlockAddress(handle),

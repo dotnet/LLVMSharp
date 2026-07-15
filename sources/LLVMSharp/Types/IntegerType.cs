@@ -9,4 +9,6 @@ public sealed class IntegerType : Type
     internal IntegerType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMIntegerTypeKind)
     {
     }
+
+    public uint BitWidth => Handle.IntWidth;
 }

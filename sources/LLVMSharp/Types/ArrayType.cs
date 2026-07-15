@@ -9,4 +9,6 @@ public sealed class ArrayType : SequentialType
     internal ArrayType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMArrayTypeKind)
     {
     }
+
+    public ulong NumElements => Handle.ArrayLength2;
 }

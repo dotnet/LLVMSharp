@@ -1,20 +1,31 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using LLVMSharp.Interop;
 
 namespace LLVMSharp;
 
 public sealed class LLVMContext : IEquatable<LLVMContext>
 {
+    private static readonly ConcurrentDictionary<LLVMContextRef, WeakReference<LLVMContext>> s_createdContexts = new ConcurrentDictionary<LLVMContextRef, WeakReference<LLVMContext>>();
+
+    private static readonly Lock s_createContextLock = new Lock();
+
     private readonly Dictionary<LLVMValueRef, WeakReference<Value>> _createdValues = [];
     private readonly Dictionary<LLVMTypeRef, WeakReference<Type>> _createdTypes = [];
 
-    public LLVMContext()
+    public LLVMContext() : this(LLVMContextRef.Create())
     {
-        Handle = LLVMContextRef.Create();
+    }
+
+    private LLVMContext(LLVMContextRef handle)
+    {
+        Handle = handle;
+        s_createdContexts.GetOrAdd(handle, static (_) => new WeakReference<LLVMContext>(null!)).SetTarget(this);
     }
 
     public LLVMContextRef Handle { get; }
@@ -38,6 +49,30 @@ public sealed class LLVMContext : IEquatable<LLVMContext>
     public override int GetHashCode() => Handle.GetHashCode();
 
     public override string ToString() => Handle.ToString();
+
+    internal static LLVMContext GetOrCreate(LLVMContextRef handle)
+    {
+        if (handle == null)
+        {
+            Debug.Assert(handle != null);
+            return null!;
+        }
+
+        var contextRef = s_createdContexts.GetOrAdd(handle, static (_) => new WeakReference<LLVMContext>(null!));
+
+        if (!contextRef.TryGetTarget(out var context))
+        {
+            lock (s_createContextLock)
+            {
+                if (!contextRef.TryGetTarget(out context))
+                {
+                    context = new LLVMContext(handle);
+                    contextRef.SetTarget(context);
+                }
+            }
+        }
+        return context;
+    }
 
     internal BasicBlock GetOrCreate(LLVMBasicBlockRef handle) => GetOrCreate<BasicBlock>(handle.AsValue());
 

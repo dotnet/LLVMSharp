@@ -10,6 +10,8 @@ public class ConstantExpr : Constant
     {
     }
 
+    public LLVMOpcode Opcode => Handle.ConstOpcode;
+
     internal static new ConstantExpr Create(LLVMValueRef handle) => handle switch
     {
         _ => new ConstantExpr(handle),

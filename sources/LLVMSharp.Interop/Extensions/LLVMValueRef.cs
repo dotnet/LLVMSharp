@@ -13,6 +13,19 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 {
     public IntPtr Handle = handle;
 
+    public readonly LLVMValueRef Aliasee
+    {
+        get
+        {
+            return (IsAGlobalAlias != null) ? LLVM.AliasGetAliasee(this) : default;
+        }
+
+        set
+        {
+            LLVM.AliasSetAliasee(this, value);
+        }
+    }
+
     public readonly uint Alignment
     {
         get
@@ -40,6 +53,10 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     }
 
     public readonly uint BasicBlocksCount => (IsAFunction != null) ? LLVM.CountBasicBlocks(this) : default;
+
+    public readonly LLVMBasicBlockRef BlockAddressBasicBlock => (IsABlockAddress != null) ? LLVM.GetBlockAddressBasicBlock(this) : default;
+
+    public readonly LLVMValueRef BlockAddressFunction => (IsABlockAddress != null) ? LLVM.GetBlockAddressFunction(this) : default;
 
     public readonly LLVMValueRef Condition
     {
@@ -147,6 +164,19 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         {
             using var marshaledName = new MarshaledString(value.AsSpan());
             LLVM.SetGC(this, marshaledName);
+        }
+    }
+
+    public readonly LLVMValueRef GlobalIFuncResolver
+    {
+        get
+        {
+            return (IsAGlobalIFunc != null) ? LLVM.GetGlobalIFuncResolver(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetGlobalIFuncResolver(this, value);
         }
     }
 
@@ -635,6 +665,19 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     }
 
     public readonly LLVMTypeRef TypeOf => (Handle != IntPtr.Zero) ? LLVM.TypeOf(this) : default;
+
+    public readonly LLVMUnnamedAddr UnnamedAddress
+    {
+        get
+        {
+            return (IsAGlobalValue != null) ? LLVM.GetUnnamedAddress(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetUnnamedAddress(this, value);
+        }
+    }
 
     public readonly LLVMValueUsesEnumerable Uses => new LLVMValueUsesEnumerable(this);
 

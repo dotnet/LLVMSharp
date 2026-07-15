@@ -9,4 +9,6 @@ public sealed class VectorType : SequentialType
     internal VectorType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMVectorTypeKind)
     {
     }
+
+    public uint NumElements => Handle.VectorSize;
 }

@@ -18,6 +18,30 @@ public class Value : IEquatable<Value>
 
     public LLVMValueRef Handle { get; }
 
+    public LLVMContext Context => LLVMContext.GetOrCreate(Handle.Context);
+
+    public LLVMValueKind Kind => Handle.Kind;
+
+    public string Name
+    {
+        get
+        {
+            return Handle.Name;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.Name = value;
+        }
+    }
+
+    public Type Type => Context.GetOrCreate(Handle.TypeOf);
+
+    public void Dump() => Handle.Dump();
+
+    public string PrintToString() => Handle.PrintToString();
+
     public void ReplaceAllUsesWith(Value newValue)
     {
         ArgumentNullException.ThrowIfNull(newValue);
