@@ -9,4 +9,10 @@ public sealed class SelectInst : Instruction
     internal SelectInst(LLVMValueRef handle) : base(handle.IsASelectInst)
     {
     }
+
+    public Value Condition => GetOperand(0);
+
+    public Value FalseValue => GetOperand(2);
+
+    public Value TrueValue => GetOperand(1);
 }

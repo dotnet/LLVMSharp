@@ -201,4 +201,206 @@ public class ManagedApi
         Assert.That(function.IsDeclaration, Is.False);
         Assert.That(function.GetBasicBlocks().Length, Is.EqualTo(1));
     }
+
+    [Test]
+    public void InstructionCoreAccessors()
+    {
+        var context = new LLVMContext();
+        var module = context.Handle.CreateModuleWithName("m");
+        var int32 = Type.GetInt32Ty(context);
+
+        var functionType = LLVMTypeRef.CreateFunction(int32.Handle, [int32.Handle, int32.Handle], IsVarArg: false);
+        var function = (Function)context.GetOrCreate(module.AddFunction("f", functionType));
+        var entry = function.AppendBasicBlock("entry");
+
+        using var builder = LLVMBuilderRef.Create(context.Handle);
+        builder.PositionAtEnd(entry.Handle);
+
+        var addHandle = builder.BuildAdd(function.GetParam(0).Handle, function.GetParam(1).Handle, "sum");
+        var retHandle = builder.BuildRet(addHandle);
+
+        var add = (Instruction)context.GetOrCreate(addHandle);
+        Assert.That(add.Opcode, Is.EqualTo(LLVMOpcode.LLVMAdd));
+        Assert.That(add.IsTerminator, Is.False);
+        Assert.That(add.Parent, Is.EqualTo(entry));
+
+        var ret = (ReturnInst)context.GetOrCreate(retHandle);
+        Assert.That(ret.IsTerminator, Is.True);
+        Assert.That(ret.Opcode, Is.EqualTo(LLVMOpcode.LLVMRet));
+        Assert.That(ret.ReturnValue, Is.EqualTo(add));
+    }
+
+    [Test]
+    public void MemoryInstructionAccessors()
+    {
+        var context = new LLVMContext();
+        var module = context.Handle.CreateModuleWithName("m");
+        var int32 = Type.GetInt32Ty(context);
+
+        var functionType = LLVMTypeRef.CreateFunction(Type.GetVoidTy(context).Handle, [], IsVarArg: false);
+        var function = (Function)context.GetOrCreate(module.AddFunction("f", functionType));
+        var entry = function.AppendBasicBlock("entry");
+
+        using var builder = LLVMBuilderRef.Create(context.Handle);
+        builder.PositionAtEnd(entry.Handle);
+
+        var alloca = (AllocaInst)context.GetOrCreate(builder.BuildAlloca(int32.Handle, "slot"));
+        alloca.Alignment = 8;
+        Assert.That(alloca.AllocatedType, Is.EqualTo(int32));
+        Assert.That(alloca.Alignment, Is.EqualTo(8u));
+
+        var store = (StoreInst)context.GetOrCreate(builder.BuildStore(LLVMValueRef.CreateConstInt(int32.Handle, 7), alloca.Handle));
+        store.Alignment = 4;
+        store.Volatile = true;
+        store.Ordering = AtomicOrdering.Monotonic;
+        Assert.That(store.Alignment, Is.EqualTo(4u));
+        Assert.That(store.Volatile, Is.True);
+        Assert.That(store.Ordering, Is.EqualTo(AtomicOrdering.Monotonic));
+
+        var load = (LoadInst)context.GetOrCreate(builder.BuildLoad2(int32.Handle, alloca.Handle, "v"));
+        load.Volatile = true;
+        load.Ordering = AtomicOrdering.Acquire;
+        Assert.That(load.Volatile, Is.True);
+        Assert.That(load.Ordering, Is.EqualTo(AtomicOrdering.Acquire));
+    }
+
+    [Test]
+    public void ComparisonInstructionAccessors()
+    {
+        var context = new LLVMContext();
+        var module = context.Handle.CreateModuleWithName("m");
+        var int32 = Type.GetInt32Ty(context);
+        var flt = Type.GetFloatTy(context);
+
+        var functionType = LLVMTypeRef.CreateFunction(Type.GetVoidTy(context).Handle, [int32.Handle, int32.Handle, flt.Handle, flt.Handle], IsVarArg: false);
+        var function = (Function)context.GetOrCreate(module.AddFunction("f", functionType));
+        var entry = function.AppendBasicBlock("entry");
+
+        using var builder = LLVMBuilderRef.Create(context.Handle);
+        builder.PositionAtEnd(entry.Handle);
+
+        var icmpHandle = builder.BuildICmp(LLVMIntPredicate.LLVMIntSLT, function.GetParam(0).Handle, function.GetParam(1).Handle, "c");
+        var icmp = (ICmpInst)context.GetOrCreate(icmpHandle);
+        Assert.That(icmp.GetPredicate(), Is.EqualTo(CmpInst.Predicate.ICMP_SLT));
+
+        var fcmpHandle = builder.BuildFCmp(LLVMRealPredicate.LLVMRealOEQ, function.GetParam(2).Handle, function.GetParam(3).Handle, "f");
+        var fcmp = (FCmpInst)context.GetOrCreate(fcmpHandle);
+        Assert.That(fcmp.GetPredicate(), Is.EqualTo(CmpInst.Predicate.FCMP_OEQ));
+    }
+
+    [Test]
+    public void BranchAndSwitchAccessors()
+    {
+        var context = new LLVMContext();
+        var module = context.Handle.CreateModuleWithName("m");
+        var int32 = Type.GetInt32Ty(context);
+
+        var functionType = LLVMTypeRef.CreateFunction(Type.GetVoidTy(context).Handle, [], IsVarArg: false);
+        var function = (Function)context.GetOrCreate(module.AddFunction("f", functionType));
+        var entry = function.AppendBasicBlock("entry");
+        var ifTrue = function.AppendBasicBlock("true");
+        var ifFalse = function.AppendBasicBlock("false");
+
+        using var builder = LLVMBuilderRef.Create(context.Handle);
+        builder.PositionAtEnd(entry.Handle);
+
+        var cond = builder.BuildICmp(LLVMIntPredicate.LLVMIntSLT, LLVMValueRef.CreateConstInt(int32.Handle, 1), LLVMValueRef.CreateConstInt(int32.Handle, 2), "c");
+        var branch = (BranchInst)context.GetOrCreate(builder.BuildCondBr(cond, ifTrue.Handle, ifFalse.Handle));
+        Assert.That(branch.IsConditional, Is.True);
+        Assert.That(branch.Condition, Is.EqualTo(context.GetOrCreate(cond)));
+        Assert.That(branch.SuccessorsCount, Is.EqualTo(2u));
+        Assert.That(branch.GetSuccessor(0), Is.EqualTo(ifTrue));
+
+        builder.PositionAtEnd(ifTrue.Handle);
+        var switchInst = (SwitchInst)context.GetOrCreate(builder.BuildSwitch(LLVMValueRef.CreateConstInt(int32.Handle, 0), ifFalse.Handle, 1));
+        switchInst.AddCase((ConstantInt)context.GetOrCreate(LLVMValueRef.CreateConstInt(int32.Handle, 1)), entry);
+        Assert.That(switchInst.DefaultDest, Is.EqualTo(ifFalse));
+        Assert.That(((ConstantInt)switchInst.Condition).ZExtValue, Is.EqualTo(0UL));
+    }
+
+    [Test]
+    public void PhiAndSelectAccessors()
+    {
+        var context = new LLVMContext();
+        var module = context.Handle.CreateModuleWithName("m");
+        var int32 = Type.GetInt32Ty(context);
+        var int1 = Type.GetInt1Ty(context);
+
+        var functionType = LLVMTypeRef.CreateFunction(Type.GetVoidTy(context).Handle, [int1.Handle, int32.Handle, int32.Handle], IsVarArg: false);
+        var function = (Function)context.GetOrCreate(module.AddFunction("f", functionType));
+        var entry = function.AppendBasicBlock("entry");
+        var other = function.AppendBasicBlock("other");
+
+        using var builder = LLVMBuilderRef.Create(context.Handle);
+        builder.PositionAtEnd(entry.Handle);
+
+        var phi = (PHINode)context.GetOrCreate(builder.BuildPhi(int32.Handle, "p"));
+        phi.AddIncoming((Value)context.GetOrCreate(LLVMValueRef.CreateConstInt(int32.Handle, 10)), entry);
+        phi.AddIncoming((Value)context.GetOrCreate(LLVMValueRef.CreateConstInt(int32.Handle, 20)), other);
+        Assert.That(phi.IncomingCount, Is.EqualTo(2u));
+        Assert.That(phi.GetIncomingBlock(0), Is.EqualTo(entry));
+        Assert.That(((ConstantInt)phi.GetIncomingValue(1)).ZExtValue, Is.EqualTo(20UL));
+
+        var condVal = function.GetParam(0);
+        var trueVal = function.GetParam(1);
+        var falseVal = function.GetParam(2);
+        var select = (SelectInst)context.GetOrCreate(builder.BuildSelect(condVal.Handle, trueVal.Handle, falseVal.Handle, "s"));
+        Assert.That(select.Condition, Is.EqualTo(condVal));
+        Assert.That(select.TrueValue, Is.EqualTo(trueVal));
+        Assert.That(select.FalseValue, Is.EqualTo(falseVal));
+    }
+
+    [Test]
+    public void CallInstructionAccessors()
+    {
+        var context = new LLVMContext();
+        var module = context.Handle.CreateModuleWithName("m");
+        var int32 = Type.GetInt32Ty(context);
+
+        var functionType = LLVMTypeRef.CreateFunction(int32.Handle, [int32.Handle, int32.Handle], IsVarArg: false);
+        var callee = (Function)context.GetOrCreate(module.AddFunction("callee", functionType));
+        var caller = (Function)context.GetOrCreate(module.AddFunction("caller", functionType));
+        var entry = caller.AppendBasicBlock("entry");
+
+        using var builder = LLVMBuilderRef.Create(context.Handle);
+        builder.PositionAtEnd(entry.Handle);
+
+        var callHandle = builder.BuildCall2(functionType, callee.Handle, new[] { caller.GetParam(0).Handle, caller.GetParam(1).Handle }, "r");
+        var call = (CallInst)context.GetOrCreate(callHandle);
+        call.IsTailCall = true;
+
+        Assert.That(call.ArgOperandsCount, Is.EqualTo(2u));
+        Assert.That(call.CalledOperand, Is.EqualTo(callee));
+        Assert.That(call.CalledFunctionType.NumParams, Is.EqualTo(2u));
+        Assert.That(call.GetArgOperand(0), Is.EqualTo(caller.GetParam(0)));
+        Assert.That(call.IsTailCall, Is.True);
+    }
+
+    [Test]
+    public void GepAndAtomicAccessors()
+    {
+        var context = new LLVMContext();
+        var module = context.Handle.CreateModuleWithName("m");
+        var int32 = Type.GetInt32Ty(context);
+
+        var functionType = LLVMTypeRef.CreateFunction(Type.GetVoidTy(context).Handle, [], IsVarArg: false);
+        var function = (Function)context.GetOrCreate(module.AddFunction("f", functionType));
+        var entry = function.AppendBasicBlock("entry");
+
+        using var builder = LLVMBuilderRef.Create(context.Handle);
+        builder.PositionAtEnd(entry.Handle);
+
+        var arrayType = LLVMTypeRef.CreateArray(int32.Handle, 4);
+        var storage = builder.BuildAlloca(arrayType, "arr");
+        var gep = (GetElementPtrInst)context.GetOrCreate(builder.BuildGEP2(arrayType, storage, new[] { LLVMValueRef.CreateConstInt(int32.Handle, 0), LLVMValueRef.CreateConstInt(int32.Handle, 1) }, "elem"));
+        Assert.That(gep.SourceElementType, Is.EqualTo(context.GetOrCreate(arrayType)));
+
+        var slot = builder.BuildAlloca(int32.Handle, "slot");
+        var atomic = (AtomicRMWInst)context.GetOrCreate(builder.BuildAtomicRMW(LLVMAtomicRMWBinOp.LLVMAtomicRMWBinOpAdd, slot, LLVMValueRef.CreateConstInt(int32.Handle, 1), LLVMAtomicOrdering.LLVMAtomicOrderingMonotonic, singleThread: false));
+        Assert.That(atomic.Operation, Is.EqualTo(AtomicRMWInst.BinOp.Add));
+        Assert.That(atomic.Ordering, Is.EqualTo(AtomicOrdering.Monotonic));
+
+        var fence = (FenceInst)context.GetOrCreate(builder.BuildFence(LLVMAtomicOrdering.LLVMAtomicOrderingAcquire, singleThread: false, "fence"));
+        Assert.That(fence.Ordering, Is.EqualTo(AtomicOrdering.Acquire));
+    }
 }

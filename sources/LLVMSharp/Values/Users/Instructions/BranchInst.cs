@@ -9,4 +9,8 @@ public sealed class BranchInst : Instruction
     internal BranchInst(LLVMValueRef handle) : base(handle.IsABranchInst)
     {
     }
+
+    public Value Condition => Context.GetOrCreate(Handle.Condition);
+
+    public bool IsConditional => Handle.IsConditional;
 }

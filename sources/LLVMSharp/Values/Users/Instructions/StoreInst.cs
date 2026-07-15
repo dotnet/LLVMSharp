@@ -22,4 +22,32 @@ public sealed class StoreInst : Instruction
             Handle.SetAlignment(value);
         }
     }
+
+    public AtomicOrdering Ordering
+    {
+        get
+        {
+            return (AtomicOrdering)Handle.Ordering;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.Ordering = (LLVMAtomicOrdering)value;
+        }
+    }
+
+    public bool Volatile
+    {
+        get
+        {
+            return Handle.Volatile;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.Volatile = value;
+        }
+    }
 }
