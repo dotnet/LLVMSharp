@@ -1,5 +1,6 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
+using System;
 using LLVMSharp.Interop;
 
 namespace LLVMSharp;
@@ -8,6 +9,16 @@ public class User : Value
 {
     private protected User(LLVMValueRef handle, LLVMValueKind expectedValueKind) : base(handle.IsAUser, expectedValueKind)
     {
+    }
+
+    public uint NumOperands => (uint)Handle.OperandCount;
+
+    public Value GetOperand(uint index) => Context.GetOrCreate(Handle.GetOperand(index));
+
+    public void SetOperand(uint index, Value value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        Handle.SetOperand(index, value.Handle);
     }
 
     internal static new User Create(LLVMValueRef handle) => handle switch

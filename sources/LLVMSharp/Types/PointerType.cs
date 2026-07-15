@@ -9,4 +9,6 @@ public sealed class PointerType : Type
     internal PointerType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMPointerTypeKind)
     {
     }
+
+    public uint AddressSpace => Handle.PointerAddressSpace;
 }

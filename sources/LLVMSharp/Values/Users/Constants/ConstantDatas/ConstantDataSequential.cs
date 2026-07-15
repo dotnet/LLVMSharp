@@ -10,6 +10,10 @@ public class ConstantDataSequential : ConstantData
     {
     }
 
+    public bool IsString => Handle.IsConstantString;
+
+    public string AsString() => Handle.GetAsString(out _);
+
     internal static new ConstantDataSequential Create(LLVMValueRef handle) => handle switch
     {
         _ when handle.IsAConstantDataArray != null => new ConstantDataArray(handle),

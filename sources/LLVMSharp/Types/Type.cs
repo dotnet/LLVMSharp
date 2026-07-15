@@ -18,6 +18,54 @@ public class Type : IEquatable<Type>
 
     public LLVMTypeRef Handle { get; }
 
+    public LLVMContext Context => LLVMContext.GetOrCreate(Handle.Context);
+
+    public bool IsAggregateType => Handle.Kind is LLVMTypeKind.LLVMStructTypeKind or LLVMTypeKind.LLVMArrayTypeKind;
+
+    public bool IsArrayTy => Handle.Kind == LLVMTypeKind.LLVMArrayTypeKind;
+
+    public bool IsBFloatTy => Handle.Kind == LLVMTypeKind.LLVMBFloatTypeKind;
+
+    public bool IsDoubleTy => Handle.Kind == LLVMTypeKind.LLVMDoubleTypeKind;
+
+    public bool IsFP128Ty => Handle.Kind == LLVMTypeKind.LLVMFP128TypeKind;
+
+    public bool IsFloatTy => Handle.Kind == LLVMTypeKind.LLVMFloatTypeKind;
+
+    public bool IsFloatingPointTy => Handle.Kind is LLVMTypeKind.LLVMHalfTypeKind or LLVMTypeKind.LLVMBFloatTypeKind or LLVMTypeKind.LLVMFloatTypeKind or LLVMTypeKind.LLVMDoubleTypeKind or LLVMTypeKind.LLVMX86_FP80TypeKind or LLVMTypeKind.LLVMFP128TypeKind or LLVMTypeKind.LLVMPPC_FP128TypeKind;
+
+    public bool IsFunctionTy => Handle.Kind == LLVMTypeKind.LLVMFunctionTypeKind;
+
+    public bool IsHalfTy => Handle.Kind == LLVMTypeKind.LLVMHalfTypeKind;
+
+    public bool IsIntegerTy => Handle.Kind == LLVMTypeKind.LLVMIntegerTypeKind;
+
+    public bool IsLabelTy => Handle.Kind == LLVMTypeKind.LLVMLabelTypeKind;
+
+    public bool IsMetadataTy => Handle.Kind == LLVMTypeKind.LLVMMetadataTypeKind;
+
+    public bool IsPPCFP128Ty => Handle.Kind == LLVMTypeKind.LLVMPPC_FP128TypeKind;
+
+    public bool IsPointerTy => Handle.Kind == LLVMTypeKind.LLVMPointerTypeKind;
+
+    public bool IsSized => Handle.IsSized;
+
+    public bool IsStructTy => Handle.Kind == LLVMTypeKind.LLVMStructTypeKind;
+
+    public bool IsTokenTy => Handle.Kind == LLVMTypeKind.LLVMTokenTypeKind;
+
+    public bool IsVectorTy => Handle.Kind is LLVMTypeKind.LLVMVectorTypeKind or LLVMTypeKind.LLVMScalableVectorTypeKind;
+
+    public bool IsVoidTy => Handle.Kind == LLVMTypeKind.LLVMVoidTypeKind;
+
+    public bool IsX86AMXTy => Handle.Kind == LLVMTypeKind.LLVMX86_AMXTypeKind;
+
+    public bool IsX86FP80Ty => Handle.Kind == LLVMTypeKind.LLVMX86_FP80TypeKind;
+
+    public LLVMTypeKind Kind => Handle.Kind;
+
+    public Type ScalarType => (Handle.Kind is LLVMTypeKind.LLVMVectorTypeKind or LLVMTypeKind.LLVMScalableVectorTypeKind) ? Context.GetOrCreate(Handle.ElementType) : this;
+
     public static bool operator ==(Type? left, Type? right) => ReferenceEquals(left, right) || (left?.Handle == right?.Handle);
 
     public static bool operator !=(Type? left, Type? right) => !(left == right);
@@ -127,6 +175,10 @@ public class Type : IEquatable<Type>
     public override int GetHashCode() => Handle.GetHashCode();
 
     public override string ToString() => Handle.ToString();
+
+    public void Dump() => Handle.Dump();
+
+    public string PrintToString() => Handle.PrintToString();
 
     internal static Type Create(LLVMTypeRef handle) => handle.Kind switch
     {

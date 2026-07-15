@@ -10,6 +10,20 @@ public class GlobalObject : GlobalValue
     {
     }
 
+    public string Section
+    {
+        get
+        {
+            return Handle.Section;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.Section = value;
+        }
+    }
+
     internal static new GlobalObject Create(LLVMValueRef handle) => handle switch
     {
         _ when handle.IsAFunction != null => new Function(handle),

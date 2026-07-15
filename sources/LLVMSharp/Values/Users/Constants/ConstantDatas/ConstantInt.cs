@@ -9,4 +9,8 @@ public sealed class ConstantInt : ConstantData
     internal ConstantInt(LLVMValueRef handle) : base(handle.IsAConstantInt, LLVMValueKind.LLVMConstantIntValueKind)
     {
     }
+
+    public long SExtValue => Handle.ConstIntSExt;
+
+    public ulong ZExtValue => Handle.ConstIntZExt;
 }

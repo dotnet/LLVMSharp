@@ -9,4 +9,8 @@ public sealed class ConstantFP : ConstantData
     internal ConstantFP(LLVMValueRef handle) : base(handle.IsAConstantFP, LLVMValueKind.LLVMConstantFPValueKind)
     {
     }
+
+    public double ValueAsDouble => Handle.ConstRealDouble;
+
+    public double GetDouble(out bool losesInfo) => Handle.GetConstRealDouble(out losesInfo);
 }
