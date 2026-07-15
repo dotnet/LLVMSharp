@@ -25,8 +25,13 @@ jobs:
         path: |
           ./artifacts/bin/**/*
           ./artifacts/log/**/*
-          ./artifacts/pkg/**/*
           ./artifacts/tst/**/*
+        if-no-files-found: error
+    - uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.os }}_${{ matrix.configuration }}_${{ matrix.architecture }}_pkg
+        path: |
+          ./artifacts/pkg/**/*
         if-no-files-found: error
   windows-arm64:
     runs-on: ${{ matrix.os }}-11-arm
@@ -45,7 +50,6 @@ jobs:
         path: |
           ./artifacts/bin/**/*
           ./artifacts/log/**/*
-          ./artifacts/pkg/**/*
           ./artifacts/tst/**/*
         if-no-files-found: error
   linux-x64:
@@ -65,7 +69,6 @@ jobs:
         path: |
           ./artifacts/bin/**/*
           ./artifacts/log/**/*
-          ./artifacts/pkg/**/*
           ./artifacts/tst/**/*
         if-no-files-found: error
   linux-arm64:
@@ -85,7 +88,6 @@ jobs:
         path: |
           ./artifacts/bin/**/*
           ./artifacts/log/**/*
-          ./artifacts/pkg/**/*
           ./artifacts/tst/**/*
         if-no-files-found: error
   macos-arm64:
@@ -105,7 +107,6 @@ jobs:
         path: |
           ./artifacts/bin/**/*
           ./artifacts/log/**/*
-          ./artifacts/pkg/**/*
           ./artifacts/tst/**/*
         if-no-files-found: error
   sign-nuget:
@@ -119,45 +120,22 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         merge-multiple: true
-        path: ./artifacts
-        pattern: "./artifacts/pkg/Release/**/*"
+        path: ./artifacts/pkg
+        pattern: "*_release_*_pkg"
     - uses: actions/setup-dotnet@v4
       with:
         global-json-file: ./global.json
-    - run: dotnet tool install --tool-path ./artifacts/tools sign --version 0.9.1-beta.24170.3
-    - run: ./artifacts/tools/sign code azure-key-vault "**/*.nupkg" --timestamp-url "http://timestamp.digicert.com" --base-directory "${{ github.workspace }}/artifacts/pkg" --file-list "${{ github.workspace }}/scripts/SignClientFileList.txt" --publisher-name ".NET Foundation" --description "LLVMSharp" --description-url "https://github.com/dotnet/llvmsharp" --azure-key-vault-certificate "${{ secrets.SC_KEY_VAULT_CERTIFICATE_ID }}" --azure-key-vault-client-id "${{ secrets.SC_AZURE_CLIENT_ID }}" --azure-key-vault-client-secret "${{ secrets.SC_AZURE_CLIENT_SECRET }}" --azure-key-vault-tenant-id "${{ secrets.SC_AZURE_TENANT_ID }}" --azure-key-vault-url "${{ secrets.SC_KEY_VAULT_URL }}"
+    - run: dotnet tool install --tool-path ./artifacts/tools --prerelease sign
+    - uses: azure/login@v2
+      with:
+        allow-no-subscriptions: true
+        client-id: "${{ secrets.AZURE_CLIENT_ID }}"
+        tenant-id: "${{ secrets.AZURE_TENANT_ID }}"
+    - run: ./artifacts/tools/sign code azure-key-vault "**/*.nupkg" --base-directory "${{ github.workspace }}/artifacts/pkg" --file-list "${{ github.workspace }}/scripts/SignClientFileList.txt" --publisher-name ".NET Foundation" --description "LLVMSharp" --description-url "https://github.com/dotnet/llvmsharp" --azure-credential-type "azure-cli" --azure-key-vault-url "${{ secrets.KEY_VAULT_URL }}" --azure-key-vault-certificate "${{ secrets.KEY_VAULT_CERTIFICATE_ID }}"
+      shell: pwsh
     - uses: actions/upload-artifact@v4
       with:
         name: sign_nuget
         path: |
-          ./artifacts/pkg/Release/*
+          ./artifacts/pkg/**/*
         if-no-files-found: error
-  publish-nightlies-azure:
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' }}
-    needs: [ sign-nuget ]
-    steps:
-    - uses: actions/download-artifact@v4
-      with:
-        name: sign_nuget
-        path: ./artifacts/pkg
-    - uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
-        source-url: https://pkgs.clangsharp.dev/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{ secrets.AZURE_DEVOPS_PAT }}
-    - run: dotnet nuget push "./artifacts/pkg/Release/*.nupkg" --api-key AzureDevOps --skip-duplicate
-  publish-nightlies-github:
-    runs-on: ubuntu-latest
-    if: false
-    needs: [ sign-nuget ]
-    steps:
-    - uses: actions/download-artifact@v4
-      with:
-        name: sign_nuget
-        path: ./artifacts/pkg
-    - uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
-    - run: dotnet nuget push "./artifacts/pkg/Release/*.nupkg" --source https://nuget.pkg.github.com/dotnet/index.json --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
