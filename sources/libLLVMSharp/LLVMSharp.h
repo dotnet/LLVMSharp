@@ -10,6 +10,7 @@
 
 // Include headers
 #include <clang-c/ExternC.h>
+#include <llvm-c/Orc.h>
 #include <llvm/IR/DerivedTypes.h>
 
 #ifdef _MSC_VER
@@ -199,6 +200,8 @@ LLVM_FOR_EACH_METADATA_SUBCLASS(LLVMSHARP_METADATA_ISA)
 #undef LLVMSHARP_METADATA_ISA
 
 LLVMSHARP_LINKAGE void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef module, LLVMTypeRef** out_buffer, int32_t* out_size);
+
+LLVMSHARP_LINKAGE LLVMOrcObjectLayerRef llvmsharp_OrcCreateObjectLinkingLayer(LLVMOrcExecutionSessionRef execution_session);
 
 LLVMSHARP_LINKAGE void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass);
 

@@ -9,6 +9,9 @@
 #endif
 
 // Library includes (<> instead of "")
+#include <llvm/ExecutionEngine/Orc/Core.h>
+#include <llvm/ExecutionEngine/Orc/Layer.h>
+#include <llvm/ExecutionEngine/Orc/ObjectLinkingLayer.h>
 #include <llvm/IR/Constants.h>
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/DerivedTypes.h>
@@ -19,8 +22,10 @@
 #include <llvm/IR/LegacyPassManager.h>
 #include <llvm/IR/Module.h>
 #include <llvm-c/Core.h>
+#include <llvm-c/Orc.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/Demangle/Demangle.h>
+#include <llvm/Support/CBindingWrapping.h>
 #include <llvm/Support/TypeSize.h>
 #include <cstddef>
 #include <cstring>
@@ -39,6 +44,8 @@ using namespace llvm;
 
 // Create wrappers for C Binding types (see CBindingWrapping.h).
 DEFINE_ISA_CONVERSION_FUNCTIONS(Pass, LLVMPassRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(orc::ExecutionSession, LLVMOrcExecutionSessionRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(orc::ObjectLayer, LLVMOrcObjectLayerRef)
 
 // Implementation code
 
@@ -508,6 +515,13 @@ void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef module, LLVMTypeRef
 
     *out_buffer = buffer;
     *out_size = (int32_t)types.size();
+}
+
+LLVMOrcObjectLayerRef llvmsharp_OrcCreateObjectLinkingLayer(LLVMOrcExecutionSessionRef execution_session)
+{
+    orc::ExecutionSession* unwrapped = unwrap(execution_session);
+    orc::ObjectLinkingLayer* layer = new orc::ObjectLinkingLayer(*unwrapped);
+    return wrap(static_cast<orc::ObjectLayer*>(layer));
 }
 
 void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass)
