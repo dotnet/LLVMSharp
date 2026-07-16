@@ -8,6 +8,8 @@ public unsafe partial struct LLVMBuilderRef(IntPtr handle) : IDisposable, IEquat
 {
     public IntPtr Handle = handle;
 
+    public readonly LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetBuilderContext(this) : default;
+
     public readonly LLVMValueRef CurrentDebugLocation
     {
         get
@@ -18,6 +20,32 @@ public unsafe partial struct LLVMBuilderRef(IntPtr handle) : IDisposable, IEquat
         set
         {
             LLVM.SetCurrentDebugLocation(this, value);
+        }
+    }
+
+    public readonly LLVMMetadataRef CurrentDebugLocation2
+    {
+        get
+        {
+            return (Handle != IntPtr.Zero) ? LLVM.GetCurrentDebugLocation2(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetCurrentDebugLocation2(this, value);
+        }
+    }
+
+    public readonly LLVMMetadataRef DefaultFPMathTag
+    {
+        get
+        {
+            return (Handle != IntPtr.Zero) ? LLVM.BuilderGetDefaultFPMathTag(this) : default;
+        }
+
+        set
+        {
+            LLVM.BuilderSetDefaultFPMathTag(this, value);
         }
     }
 
@@ -32,6 +60,8 @@ public unsafe partial struct LLVMBuilderRef(IntPtr handle) : IDisposable, IEquat
     public static bool operator !=(LLVMBuilderRef left, LLVMBuilderRef right) => !(left == right);
 
     public static LLVMBuilderRef Create(LLVMContextRef C) => LLVM.CreateBuilderInContext(C);
+
+    public readonly void AddMetadataToInst(LLVMValueRef Inst) => LLVM.AddMetadataToInst(this, Inst);
 
     public readonly LLVMValueRef BuildAdd(LLVMValueRef LHS, LLVMValueRef RHS, string Name = "") => BuildAdd(LHS, RHS, Name.AsSpan());
 
@@ -99,7 +129,13 @@ public unsafe partial struct LLVMBuilderRef(IntPtr handle) : IDisposable, IEquat
         return LLVM.BuildAShr(this, LHS, RHS, marshaledName);
     }
 
+    public readonly LLVMValueRef BuildAtomicCmpXchg(LLVMValueRef Ptr, LLVMValueRef Cmp, LLVMValueRef New, LLVMAtomicOrdering SuccessOrdering, LLVMAtomicOrdering FailureOrdering, bool SingleThread) => LLVM.BuildAtomicCmpXchg(this, Ptr, Cmp, New, SuccessOrdering, FailureOrdering, SingleThread ? 1 : 0);
+
+    public readonly LLVMValueRef BuildAtomicCmpXchgSyncScope(LLVMValueRef Ptr, LLVMValueRef Cmp, LLVMValueRef New, LLVMAtomicOrdering SuccessOrdering, LLVMAtomicOrdering FailureOrdering, uint SSID) => LLVM.BuildAtomicCmpXchgSyncScope(this, Ptr, Cmp, New, SuccessOrdering, FailureOrdering, SSID);
+
     public readonly LLVMValueRef BuildAtomicRMW(LLVMAtomicRMWBinOp op, LLVMValueRef PTR, LLVMValueRef Val, LLVMAtomicOrdering ordering, bool singleThread) => LLVM.BuildAtomicRMW(this, op, PTR, Val, ordering, singleThread ? 1 : 0);
+
+    public readonly LLVMValueRef BuildAtomicRMWSyncScope(LLVMAtomicRMWBinOp op, LLVMValueRef PTR, LLVMValueRef Val, LLVMAtomicOrdering ordering, uint SSID) => LLVM.BuildAtomicRMWSyncScope(this, op, PTR, Val, ordering, SSID);
 
     public readonly LLVMValueRef BuildBinOp(LLVMOpcode Op, LLVMValueRef LHS, LLVMValueRef RHS, string Name = "") => BuildBinOp(Op, LHS, RHS, Name.AsSpan());
 
@@ -130,6 +166,31 @@ public unsafe partial struct LLVMBuilderRef(IntPtr handle) : IDisposable, IEquat
         }
     }
 
+    public readonly LLVMValueRef BuildCallBr(LLVMTypeRef Ty, LLVMValueRef Fn, LLVMBasicBlockRef DefaultDest, LLVMBasicBlockRef[] IndirectDests, LLVMValueRef[] Args, LLVMOperandBundleRef[] Bundles, string Name = "") => BuildCallBr(Ty, Fn, DefaultDest, IndirectDests.AsSpan(), Args.AsSpan(), Bundles.AsSpan(), Name.AsSpan());
+
+    public readonly LLVMValueRef BuildCallBr(LLVMTypeRef Ty, LLVMValueRef Fn, LLVMBasicBlockRef DefaultDest, ReadOnlySpan<LLVMBasicBlockRef> IndirectDests, ReadOnlySpan<LLVMValueRef> Args, ReadOnlySpan<LLVMOperandBundleRef> Bundles, ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        fixed (LLVMBasicBlockRef* pIndirectDests = IndirectDests)
+        fixed (LLVMValueRef* pArgs = Args)
+        fixed (LLVMOperandBundleRef* pBundles = Bundles)
+        {
+            return LLVM.BuildCallBr(this, Ty, Fn, DefaultDest, (LLVMOpaqueBasicBlock**)pIndirectDests, (uint)IndirectDests.Length, (LLVMOpaqueValue**)pArgs, (uint)Args.Length, (LLVMOpaqueOperandBundle**)pBundles, (uint)Bundles.Length, marshaledName);
+        }
+    }
+
+    public readonly LLVMValueRef BuildCallWithOperandBundles(LLVMTypeRef Ty, LLVMValueRef Fn, LLVMValueRef[] Args, LLVMOperandBundleRef[] Bundles, string Name = "") => BuildCallWithOperandBundles(Ty, Fn, Args.AsSpan(), Bundles.AsSpan(), Name.AsSpan());
+
+    public readonly LLVMValueRef BuildCallWithOperandBundles(LLVMTypeRef Ty, LLVMValueRef Fn, ReadOnlySpan<LLVMValueRef> Args, ReadOnlySpan<LLVMOperandBundleRef> Bundles, ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        fixed (LLVMValueRef* pArgs = Args)
+        fixed (LLVMOperandBundleRef* pBundles = Bundles)
+        {
+            return LLVM.BuildCallWithOperandBundles(this, Ty, Fn, (LLVMOpaqueValue**)pArgs, (uint)Args.Length, (LLVMOpaqueOperandBundle**)pBundles, (uint)Bundles.Length, marshaledName);
+        }
+    }
+
     public readonly LLVMValueRef BuildCast(LLVMOpcode Op, LLVMValueRef Val, LLVMTypeRef DestTy, string Name = "") => BuildCast(Op, Val, DestTy, Name.AsSpan());
 
     public readonly LLVMValueRef BuildCast(LLVMOpcode Op, LLVMValueRef Val, LLVMTypeRef DestTy, ReadOnlySpan<char> Name)
@@ -137,6 +198,40 @@ public unsafe partial struct LLVMBuilderRef(IntPtr handle) : IDisposable, IEquat
         using var marshaledName = new MarshaledString(Name);
         return LLVM.BuildCast(this, Op, Val, DestTy, marshaledName);
     }
+
+    public readonly LLVMValueRef BuildCatchPad(LLVMValueRef ParentPad, LLVMValueRef[] Args, string Name = "") => BuildCatchPad(ParentPad, Args.AsSpan(), Name.AsSpan());
+
+    public readonly LLVMValueRef BuildCatchPad(LLVMValueRef ParentPad, ReadOnlySpan<LLVMValueRef> Args, ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        fixed (LLVMValueRef* pArgs = Args)
+        {
+            return LLVM.BuildCatchPad(this, ParentPad, (LLVMOpaqueValue**)pArgs, (uint)Args.Length, marshaledName);
+        }
+    }
+
+    public readonly LLVMValueRef BuildCatchRet(LLVMValueRef CatchPad, LLVMBasicBlockRef BB) => LLVM.BuildCatchRet(this, CatchPad, BB);
+
+    public readonly LLVMValueRef BuildCatchSwitch(LLVMValueRef ParentPad, LLVMBasicBlockRef UnwindBB, uint NumHandlers, string Name = "") => BuildCatchSwitch(ParentPad, UnwindBB, NumHandlers, Name.AsSpan());
+
+    public readonly LLVMValueRef BuildCatchSwitch(LLVMValueRef ParentPad, LLVMBasicBlockRef UnwindBB, uint NumHandlers, ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.BuildCatchSwitch(this, ParentPad, UnwindBB, NumHandlers, marshaledName);
+    }
+
+    public readonly LLVMValueRef BuildCleanupPad(LLVMValueRef ParentPad, LLVMValueRef[] Args, string Name = "") => BuildCleanupPad(ParentPad, Args.AsSpan(), Name.AsSpan());
+
+    public readonly LLVMValueRef BuildCleanupPad(LLVMValueRef ParentPad, ReadOnlySpan<LLVMValueRef> Args, ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        fixed (LLVMValueRef* pArgs = Args)
+        {
+            return LLVM.BuildCleanupPad(this, ParentPad, (LLVMOpaqueValue**)pArgs, (uint)Args.Length, marshaledName);
+        }
+    }
+
+    public readonly LLVMValueRef BuildCleanupRet(LLVMValueRef CatchPad, LLVMBasicBlockRef BB) => LLVM.BuildCleanupRet(this, CatchPad, BB);
 
     public readonly LLVMValueRef BuildCondBr(LLVMValueRef If, LLVMBasicBlockRef Then, LLVMBasicBlockRef Else) => LLVM.BuildCondBr(this, If, Then, Else);
 
@@ -146,6 +241,14 @@ public unsafe partial struct LLVMBuilderRef(IntPtr handle) : IDisposable, IEquat
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.BuildExactSDiv(this, LHS, RHS, marshaledName);
+    }
+
+    public readonly LLVMValueRef BuildExactUDiv(LLVMValueRef LHS, LLVMValueRef RHS, string Name = "") => BuildExactUDiv(LHS, RHS, Name.AsSpan());
+
+    public readonly LLVMValueRef BuildExactUDiv(LLVMValueRef LHS, LLVMValueRef RHS, ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.BuildExactUDiv(this, LHS, RHS, marshaledName);
     }
 
     public readonly LLVMValueRef BuildExtractElement(LLVMValueRef VecVal, LLVMValueRef Index, string Name = "") => BuildExtractElement(VecVal, Index, Name.AsSpan());
@@ -194,6 +297,14 @@ public unsafe partial struct LLVMBuilderRef(IntPtr handle) : IDisposable, IEquat
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.BuildFence(this, ordering, singleThread ? 1 : 0, marshaledName);
+    }
+
+    public readonly LLVMValueRef BuildFenceSyncScope(LLVMAtomicOrdering ordering, uint SSID, string Name = "") => BuildFenceSyncScope(ordering, SSID, Name.AsSpan());
+
+    public readonly LLVMValueRef BuildFenceSyncScope(LLVMAtomicOrdering ordering, uint SSID, ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.BuildFenceSyncScope(this, ordering, SSID, marshaledName);
     }
 
     public readonly LLVMValueRef BuildFMul(LLVMValueRef LHS, LLVMValueRef RHS, string Name = "") => BuildFMul(LHS, RHS, Name.AsSpan());
@@ -289,6 +400,17 @@ public unsafe partial struct LLVMBuilderRef(IntPtr handle) : IDisposable, IEquat
         }
     }
 
+    public readonly LLVMValueRef BuildGEPWithNoWrapFlags(LLVMTypeRef Ty, LLVMValueRef Pointer, LLVMValueRef[] Indices, LLVMGEPNoWrapFlags NoWrapFlags, string Name = "") => BuildGEPWithNoWrapFlags(Ty, Pointer, Indices.AsSpan(), NoWrapFlags, Name.AsSpan());
+
+    public readonly LLVMValueRef BuildGEPWithNoWrapFlags(LLVMTypeRef Ty, LLVMValueRef Pointer, ReadOnlySpan<LLVMValueRef> Indices, LLVMGEPNoWrapFlags NoWrapFlags, ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        fixed (LLVMValueRef* pIndices = Indices)
+        {
+            return LLVM.BuildGEPWithNoWrapFlags(this, Ty, Pointer, (LLVMOpaqueValue**)pIndices, (uint)Indices.Length, marshaledName, (uint)NoWrapFlags);
+        }
+    }
+
     public readonly LLVMValueRef BuildGlobalString(string Str, string Name = "") => BuildGlobalString(Str.AsSpan(), Name.AsSpan());
 
     public readonly LLVMValueRef BuildGlobalString(ReadOnlySpan<char> Str, ReadOnlySpan<char> Name)
@@ -352,6 +474,14 @@ public unsafe partial struct LLVMBuilderRef(IntPtr handle) : IDisposable, IEquat
         return LLVM.BuildIntCast(this, Val, DestTy, marshaledName);
     }
 
+    public readonly LLVMValueRef BuildIntCast2(LLVMValueRef Val, LLVMTypeRef DestTy, bool IsSigned, string Name = "") => BuildIntCast2(Val, DestTy, IsSigned, Name.AsSpan());
+
+    public readonly LLVMValueRef BuildIntCast2(LLVMValueRef Val, LLVMTypeRef DestTy, bool IsSigned, ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.BuildIntCast2(this, Val, DestTy, IsSigned ? 1 : 0, marshaledName);
+    }
+
     public readonly LLVMValueRef BuildIntToPtr(LLVMValueRef Val, LLVMTypeRef DestTy, string Name = "") => BuildIntToPtr(Val, DestTy, Name.AsSpan());
 
     public readonly LLVMValueRef BuildIntToPtr(LLVMValueRef Val, LLVMTypeRef DestTy, ReadOnlySpan<char> Name)
@@ -368,6 +498,18 @@ public unsafe partial struct LLVMBuilderRef(IntPtr handle) : IDisposable, IEquat
         {
             using var marshaledName = new MarshaledString(Name);
             return LLVM.BuildInvoke2(this, Ty, Fn, (LLVMOpaqueValue**)pArgs, (uint)Args.Length, Then, Catch, marshaledName);
+        }
+    }
+
+    public readonly LLVMValueRef BuildInvokeWithOperandBundles(LLVMTypeRef Ty, LLVMValueRef Fn, LLVMValueRef[] Args, LLVMBasicBlockRef Then, LLVMBasicBlockRef Catch, LLVMOperandBundleRef[] Bundles, string Name = "") => BuildInvokeWithOperandBundles(Ty, Fn, Args.AsSpan(), Then, Catch, Bundles.AsSpan(), Name.AsSpan());
+
+    public readonly LLVMValueRef BuildInvokeWithOperandBundles(LLVMTypeRef Ty, LLVMValueRef Fn, ReadOnlySpan<LLVMValueRef> Args, LLVMBasicBlockRef Then, LLVMBasicBlockRef Catch, ReadOnlySpan<LLVMOperandBundleRef> Bundles, ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        fixed (LLVMValueRef* pArgs = Args)
+        fixed (LLVMOperandBundleRef* pBundles = Bundles)
+        {
+            return LLVM.BuildInvokeWithOperandBundles(this, Ty, Fn, (LLVMOpaqueValue**)pArgs, (uint)Args.Length, Then, Catch, (LLVMOpaqueOperandBundle**)pBundles, (uint)Bundles.Length, marshaledName);
         }
     }
 
@@ -418,6 +560,12 @@ public unsafe partial struct LLVMBuilderRef(IntPtr handle) : IDisposable, IEquat
         using var marshaledName = new MarshaledString(Name);
         return LLVM.BuildMalloc(this, Ty, marshaledName);
     }
+
+    public readonly LLVMValueRef BuildMemCpy(LLVMValueRef Dst, uint DstAlign, LLVMValueRef Src, uint SrcAlign, LLVMValueRef Size) => LLVM.BuildMemCpy(this, Dst, DstAlign, Src, SrcAlign, Size);
+
+    public readonly LLVMValueRef BuildMemMove(LLVMValueRef Dst, uint DstAlign, LLVMValueRef Src, uint SrcAlign, LLVMValueRef Size) => LLVM.BuildMemMove(this, Dst, DstAlign, Src, SrcAlign, Size);
+
+    public readonly LLVMValueRef BuildMemSet(LLVMValueRef Ptr, LLVMValueRef Val, LLVMValueRef Len, uint Align) => LLVM.BuildMemSet(this, Ptr, Val, Len, Align);
 
     public readonly LLVMValueRef BuildMul(LLVMValueRef LHS, LLVMValueRef RHS, string Name = "") => BuildMul(LHS, RHS, Name.AsSpan());
 
