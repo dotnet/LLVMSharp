@@ -252,7 +252,11 @@ LLVMSHARP_LINKAGE LLVMSharpLoopRef llvmsharp_LoopInfo_getLoopFor(LLVMSharpLoopIn
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_Loop_containsBlock(LLVMSharpLoopRef loop, LLVMBasicBlockRef block);
 
+LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_Loop_getCanonicalInductionVariable(LLVMSharpLoopRef loop);
+
 LLVMSHARP_LINKAGE LLVMBasicBlockRef llvmsharp_Loop_getExitBlock(LLVMSharpLoopRef loop);
+
+LLVMSHARP_LINKAGE LLVMBasicBlockRef llvmsharp_Loop_getExitingBlock(LLVMSharpLoopRef loop);
 
 LLVMSHARP_LINKAGE LLVMBasicBlockRef llvmsharp_Loop_getHeader(LLVMSharpLoopRef loop);
 

@@ -689,10 +689,22 @@ uint8_t llvmsharp_Loop_containsBlock(LLVMSharpLoopRef loop, LLVMBasicBlockRef bl
     return unwrapped->contains(unwrap(block)) ? 1 : 0;
 }
 
+LLVMValueRef llvmsharp_Loop_getCanonicalInductionVariable(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return wrap(unwrapped->getCanonicalInductionVariable());
+}
+
 LLVMBasicBlockRef llvmsharp_Loop_getExitBlock(LLVMSharpLoopRef loop)
 {
     Loop* unwrapped = unwrap(loop);
     return wrap(unwrapped->getExitBlock());
+}
+
+LLVMBasicBlockRef llvmsharp_Loop_getExitingBlock(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return wrap(unwrapped->getExitingBlock());
 }
 
 LLVMBasicBlockRef llvmsharp_Loop_getHeader(LLVMSharpLoopRef loop)
