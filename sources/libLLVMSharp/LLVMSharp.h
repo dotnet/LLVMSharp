@@ -112,6 +112,12 @@ LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_ConstantFoldConstant(LLVMValueRef const
 
 LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_ConstantFoldInstruction(LLVMValueRef instruction, LLVMModuleRef module);
 
+LLVMSHARP_LINKAGE uint8_t llvmsharp_Constant_isAllOnesValue(LLVMValueRef value);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_Constant_isNegativeZeroValue(LLVMValueRef value);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_Constant_isOneValue(LLVMValueRef value);
+
 LLVMSHARP_LINKAGE uint32_t llvmsharp_DIBasicType_getEncoding(LLVMMetadataRef type);
 
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DICompositeType_getBaseType(LLVMMetadataRef type);
@@ -194,6 +200,8 @@ LLVMSHARP_LINKAGE uint8_t llvmsharp_DominatorTree_properlyDominatesBlock(LLVMSha
 
 LLVMSHARP_LINKAGE LLVMTypeRef llvmsharp_Function_getFunctionType(LLVMValueRef function);
 
+LLVMSHARP_LINKAGE uint32_t llvmsharp_Function_getInstructionCount(LLVMValueRef function);
+
 LLVMSHARP_LINKAGE LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef function);
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_GEPOperator_accumulateConstantOffset(LLVMValueRef gep, LLVMModuleRef module, int64_t* out_offset);
@@ -208,11 +216,17 @@ LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_GlobalVariable_getMetadata(LLVMValue
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_InlineFunction(LLVMValueRef call_base);
 
+LLVMSHARP_LINKAGE uint8_t llvmsharp_isSafeToSpeculativelyExecute(LLVMValueRef instruction);
+
 LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_comesBefore(LLVMValueRef instruction, LLVMValueRef other);
 
 LLVMSHARP_LINKAGE const char* llvmsharp_Instruction_getOpcodeName(LLVMValueRef instruction, int32_t* out_size);
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_isCommutative(LLVMValueRef instruction);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_isIdenticalTo(LLVMValueRef instruction, LLVMValueRef other);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_isSameOperationAs(LLVMValueRef instruction, LLVMValueRef other);
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_mayHaveSideEffects(LLVMValueRef instruction);
 
@@ -291,6 +305,12 @@ LLVMSHARP_LINKAGE uint32_t llvmsharp_Type_getScalarSizeInBits(LLVMTypeRef type);
 LLVMSHARP_LINKAGE uint32_t llvmsharp_Value_getNumUses(LLVMValueRef value);
 
 LLVMSHARP_LINKAGE uint64_t llvmsharp_Value_getPointerAlignment(LLVMValueRef value, LLVMModuleRef module);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_Value_hasOneUse(LLVMValueRef value);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_Value_hasOneUser(LLVMValueRef value);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_Value_isUsedInBasicBlock(LLVMValueRef value, LLVMBasicBlockRef basic_block);
 
 LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_Value_stripInBoundsOffsets(LLVMValueRef value);
 

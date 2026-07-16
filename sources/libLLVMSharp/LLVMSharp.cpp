@@ -14,6 +14,7 @@
 #include <llvm/Analysis/LoopInfo.h>
 #include <llvm/Analysis/PostDominators.h>
 #include <llvm/Analysis/TargetTransformInfo.h>
+#include <llvm/Analysis/ValueTracking.h>
 #include <llvm/ExecutionEngine/Orc/Core.h>
 #include <llvm/ExecutionEngine/Orc/Layer.h>
 #include <llvm/ExecutionEngine/Orc/ObjectLinkingLayer.h>
@@ -151,6 +152,24 @@ LLVMValueRef llvmsharp_ConstantFoldInstruction(LLVMValueRef instruction, LLVMMod
     Instruction* unwrapped = unwrap<Instruction>(instruction);
     const DataLayout& dataLayout = unwrap(module)->getDataLayout();
     return wrap(ConstantFoldInstruction(unwrapped, dataLayout));
+}
+
+uint8_t llvmsharp_Constant_isAllOnesValue(LLVMValueRef value)
+{
+    Constant* unwrapped = unwrap<Constant>(value);
+    return unwrapped->isAllOnesValue() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Constant_isNegativeZeroValue(LLVMValueRef value)
+{
+    Constant* unwrapped = unwrap<Constant>(value);
+    return unwrapped->isNegativeZeroValue() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Constant_isOneValue(LLVMValueRef value)
+{
+    Constant* unwrapped = unwrap<Constant>(value);
+    return unwrapped->isOneValue() ? 1 : 0;
 }
 
 uint32_t llvmsharp_DIBasicType_getEncoding(LLVMMetadataRef type)
@@ -482,6 +501,12 @@ LLVMTypeRef llvmsharp_Function_getFunctionType(LLVMValueRef function)
     return wrap(type);
 }
 
+uint32_t llvmsharp_Function_getInstructionCount(LLVMValueRef function)
+{
+    Function* unwrapped = unwrap<Function>(function);
+    return unwrapped->getInstructionCount();
+}
+
 LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef function)
 {
     Function* unwrapped = unwrap<Function>(function);
@@ -543,6 +568,12 @@ uint8_t llvmsharp_InlineFunction(LLVMValueRef call_base)
     return result.isSuccess() ? 1 : 0;
 }
 
+uint8_t llvmsharp_isSafeToSpeculativelyExecute(LLVMValueRef instruction)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return isSafeToSpeculativelyExecute(unwrapped) ? 1 : 0;
+}
+
 uint8_t llvmsharp_Instruction_comesBefore(LLVMValueRef instruction, LLVMValueRef other)
 {
     Instruction* unwrapped = unwrap<Instruction>(instruction);
@@ -561,6 +592,18 @@ uint8_t llvmsharp_Instruction_isCommutative(LLVMValueRef instruction)
 {
     Instruction* unwrapped = unwrap<Instruction>(instruction);
     return unwrapped->isCommutative() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Instruction_isIdenticalTo(LLVMValueRef instruction, LLVMValueRef other)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->isIdenticalTo(unwrap<Instruction>(other)) ? 1 : 0;
+}
+
+uint8_t llvmsharp_Instruction_isSameOperationAs(LLVMValueRef instruction, LLVMValueRef other)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->isSameOperationAs(unwrap<Instruction>(other)) ? 1 : 0;
 }
 
 uint8_t llvmsharp_Instruction_mayHaveSideEffects(LLVMValueRef instruction)
@@ -838,6 +881,24 @@ uint64_t llvmsharp_Value_getPointerAlignment(LLVMValueRef value, LLVMModuleRef m
     Value* unwrapped = unwrap<Value>(value);
     const DataLayout& dataLayout = unwrap(module)->getDataLayout();
     return unwrapped->getPointerAlignment(dataLayout).value();
+}
+
+uint8_t llvmsharp_Value_hasOneUse(LLVMValueRef value)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    return unwrapped->hasOneUse() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Value_hasOneUser(LLVMValueRef value)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    return unwrapped->hasOneUser() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Value_isUsedInBasicBlock(LLVMValueRef value, LLVMBasicBlockRef basic_block)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    return unwrapped->isUsedInBasicBlock(unwrap(basic_block)) ? 1 : 0;
 }
 
 LLVMValueRef llvmsharp_Value_stripInBoundsOffsets(LLVMValueRef value)
