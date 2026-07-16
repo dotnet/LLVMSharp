@@ -9,4 +9,8 @@ public class CompositeType : Type
     private protected CompositeType(LLVMTypeRef handle, LLVMTypeKind expectedTypeKind) : base(handle, expectedTypeKind)
     {
     }
+
+    private protected CompositeType(LLVMTypeRef handle, LLVMTypeKind expectedTypeKind1, LLVMTypeKind expectedTypeKind2) : base(handle, expectedTypeKind1, expectedTypeKind2)
+    {
+    }
 }

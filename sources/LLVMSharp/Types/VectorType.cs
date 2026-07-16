@@ -6,9 +6,11 @@ namespace LLVMSharp;
 
 public sealed class VectorType : SequentialType
 {
-    internal VectorType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMVectorTypeKind)
+    internal VectorType(LLVMTypeRef handle) : base(handle, LLVMTypeKind.LLVMVectorTypeKind, LLVMTypeKind.LLVMScalableVectorTypeKind)
     {
     }
+
+    public bool IsScalable => Handle.Kind == LLVMTypeKind.LLVMScalableVectorTypeKind;
 
     public uint NumElements => Handle.VectorSize;
 }

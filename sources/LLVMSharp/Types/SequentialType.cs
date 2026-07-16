@@ -10,5 +10,9 @@ public class SequentialType : CompositeType
     {
     }
 
+    private protected SequentialType(LLVMTypeRef handle, LLVMTypeKind expectedTypeKind1, LLVMTypeKind expectedTypeKind2) : base(handle, expectedTypeKind1, expectedTypeKind2)
+    {
+    }
+
     public Type ElementType => Context.GetOrCreate(Handle.ElementType);
 }
