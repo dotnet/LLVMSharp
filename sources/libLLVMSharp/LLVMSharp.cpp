@@ -26,12 +26,15 @@
 #include <llvm/IR/GlobalVariable.h>
 #include <llvm/IR/InstrTypes.h>
 #include <llvm/IR/LegacyPassManager.h>
+#include <llvm/IR/Mangler.h>
 #include <llvm/IR/Module.h>
+#include <llvm/IR/Operator.h>
 #include <llvm-c/Core.h>
 #include <llvm-c/Orc.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/Demangle/Demangle.h>
 #include <llvm/Support/CBindingWrapping.h>
+#include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/TypeSize.h>
 #include <llvm/Target/TargetMachine.h>
 #include <cstddef>
@@ -486,6 +489,21 @@ LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef function)
     return wrap(type);
 }
 
+uint8_t llvmsharp_GEPOperator_accumulateConstantOffset(LLVMValueRef gep, LLVMModuleRef module, int64_t* out_offset)
+{
+    GEPOperator* unwrapped = unwrap<GEPOperator>(gep);
+    const DataLayout& dataLayout = unwrap(module)->getDataLayout();
+    unsigned bitWidth = dataLayout.getIndexTypeSizeInBits(unwrapped->getType());
+    APInt offset(bitWidth, 0);
+    if (!unwrapped->accumulateConstantOffset(dataLayout, offset))
+    {
+        *out_offset = 0;
+        return 0;
+    }
+    *out_offset = offset.getSExtValue();
+    return 1;
+}
+
 uint32_t llvmsharp_GlobalValue_getAddressSpace(LLVMValueRef global_value)
 {
     GlobalValue* unwrapped = unwrap<GlobalValue>(global_value);
@@ -525,6 +543,12 @@ uint8_t llvmsharp_InlineFunction(LLVMValueRef call_base)
     return result.isSuccess() ? 1 : 0;
 }
 
+uint8_t llvmsharp_Instruction_comesBefore(LLVMValueRef instruction, LLVMValueRef other)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->comesBefore(unwrap<Instruction>(other)) ? 1 : 0;
+}
+
 const char* llvmsharp_Instruction_getOpcodeName(LLVMValueRef instruction, int32_t* out_size)
 {
     Instruction* unwrapped = unwrap<Instruction>(instruction);
@@ -555,6 +579,19 @@ uint8_t llvmsharp_Instruction_mayWriteToMemory(LLVMValueRef instruction)
 {
     Instruction* unwrapped = unwrap<Instruction>(instruction);
     return unwrapped->mayWriteToMemory() ? 1 : 0;
+}
+
+void llvmsharp_Instruction_moveAfter(LLVMValueRef instruction, LLVMValueRef position)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    unwrapped->moveAfter(unwrap<Instruction>(position));
+}
+
+void llvmsharp_Instruction_moveBefore(LLVMValueRef instruction, LLVMValueRef position)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    Instruction* positionInstruction = unwrap<Instruction>(position);
+    unwrapped->moveBefore(positionInstruction->getIterator());
 }
 
 LLVMSharpLoopInfoRef llvmsharp_LoopInfo_create(LLVMSharpDominatorTreeRef dominator_tree)
@@ -620,6 +657,29 @@ LLVMSharpLoopRef llvmsharp_Loop_getParentLoop(LLVMSharpLoopRef loop)
 {
     Loop* unwrapped = unwrap(loop);
     return wrap(unwrapped->getParentLoop());
+}
+
+const char* llvmsharp_Mangler_getNameWithPrefix(LLVMValueRef global_value, int32_t* out_size)
+{
+    GlobalValue* unwrapped = unwrap<GlobalValue>(global_value);
+    std::string result;
+    raw_string_ostream stream(result);
+    Mangler mangler;
+    mangler.getNameWithPrefix(stream, unwrapped, false);
+    stream.flush();
+
+    int32_t size = (int32_t)result.size();
+    char* buffer = (char*)malloc((size_t)size + 1);
+    if (buffer == nullptr)
+    {
+        *out_size = 0;
+        return nullptr; // Memory allocation failed
+    }
+
+    memcpy(buffer, result.data(), size);
+    buffer[size] = '\0';
+    *out_size = size;
+    return buffer;
 }
 
 uint32_t llvmsharp_MDNode_getNumOperands(LLVMMetadataRef metadata)
@@ -773,10 +833,29 @@ uint32_t llvmsharp_Value_getNumUses(LLVMValueRef value)
     return (uint32_t)unwrapped->getNumUses();
 }
 
+uint64_t llvmsharp_Value_getPointerAlignment(LLVMValueRef value, LLVMModuleRef module)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    const DataLayout& dataLayout = unwrap(module)->getDataLayout();
+    return unwrapped->getPointerAlignment(dataLayout).value();
+}
+
+LLVMValueRef llvmsharp_Value_stripInBoundsOffsets(LLVMValueRef value)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    return wrap(unwrapped->stripInBoundsOffsets());
+}
+
 LLVMValueRef llvmsharp_Value_stripPointerCasts(LLVMValueRef value)
 {
     Value* unwrapped = unwrap<Value>(value);
     return wrap(unwrapped->stripPointerCasts());
+}
+
+LLVMValueRef llvmsharp_Value_stripPointerCastsAndAliases(LLVMValueRef value)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    return wrap(unwrapped->stripPointerCastsAndAliases());
 }
 
 LLVMPassRef llvmsharp_createDeadCodeEliminationPass()

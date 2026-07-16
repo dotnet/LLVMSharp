@@ -196,6 +196,8 @@ LLVMSHARP_LINKAGE LLVMTypeRef llvmsharp_Function_getFunctionType(LLVMValueRef fu
 
 LLVMSHARP_LINKAGE LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef function);
 
+LLVMSHARP_LINKAGE uint8_t llvmsharp_GEPOperator_accumulateConstantOffset(LLVMValueRef gep, LLVMModuleRef module, int64_t* out_offset);
+
 LLVMSHARP_LINKAGE uint32_t llvmsharp_GlobalValue_getAddressSpace(LLVMValueRef global_value);
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_GlobalValue_isDSOLocal(LLVMValueRef global_value);
@@ -206,6 +208,8 @@ LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_GlobalVariable_getMetadata(LLVMValue
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_InlineFunction(LLVMValueRef call_base);
 
+LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_comesBefore(LLVMValueRef instruction, LLVMValueRef other);
+
 LLVMSHARP_LINKAGE const char* llvmsharp_Instruction_getOpcodeName(LLVMValueRef instruction, int32_t* out_size);
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_isCommutative(LLVMValueRef instruction);
@@ -215,6 +219,10 @@ LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_mayHaveSideEffects(LLVMValueRef 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_mayReadFromMemory(LLVMValueRef instruction);
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_mayWriteToMemory(LLVMValueRef instruction);
+
+LLVMSHARP_LINKAGE void llvmsharp_Instruction_moveAfter(LLVMValueRef instruction, LLVMValueRef position);
+
+LLVMSHARP_LINKAGE void llvmsharp_Instruction_moveBefore(LLVMValueRef instruction, LLVMValueRef position);
 
 LLVMSHARP_LINKAGE LLVMSharpLoopInfoRef llvmsharp_LoopInfo_create(LLVMSharpDominatorTreeRef dominator_tree);
 
@@ -237,6 +245,8 @@ LLVMSHARP_LINKAGE LLVMBasicBlockRef llvmsharp_Loop_getLoopLatch(LLVMSharpLoopRef
 LLVMSHARP_LINKAGE LLVMBasicBlockRef llvmsharp_Loop_getLoopPreheader(LLVMSharpLoopRef loop);
 
 LLVMSHARP_LINKAGE LLVMSharpLoopRef llvmsharp_Loop_getParentLoop(LLVMSharpLoopRef loop);
+
+LLVMSHARP_LINKAGE const char* llvmsharp_Mangler_getNameWithPrefix(LLVMValueRef global_value, int32_t* out_size);
 
 LLVMSHARP_LINKAGE uint32_t llvmsharp_MDNode_getNumOperands(LLVMMetadataRef metadata);
 
@@ -280,7 +290,13 @@ LLVMSHARP_LINKAGE uint32_t llvmsharp_Type_getScalarSizeInBits(LLVMTypeRef type);
 
 LLVMSHARP_LINKAGE uint32_t llvmsharp_Value_getNumUses(LLVMValueRef value);
 
+LLVMSHARP_LINKAGE uint64_t llvmsharp_Value_getPointerAlignment(LLVMValueRef value, LLVMModuleRef module);
+
+LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_Value_stripInBoundsOffsets(LLVMValueRef value);
+
 LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_Value_stripPointerCasts(LLVMValueRef value);
+
+LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_Value_stripPointerCastsAndAliases(LLVMValueRef value);
 
 LLVMSHARP_LINKAGE LLVMPassRef llvmsharp_createDeadCodeEliminationPass();
 
