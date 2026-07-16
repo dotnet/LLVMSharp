@@ -445,4 +445,32 @@ public class ManagedApi
         var clone = module.Clone();
         Assert.That(clone.GetFunction("f"), Is.Not.Null);
     }
+
+    [Test]
+    public void BasicBlockAccessors()
+    {
+        var context = new LLVMContext();
+        var module = Module.Create(context, "m");
+        var int32 = Type.GetInt32Ty(context);
+
+        var functionType = LLVMTypeRef.CreateFunction(int32.Handle, [int32.Handle], IsVarArg: false);
+        var function = module.AddFunction("f", (FunctionType)context.GetOrCreate(functionType));
+        var entry = function.AppendBasicBlock("entry");
+        var next = function.AppendBasicBlock("next");
+
+        using var builder = LLVMBuilderRef.Create(context.Handle);
+        builder.PositionAtEnd(entry.Handle);
+
+        var addHandle = builder.BuildAdd(function.GetParam(0).Handle, function.GetParam(0).Handle, "sum");
+        var retHandle = builder.BuildRet(addHandle);
+
+        Assert.That(entry.Parent, Is.EqualTo(function));
+        Assert.That(entry.Terminator, Is.EqualTo(context.GetOrCreate(retHandle)));
+        Assert.That(entry.FirstInstruction, Is.EqualTo(context.GetOrCreate(addHandle)));
+        Assert.That(entry.LastInstruction, Is.EqualTo(context.GetOrCreate(retHandle)));
+        Assert.That(entry.GetInstructions().Length, Is.EqualTo(2));
+        Assert.That(entry.Next, Is.EqualTo(next));
+        Assert.That(next.Previous, Is.EqualTo(entry));
+        Assert.That(next.Terminator, Is.Null);
+    }
 }
