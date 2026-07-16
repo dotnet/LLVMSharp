@@ -97,6 +97,12 @@ LLVMSHARP_LINKAGE uint8_t llvmsharp_CmpInst_isUnsigned(LLVMValueRef instruction)
 
 LLVMSHARP_LINKAGE const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef array, int32_t* out_size);
 
+LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_ConstantFoldCompareInstOperands(int32_t predicate, LLVMValueRef lhs, LLVMValueRef rhs, LLVMModuleRef module);
+
+LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_ConstantFoldConstant(LLVMValueRef constant, LLVMModuleRef module);
+
+LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_ConstantFoldInstruction(LLVMValueRef instruction, LLVMModuleRef module);
+
 LLVMSHARP_LINKAGE uint32_t llvmsharp_DIBasicType_getEncoding(LLVMMetadataRef type);
 
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DICompositeType_getBaseType(LLVMMetadataRef type);
@@ -204,6 +210,8 @@ LLVMSHARP_LINKAGE void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef m
 LLVMSHARP_LINKAGE LLVMOrcObjectLayerRef llvmsharp_OrcCreateObjectLinkingLayer(LLVMOrcExecutionSessionRef execution_session);
 
 LLVMSHARP_LINKAGE void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass);
+
+LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_simplifyInstruction(LLVMValueRef instruction, LLVMModuleRef module);
 
 LLVMSHARP_LINKAGE uint64_t llvmsharp_Type_getPrimitiveSizeInBits(LLVMTypeRef type, uint8_t* out_isScalable);
 

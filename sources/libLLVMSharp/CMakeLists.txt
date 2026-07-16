@@ -30,6 +30,7 @@ target_link_libraries(LLVMSharp PRIVATE LLVM-C)
 target_link_libraries(LLVMSharp PRIVATE LLVMDemangle)
 
 target_link_libraries(LLVMSharp PRIVATE LLVMAggressiveInstCombine)
+target_link_libraries(LLVMSharp PRIVATE LLVMAnalysis)
 target_link_libraries(LLVMSharp PRIVATE LLVMCFGuard)
 target_link_libraries(LLVMSharp PRIVATE LLVMInstCombine)
 target_link_libraries(LLVMSharp PRIVATE LLVMInstrumentation)

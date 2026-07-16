@@ -9,6 +9,8 @@
 #endif
 
 // Library includes (<> instead of "")
+#include <llvm/Analysis/ConstantFolding.h>
+#include <llvm/Analysis/InstructionSimplify.h>
 #include <llvm/ExecutionEngine/Orc/Core.h>
 #include <llvm/ExecutionEngine/Orc/Layer.h>
 #include <llvm/ExecutionEngine/Orc/ObjectLinkingLayer.h>
@@ -105,6 +107,28 @@ const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef array, int32_t* out
     StringRef stringRef = unwrapped->getRawDataValues();
     *out_size = (int32_t)stringRef.size();
     return stringRef.data();
+}
+
+LLVMValueRef llvmsharp_ConstantFoldCompareInstOperands(int32_t predicate, LLVMValueRef lhs, LLVMValueRef rhs, LLVMModuleRef module)
+{
+    Constant* lhsConstant = unwrap<Constant>(lhs);
+    Constant* rhsConstant = unwrap<Constant>(rhs);
+    const DataLayout& dataLayout = unwrap(module)->getDataLayout();
+    return wrap(ConstantFoldCompareInstOperands((unsigned)predicate, lhsConstant, rhsConstant, dataLayout));
+}
+
+LLVMValueRef llvmsharp_ConstantFoldConstant(LLVMValueRef constant, LLVMModuleRef module)
+{
+    Constant* unwrapped = unwrap<Constant>(constant);
+    const DataLayout& dataLayout = unwrap(module)->getDataLayout();
+    return wrap(ConstantFoldConstant(unwrapped, dataLayout));
+}
+
+LLVMValueRef llvmsharp_ConstantFoldInstruction(LLVMValueRef instruction, LLVMModuleRef module)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    const DataLayout& dataLayout = unwrap(module)->getDataLayout();
+    return wrap(ConstantFoldInstruction(unwrapped, dataLayout));
 }
 
 uint32_t llvmsharp_DIBasicType_getEncoding(LLVMMetadataRef type)
@@ -527,6 +551,13 @@ LLVMOrcObjectLayerRef llvmsharp_OrcCreateObjectLinkingLayer(LLVMOrcExecutionSess
 void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass)
 {
     unwrap(pass_manager)->add(unwrap(pass));
+}
+
+LLVMValueRef llvmsharp_simplifyInstruction(LLVMValueRef instruction, LLVMModuleRef module)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    const DataLayout& dataLayout = unwrap(module)->getDataLayout();
+    return wrap(simplifyInstruction(unwrapped, SimplifyQuery(dataLayout)));
 }
 
 uint64_t llvmsharp_Type_getPrimitiveSizeInBits(LLVMTypeRef type, uint8_t* out_isScalable)
