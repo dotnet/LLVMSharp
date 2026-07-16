@@ -43,7 +43,6 @@ jobs:
   detect:
     runs-on: ubuntu-latest
     outputs:
-      llvm-version: ${{ steps.detect.outputs.llvm-version }}
       libllvm: ${{ steps.detect.outputs.libllvm }}
       libllvmsharp: ${{ steps.detect.outputs.libllvmsharp }}
     steps:
@@ -54,96 +53,22 @@ jobs:
       shell: bash
       run: |
         set -euo pipefail
-
-        parse_version() { sed -n 's/^project(LLVMSharp VERSION \([0-9.]*\)).*/\1/p' "$1"; }
-
-        # The top-level CMakeLists.txt is the source of truth for the tracked LLVM version.
-        version="$(parse_version CMakeLists.txt)"
-        if [ -z "${version}" ]; then echo "could not parse LLVM version from CMakeLists.txt" >&2; exit 1; fi
-        echo "llvm-version=${version}" >> "$GITHUB_OUTPUT"
-
-        libllvm=false
-        libllvmsharp=false
-
         if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-          if [ "${{ inputs.libllvm }}" = "true" ]; then libllvm=true; fi
-          if [ "${{ inputs.libllvmsharp }}" = "true" ]; then libllvmsharp=true; fi
+          # Manual runs pick the families explicitly.
+          echo "libllvm=${{ inputs.libllvm }}" >> "$GITHUB_OUTPUT"
+          echo "libllvmsharp=${{ inputs.libllvmsharp }}" >> "$GITHUB_OUTPUT"
         else
-          before="${{ github.event.before }}"
-          if [ -z "${before}" ] || [ "${before}" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "${before}^{commit}" 2>/dev/null; then
-            # No usable baseline to diff against (new/recreated branch, force-push,
-            # unfetched history); regenerate everything conservatively.
-            libllvm=true
-            libllvmsharp=true
-          else
-            # libLLVM regenerates when the tracked LLVM version changes. The libLLVM package
-            # version tracks the full patch (e.g. 21.1.8), so compare the full version.
-            prev_version="$(git show "${before}:CMakeLists.txt" 2>/dev/null | sed -n 's/^project(LLVMSharp VERSION \([0-9.]*\)).*/\1/p')"
-            if [ "${version}" != "${prev_version}" ]; then
-              libllvm=true
-            fi
-
-            # libLLVMSharp regenerates for the same reason or when its sources change.
-            if [ "${libllvm}" = "true" ] || ! git diff --quiet "${before}" HEAD -- sources/libLLVMSharp/; then
-              libllvmsharp=true
-            fi
-          fi
+          # Pushes diff against the prior commit; the script owns the change-detection
+          # logic so it stays reproducible and testable locally.
+          ./scripts/build.sh --detectchanges --base "${{ github.event.before }}" | tee -a "$GITHUB_OUTPUT"
         fi
-
-        echo "libllvm=${libllvm}" >> "$GITHUB_OUTPUT"
-        echo "libllvmsharp=${libllvmsharp}" >> "$GITHUB_OUTPUT"
-        echo "Resolved: llvm=${version} (major.minor=${major_minor}) libllvm=${libllvm} libllvmsharp=${libllvmsharp}"
     - name: Verify package versions match the tracked LLVM version
       # Guards against bumping CMakeLists.txt without updating the nuspec/runtime.json
-      # versions. libLLVM versions must equal the LLVM version exactly; libLLVMSharp
-      # versions must be that version plus an independent build revision (e.g. 21.1.8.1).
+      # versions before regenerating. The check lives in the build script so it is
+      # reproducible locally (./scripts/build.sh --verifypackages).
+      if: steps.detect.outputs.libllvm == 'true' || steps.detect.outputs.libllvmsharp == 'true'
       shell: bash
-      run: |
-        set -euo pipefail
-        version="${{ steps.detect.outputs.llvm-version }}"
-        rc=0
-
-        nuspec_version() { sed -n 's:.*<version>\([^<]*\)</version>.*:\1:p' "$1" | head -n1; }
-        nuspec_branch()  { sed -n 's:.*<repository[^>]*branch="\([^"]*\)".*:\1:p' "$1" | head -n1; }
-        json_versions()  { grep -oE '"[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?"' "$1" | tr -d '"'; }
-
-        fail() { echo "::error file=$1::$2"; rc=1; }
-
-        if [ "${{ steps.detect.outputs.libllvm }}" = "true" ]; then
-          for f in packages/libLLVM/libLLVM/libLLVM.nuspec packages/libLLVM/libLLVM.runtime.*/*.nuspec; do
-            v="$(nuspec_version "$f")"
-            [ "${v}" = "${version}" ] || fail "$f" "version '${v}' does not match LLVM version '${version}'"
-            b="$(nuspec_branch "$f")"
-            if [ -n "${b}" ] && [ "${b}" != "llvmorg-${version}" ]; then
-              fail "$f" "repository branch '${b}' does not match 'llvmorg-${version}'"
-            fi
-          done
-          for v in $(json_versions packages/libLLVM/libLLVM/runtime.json); do
-            [ "${v}" = "${version}" ] || fail "packages/libLLVM/libLLVM/runtime.json" "mapped version '${v}' does not match LLVM version '${version}'"
-          done
-        fi
-
-        if [ "${{ steps.detect.outputs.libllvmsharp }}" = "true" ]; then
-          for f in packages/libLLVMSharp/libLLVMSharp/libLLVMSharp.nuspec packages/libLLVMSharp/libLLVMSharp.runtime.*/*.nuspec; do
-            v="$(nuspec_version "$f")"
-            case "${v}" in
-              "${version}".*) : ;;
-              *) fail "$f" "version '${v}' is not 'llvm-version.<revision>' (expected '${version}.<n>')" ;;
-            esac
-          done
-          for v in $(json_versions packages/libLLVMSharp/libLLVMSharp/runtime.json); do
-            case "${v}" in
-              "${version}".*) : ;;
-              *) fail "packages/libLLVMSharp/libLLVMSharp/runtime.json" "mapped version '${v}' is not '${version}.<revision>'" ;;
-            esac
-          done
-        fi
-
-        if [ "${rc}" -ne 0 ]; then
-          echo "Update the package versions to match the tracked LLVM version (${version}) before regenerating." >&2
-          exit 1
-        fi
-        echo "Package versions verified against LLVM ${version}"
+      run: ./scripts/build.sh --verifypackages
 
   # -------- libLLVM: lift the shared libLLVM from the most-official prebuilt source --------
 
