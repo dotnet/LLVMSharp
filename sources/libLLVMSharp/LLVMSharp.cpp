@@ -11,12 +11,15 @@
 // Library includes (<> instead of "")
 #include <llvm/Analysis/ConstantFolding.h>
 #include <llvm/Analysis/InstructionSimplify.h>
+#include <llvm/Analysis/LoopInfo.h>
+#include <llvm/Analysis/PostDominators.h>
 #include <llvm/ExecutionEngine/Orc/Core.h>
 #include <llvm/ExecutionEngine/Orc/Layer.h>
 #include <llvm/ExecutionEngine/Orc/ObjectLinkingLayer.h>
 #include <llvm/IR/Constants.h>
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/DerivedTypes.h>
+#include <llvm/IR/Dominators.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/GlobalValue.h>
 #include <llvm/IR/GlobalVariable.h>
@@ -48,6 +51,10 @@ using namespace llvm;
 DEFINE_ISA_CONVERSION_FUNCTIONS(Pass, LLVMPassRef)
 DEFINE_SIMPLE_CONVERSION_FUNCTIONS(orc::ExecutionSession, LLVMOrcExecutionSessionRef)
 DEFINE_SIMPLE_CONVERSION_FUNCTIONS(orc::ObjectLayer, LLVMOrcObjectLayerRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(DominatorTree, LLVMSharpDominatorTreeRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(Loop, LLVMSharpLoopRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(LoopInfo, LLVMSharpLoopInfoRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(PostDominatorTree, LLVMSharpPostDominatorTreeRef)
 
 // Implementation code
 
@@ -408,6 +415,51 @@ LLVMMetadataRef llvmsharp_DIVariable_getType(LLVMMetadataRef variable)
     return wrap(unwrapped->getType());
 }
 
+LLVMSharpDominatorTreeRef llvmsharp_DominatorTree_create(LLVMValueRef function)
+{
+    Function* unwrapped = unwrap<Function>(function);
+    return wrap(new DominatorTree(*unwrapped));
+}
+
+void llvmsharp_DominatorTree_dispose(LLVMSharpDominatorTreeRef dominator_tree)
+{
+    delete unwrap(dominator_tree);
+}
+
+uint8_t llvmsharp_DominatorTree_dominatesBlock(LLVMSharpDominatorTreeRef dominator_tree, LLVMBasicBlockRef a, LLVMBasicBlockRef b)
+{
+    DominatorTree* unwrapped = unwrap(dominator_tree);
+    return unwrapped->dominates(unwrap(a), unwrap(b)) ? 1 : 0;
+}
+
+uint8_t llvmsharp_DominatorTree_dominatesInstruction(LLVMSharpDominatorTreeRef dominator_tree, LLVMValueRef def, LLVMValueRef user)
+{
+    DominatorTree* unwrapped = unwrap(dominator_tree);
+    return unwrapped->dominates(unwrap<Value>(def), unwrap<Instruction>(user)) ? 1 : 0;
+}
+
+LLVMBasicBlockRef llvmsharp_DominatorTree_getIDom(LLVMSharpDominatorTreeRef dominator_tree, LLVMBasicBlockRef block)
+{
+    DominatorTree* unwrapped = unwrap(dominator_tree);
+    DomTreeNode* node = unwrapped->getNode(unwrap(block));
+    if (node == nullptr)
+    {
+        return nullptr;
+    }
+    DomTreeNode* immediateDominator = node->getIDom();
+    if (immediateDominator == nullptr)
+    {
+        return nullptr;
+    }
+    return wrap(immediateDominator->getBlock());
+}
+
+uint8_t llvmsharp_DominatorTree_properlyDominatesBlock(LLVMSharpDominatorTreeRef dominator_tree, LLVMBasicBlockRef a, LLVMBasicBlockRef b)
+{
+    DominatorTree* unwrapped = unwrap(dominator_tree);
+    return unwrapped->properlyDominates(unwrap(a), unwrap(b)) ? 1 : 0;
+}
+
 LLVMTypeRef llvmsharp_Function_getFunctionType(LLVMValueRef function)
 {
     Function* unwrapped = unwrap<Function>(function);
@@ -485,6 +537,71 @@ uint8_t llvmsharp_Instruction_mayWriteToMemory(LLVMValueRef instruction)
     return unwrapped->mayWriteToMemory() ? 1 : 0;
 }
 
+LLVMSharpLoopInfoRef llvmsharp_LoopInfo_create(LLVMSharpDominatorTreeRef dominator_tree)
+{
+    DominatorTree* unwrapped = unwrap(dominator_tree);
+    return wrap(new LoopInfo(*unwrapped));
+}
+
+void llvmsharp_LoopInfo_dispose(LLVMSharpLoopInfoRef loop_info)
+{
+    delete unwrap(loop_info);
+}
+
+uint32_t llvmsharp_LoopInfo_getLoopDepth(LLVMSharpLoopInfoRef loop_info, LLVMBasicBlockRef block)
+{
+    LoopInfo* unwrapped = unwrap(loop_info);
+    return unwrapped->getLoopDepth(unwrap(block));
+}
+
+LLVMSharpLoopRef llvmsharp_LoopInfo_getLoopFor(LLVMSharpLoopInfoRef loop_info, LLVMBasicBlockRef block)
+{
+    LoopInfo* unwrapped = unwrap(loop_info);
+    return wrap(unwrapped->getLoopFor(unwrap(block)));
+}
+
+uint8_t llvmsharp_Loop_containsBlock(LLVMSharpLoopRef loop, LLVMBasicBlockRef block)
+{
+    Loop* unwrapped = unwrap(loop);
+    return unwrapped->contains(unwrap(block)) ? 1 : 0;
+}
+
+LLVMBasicBlockRef llvmsharp_Loop_getExitBlock(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return wrap(unwrapped->getExitBlock());
+}
+
+LLVMBasicBlockRef llvmsharp_Loop_getHeader(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return wrap(unwrapped->getHeader());
+}
+
+uint32_t llvmsharp_Loop_getLoopDepth(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return unwrapped->getLoopDepth();
+}
+
+LLVMBasicBlockRef llvmsharp_Loop_getLoopLatch(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return wrap(unwrapped->getLoopLatch());
+}
+
+LLVMBasicBlockRef llvmsharp_Loop_getLoopPreheader(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return wrap(unwrapped->getLoopPreheader());
+}
+
+LLVMSharpLoopRef llvmsharp_Loop_getParentLoop(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return wrap(unwrapped->getParentLoop());
+}
+
 uint32_t llvmsharp_MDNode_getNumOperands(LLVMMetadataRef metadata)
 {
     MDNode* unwrapped = unwrap<MDNode>(metadata);
@@ -551,6 +668,23 @@ LLVMOrcObjectLayerRef llvmsharp_OrcCreateObjectLinkingLayer(LLVMOrcExecutionSess
 void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass)
 {
     unwrap(pass_manager)->add(unwrap(pass));
+}
+
+LLVMSharpPostDominatorTreeRef llvmsharp_PostDominatorTree_create(LLVMValueRef function)
+{
+    Function* unwrapped = unwrap<Function>(function);
+    return wrap(new PostDominatorTree(*unwrapped));
+}
+
+void llvmsharp_PostDominatorTree_dispose(LLVMSharpPostDominatorTreeRef post_dominator_tree)
+{
+    delete unwrap(post_dominator_tree);
+}
+
+uint8_t llvmsharp_PostDominatorTree_dominatesBlock(LLVMSharpPostDominatorTreeRef post_dominator_tree, LLVMBasicBlockRef a, LLVMBasicBlockRef b)
+{
+    PostDominatorTree* unwrapped = unwrap(post_dominator_tree);
+    return unwrapped->dominates(unwrap(a), unwrap(b)) ? 1 : 0;
 }
 
 LLVMValueRef llvmsharp_simplifyInstruction(LLVMValueRef instruction, LLVMModuleRef module)

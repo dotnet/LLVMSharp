@@ -71,6 +71,11 @@
  */
 typedef struct LLVMOpaquePass* LLVMPassRef;
 
+typedef struct LLVMSharpOpaqueDominatorTree* LLVMSharpDominatorTreeRef;
+typedef struct LLVMSharpOpaqueLoop* LLVMSharpLoopRef;
+typedef struct LLVMSharpOpaqueLoopInfo* LLVMSharpLoopInfoRef;
+typedef struct LLVMSharpOpaquePostDominatorTree* LLVMSharpPostDominatorTreeRef;
+
 // Enum definitions
 
 // Struct definitions
@@ -171,6 +176,18 @@ LLVMSHARP_LINKAGE const char* llvmsharp_DIVariable_getName(LLVMMetadataRef varia
 
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_DIVariable_getType(LLVMMetadataRef variable);
 
+LLVMSHARP_LINKAGE LLVMSharpDominatorTreeRef llvmsharp_DominatorTree_create(LLVMValueRef function);
+
+LLVMSHARP_LINKAGE void llvmsharp_DominatorTree_dispose(LLVMSharpDominatorTreeRef dominator_tree);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_DominatorTree_dominatesBlock(LLVMSharpDominatorTreeRef dominator_tree, LLVMBasicBlockRef a, LLVMBasicBlockRef b);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_DominatorTree_dominatesInstruction(LLVMSharpDominatorTreeRef dominator_tree, LLVMValueRef def, LLVMValueRef user);
+
+LLVMSHARP_LINKAGE LLVMBasicBlockRef llvmsharp_DominatorTree_getIDom(LLVMSharpDominatorTreeRef dominator_tree, LLVMBasicBlockRef block);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_DominatorTree_properlyDominatesBlock(LLVMSharpDominatorTreeRef dominator_tree, LLVMBasicBlockRef a, LLVMBasicBlockRef b);
+
 LLVMSHARP_LINKAGE LLVMTypeRef llvmsharp_Function_getFunctionType(LLVMValueRef function);
 
 LLVMSHARP_LINKAGE LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef function);
@@ -193,6 +210,28 @@ LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_mayReadFromMemory(LLVMValueRef i
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_Instruction_mayWriteToMemory(LLVMValueRef instruction);
 
+LLVMSHARP_LINKAGE LLVMSharpLoopInfoRef llvmsharp_LoopInfo_create(LLVMSharpDominatorTreeRef dominator_tree);
+
+LLVMSHARP_LINKAGE void llvmsharp_LoopInfo_dispose(LLVMSharpLoopInfoRef loop_info);
+
+LLVMSHARP_LINKAGE uint32_t llvmsharp_LoopInfo_getLoopDepth(LLVMSharpLoopInfoRef loop_info, LLVMBasicBlockRef block);
+
+LLVMSHARP_LINKAGE LLVMSharpLoopRef llvmsharp_LoopInfo_getLoopFor(LLVMSharpLoopInfoRef loop_info, LLVMBasicBlockRef block);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_Loop_containsBlock(LLVMSharpLoopRef loop, LLVMBasicBlockRef block);
+
+LLVMSHARP_LINKAGE LLVMBasicBlockRef llvmsharp_Loop_getExitBlock(LLVMSharpLoopRef loop);
+
+LLVMSHARP_LINKAGE LLVMBasicBlockRef llvmsharp_Loop_getHeader(LLVMSharpLoopRef loop);
+
+LLVMSHARP_LINKAGE uint32_t llvmsharp_Loop_getLoopDepth(LLVMSharpLoopRef loop);
+
+LLVMSHARP_LINKAGE LLVMBasicBlockRef llvmsharp_Loop_getLoopLatch(LLVMSharpLoopRef loop);
+
+LLVMSHARP_LINKAGE LLVMBasicBlockRef llvmsharp_Loop_getLoopPreheader(LLVMSharpLoopRef loop);
+
+LLVMSHARP_LINKAGE LLVMSharpLoopRef llvmsharp_Loop_getParentLoop(LLVMSharpLoopRef loop);
+
 LLVMSHARP_LINKAGE uint32_t llvmsharp_MDNode_getNumOperands(LLVMMetadataRef metadata);
 
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_MDNode_getOperand(LLVMMetadataRef metadata, uint32_t index);
@@ -210,6 +249,12 @@ LLVMSHARP_LINKAGE void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef m
 LLVMSHARP_LINKAGE LLVMOrcObjectLayerRef llvmsharp_OrcCreateObjectLinkingLayer(LLVMOrcExecutionSessionRef execution_session);
 
 LLVMSHARP_LINKAGE void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass);
+
+LLVMSHARP_LINKAGE LLVMSharpPostDominatorTreeRef llvmsharp_PostDominatorTree_create(LLVMValueRef function);
+
+LLVMSHARP_LINKAGE void llvmsharp_PostDominatorTree_dispose(LLVMSharpPostDominatorTreeRef post_dominator_tree);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_PostDominatorTree_dominatesBlock(LLVMSharpPostDominatorTreeRef post_dominator_tree, LLVMBasicBlockRef a, LLVMBasicBlockRef b);
 
 LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_simplifyInstruction(LLVMValueRef instruction, LLVMModuleRef module);
 
