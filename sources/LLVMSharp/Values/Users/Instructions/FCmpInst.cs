@@ -9,4 +9,6 @@ public sealed class FCmpInst : CmpInst
     internal FCmpInst(LLVMValueRef handle) : base(handle.IsAFCmpInst)
     {
     }
+
+    public static new bool IsEquality(Predicate predicate) => predicate is Predicate.FCMP_OEQ or Predicate.FCMP_ONE or Predicate.FCMP_UEQ or Predicate.FCMP_UNE;
 }
