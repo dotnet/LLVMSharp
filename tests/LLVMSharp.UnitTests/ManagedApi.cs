@@ -527,4 +527,41 @@ public class ManagedApi
         Assert.That(gep.NumIndices, Is.EqualTo(2u));
         Assert.That(gep.PointerOperand, Is.EqualTo(context.GetOrCreate(storage)));
     }
+
+    [Test]
+    public void TargetAndTargetMachineAccessors()
+    {
+        LLVM.InitializeAllTargetInfos();
+        LLVM.InitializeAllTargets();
+        LLVM.InitializeAllTargetMCs();
+
+        var triple = Target.DefaultTriple;
+        Assert.That(triple, Is.Not.Empty);
+
+        var target = Target.GetTargetFromTriple(triple);
+        Assert.That(target.Name, Is.Not.Empty);
+        Assert.That(target.Description, Is.Not.Null);
+
+        var targetMachine = target.CreateTargetMachine(triple, "", "", LLVMCodeGenOptLevel.LLVMCodeGenLevelDefault, LLVMRelocMode.LLVMRelocDefault, LLVMCodeModel.LLVMCodeModelDefault);
+        Assert.That(targetMachine.Triple, Is.EqualTo(triple));
+        Assert.That(targetMachine.Target, Is.EqualTo(target));
+
+        var dataLayout = targetMachine.CreateTargetDataLayout();
+        var context = new LLVMContext();
+        Assert.That(dataLayout.GetTypeSizeInBits(Type.GetInt32Ty(context)), Is.EqualTo(32ul));
+    }
+
+    [Test]
+    public void DataLayoutAccessors()
+    {
+        var context = new LLVMContext();
+        var dataLayout = new DataLayout("e-m:w-p:64:64-i64:64-n8:16:32:64");
+
+        var structType = StructType.Create(context, "S");
+        structType.SetBody([Type.GetInt32Ty(context), Type.GetInt64Ty(context)], packed: false);
+
+        Assert.That(dataLayout.GetTypeSizeInBits(Type.GetInt64Ty(context)), Is.EqualTo(64ul));
+        Assert.That(dataLayout.GetOffsetOfElement(structType, 1), Is.EqualTo(8ul));
+        Assert.That(dataLayout.GetElementContainingOffset(structType, 8), Is.EqualTo(1u));
+    }
 }

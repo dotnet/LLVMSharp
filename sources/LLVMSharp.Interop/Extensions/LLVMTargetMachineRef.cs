@@ -17,6 +17,59 @@ public unsafe partial struct LLVMTargetMachineRef(IntPtr handle) : IEquatable<LL
 
     public static bool operator !=(LLVMTargetMachineRef left, LLVMTargetMachineRef right) => !(left == right);
 
+    public readonly string CPU
+    {
+        get
+        {
+            var pCPU = LLVM.GetTargetMachineCPU(this);
+
+            if (pCPU == null)
+            {
+                return string.Empty;
+            }
+
+            var result = SpanExtensions.AsString(pCPU);
+            LLVM.DisposeMessage(pCPU);
+            return result;
+        }
+    }
+
+    public readonly string FeatureString
+    {
+        get
+        {
+            var pFeatureString = LLVM.GetTargetMachineFeatureString(this);
+
+            if (pFeatureString == null)
+            {
+                return string.Empty;
+            }
+
+            var result = SpanExtensions.AsString(pFeatureString);
+            LLVM.DisposeMessage(pFeatureString);
+            return result;
+        }
+    }
+
+    public readonly LLVMTargetRef Target => (Handle != IntPtr.Zero) ? LLVM.GetTargetMachineTarget(this) : default;
+
+    public readonly string Triple
+    {
+        get
+        {
+            var pTriple = LLVM.GetTargetMachineTriple(this);
+
+            if (pTriple == null)
+            {
+                return string.Empty;
+            }
+
+            var result = SpanExtensions.AsString(pTriple);
+            LLVM.DisposeMessage(pTriple);
+            return result;
+        }
+    }
+
     public readonly LLVMTargetDataRef CreateTargetDataLayout() => LLVM.CreateTargetDataLayout(this);
 
     public readonly void EmitToFile(LLVMModuleRef module, string fileName, LLVMCodeGenFileType codegen) => EmitToFile(module, fileName.AsSpan(), codegen);

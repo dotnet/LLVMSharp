@@ -5,11 +5,45 @@ using LLVMSharp.Interop;
 
 namespace LLVMSharp;
 
-public sealed class DataLayout(ReadOnlySpan<char> stringRep) : IEquatable<DataLayout>
+public sealed class DataLayout : IEquatable<DataLayout>
 {
-    public LLVMTargetDataRef Handle { get; } = LLVMTargetDataRef.FromStringRepresentation(stringRep);
+    public DataLayout(ReadOnlySpan<char> stringRep)
+    {
+        Handle = LLVMTargetDataRef.FromStringRepresentation(stringRep);
+    }
+
+    internal DataLayout(LLVMTargetDataRef handle)
+    {
+        Handle = handle;
+    }
+
+    public LLVMTargetDataRef Handle { get; }
 
     public StructLayout GetStructLayout(StructType structType) => new StructLayout(this, structType);
+
+    public uint GetABITypeAlignment(Type type)
+    {
+        ArgumentNullException.ThrowIfNull(type);
+        return Handle.ABIAlignmentOfType(type.Handle);
+    }
+
+    public uint GetCallFrameTypeAlignment(Type type)
+    {
+        ArgumentNullException.ThrowIfNull(type);
+        return Handle.CallFrameAlignmentOfType(type.Handle);
+    }
+
+    public uint GetElementContainingOffset(StructType structType, ulong offset)
+    {
+        ArgumentNullException.ThrowIfNull(structType);
+        return (uint)Handle.ElementAtOffset(structType.Handle, offset);
+    }
+
+    public ulong GetOffsetOfElement(StructType structType, uint element)
+    {
+        ArgumentNullException.ThrowIfNull(structType);
+        return Handle.OffsetOfElement(structType.Handle, element);
+    }
 
     public ulong GetTypeSizeInBits(Type type)
     {
@@ -27,12 +61,6 @@ public sealed class DataLayout(ReadOnlySpan<char> stringRep) : IEquatable<DataLa
     {
         ArgumentNullException.ThrowIfNull(type);
         return Handle.ABISizeOfType(type.Handle);
-    }
-
-    public uint GetABITypeAlignment(Type type)
-    {
-        ArgumentNullException.ThrowIfNull(type);
-        return Handle.ABIAlignmentOfType(type.Handle);
     }
 
     public uint GetPrefTypeAlignment(Type type)
