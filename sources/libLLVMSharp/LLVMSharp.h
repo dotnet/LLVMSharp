@@ -88,6 +88,8 @@ LLVM_CLANG_C_EXTERN_C_BEGIN
 
 LLVMSHARP_LINKAGE uint8_t llvmsharp_CallBase_isIndirectCall(LLVMValueRef call);
 
+LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_CloneFunction(LLVMValueRef function);
+
 LLVMSHARP_LINKAGE int32_t llvmsharp_CmpInst_getInversePredicate(LLVMValueRef instruction);
 
 LLVMSHARP_LINKAGE const char* llvmsharp_CmpInst_getPredicateName(LLVMValueRef instruction, int32_t* out_size);
@@ -201,6 +203,8 @@ LLVMSHARP_LINKAGE uint8_t llvmsharp_GlobalValue_isDSOLocal(LLVMValueRef global_v
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_GlobalVariable_getGlobalVariableExpression(LLVMValueRef global_variable);
 
 LLVMSHARP_LINKAGE LLVMMetadataRef llvmsharp_GlobalVariable_getMetadata(LLVMValueRef global_variable, uint32_t KindID);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_InlineFunction(LLVMValueRef call_base);
 
 LLVMSHARP_LINKAGE const char* llvmsharp_Instruction_getOpcodeName(LLVMValueRef instruction, int32_t* out_size);
 

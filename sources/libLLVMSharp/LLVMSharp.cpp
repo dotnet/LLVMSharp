@@ -40,6 +40,7 @@
 #include <string_view>
 #include <llvm/Transforms/Scalar.h>
 #include <llvm/Transforms/Utils.h>
+#include <llvm/Transforms/Utils/Cloning.h>
 #include <llvm/BinaryFormat/Dwarf.h>
 
 #ifdef _MSC_VER
@@ -66,6 +67,13 @@ uint8_t llvmsharp_CallBase_isIndirectCall(LLVMValueRef call)
 {
     CallBase* unwrapped = unwrap<CallBase>(call);
     return unwrapped->isIndirectCall() ? 1 : 0;
+}
+
+LLVMValueRef llvmsharp_CloneFunction(LLVMValueRef function)
+{
+    Function* unwrapped = unwrap<Function>(function);
+    ValueToValueMapTy valueMap;
+    return wrap(CloneFunction(unwrapped, valueMap));
 }
 
 int32_t llvmsharp_CmpInst_getInversePredicate(LLVMValueRef instruction)
@@ -507,6 +515,14 @@ LLVMMetadataRef llvmsharp_GlobalVariable_getMetadata(LLVMValueRef global_variabl
 {
     GlobalVariable* unwrapped = unwrap<GlobalVariable>(global_variable);
     return wrap(unwrapped->getMetadata(KindID));
+}
+
+uint8_t llvmsharp_InlineFunction(LLVMValueRef call_base)
+{
+    CallBase* unwrapped = unwrap<CallBase>(call_base);
+    InlineFunctionInfo inlineFunctionInfo;
+    InlineResult result = InlineFunction(*unwrapped, inlineFunctionInfo);
+    return result.isSuccess() ? 1 : 0;
 }
 
 const char* llvmsharp_Instruction_getOpcodeName(LLVMValueRef instruction, int32_t* out_size)
