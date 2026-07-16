@@ -280,6 +280,8 @@ public unsafe partial struct LLVMMetadataRef(IntPtr handle) : IEquatable<LLVMMet
 
     public readonly uint SPFlags => (IsADISubprogram != null) ? llvmsharp.DISubprogram_getSPFlags(this) : default;
 
+    public readonly string Source => (IsADIFile != null) ? LLVM.DIFileGetSource(this) : "";
+
     public readonly string String => (IsAMDString != null) ? llvmsharp.MDString_getString(this) : "";
 
     public readonly ushort Tag => (IsADINode != null) ? LLVM.GetDINodeTag(this) : default;
@@ -326,6 +328,8 @@ public unsafe partial struct LLVMMetadataRef(IntPtr handle) : IEquatable<LLVMMet
 
     public readonly LLVMValueRef AsValue(LLVMContextRef context) => context.MetadataAsValue(this);
 
+    public readonly void DisposeTemporary() => LLVM.DisposeTemporaryMDNode(this);
+
     public override readonly bool Equals(object? obj) => (obj is LLVMMetadataRef other) && Equals(other);
 
     public readonly bool Equals(LLVMMetadataRef other) => this == other;
@@ -366,6 +370,16 @@ public unsafe partial struct LLVMMetadataRef(IntPtr handle) : IEquatable<LLVMMet
     public readonly LLVMMetadataRef[] GetTypeArray()
     {
         return (IsADISubroutineType != null) ? llvmsharp.DISubroutineType_getTypeArray(this) : [];
+    }
+
+    public readonly void ReplaceAllUsesWith(LLVMMetadataRef replacement) => LLVM.MetadataReplaceAllUsesWith(this, replacement);
+
+    public readonly void ReplaceType(LLVMMetadataRef subroutineType)
+    {
+        if (IsADISubprogram != null)
+        {
+            LLVM.DISubprogramReplaceType(this, subroutineType);
+        }
     }
 
     public override readonly string ToString() => $"{nameof(LLVMMetadataRef)}: {Handle:X}";

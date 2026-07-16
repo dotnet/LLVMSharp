@@ -32,6 +32,17 @@ public static unsafe partial class LLVM
         return new ReadOnlySpan<byte>(filename, (int)length).AsString();
     }
 
+    public static string DIFileGetSource(LLVMMetadataRef file)
+    {
+        uint length = 0;
+        sbyte* source = DIFileGetSource(file, &length);
+        if (source == null)
+        {
+            return "";
+        }
+        return new ReadOnlySpan<byte>(source, (int)length).AsString();
+    }
+
     public static string DITypeGetName(LLVMMetadataRef type)
     {
         nuint length = 0;
