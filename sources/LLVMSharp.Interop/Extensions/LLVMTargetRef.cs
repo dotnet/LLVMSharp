@@ -147,5 +147,13 @@ public unsafe partial struct LLVMTargetRef(IntPtr handle) : IEquatable<LLVMTarge
         return LLVM.CreateTargetMachine(this, marshaledTriple, marshaledCPU, marshaledFeatures, level, reloc, codeModel);
     }
 
+    public readonly LLVMTargetMachineRef CreateTargetMachineWithOptions(string triple, LLVMTargetMachineOptionsRef options) => CreateTargetMachineWithOptions(triple.AsSpan(), options);
+
+    public readonly LLVMTargetMachineRef CreateTargetMachineWithOptions(ReadOnlySpan<char> triple, LLVMTargetMachineOptionsRef options)
+    {
+        using var marshaledTriple = new MarshaledString(triple);
+        return LLVM.CreateTargetMachineWithOptions(this, marshaledTriple, options);
+    }
+
     public override readonly string ToString() => $"{nameof(LLVMTargetRef)}: {Handle:X}";
 }
