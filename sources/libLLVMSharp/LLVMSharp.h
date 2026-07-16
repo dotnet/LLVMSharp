@@ -86,6 +86,10 @@ LLVM_CLANG_C_EXTERN_C_BEGIN
 
 // Function declarations
 
+LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_BasicBlock_getFirstInsertionPt(LLVMBasicBlockRef basic_block);
+
+LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_BasicBlock_getFirstNonPHI(LLVMBasicBlockRef basic_block);
+
 LLVMSHARP_LINKAGE uint8_t llvmsharp_CallBase_isIndirectCall(LLVMValueRef call);
 
 LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_CloneFunction(LLVMValueRef function);

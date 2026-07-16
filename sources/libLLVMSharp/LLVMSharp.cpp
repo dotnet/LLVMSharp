@@ -18,6 +18,7 @@
 #include <llvm/ExecutionEngine/Orc/Core.h>
 #include <llvm/ExecutionEngine/Orc/Layer.h>
 #include <llvm/ExecutionEngine/Orc/ObjectLinkingLayer.h>
+#include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Constants.h>
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/DerivedTypes.h>
@@ -66,6 +67,28 @@ DEFINE_SIMPLE_CONVERSION_FUNCTIONS(TargetMachine, LLVMTargetMachineRef)
 DEFINE_SIMPLE_CONVERSION_FUNCTIONS(TargetTransformInfo, LLVMSharpTargetTransformInfoRef)
 
 // Implementation code
+
+LLVMValueRef llvmsharp_BasicBlock_getFirstInsertionPt(LLVMBasicBlockRef basic_block)
+{
+    BasicBlock* unwrapped = unwrap(basic_block);
+    BasicBlock::iterator it = unwrapped->getFirstInsertionPt();
+    if (it == unwrapped->end())
+    {
+        return nullptr;
+    }
+    return wrap(&*it);
+}
+
+LLVMValueRef llvmsharp_BasicBlock_getFirstNonPHI(LLVMBasicBlockRef basic_block)
+{
+    BasicBlock* unwrapped = unwrap(basic_block);
+    BasicBlock::iterator it = unwrapped->getFirstNonPHIIt();
+    if (it == unwrapped->end())
+    {
+        return nullptr;
+    }
+    return wrap(&*it);
+}
 
 uint8_t llvmsharp_CallBase_isIndirectCall(LLVMValueRef call)
 {
