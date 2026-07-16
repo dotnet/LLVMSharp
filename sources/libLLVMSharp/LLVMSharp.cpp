@@ -103,48 +103,12 @@ LLVMValueRef llvmsharp_CloneFunction(LLVMValueRef function)
     return wrap(CloneFunction(unwrapped, valueMap));
 }
 
-int32_t llvmsharp_CmpInst_getInversePredicate(LLVMValueRef instruction)
-{
-    CmpInst* unwrapped = unwrap<CmpInst>(instruction);
-    return (int32_t)unwrapped->getInversePredicate();
-}
-
 const char* llvmsharp_CmpInst_getPredicateName(LLVMValueRef instruction, int32_t* out_size)
 {
     CmpInst* unwrapped = unwrap<CmpInst>(instruction);
     StringRef name = CmpInst::getPredicateName(unwrapped->getPredicate());
     *out_size = (int32_t)name.size();
     return name.data();
-}
-
-int32_t llvmsharp_CmpInst_getSwappedPredicate(LLVMValueRef instruction)
-{
-    CmpInst* unwrapped = unwrap<CmpInst>(instruction);
-    return (int32_t)unwrapped->getSwappedPredicate();
-}
-
-uint8_t llvmsharp_CmpInst_isFalseWhenEqual(LLVMValueRef instruction)
-{
-    CmpInst* unwrapped = unwrap<CmpInst>(instruction);
-    return unwrapped->isFalseWhenEqual() ? 1 : 0;
-}
-
-uint8_t llvmsharp_CmpInst_isSigned(LLVMValueRef instruction)
-{
-    CmpInst* unwrapped = unwrap<CmpInst>(instruction);
-    return unwrapped->isSigned() ? 1 : 0;
-}
-
-uint8_t llvmsharp_CmpInst_isTrueWhenEqual(LLVMValueRef instruction)
-{
-    CmpInst* unwrapped = unwrap<CmpInst>(instruction);
-    return unwrapped->isTrueWhenEqual() ? 1 : 0;
-}
-
-uint8_t llvmsharp_CmpInst_isUnsigned(LLVMValueRef instruction)
-{
-    CmpInst* unwrapped = unwrap<CmpInst>(instruction);
-    return unwrapped->isUnsigned() ? 1 : 0;
 }
 
 const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef array, int32_t* out_size)

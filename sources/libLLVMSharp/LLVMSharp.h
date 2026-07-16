@@ -94,19 +94,7 @@ LLVMSHARP_LINKAGE uint8_t llvmsharp_CallBase_isIndirectCall(LLVMValueRef call);
 
 LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_CloneFunction(LLVMValueRef function);
 
-LLVMSHARP_LINKAGE int32_t llvmsharp_CmpInst_getInversePredicate(LLVMValueRef instruction);
-
 LLVMSHARP_LINKAGE const char* llvmsharp_CmpInst_getPredicateName(LLVMValueRef instruction, int32_t* out_size);
-
-LLVMSHARP_LINKAGE int32_t llvmsharp_CmpInst_getSwappedPredicate(LLVMValueRef instruction);
-
-LLVMSHARP_LINKAGE uint8_t llvmsharp_CmpInst_isFalseWhenEqual(LLVMValueRef instruction);
-
-LLVMSHARP_LINKAGE uint8_t llvmsharp_CmpInst_isSigned(LLVMValueRef instruction);
-
-LLVMSHARP_LINKAGE uint8_t llvmsharp_CmpInst_isTrueWhenEqual(LLVMValueRef instruction);
-
-LLVMSHARP_LINKAGE uint8_t llvmsharp_CmpInst_isUnsigned(LLVMValueRef instruction);
 
 LLVMSHARP_LINKAGE const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef array, int32_t* out_size);
 
