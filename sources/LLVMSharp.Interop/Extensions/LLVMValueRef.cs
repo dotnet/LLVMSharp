@@ -152,6 +152,38 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMBasicBlockRef EntryBasicBlock => ((IsAFunction != null) && (BasicBlocksCount != 0)) ? LLVM.GetEntryBasicBlock(this) : default;
 
+    public readonly bool Exact
+    {
+        get
+        {
+            return InstructionOpcode is LLVMOpcode.LLVMUDiv or LLVMOpcode.LLVMSDiv or LLVMOpcode.LLVMLShr or LLVMOpcode.LLVMAShr && LLVM.GetExact(this) != 0;
+        }
+
+        set
+        {
+            if (InstructionOpcode is LLVMOpcode.LLVMUDiv or LLVMOpcode.LLVMSDiv or LLVMOpcode.LLVMLShr or LLVMOpcode.LLVMAShr)
+            {
+                LLVM.SetExact(this, value ? 1 : 0);
+            }
+        }
+    }
+
+    public readonly LLVMFastMathFlags FastMathFlags
+    {
+        get
+        {
+            return (LLVM.CanValueUseFastMathFlags(this) != 0) ? (LLVMFastMathFlags)LLVM.GetFastMathFlags(this) : default;
+        }
+
+        set
+        {
+            if (LLVM.CanValueUseFastMathFlags(this) != 0)
+            {
+                LLVM.SetFastMathFlags(this, (uint)value);
+            }
+        }
+    }
+
     public readonly LLVMRealPredicate FCmpPredicate => (Handle != IntPtr.Zero) ? LLVM.GetFCmpPredicate(this) : default;
 
     public readonly LLVMBasicBlockRef FirstBasicBlock => (IsAFunction != null) ? LLVM.GetFirstBasicBlock(this) : default;
@@ -201,6 +233,22 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         }
     }
 
+    public readonly LLVMGEPNoWrapFlags GEPNoWrapFlags
+    {
+        get
+        {
+            return (IsAGetElementPtrInst != null) ? (LLVMGEPNoWrapFlags)LLVM.GEPGetNoWrapFlags(this) : default;
+        }
+
+        set
+        {
+            if (IsAGetElementPtrInst != null)
+            {
+                LLVM.GEPSetNoWrapFlags(this, (uint)value);
+            }
+        }
+    }
+
     public readonly LLVMTypeRef GEPSourceElementType => (IsAGetElementPtrInst != null) ? LLVM.GetGEPSourceElementType(this) : default;
 
     public readonly LLVMValueRef GlobalIFuncResolver
@@ -224,9 +272,37 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly bool HasMetadata => (IsAInstruction != null) && LLVM.HasMetadata(this) != 0;
 
-    public readonly bool HasNoSignedWrap => (IsAInstruction != null) && llvmsharp.Instruction_hasNoSignedWrap(this) != 0;
+    public readonly bool HasNoSignedWrap
+    {
+        get
+        {
+            return InstructionOpcode is LLVMOpcode.LLVMAdd or LLVMOpcode.LLVMSub or LLVMOpcode.LLVMMul or LLVMOpcode.LLVMShl && LLVM.GetNSW(this) != 0;
+        }
 
-    public readonly bool HasNoUnsignedWrap => (IsAInstruction != null) && llvmsharp.Instruction_hasNoUnsignedWrap(this) != 0;
+        set
+        {
+            if (InstructionOpcode is LLVMOpcode.LLVMAdd or LLVMOpcode.LLVMSub or LLVMOpcode.LLVMMul or LLVMOpcode.LLVMShl)
+            {
+                LLVM.SetNSW(this, value ? 1 : 0);
+            }
+        }
+    }
+
+    public readonly bool HasNoUnsignedWrap
+    {
+        get
+        {
+            return InstructionOpcode is LLVMOpcode.LLVMAdd or LLVMOpcode.LLVMSub or LLVMOpcode.LLVMMul or LLVMOpcode.LLVMShl && LLVM.GetNUW(this) != 0;
+        }
+
+        set
+        {
+            if (InstructionOpcode is LLVMOpcode.LLVMAdd or LLVMOpcode.LLVMSub or LLVMOpcode.LLVMMul or LLVMOpcode.LLVMShl)
+            {
+                LLVM.SetNUW(this, value ? 1 : 0);
+            }
+        }
+    }
 
     public readonly bool HasPersonalityFn => (IsAFunction != null) && LLVM.HasPersonalityFn(this) != 0;
 
@@ -244,6 +320,22 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     }
 
     public readonly LLVMIntPredicate ICmpPredicate => (Handle != IntPtr.Zero) ? LLVM.GetICmpPredicate(this) : default;
+
+    public readonly bool ICmpSameSign
+    {
+        get
+        {
+            return (IsAICmpInst != null) && LLVM.GetICmpSameSign(this) != 0;
+        }
+
+        set
+        {
+            if (IsAICmpInst != null)
+            {
+                LLVM.SetICmpSameSign(this, value ? 1 : 0);
+            }
+        }
+    }
 
     public readonly uint IncomingCount => (IsAPHINode != null) ? LLVM.CountIncoming(this) : default;
 
@@ -489,6 +581,22 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly bool IsDeclaration => (IsAGlobalValue != null) && LLVM.IsDeclaration(this) != 0;
 
+    public readonly bool IsDisjoint
+    {
+        get
+        {
+            return InstructionOpcode is LLVMOpcode.LLVMOr && LLVM.GetIsDisjoint(this) != 0;
+        }
+
+        set
+        {
+            if (InstructionOpcode is LLVMOpcode.LLVMOr)
+            {
+                LLVM.SetIsDisjoint(this, value ? 1 : 0);
+            }
+        }
+    }
+
     public readonly bool IsExternallyInitialized
     {
         get
@@ -512,6 +620,22 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         set
         {
             LLVM.SetGlobalConstant(this, value ? 1 : 0);
+        }
+    }
+
+    public readonly bool IsInBounds
+    {
+        get
+        {
+            return (IsAGetElementPtrInst != null) && LLVM.IsInBounds(this) != 0;
+        }
+
+        set
+        {
+            if (IsAGetElementPtrInst != null)
+            {
+                LLVM.SetIsInBounds(this, value ? 1 : 0);
+            }
         }
     }
 
@@ -605,6 +729,22 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     public readonly LLVMValueRef NextInstruction => (IsAInstruction != null) ? LLVM.GetNextInstruction(this) : default;
 
     public readonly LLVMValueRef NextParam => (IsAArgument != null) ? LLVM.GetNextParam(this) : default;
+
+    public readonly bool NNeg
+    {
+        get
+        {
+            return InstructionOpcode is LLVMOpcode.LLVMZExt or LLVMOpcode.LLVMUIToFP && LLVM.GetNNeg(this) != 0;
+        }
+
+        set
+        {
+            if (InstructionOpcode is LLVMOpcode.LLVMZExt or LLVMOpcode.LLVMUIToFP)
+            {
+                LLVM.SetNNeg(this, value ? 1 : 0);
+            }
+        }
+    }
 
     public readonly LLVMBasicBlockRef NormalDest => (IsAInvokeInst != null) ? LLVM.GetNormalDest(this) : default;
 

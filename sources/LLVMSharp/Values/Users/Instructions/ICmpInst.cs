@@ -9,4 +9,18 @@ public sealed class ICmpInst : CmpInst
     internal ICmpInst(LLVMValueRef handle) : base(handle.IsAICmpInst)
     {
     }
+
+    public bool HasSameSign
+    {
+        get
+        {
+            return Handle.ICmpSameSign;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.ICmpSameSign = value;
+        }
+    }
 }

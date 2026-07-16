@@ -11,6 +11,20 @@ public partial class Instruction : User
     {
     }
 
+    public LLVMFastMathFlags FastMathFlags
+    {
+        get
+        {
+            return Handle.FastMathFlags;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.FastMathFlags = value;
+        }
+    }
+
     public bool IsTerminator => Handle.IsATerminatorInst != null;
 
     public LLVMOpcode Opcode => Handle.InstructionOpcode;

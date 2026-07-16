@@ -50,4 +50,6 @@ public sealed class LoadInst : UnaryInstruction
             handle.Volatile = value;
         }
     }
+
+    public Value PointerOperand => GetOperand(0);
 }

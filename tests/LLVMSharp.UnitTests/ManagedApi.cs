@@ -473,4 +473,58 @@ public class ManagedApi
         Assert.That(next.Previous, Is.EqualTo(entry));
         Assert.That(next.Terminator, Is.Null);
     }
+
+    [Test]
+    public void InstructionFlagAccessors()
+    {
+        var context = new LLVMContext();
+        var module = Module.Create(context, "m");
+        var int32 = Type.GetInt32Ty(context);
+        var int64 = Type.GetInt64Ty(context);
+        var flt = Type.GetFloatTy(context);
+
+        var functionType = LLVMTypeRef.CreateFunction(Type.GetVoidTy(context).Handle, [int32.Handle, int32.Handle, flt.Handle, flt.Handle], IsVarArg: false);
+        var function = module.AddFunction("f", (FunctionType)context.GetOrCreate(functionType));
+        var entry = function.AppendBasicBlock("entry");
+
+        using var builder = LLVMBuilderRef.Create(context.Handle);
+        builder.PositionAtEnd(entry.Handle);
+
+        var lhs = function.GetParam(0).Handle;
+        var rhs = function.GetParam(1).Handle;
+
+        var add = (BinaryOperator)context.GetOrCreate(builder.BuildAdd(lhs, rhs, "add"));
+        add.HasNoSignedWrap = true;
+        add.HasNoUnsignedWrap = true;
+        Assert.That(add.HasNoSignedWrap, Is.True);
+        Assert.That(add.HasNoUnsignedWrap, Is.True);
+
+        var div = (BinaryOperator)context.GetOrCreate(builder.BuildUDiv(lhs, rhs, "div"));
+        div.IsExact = true;
+        Assert.That(div.IsExact, Is.True);
+
+        var disjoint = (BinaryOperator)context.GetOrCreate(builder.BuildOr(lhs, rhs, "or"));
+        disjoint.IsDisjoint = true;
+        Assert.That(disjoint.IsDisjoint, Is.True);
+
+        var zext = (ZExtInst)context.GetOrCreate(builder.BuildZExt(lhs, int64.Handle, "zext"));
+        zext.IsNonNeg = true;
+        Assert.That(zext.IsNonNeg, Is.True);
+
+        var icmp = (ICmpInst)context.GetOrCreate(builder.BuildICmp(LLVMIntPredicate.LLVMIntSLT, lhs, rhs, "cmp"));
+        icmp.HasSameSign = true;
+        Assert.That(icmp.HasSameSign, Is.True);
+
+        var fadd = (Instruction)context.GetOrCreate(builder.BuildFAdd(function.GetParam(2).Handle, function.GetParam(3).Handle, "fadd"));
+        fadd.FastMathFlags = LLVMFastMathFlags.LLVMFastMathAll;
+        Assert.That(fadd.FastMathFlags, Is.EqualTo(LLVMFastMathFlags.LLVMFastMathAll));
+
+        var arrayType = LLVMTypeRef.CreateArray(int32.Handle, 4);
+        var storage = builder.BuildAlloca(arrayType, "arr");
+        var gep = (GetElementPtrInst)context.GetOrCreate(builder.BuildGEP2(arrayType, storage, new[] { LLVMValueRef.CreateConstInt(int32.Handle, 0), LLVMValueRef.CreateConstInt(int32.Handle, 1) }, "elem"));
+        gep.IsInBounds = true;
+        Assert.That(gep.IsInBounds, Is.True);
+        Assert.That(gep.NumIndices, Is.EqualTo(2u));
+        Assert.That(gep.PointerOperand, Is.EqualTo(context.GetOrCreate(storage)));
+    }
 }
