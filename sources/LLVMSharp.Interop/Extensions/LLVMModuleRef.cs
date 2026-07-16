@@ -14,6 +14,19 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
 
     public readonly LLVMContextRef Context => (Handle != IntPtr.Zero) ? LLVM.GetModuleContext(this) : default;
 
+    public readonly LLVMTargetDataRef DataLayoutObject
+    {
+        get
+        {
+            return (Handle != IntPtr.Zero) ? LLVM.GetModuleDataLayout(this) : default;
+        }
+
+        set
+        {
+            LLVM.SetModuleDataLayout(this, value);
+        }
+    }
+
     public readonly string DataLayout
     {
         get
@@ -232,6 +245,14 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
         return LLVM.AddGlobal(this, Ty, marshaledName);
     }
 
+    public readonly LLVMValueRef AddGlobalIFunc(string Name, LLVMTypeRef Ty, uint AddrSpace, LLVMValueRef Resolver) => AddGlobalIFunc(Name.AsSpan(), Ty, AddrSpace, Resolver);
+
+    public readonly LLVMValueRef AddGlobalIFunc(ReadOnlySpan<char> Name, LLVMTypeRef Ty, uint AddrSpace, LLVMValueRef Resolver)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.AddGlobalIFunc(this, marshaledName, (nuint)marshaledName.Length, Ty, AddrSpace, Resolver);
+    }
+
     public readonly LLVMValueRef AddGlobalInAddressSpace(LLVMTypeRef Ty, string Name, uint AddressSpace) => AddGlobalInAddressSpace(Ty, Name.AsSpan(), AddressSpace);
 
     public readonly LLVMValueRef AddGlobalInAddressSpace(LLVMTypeRef Ty, ReadOnlySpan<char> Name, uint AddressSpace)
@@ -272,6 +293,14 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
     public readonly LLVMDIBuilderRef CreateDIBuilder()
     {
         return new LLVMDIBuilderRef((IntPtr)LLVM.CreateDIBuilder(this));
+    }
+
+    public readonly void AppendInlineAsm(string Asm) => AppendInlineAsm(Asm.AsSpan());
+
+    public readonly void AppendInlineAsm(ReadOnlySpan<char> Asm)
+    {
+        using var marshaledAsm = new MarshaledString(Asm);
+        LLVM.AppendModuleInlineAsm(this, marshaledAsm, (nuint)marshaledAsm.Length);
     }
 
     public readonly LLVMExecutionEngineRef CreateExecutionEngine()
@@ -345,6 +374,24 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
 
     public readonly LLVMTypeRef[] GetIdentifiedStructTypes() => llvmsharp.Module_GetIdentifiedStructTypes(this);
 
+    public readonly LLVMValueRef GetIntrinsicDeclaration(uint ID, LLVMTypeRef[] ParamTypes) => GetIntrinsicDeclaration(ID, ParamTypes.AsSpan());
+
+    public readonly LLVMValueRef GetIntrinsicDeclaration(uint ID, ReadOnlySpan<LLVMTypeRef> ParamTypes)
+    {
+        fixed (LLVMTypeRef* pParamTypes = ParamTypes)
+        {
+            return LLVM.GetIntrinsicDeclaration(this, ID, (LLVMOpaqueType**)pParamTypes, (nuint)ParamTypes.Length);
+        }
+    }
+
+    public readonly LLVMMetadataRef GetModuleFlag(string Key) => GetModuleFlag(Key.AsSpan());
+
+    public readonly LLVMMetadataRef GetModuleFlag(ReadOnlySpan<char> Key)
+    {
+        using var marshaledKey = new MarshaledString(Key);
+        return LLVM.GetModuleFlag(this, marshaledKey, (nuint)marshaledKey.Length);
+    }
+
     public readonly LLVMValueRef GetNamedFunction(string Name) => GetNamedFunction(Name.AsSpan());
 
     public readonly LLVMValueRef GetNamedFunction(ReadOnlySpan<char> Name)
@@ -361,6 +408,22 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
     {
         using var marshaledName = new MarshaledString(Name);
         return LLVM.GetNamedGlobal(this, marshaledName);
+    }
+
+    public readonly LLVMValueRef GetNamedGlobalAlias(string Name) => GetNamedGlobalAlias(Name.AsSpan());
+
+    public readonly LLVMValueRef GetNamedGlobalAlias(ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.GetNamedGlobalAlias(this, marshaledName, (nuint)marshaledName.Length);
+    }
+
+    public readonly LLVMValueRef GetNamedGlobalIFunc(string Name) => GetNamedGlobalIFunc(Name.AsSpan());
+
+    public readonly LLVMValueRef GetNamedGlobalIFunc(ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.GetNamedGlobalIFunc(this, marshaledName, (nuint)marshaledName.Length);
     }
 
     public readonly LLVMValueRef[] GetNamedMetadataOperands(string Name) => GetNamedMetadataOperands(Name.AsSpan());
@@ -387,6 +450,24 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
     }
 
     public readonly LLVMTypeRef GetTypeByName(string Name) => GetTypeByName(Name.AsSpan());
+
+    public readonly LLVMComdatRef GetOrInsertComdat(string Name) => GetOrInsertComdat(Name.AsSpan());
+
+    public readonly LLVMComdatRef GetOrInsertComdat(ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.GetOrInsertComdat(this, marshaledName);
+    }
+
+    public readonly LLVMNamedMDNodeRef GetOrInsertNamedMetadata(string Name) => GetOrInsertNamedMetadata(Name.AsSpan());
+
+    public readonly LLVMNamedMDNodeRef GetOrInsertNamedMetadata(ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.GetOrInsertNamedMetadata(this, marshaledName, (nuint)marshaledName.Length);
+    }
+
+    public readonly bool Link(LLVMModuleRef Src) => LLVM.LinkModules2(this, Src) == 0;
 
     public readonly LLVMTypeRef GetTypeByName(ReadOnlySpan<char> Name)
     {
@@ -426,7 +507,38 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
         LLVM.SetModuleInlineAsm(this, marshaledAsm);
     }
 
+    public readonly void RunPasses(string Passes, LLVMTargetMachineRef TM, LLVMPassBuilderOptionsRef Options) => RunPasses(Passes.AsSpan(), TM, Options);
+
+    public readonly void RunPasses(ReadOnlySpan<char> Passes, LLVMTargetMachineRef TM, LLVMPassBuilderOptionsRef Options)
+    {
+        if (!TryRunPasses(Passes, TM, Options, out string ErrorMessage))
+        {
+            throw new ExternalException(ErrorMessage);
+        }
+    }
+
+    public readonly bool StripDebugInfo() => LLVM.StripModuleDebugInfo(this) != 0;
+
     public override readonly string ToString() => (Handle != IntPtr.Zero) ? PrintToString() : string.Empty;
+
+    public readonly bool TryRunPasses(string Passes, LLVMTargetMachineRef TM, LLVMPassBuilderOptionsRef Options, out string OutMessage) => TryRunPasses(Passes.AsSpan(), TM, Options, out OutMessage);
+
+    public readonly bool TryRunPasses(ReadOnlySpan<char> Passes, LLVMTargetMachineRef TM, LLVMPassBuilderOptionsRef Options, out string OutMessage)
+    {
+        using var marshaledPasses = new MarshaledString(Passes);
+        LLVMOpaqueError* error = LLVM.RunPasses(this, marshaledPasses, TM, Options);
+
+        if (error == null)
+        {
+            OutMessage = string.Empty;
+            return true;
+        }
+
+        sbyte* pMessage = LLVM.GetErrorMessage(error);
+        OutMessage = (pMessage != null) ? SpanExtensions.AsString(pMessage) : string.Empty;
+        LLVM.DisposeErrorMessage(pMessage);
+        return false;
+    }
 
     public readonly bool TryCreateExecutionEngine(out LLVMExecutionEngineRef OutEE, out string OutError)
     {
