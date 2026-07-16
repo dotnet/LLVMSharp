@@ -16,6 +16,15 @@ public class Type : IEquatable<Type>
         Handle = handle;
     }
 
+    private protected Type(LLVMTypeRef handle, LLVMTypeKind expectedTypeKind1, LLVMTypeKind expectedTypeKind2)
+    {
+        if ((handle.Kind != expectedTypeKind1) && (handle.Kind != expectedTypeKind2))
+        {
+            throw new ArgumentOutOfRangeException(nameof(handle));
+        }
+        Handle = handle;
+    }
+
     public LLVMTypeRef Handle { get; }
 
     public LLVMContext Context => LLVMContext.GetOrCreate(Handle.Context);
@@ -198,7 +207,7 @@ public class Type : IEquatable<Type>
         LLVMTypeKind.LLVMVectorTypeKind => new VectorType(handle),
         LLVMTypeKind.LLVMMetadataTypeKind => new Type(handle, LLVMTypeKind.LLVMMetadataTypeKind),
         LLVMTypeKind.LLVMTokenTypeKind => new Type(handle, LLVMTypeKind.LLVMTokenTypeKind),
-        LLVMTypeKind.LLVMScalableVectorTypeKind => new Type(handle, LLVMTypeKind.LLVMScalableVectorTypeKind),
+        LLVMTypeKind.LLVMScalableVectorTypeKind => new VectorType(handle),
         LLVMTypeKind.LLVMBFloatTypeKind => new Type(handle, LLVMTypeKind.LLVMBFloatTypeKind),
         LLVMTypeKind.LLVMX86_AMXTypeKind => new Type(handle, LLVMTypeKind.LLVMX86_AMXTypeKind),
         LLVMTypeKind.LLVMTargetExtTypeKind => new Type(handle, LLVMTypeKind.LLVMTargetExtTypeKind),

@@ -212,6 +212,8 @@ public sealed class Module : IEquatable<Module>
         return GetFunction(name) ?? AddFunction(name, functionType);
     }
 
+    public Comdat GetOrInsertComdat(string name) => new Comdat(Handle.GetOrInsertComdat(name));
+
     public StructType? GetTypeByName(string name)
     {
         var handle = Handle.GetTypeByName(name);

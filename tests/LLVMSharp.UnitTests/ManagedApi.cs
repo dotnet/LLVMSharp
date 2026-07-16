@@ -172,6 +172,33 @@ public class ManagedApi
     }
 
     [Test]
+    public void GlobalObjectComdat()
+    {
+        var context = new LLVMContext();
+        var module = context.Handle.CreateModuleWithName("m");
+        var int32 = Type.GetInt32Ty(context);
+
+        var global = (GlobalVariable)context.GetOrCreate(module.AddGlobal(int32.Handle, "g"));
+        Assert.That(global.HasComdat, Is.False);
+        Assert.That(global.Comdat, Is.Null);
+
+        var comdat = new Comdat(module.GetOrInsertComdat("g"))
+        {
+            SelectionKind = LLVMComdatSelectionKind.LLVMLargestComdatSelectionKind,
+        };
+
+        global.Comdat = comdat;
+        Assert.That(global.HasComdat, Is.True);
+        Assert.That(global.Comdat, Is.Not.Null);
+        Assert.That(global.Comdat, Is.EqualTo(comdat));
+        Assert.That(global.Comdat!.SelectionKind, Is.EqualTo(LLVMComdatSelectionKind.LLVMLargestComdatSelectionKind));
+
+        global.Comdat = null;
+        Assert.That(global.HasComdat, Is.False);
+        Assert.That(global.Comdat, Is.Null);
+    }
+
+    [Test]
     public void FunctionAccessors()
     {
         var context = new LLVMContext();
@@ -228,6 +255,50 @@ public class ManagedApi
         Assert.That(ret.IsTerminator, Is.True);
         Assert.That(ret.Opcode, Is.EqualTo(LLVMOpcode.LLVMRet));
         Assert.That(ret.ReturnValue, Is.EqualTo(add));
+    }
+
+    [Test]
+    public void ComparePredicateAccessors()
+    {
+        var context = new LLVMContext();
+        var module = context.Handle.CreateModuleWithName("m");
+        var int32 = Type.GetInt32Ty(context);
+        var flt = Type.GetFloatTy(context);
+
+        var functionType = LLVMTypeRef.CreateFunction(int32.Handle, [int32.Handle, int32.Handle, flt.Handle, flt.Handle], IsVarArg: false);
+        var function = (Function)context.GetOrCreate(module.AddFunction("f", functionType));
+        var entry = function.AppendBasicBlock("entry");
+
+        using var builder = LLVMBuilderRef.Create(context.Handle);
+        builder.PositionAtEnd(entry.Handle);
+
+        var icmpHandle = builder.BuildICmp(LLVMIntPredicate.LLVMIntSGT, function.GetParam(0).Handle, function.GetParam(1).Handle, "icmp");
+        var fcmpHandle = builder.BuildFCmp(LLVMRealPredicate.LLVMRealUEQ, function.GetParam(2).Handle, function.GetParam(3).Handle, "fcmp");
+
+        var icmp = (ICmpInst)context.GetOrCreate(icmpHandle);
+        Assert.That(icmp.GetPredicate(), Is.EqualTo(CmpInst.Predicate.ICMP_SGT));
+        Assert.That(icmp.IsIntPredicate(), Is.True);
+        Assert.That(icmp.IsFPPredicate(), Is.False);
+        Assert.That(icmp.IsSigned(), Is.True);
+        Assert.That(icmp.IsUnsigned(), Is.False);
+        Assert.That(icmp.IsEquality(), Is.False);
+        Assert.That(icmp.IsRelational(), Is.True);
+        Assert.That(icmp.IsStrictPredicate(), Is.True);
+        Assert.That(icmp.GetInversePredicate(), Is.EqualTo(CmpInst.Predicate.ICMP_SLE));
+        Assert.That(icmp.GetSwappedPredicate(), Is.EqualTo(CmpInst.Predicate.ICMP_SLT));
+        Assert.That(icmp.GetNonStrictPredicate(), Is.EqualTo(CmpInst.Predicate.ICMP_SGE));
+        Assert.That(icmp.GetUnsignedPredicate(), Is.EqualTo(CmpInst.Predicate.ICMP_UGT));
+        Assert.That(icmp.GetSignedPredicate(), Is.EqualTo(CmpInst.Predicate.ICMP_SGT));
+
+        var fcmp = (FCmpInst)context.GetOrCreate(fcmpHandle);
+        Assert.That(fcmp.GetPredicate(), Is.EqualTo(CmpInst.Predicate.FCMP_UEQ));
+        Assert.That(fcmp.IsFPPredicate(), Is.True);
+        Assert.That(fcmp.IsEquality(), Is.True);
+        Assert.That(fcmp.IsRelational(), Is.False);
+        Assert.That(fcmp.IsOrdered(), Is.False);
+        Assert.That(fcmp.IsUnordered(), Is.True);
+        Assert.That(fcmp.GetInversePredicate(), Is.EqualTo(CmpInst.Predicate.FCMP_ONE));
+        Assert.That(fcmp.GetOrderedPredicate(), Is.EqualTo(CmpInst.Predicate.FCMP_OEQ));
     }
 
     [Test]
