@@ -1,6 +1,7 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using LLVMSharp.Interop;
 
 namespace LLVMSharp;
@@ -48,4 +49,10 @@ public sealed class ICmpInst : CmpInst
         Predicate.ICMP_SLE => Predicate.ICMP_ULE,
         _ => throw new ArgumentOutOfRangeException(nameof(predicate)),
     };
+
+    [SuppressMessage("Design", "CA1024:Use properties where appropriate", Justification = "Mirrors C++ ICmpInst::getSignedPredicate(); overloads the static predicate transform.")]
+    public Predicate GetSignedPredicate() => GetSignedPredicate(GetPredicate());
+
+    [SuppressMessage("Design", "CA1024:Use properties where appropriate", Justification = "Mirrors C++ ICmpInst::getUnsignedPredicate(); overloads the static predicate transform.")]
+    public Predicate GetUnsignedPredicate() => GetUnsignedPredicate(GetPredicate());
 }
