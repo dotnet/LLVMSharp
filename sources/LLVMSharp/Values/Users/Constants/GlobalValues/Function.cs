@@ -53,6 +53,8 @@ public sealed class Function : GlobalObject
 
     public uint IntrinsicID => Handle.IntrinsicID;
 
+    public bool IsIntrinsic => Handle.IntrinsicID != 0;
+
     public uint NumParams => Handle.ParamsCount;
 
     public Constant? PersonalityFn
