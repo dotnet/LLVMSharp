@@ -13,6 +13,7 @@
 #include <llvm/Analysis/InstructionSimplify.h>
 #include <llvm/Analysis/LoopInfo.h>
 #include <llvm/Analysis/PostDominators.h>
+#include <llvm/Analysis/TargetTransformInfo.h>
 #include <llvm/ExecutionEngine/Orc/Core.h>
 #include <llvm/ExecutionEngine/Orc/Layer.h>
 #include <llvm/ExecutionEngine/Orc/ObjectLinkingLayer.h>
@@ -32,6 +33,7 @@
 #include <llvm/Demangle/Demangle.h>
 #include <llvm/Support/CBindingWrapping.h>
 #include <llvm/Support/TypeSize.h>
+#include <llvm/Target/TargetMachine.h>
 #include <cstddef>
 #include <cstring>
 #include <string>
@@ -55,6 +57,8 @@ DEFINE_SIMPLE_CONVERSION_FUNCTIONS(DominatorTree, LLVMSharpDominatorTreeRef)
 DEFINE_SIMPLE_CONVERSION_FUNCTIONS(Loop, LLVMSharpLoopRef)
 DEFINE_SIMPLE_CONVERSION_FUNCTIONS(LoopInfo, LLVMSharpLoopInfoRef)
 DEFINE_SIMPLE_CONVERSION_FUNCTIONS(PostDominatorTree, LLVMSharpPostDominatorTreeRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(TargetMachine, LLVMTargetMachineRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(TargetTransformInfo, LLVMSharpTargetTransformInfoRef)
 
 // Implementation code
 
@@ -692,6 +696,45 @@ LLVMValueRef llvmsharp_simplifyInstruction(LLVMValueRef instruction, LLVMModuleR
     Instruction* unwrapped = unwrap<Instruction>(instruction);
     const DataLayout& dataLayout = unwrap(module)->getDataLayout();
     return wrap(simplifyInstruction(unwrapped, SimplifyQuery(dataLayout)));
+}
+
+LLVMSharpTargetTransformInfoRef llvmsharp_TargetTransformInfo_create(LLVMTargetMachineRef target_machine, LLVMValueRef function)
+{
+    TargetMachine* targetMachine = unwrap(target_machine);
+    Function* unwrapped = unwrap<Function>(function);
+    return wrap(new TargetTransformInfo(targetMachine->getTargetTransformInfo(*unwrapped)));
+}
+
+void llvmsharp_TargetTransformInfo_dispose(LLVMSharpTargetTransformInfoRef target_transform_info)
+{
+    delete unwrap(target_transform_info);
+}
+
+uint8_t llvmsharp_TargetTransformInfo_getInstructionCost(LLVMSharpTargetTransformInfoRef target_transform_info, LLVMValueRef user, int32_t cost_kind, int64_t* out_cost)
+{
+    TargetTransformInfo* unwrapped = unwrap(target_transform_info);
+    InstructionCost cost = unwrapped->getInstructionCost(unwrap<User>(user), (TargetTransformInfo::TargetCostKind)cost_kind);
+    if (!cost.isValid())
+    {
+        *out_cost = 0;
+        return 0;
+    }
+    *out_cost = cost.getValue();
+    return 1;
+}
+
+uint32_t llvmsharp_TargetTransformInfo_getNumberOfRegisters(LLVMSharpTargetTransformInfoRef target_transform_info, uint32_t class_id)
+{
+    TargetTransformInfo* unwrapped = unwrap(target_transform_info);
+    return unwrapped->getNumberOfRegisters(class_id);
+}
+
+uint32_t llvmsharp_TargetTransformInfo_getRegisterBitWidth(LLVMSharpTargetTransformInfoRef target_transform_info, int32_t register_kind, uint8_t* out_isScalable)
+{
+    TargetTransformInfo* unwrapped = unwrap(target_transform_info);
+    TypeSize size = unwrapped->getRegisterBitWidth((TargetTransformInfo::RegisterKind)register_kind);
+    *out_isScalable = size.isScalable() ? 1 : 0;
+    return (uint32_t)size.getKnownMinValue();
 }
 
 uint64_t llvmsharp_Type_getPrimitiveSizeInBits(LLVMTypeRef type, uint8_t* out_isScalable)

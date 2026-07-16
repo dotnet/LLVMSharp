@@ -11,6 +11,7 @@
 // Include headers
 #include <clang-c/ExternC.h>
 #include <llvm-c/Orc.h>
+#include <llvm-c/TargetMachine.h>
 #include <llvm/IR/DerivedTypes.h>
 
 #ifdef _MSC_VER
@@ -75,6 +76,7 @@ typedef struct LLVMSharpOpaqueDominatorTree* LLVMSharpDominatorTreeRef;
 typedef struct LLVMSharpOpaqueLoop* LLVMSharpLoopRef;
 typedef struct LLVMSharpOpaqueLoopInfo* LLVMSharpLoopInfoRef;
 typedef struct LLVMSharpOpaquePostDominatorTree* LLVMSharpPostDominatorTreeRef;
+typedef struct LLVMSharpOpaqueTargetTransformInfo* LLVMSharpTargetTransformInfoRef;
 
 // Enum definitions
 
@@ -257,6 +259,16 @@ LLVMSHARP_LINKAGE void llvmsharp_PostDominatorTree_dispose(LLVMSharpPostDominato
 LLVMSHARP_LINKAGE uint8_t llvmsharp_PostDominatorTree_dominatesBlock(LLVMSharpPostDominatorTreeRef post_dominator_tree, LLVMBasicBlockRef a, LLVMBasicBlockRef b);
 
 LLVMSHARP_LINKAGE LLVMValueRef llvmsharp_simplifyInstruction(LLVMValueRef instruction, LLVMModuleRef module);
+
+LLVMSHARP_LINKAGE LLVMSharpTargetTransformInfoRef llvmsharp_TargetTransformInfo_create(LLVMTargetMachineRef target_machine, LLVMValueRef function);
+
+LLVMSHARP_LINKAGE void llvmsharp_TargetTransformInfo_dispose(LLVMSharpTargetTransformInfoRef target_transform_info);
+
+LLVMSHARP_LINKAGE uint8_t llvmsharp_TargetTransformInfo_getInstructionCost(LLVMSharpTargetTransformInfoRef target_transform_info, LLVMValueRef user, int32_t cost_kind, int64_t* out_cost);
+
+LLVMSHARP_LINKAGE uint32_t llvmsharp_TargetTransformInfo_getNumberOfRegisters(LLVMSharpTargetTransformInfoRef target_transform_info, uint32_t class_id);
+
+LLVMSHARP_LINKAGE uint32_t llvmsharp_TargetTransformInfo_getRegisterBitWidth(LLVMSharpTargetTransformInfoRef target_transform_info, int32_t register_kind, uint8_t* out_isScalable);
 
 LLVMSHARP_LINKAGE uint64_t llvmsharp_Type_getPrimitiveSizeInBits(LLVMTypeRef type, uint8_t* out_isScalable);
 
