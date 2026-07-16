@@ -9,21 +9,43 @@
 #endif
 
 // Library includes (<> instead of "")
+#include <llvm/Analysis/ConstantFolding.h>
+#include <llvm/Analysis/InstructionSimplify.h>
+#include <llvm/Analysis/LoopInfo.h>
+#include <llvm/Analysis/PostDominators.h>
+#include <llvm/Analysis/TargetTransformInfo.h>
+#include <llvm/Analysis/ValueTracking.h>
+#include <llvm/ExecutionEngine/Orc/Core.h>
+#include <llvm/ExecutionEngine/Orc/Layer.h>
+#include <llvm/ExecutionEngine/Orc/ObjectLinkingLayer.h>
+#include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Constants.h>
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/DerivedTypes.h>
+#include <llvm/IR/Dominators.h>
 #include <llvm/IR/Function.h>
+#include <llvm/IR/GlobalValue.h>
 #include <llvm/IR/GlobalVariable.h>
+#include <llvm/IR/InstrTypes.h>
 #include <llvm/IR/LegacyPassManager.h>
+#include <llvm/IR/Mangler.h>
 #include <llvm/IR/Module.h>
+#include <llvm/IR/Operator.h>
 #include <llvm-c/Core.h>
+#include <llvm-c/Orc.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/Demangle/Demangle.h>
+#include <llvm/Support/CBindingWrapping.h>
+#include <llvm/Support/raw_ostream.h>
+#include <llvm/Support/TypeSize.h>
+#include <llvm/Target/TargetMachine.h>
 #include <cstddef>
+#include <cstring>
 #include <string>
 #include <string_view>
 #include <llvm/Transforms/Scalar.h>
 #include <llvm/Transforms/Utils.h>
+#include <llvm/Transforms/Utils/Cloning.h>
 #include <llvm/BinaryFormat/Dwarf.h>
 
 #ifdef _MSC_VER
@@ -35,8 +57,59 @@ using namespace llvm;
 
 // Create wrappers for C Binding types (see CBindingWrapping.h).
 DEFINE_ISA_CONVERSION_FUNCTIONS(Pass, LLVMPassRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(orc::ExecutionSession, LLVMOrcExecutionSessionRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(orc::ObjectLayer, LLVMOrcObjectLayerRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(DominatorTree, LLVMSharpDominatorTreeRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(Loop, LLVMSharpLoopRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(LoopInfo, LLVMSharpLoopInfoRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(PostDominatorTree, LLVMSharpPostDominatorTreeRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(TargetMachine, LLVMTargetMachineRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(TargetTransformInfo, LLVMSharpTargetTransformInfoRef)
 
 // Implementation code
+
+LLVMValueRef llvmsharp_BasicBlock_getFirstInsertionPt(LLVMBasicBlockRef basic_block)
+{
+    BasicBlock* unwrapped = unwrap(basic_block);
+    BasicBlock::iterator it = unwrapped->getFirstInsertionPt();
+    if (it == unwrapped->end())
+    {
+        return nullptr;
+    }
+    return wrap(&*it);
+}
+
+LLVMValueRef llvmsharp_BasicBlock_getFirstNonPHI(LLVMBasicBlockRef basic_block)
+{
+    BasicBlock* unwrapped = unwrap(basic_block);
+    BasicBlock::iterator it = unwrapped->getFirstNonPHIIt();
+    if (it == unwrapped->end())
+    {
+        return nullptr;
+    }
+    return wrap(&*it);
+}
+
+uint8_t llvmsharp_CallBase_isIndirectCall(LLVMValueRef call)
+{
+    CallBase* unwrapped = unwrap<CallBase>(call);
+    return unwrapped->isIndirectCall() ? 1 : 0;
+}
+
+LLVMValueRef llvmsharp_CloneFunction(LLVMValueRef function)
+{
+    Function* unwrapped = unwrap<Function>(function);
+    ValueToValueMapTy valueMap;
+    return wrap(CloneFunction(unwrapped, valueMap));
+}
+
+const char* llvmsharp_CmpInst_getPredicateName(LLVMValueRef instruction, int32_t* out_size)
+{
+    CmpInst* unwrapped = unwrap<CmpInst>(instruction);
+    StringRef name = CmpInst::getPredicateName(unwrapped->getPredicate());
+    *out_size = (int32_t)name.size();
+    return name.data();
+}
 
 const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef array, int32_t* out_size)
 {
@@ -44,6 +117,46 @@ const char* llvmsharp_ConstantDataArray_getData(LLVMValueRef array, int32_t* out
     StringRef stringRef = unwrapped->getRawDataValues();
     *out_size = (int32_t)stringRef.size();
     return stringRef.data();
+}
+
+LLVMValueRef llvmsharp_ConstantFoldCompareInstOperands(int32_t predicate, LLVMValueRef lhs, LLVMValueRef rhs, LLVMModuleRef module)
+{
+    Constant* lhsConstant = unwrap<Constant>(lhs);
+    Constant* rhsConstant = unwrap<Constant>(rhs);
+    const DataLayout& dataLayout = unwrap(module)->getDataLayout();
+    return wrap(ConstantFoldCompareInstOperands((unsigned)predicate, lhsConstant, rhsConstant, dataLayout));
+}
+
+LLVMValueRef llvmsharp_ConstantFoldConstant(LLVMValueRef constant, LLVMModuleRef module)
+{
+    Constant* unwrapped = unwrap<Constant>(constant);
+    const DataLayout& dataLayout = unwrap(module)->getDataLayout();
+    return wrap(ConstantFoldConstant(unwrapped, dataLayout));
+}
+
+LLVMValueRef llvmsharp_ConstantFoldInstruction(LLVMValueRef instruction, LLVMModuleRef module)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    const DataLayout& dataLayout = unwrap(module)->getDataLayout();
+    return wrap(ConstantFoldInstruction(unwrapped, dataLayout));
+}
+
+uint8_t llvmsharp_Constant_isAllOnesValue(LLVMValueRef value)
+{
+    Constant* unwrapped = unwrap<Constant>(value);
+    return unwrapped->isAllOnesValue() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Constant_isNegativeZeroValue(LLVMValueRef value)
+{
+    Constant* unwrapped = unwrap<Constant>(value);
+    return unwrapped->isNegativeZeroValue() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Constant_isOneValue(LLVMValueRef value)
+{
+    Constant* unwrapped = unwrap<Constant>(value);
+    return unwrapped->isOneValue() ? 1 : 0;
 }
 
 uint32_t llvmsharp_DIBasicType_getEncoding(LLVMMetadataRef type)
@@ -323,6 +436,51 @@ LLVMMetadataRef llvmsharp_DIVariable_getType(LLVMMetadataRef variable)
     return wrap(unwrapped->getType());
 }
 
+LLVMSharpDominatorTreeRef llvmsharp_DominatorTree_create(LLVMValueRef function)
+{
+    Function* unwrapped = unwrap<Function>(function);
+    return wrap(new DominatorTree(*unwrapped));
+}
+
+void llvmsharp_DominatorTree_dispose(LLVMSharpDominatorTreeRef dominator_tree)
+{
+    delete unwrap(dominator_tree);
+}
+
+uint8_t llvmsharp_DominatorTree_dominatesBlock(LLVMSharpDominatorTreeRef dominator_tree, LLVMBasicBlockRef a, LLVMBasicBlockRef b)
+{
+    DominatorTree* unwrapped = unwrap(dominator_tree);
+    return unwrapped->dominates(unwrap(a), unwrap(b)) ? 1 : 0;
+}
+
+uint8_t llvmsharp_DominatorTree_dominatesInstruction(LLVMSharpDominatorTreeRef dominator_tree, LLVMValueRef def, LLVMValueRef user)
+{
+    DominatorTree* unwrapped = unwrap(dominator_tree);
+    return unwrapped->dominates(unwrap<Value>(def), unwrap<Instruction>(user)) ? 1 : 0;
+}
+
+LLVMBasicBlockRef llvmsharp_DominatorTree_getIDom(LLVMSharpDominatorTreeRef dominator_tree, LLVMBasicBlockRef block)
+{
+    DominatorTree* unwrapped = unwrap(dominator_tree);
+    DomTreeNode* node = unwrapped->getNode(unwrap(block));
+    if (node == nullptr)
+    {
+        return nullptr;
+    }
+    DomTreeNode* immediateDominator = node->getIDom();
+    if (immediateDominator == nullptr)
+    {
+        return nullptr;
+    }
+    return wrap(immediateDominator->getBlock());
+}
+
+uint8_t llvmsharp_DominatorTree_properlyDominatesBlock(LLVMSharpDominatorTreeRef dominator_tree, LLVMBasicBlockRef a, LLVMBasicBlockRef b)
+{
+    DominatorTree* unwrapped = unwrap(dominator_tree);
+    return unwrapped->properlyDominates(unwrap(a), unwrap(b)) ? 1 : 0;
+}
+
 LLVMTypeRef llvmsharp_Function_getFunctionType(LLVMValueRef function)
 {
     Function* unwrapped = unwrap<Function>(function);
@@ -330,11 +488,44 @@ LLVMTypeRef llvmsharp_Function_getFunctionType(LLVMValueRef function)
     return wrap(type);
 }
 
+uint32_t llvmsharp_Function_getInstructionCount(LLVMValueRef function)
+{
+    Function* unwrapped = unwrap<Function>(function);
+    return unwrapped->getInstructionCount();
+}
+
 LLVMTypeRef llvmsharp_Function_getReturnType(LLVMValueRef function)
 {
     Function* unwrapped = unwrap<Function>(function);
     Type* type = unwrapped->getReturnType();
     return wrap(type);
+}
+
+uint8_t llvmsharp_GEPOperator_accumulateConstantOffset(LLVMValueRef gep, LLVMModuleRef module, int64_t* out_offset)
+{
+    GEPOperator* unwrapped = unwrap<GEPOperator>(gep);
+    const DataLayout& dataLayout = unwrap(module)->getDataLayout();
+    unsigned bitWidth = dataLayout.getIndexTypeSizeInBits(unwrapped->getType());
+    APInt offset(bitWidth, 0);
+    if (!unwrapped->accumulateConstantOffset(dataLayout, offset))
+    {
+        *out_offset = 0;
+        return 0;
+    }
+    *out_offset = offset.getSExtValue();
+    return 1;
+}
+
+uint32_t llvmsharp_GlobalValue_getAddressSpace(LLVMValueRef global_value)
+{
+    GlobalValue* unwrapped = unwrap<GlobalValue>(global_value);
+    return unwrapped->getAddressSpace();
+}
+
+uint8_t llvmsharp_GlobalValue_isDSOLocal(LLVMValueRef global_value)
+{
+    GlobalValue* unwrapped = unwrap<GlobalValue>(global_value);
+    return unwrapped->isDSOLocal() ? 1 : 0;
 }
 
 LLVMMetadataRef llvmsharp_GlobalVariable_getGlobalVariableExpression(LLVMValueRef global_variable)
@@ -356,16 +547,181 @@ LLVMMetadataRef llvmsharp_GlobalVariable_getMetadata(LLVMValueRef global_variabl
     return wrap(unwrapped->getMetadata(KindID));
 }
 
-uint8_t llvmsharp_Instruction_hasNoSignedWrap(LLVMValueRef instruction)
+uint8_t llvmsharp_InlineFunction(LLVMValueRef call_base)
 {
-    Instruction* unwrapped = unwrap<Instruction>(instruction);
-    return unwrapped->hasNoSignedWrap() ? 1 : 0;
+    CallBase* unwrapped = unwrap<CallBase>(call_base);
+    InlineFunctionInfo inlineFunctionInfo;
+    InlineResult result = InlineFunction(*unwrapped, inlineFunctionInfo);
+    return result.isSuccess() ? 1 : 0;
 }
 
-uint8_t llvmsharp_Instruction_hasNoUnsignedWrap(LLVMValueRef instruction)
+uint8_t llvmsharp_isSafeToSpeculativelyExecute(LLVMValueRef instruction)
 {
     Instruction* unwrapped = unwrap<Instruction>(instruction);
-    return unwrapped->hasNoUnsignedWrap() ? 1 : 0;
+    return isSafeToSpeculativelyExecute(unwrapped) ? 1 : 0;
+}
+
+uint8_t llvmsharp_Instruction_comesBefore(LLVMValueRef instruction, LLVMValueRef other)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->comesBefore(unwrap<Instruction>(other)) ? 1 : 0;
+}
+
+const char* llvmsharp_Instruction_getOpcodeName(LLVMValueRef instruction, int32_t* out_size)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    const char* name = unwrapped->getOpcodeName();
+    *out_size = (int32_t)strlen(name);
+    return name;
+}
+
+uint8_t llvmsharp_Instruction_isCommutative(LLVMValueRef instruction)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->isCommutative() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Instruction_isIdenticalTo(LLVMValueRef instruction, LLVMValueRef other)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->isIdenticalTo(unwrap<Instruction>(other)) ? 1 : 0;
+}
+
+uint8_t llvmsharp_Instruction_isSameOperationAs(LLVMValueRef instruction, LLVMValueRef other)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->isSameOperationAs(unwrap<Instruction>(other)) ? 1 : 0;
+}
+
+uint8_t llvmsharp_Instruction_mayHaveSideEffects(LLVMValueRef instruction)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->mayHaveSideEffects() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Instruction_mayReadFromMemory(LLVMValueRef instruction)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->mayReadFromMemory() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Instruction_mayWriteToMemory(LLVMValueRef instruction)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    return unwrapped->mayWriteToMemory() ? 1 : 0;
+}
+
+void llvmsharp_Instruction_moveAfter(LLVMValueRef instruction, LLVMValueRef position)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    unwrapped->moveAfter(unwrap<Instruction>(position));
+}
+
+void llvmsharp_Instruction_moveBefore(LLVMValueRef instruction, LLVMValueRef position)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    Instruction* positionInstruction = unwrap<Instruction>(position);
+    unwrapped->moveBefore(positionInstruction->getIterator());
+}
+
+LLVMSharpLoopInfoRef llvmsharp_LoopInfo_create(LLVMSharpDominatorTreeRef dominator_tree)
+{
+    DominatorTree* unwrapped = unwrap(dominator_tree);
+    return wrap(new LoopInfo(*unwrapped));
+}
+
+void llvmsharp_LoopInfo_dispose(LLVMSharpLoopInfoRef loop_info)
+{
+    delete unwrap(loop_info);
+}
+
+uint32_t llvmsharp_LoopInfo_getLoopDepth(LLVMSharpLoopInfoRef loop_info, LLVMBasicBlockRef block)
+{
+    LoopInfo* unwrapped = unwrap(loop_info);
+    return unwrapped->getLoopDepth(unwrap(block));
+}
+
+LLVMSharpLoopRef llvmsharp_LoopInfo_getLoopFor(LLVMSharpLoopInfoRef loop_info, LLVMBasicBlockRef block)
+{
+    LoopInfo* unwrapped = unwrap(loop_info);
+    return wrap(unwrapped->getLoopFor(unwrap(block)));
+}
+
+uint8_t llvmsharp_Loop_containsBlock(LLVMSharpLoopRef loop, LLVMBasicBlockRef block)
+{
+    Loop* unwrapped = unwrap(loop);
+    return unwrapped->contains(unwrap(block)) ? 1 : 0;
+}
+
+LLVMValueRef llvmsharp_Loop_getCanonicalInductionVariable(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return wrap(unwrapped->getCanonicalInductionVariable());
+}
+
+LLVMBasicBlockRef llvmsharp_Loop_getExitBlock(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return wrap(unwrapped->getExitBlock());
+}
+
+LLVMBasicBlockRef llvmsharp_Loop_getExitingBlock(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return wrap(unwrapped->getExitingBlock());
+}
+
+LLVMBasicBlockRef llvmsharp_Loop_getHeader(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return wrap(unwrapped->getHeader());
+}
+
+uint32_t llvmsharp_Loop_getLoopDepth(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return unwrapped->getLoopDepth();
+}
+
+LLVMBasicBlockRef llvmsharp_Loop_getLoopLatch(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return wrap(unwrapped->getLoopLatch());
+}
+
+LLVMBasicBlockRef llvmsharp_Loop_getLoopPreheader(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return wrap(unwrapped->getLoopPreheader());
+}
+
+LLVMSharpLoopRef llvmsharp_Loop_getParentLoop(LLVMSharpLoopRef loop)
+{
+    Loop* unwrapped = unwrap(loop);
+    return wrap(unwrapped->getParentLoop());
+}
+
+const char* llvmsharp_Mangler_getNameWithPrefix(LLVMValueRef global_value, int32_t* out_size)
+{
+    GlobalValue* unwrapped = unwrap<GlobalValue>(global_value);
+    std::string result;
+    raw_string_ostream stream(result);
+    Mangler mangler;
+    mangler.getNameWithPrefix(stream, unwrapped, false);
+    stream.flush();
+
+    int32_t size = (int32_t)result.size();
+    char* buffer = (char*)malloc((size_t)size + 1);
+    if (buffer == nullptr)
+    {
+        *out_size = 0;
+        return nullptr; // Memory allocation failed
+    }
+
+    memcpy(buffer, result.data(), size);
+    buffer[size] = '\0';
+    *out_size = size;
+    return buffer;
 }
 
 uint32_t llvmsharp_MDNode_getNumOperands(LLVMMetadataRef metadata)
@@ -424,9 +780,142 @@ void llvmsharp_Module_GetIdentifiedStructTypes(LLVMModuleRef module, LLVMTypeRef
     *out_size = (int32_t)types.size();
 }
 
+LLVMOrcObjectLayerRef llvmsharp_OrcCreateObjectLinkingLayer(LLVMOrcExecutionSessionRef execution_session)
+{
+    orc::ExecutionSession* unwrapped = unwrap(execution_session);
+    orc::ObjectLinkingLayer* layer = new orc::ObjectLinkingLayer(*unwrapped);
+    return wrap(static_cast<orc::ObjectLayer*>(layer));
+}
+
 void llvmsharp_PassManager_add(LLVMPassManagerRef pass_manager, LLVMPassRef pass)
 {
     unwrap(pass_manager)->add(unwrap(pass));
+}
+
+LLVMSharpPostDominatorTreeRef llvmsharp_PostDominatorTree_create(LLVMValueRef function)
+{
+    Function* unwrapped = unwrap<Function>(function);
+    return wrap(new PostDominatorTree(*unwrapped));
+}
+
+void llvmsharp_PostDominatorTree_dispose(LLVMSharpPostDominatorTreeRef post_dominator_tree)
+{
+    delete unwrap(post_dominator_tree);
+}
+
+uint8_t llvmsharp_PostDominatorTree_dominatesBlock(LLVMSharpPostDominatorTreeRef post_dominator_tree, LLVMBasicBlockRef a, LLVMBasicBlockRef b)
+{
+    PostDominatorTree* unwrapped = unwrap(post_dominator_tree);
+    return unwrapped->dominates(unwrap(a), unwrap(b)) ? 1 : 0;
+}
+
+LLVMValueRef llvmsharp_simplifyInstruction(LLVMValueRef instruction, LLVMModuleRef module)
+{
+    Instruction* unwrapped = unwrap<Instruction>(instruction);
+    const DataLayout& dataLayout = unwrap(module)->getDataLayout();
+    return wrap(simplifyInstruction(unwrapped, SimplifyQuery(dataLayout)));
+}
+
+LLVMSharpTargetTransformInfoRef llvmsharp_TargetTransformInfo_create(LLVMTargetMachineRef target_machine, LLVMValueRef function)
+{
+    TargetMachine* targetMachine = unwrap(target_machine);
+    Function* unwrapped = unwrap<Function>(function);
+    return wrap(new TargetTransformInfo(targetMachine->getTargetTransformInfo(*unwrapped)));
+}
+
+void llvmsharp_TargetTransformInfo_dispose(LLVMSharpTargetTransformInfoRef target_transform_info)
+{
+    delete unwrap(target_transform_info);
+}
+
+uint8_t llvmsharp_TargetTransformInfo_getInstructionCost(LLVMSharpTargetTransformInfoRef target_transform_info, LLVMValueRef user, int32_t cost_kind, int64_t* out_cost)
+{
+    TargetTransformInfo* unwrapped = unwrap(target_transform_info);
+    InstructionCost cost = unwrapped->getInstructionCost(unwrap<User>(user), (TargetTransformInfo::TargetCostKind)cost_kind);
+    if (!cost.isValid())
+    {
+        *out_cost = 0;
+        return 0;
+    }
+    *out_cost = cost.getValue();
+    return 1;
+}
+
+uint32_t llvmsharp_TargetTransformInfo_getNumberOfRegisters(LLVMSharpTargetTransformInfoRef target_transform_info, uint32_t class_id)
+{
+    TargetTransformInfo* unwrapped = unwrap(target_transform_info);
+    return unwrapped->getNumberOfRegisters(class_id);
+}
+
+uint32_t llvmsharp_TargetTransformInfo_getRegisterBitWidth(LLVMSharpTargetTransformInfoRef target_transform_info, int32_t register_kind, uint8_t* out_isScalable)
+{
+    TargetTransformInfo* unwrapped = unwrap(target_transform_info);
+    TypeSize size = unwrapped->getRegisterBitWidth((TargetTransformInfo::RegisterKind)register_kind);
+    *out_isScalable = size.isScalable() ? 1 : 0;
+    return (uint32_t)size.getKnownMinValue();
+}
+
+uint64_t llvmsharp_Type_getPrimitiveSizeInBits(LLVMTypeRef type, uint8_t* out_isScalable)
+{
+    Type* unwrapped = unwrap(type);
+    TypeSize size = unwrapped->getPrimitiveSizeInBits();
+    *out_isScalable = size.isScalable() ? 1 : 0;
+    return size.getKnownMinValue();
+}
+
+uint32_t llvmsharp_Type_getScalarSizeInBits(LLVMTypeRef type)
+{
+    Type* unwrapped = unwrap(type);
+    return unwrapped->getScalarSizeInBits();
+}
+
+uint32_t llvmsharp_Value_getNumUses(LLVMValueRef value)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    return (uint32_t)unwrapped->getNumUses();
+}
+
+uint64_t llvmsharp_Value_getPointerAlignment(LLVMValueRef value, LLVMModuleRef module)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    const DataLayout& dataLayout = unwrap(module)->getDataLayout();
+    return unwrapped->getPointerAlignment(dataLayout).value();
+}
+
+uint8_t llvmsharp_Value_hasOneUse(LLVMValueRef value)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    return unwrapped->hasOneUse() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Value_hasOneUser(LLVMValueRef value)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    return unwrapped->hasOneUser() ? 1 : 0;
+}
+
+uint8_t llvmsharp_Value_isUsedInBasicBlock(LLVMValueRef value, LLVMBasicBlockRef basic_block)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    return unwrapped->isUsedInBasicBlock(unwrap(basic_block)) ? 1 : 0;
+}
+
+LLVMValueRef llvmsharp_Value_stripInBoundsOffsets(LLVMValueRef value)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    return wrap(unwrapped->stripInBoundsOffsets());
+}
+
+LLVMValueRef llvmsharp_Value_stripPointerCasts(LLVMValueRef value)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    return wrap(unwrapped->stripPointerCasts());
+}
+
+LLVMValueRef llvmsharp_Value_stripPointerCastsAndAliases(LLVMValueRef value)
+{
+    Value* unwrapped = unwrap<Value>(value);
+    return wrap(unwrapped->stripPointerCastsAndAliases());
 }
 
 LLVMPassRef llvmsharp_createDeadCodeEliminationPass()
