@@ -54,6 +54,10 @@ public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef
 
     public readonly bool IsFunctionVarArg => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) && LLVM.IsFunctionVarArg(this) != 0;
 
+    public readonly bool IsLiteralStruct => (Kind == LLVMTypeKind.LLVMStructTypeKind) && LLVM.IsLiteralStruct(this) != 0;
+
+    public readonly bool IsOpaquePointer => (Kind == LLVMTypeKind.LLVMPointerTypeKind) && LLVM.PointerTypeIsOpaque(this) != 0;
+
     public readonly bool IsOpaqueStruct => (Kind == LLVMTypeKind.LLVMStructTypeKind) && LLVM.IsOpaqueStruct(this) != 0;
 
     public readonly bool IsPackedStruct => (Kind == LLVMTypeKind.LLVMStructTypeKind) && LLVM.IsPackedStruct(this) != 0;
@@ -97,6 +101,24 @@ public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef
     }
 
     public readonly uint SubtypesCount => (Handle != IntPtr.Zero) ? LLVM.GetNumContainedTypes(this) : default;
+
+    public readonly string TargetExtTypeName
+    {
+        get
+        {
+            if (Kind != LLVMTypeKind.LLVMTargetExtTypeKind)
+            {
+                return string.Empty;
+            }
+
+            var pName = LLVM.GetTargetExtTypeName(this);
+            return (pName != null) ? SpanExtensions.AsString(pName) : string.Empty;
+        }
+    }
+
+    public readonly uint TargetExtTypeNumIntParams => (Kind == LLVMTypeKind.LLVMTargetExtTypeKind) ? LLVM.GetTargetExtTypeNumIntParams(this) : default;
+
+    public readonly uint TargetExtTypeNumTypeParams => (Kind == LLVMTypeKind.LLVMTargetExtTypeKind) ? LLVM.GetTargetExtTypeNumTypeParams(this) : default;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)] // Justification: causes native allocation
     public readonly LLVMValueRef Undef => (Handle != IntPtr.Zero) ? LLVM.GetUndef(this) : default;
@@ -147,6 +169,34 @@ public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef
 
     public static LLVMTypeRef CreateScalableVector(LLVMTypeRef ElementType, uint ElementCount) => LLVM.ScalableVectorType(ElementType, ElementCount);
 
+    public readonly LLVMValueRef ConstArray2(LLVMValueRef[] ConstantVals) => ConstArray2(ConstantVals.AsSpan());
+
+    public readonly LLVMValueRef ConstArray2(ReadOnlySpan<LLVMValueRef> ConstantVals)
+    {
+        fixed (LLVMValueRef* pConstantVals = ConstantVals)
+        {
+            return LLVM.ConstArray2(this, (LLVMOpaqueValue**)pConstantVals, (ulong)ConstantVals.Length);
+        }
+    }
+
+    public readonly LLVMValueRef ConstDataArray(ReadOnlySpan<byte> Data)
+    {
+        fixed (byte* pData = Data)
+        {
+            return LLVM.ConstDataArray(this, (sbyte*)pData, (nuint)Data.Length);
+        }
+    }
+
+    public readonly LLVMValueRef ConstGEPWithNoWrapFlags(LLVMValueRef ConstantVal, LLVMValueRef[] ConstantIndices, LLVMGEPNoWrapFlags NoWrapFlags) => ConstGEPWithNoWrapFlags(ConstantVal, ConstantIndices.AsSpan(), NoWrapFlags);
+
+    public readonly LLVMValueRef ConstGEPWithNoWrapFlags(LLVMValueRef ConstantVal, ReadOnlySpan<LLVMValueRef> ConstantIndices, LLVMGEPNoWrapFlags NoWrapFlags)
+    {
+        fixed (LLVMValueRef* pConstantIndices = ConstantIndices)
+        {
+            return LLVM.ConstGEPWithNoWrapFlags(this, ConstantVal, (LLVMOpaqueValue**)pConstantIndices, (uint)ConstantIndices.Length, (uint)NoWrapFlags);
+        }
+    }
+
     public readonly void Dump() => LLVM.DumpType(this);
 
     public override readonly bool Equals(object? obj) => (obj is LLVMTypeRef other) && Equals(other);
@@ -156,6 +206,15 @@ public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef
     public readonly double GenericValueToFloat(LLVMGenericValueRef GenVal) => LLVM.GenericValueToFloat(this, GenVal);
 
     public override readonly int GetHashCode() => Handle.GetHashCode();
+
+    public readonly LLVMValueRef GetInlineAsm(string AsmString, string Constraints, bool HasSideEffects, bool IsAlignStack, LLVMInlineAsmDialect Dialect, bool CanThrow) => GetInlineAsm(AsmString.AsSpan(), Constraints.AsSpan(), HasSideEffects, IsAlignStack, Dialect, CanThrow);
+
+    public readonly LLVMValueRef GetInlineAsm(ReadOnlySpan<char> AsmString, ReadOnlySpan<char> Constraints, bool HasSideEffects, bool IsAlignStack, LLVMInlineAsmDialect Dialect, bool CanThrow)
+    {
+        using var marshaledAsmString = new MarshaledString(AsmString);
+        using var marshaledConstraints = new MarshaledString(Constraints);
+        return LLVM.GetInlineAsm(this, marshaledAsmString, (nuint)marshaledAsmString.Length, marshaledConstraints, (nuint)marshaledConstraints.Length, HasSideEffects ? 1 : 0, IsAlignStack ? 1 : 0, Dialect, CanThrow ? 1 : 0);
+    }
 
     public readonly LLVMTypeRef[] GetParamTypes()
     {
@@ -237,6 +296,10 @@ public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef
             LLVM.GetSubtypes(this, (LLVMOpaqueType**)pArr);
         }
     }
+
+    public readonly uint GetTargetExtTypeIntParam(uint Idx) => (Kind == LLVMTypeKind.LLVMTargetExtTypeKind) ? LLVM.GetTargetExtTypeIntParam(this, Idx) : default;
+
+    public readonly LLVMTypeRef GetTargetExtTypeTypeParam(uint Idx) => (Kind == LLVMTypeKind.LLVMTargetExtTypeKind) ? LLVM.GetTargetExtTypeTypeParam(this, Idx) : default;
 
     public readonly string PrintToString()
     {

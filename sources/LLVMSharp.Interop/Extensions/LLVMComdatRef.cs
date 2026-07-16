@@ -8,6 +8,22 @@ public unsafe partial struct LLVMComdatRef(IntPtr handle) : IEquatable<LLVMComda
 {
     public IntPtr Handle = handle;
 
+    public LLVMComdatSelectionKind SelectionKind
+    {
+        readonly get
+        {
+            return (Handle != IntPtr.Zero) ? LLVM.GetComdatSelectionKind(this) : default;
+        }
+
+        set
+        {
+            if (Handle != IntPtr.Zero)
+            {
+                LLVM.SetComdatSelectionKind(this, value);
+            }
+        }
+    }
+
     public static implicit operator LLVMComdatRef(LLVMComdat* Comdat) => new LLVMComdatRef((IntPtr)Comdat);
 
     public static implicit operator LLVMComdat*(LLVMComdatRef Comdat) => (LLVMComdat*)Comdat.Handle;

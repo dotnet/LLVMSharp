@@ -33,6 +33,14 @@ public unsafe partial struct LLVMPassBuilderOptionsRef(IntPtr handle) : IEquatab
 
     public override readonly int GetHashCode() => Handle.GetHashCode();
 
+    public readonly void SetAAPipeline(string aaPipeline) => SetAAPipeline(aaPipeline.AsSpan());
+
+    public readonly void SetAAPipeline(ReadOnlySpan<char> aaPipeline)
+    {
+        using var marshaledAAPipeline = new MarshaledString(aaPipeline);
+        LLVM.PassBuilderOptionsSetAAPipeline(this, marshaledAAPipeline);
+    }
+
     public readonly void SetCallGraphProfile(bool CallGraphProfile) => LLVM.PassBuilderOptionsSetCallGraphProfile(this, CallGraphProfile ? 1 : 0);
 
     public readonly void SetDebugLogging(bool DebugLogging) => LLVM.PassBuilderOptionsSetDebugLogging(this, DebugLogging ? 1 : 0);

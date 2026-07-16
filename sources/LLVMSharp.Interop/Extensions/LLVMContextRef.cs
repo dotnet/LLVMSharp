@@ -29,6 +29,8 @@ public unsafe partial struct LLVMContextRef(IntPtr handle) : IDisposable, IEquat
 
     public readonly LLVMTypeRef Int64Type => (Handle != IntPtr.Zero) ? LLVM.Int64TypeInContext(this) : default;
 
+    public readonly LLVMTypeRef Int128Type => (Handle != IntPtr.Zero) ? LLVM.Int128TypeInContext(this) : default;
+
     public readonly LLVMTypeRef FP128Type => (Handle != IntPtr.Zero) ? LLVM.FP128TypeInContext(this) : default;
 
     public readonly LLVMTypeRef LabelType => (Handle != IntPtr.Zero) ? LLVM.LabelTypeInContext(this) : default;
@@ -40,6 +42,23 @@ public unsafe partial struct LLVMContextRef(IntPtr handle) : IDisposable, IEquat
     public readonly LLVMTypeRef X86FP80Type => (Handle != IntPtr.Zero) ? LLVM.X86FP80TypeInContext(this) : default;
 
     public readonly LLVMTypeRef X86AMXType => (Handle != IntPtr.Zero) ? LLVM.X86AMXTypeInContext(this) : default;
+
+    public readonly LLVMTypeRef MetadataType => (Handle != IntPtr.Zero) ? LLVM.MetadataTypeInContext(this) : default;
+
+    public readonly LLVMTypeRef TokenType => (Handle != IntPtr.Zero) ? LLVM.TokenTypeInContext(this) : default;
+
+    public readonly bool DiscardValueNames
+    {
+        get
+        {
+            return (Handle != IntPtr.Zero) && LLVM.ContextShouldDiscardValueNames(this) != 0;
+        }
+
+        set
+        {
+            LLVM.ContextSetDiscardValueNames(this, value ? 1 : 0);
+        }
+    }
 
     public static implicit operator LLVMContextRef(LLVMOpaqueContext* value) => new LLVMContextRef((IntPtr)value);
 
@@ -102,6 +121,61 @@ public unsafe partial struct LLVMContextRef(IntPtr handle) : IDisposable, IEquat
         return LLVM.CreateStringAttribute(this, marshaledKind, (uint)marshaledKind.Length, marshaledValue, (uint)marshaledValue.Length);
     }
 
+    public readonly LLVMAttributeRef CreateConstantRangeAttribute(uint KindId, uint NumBits, ulong[] LowerWords, ulong[] UpperWords) => CreateConstantRangeAttribute(KindId, NumBits, LowerWords.AsSpan(), UpperWords.AsSpan());
+
+    public readonly LLVMAttributeRef CreateConstantRangeAttribute(uint KindId, uint NumBits, ReadOnlySpan<ulong> LowerWords, ReadOnlySpan<ulong> UpperWords)
+    {
+        fixed (ulong* pLowerWords = LowerWords)
+        fixed (ulong* pUpperWords = UpperWords)
+        {
+            return LLVM.CreateConstantRangeAttribute(this, KindId, NumBits, pLowerWords, pUpperWords);
+        }
+    }
+
+    public readonly LLVMMetadataRef CreateMDNode(LLVMMetadataRef[] MDs) => CreateMDNode(MDs.AsSpan());
+
+    public readonly LLVMMetadataRef CreateMDNode(ReadOnlySpan<LLVMMetadataRef> MDs)
+    {
+        fixed (LLVMMetadataRef* pMDs = MDs)
+        {
+            return LLVM.MDNodeInContext2(this, (LLVMOpaqueMetadata**)pMDs, (nuint)MDs.Length);
+        }
+    }
+
+    public readonly LLVMMetadataRef CreateMDString(string Str) => CreateMDString(Str.AsSpan());
+
+    public readonly LLVMMetadataRef CreateMDString(ReadOnlySpan<char> Str)
+    {
+        using var marshaledStr = new MarshaledString(Str);
+        return LLVM.MDStringInContext2(this, marshaledStr, (nuint)marshaledStr.Length);
+    }
+
+    public readonly LLVMTypeRef CreatePointerType(uint AddressSpace) => LLVM.PointerTypeInContext(this, AddressSpace);
+
+    public readonly LLVMTypeRef CreateTargetExtType(string Name, LLVMTypeRef[] TypeParams, uint[] IntParams) => CreateTargetExtType(Name.AsSpan(), TypeParams.AsSpan(), IntParams.AsSpan());
+
+    public readonly LLVMTypeRef CreateTargetExtType(ReadOnlySpan<char> Name, ReadOnlySpan<LLVMTypeRef> TypeParams, ReadOnlySpan<uint> IntParams)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        fixed (LLVMTypeRef* pTypeParams = TypeParams)
+        fixed (uint* pIntParams = IntParams)
+        {
+            return LLVM.TargetExtTypeInContext(this, marshaledName, (LLVMOpaqueType**)pTypeParams, (uint)TypeParams.Length, pIntParams, (uint)IntParams.Length);
+        }
+    }
+
+    public readonly LLVMMetadataRef CreateTemporaryMDNode(LLVMMetadataRef[] Data) => CreateTemporaryMDNode(Data.AsSpan());
+
+    public readonly LLVMMetadataRef CreateTemporaryMDNode(ReadOnlySpan<LLVMMetadataRef> Data)
+    {
+        fixed (LLVMMetadataRef* pData = Data)
+        {
+            return LLVM.TemporaryMDNode(this, (LLVMOpaqueMetadata**)pData, (nuint)Data.Length);
+        }
+    }
+
+    public readonly LLVMAttributeRef CreateTypeAttribute(uint KindId, LLVMTypeRef TypeRef) => LLVM.CreateTypeAttribute(this, KindId, TypeRef);
+
     public void Dispose()
     {
         if (Handle != IntPtr.Zero)
@@ -145,11 +219,25 @@ public unsafe partial struct LLVMContextRef(IntPtr handle) : IDisposable, IEquat
 
     public override readonly int GetHashCode() => Handle.GetHashCode();
 
+    public readonly delegate* unmanaged[Cdecl]<LLVMOpaqueDiagnosticInfo*, void*, void> GetDiagnosticHandler() => LLVM.ContextGetDiagnosticHandler(this);
+
+    public readonly void* GetDiagnosticContext() => LLVM.ContextGetDiagnosticContext(this);
+
     public readonly LLVMTypeRef GetIntPtrType(LLVMTargetDataRef TD) => LLVM.IntPtrTypeInContext(this, TD);
 
     public readonly LLVMTypeRef GetIntPtrTypeForAS(LLVMTargetDataRef TD, uint AS) => LLVM.IntPtrTypeForASInContext(this, TD, AS);
 
     public readonly LLVMTypeRef GetIntType(uint NumBits) => LLVM.IntTypeInContext(this, NumBits);
+
+    public readonly LLVMTypeRef GetIntrinsicType(uint ID, LLVMTypeRef[] ParamTypes) => GetIntrinsicType(ID, ParamTypes.AsSpan());
+
+    public readonly LLVMTypeRef GetIntrinsicType(uint ID, ReadOnlySpan<LLVMTypeRef> ParamTypes)
+    {
+        fixed (LLVMTypeRef* pParamTypes = ParamTypes)
+        {
+            return LLVM.IntrinsicGetType(this, ID, (LLVMOpaqueType**)pParamTypes, (nuint)ParamTypes.Length);
+        }
+    }
 
     public readonly uint GetMDKindID(string Name, uint SLen) => GetMDKindID(Name.AsSpan(0, (int)SLen));
 
@@ -188,6 +276,22 @@ public unsafe partial struct LLVMContextRef(IntPtr handle) : IDisposable, IEquat
     }
 
     public readonly LLVMBasicBlockRef InsertBasicBlock(LLVMBasicBlockRef BB, string Name) => LLVMBasicBlockRef.InsertInContext(this, BB, Name);
+
+    public readonly uint GetSyncScopeID(string Name) => GetSyncScopeID(Name.AsSpan());
+
+    public readonly uint GetSyncScopeID(ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.GetSyncScopeID(this, marshaledName, (nuint)marshaledName.Length);
+    }
+
+    public readonly LLVMTypeRef GetTypeByName(string Name) => GetTypeByName(Name.AsSpan());
+
+    public readonly LLVMTypeRef GetTypeByName(ReadOnlySpan<char> Name)
+    {
+        using var marshaledName = new MarshaledString(Name);
+        return LLVM.GetTypeByName2(this, marshaledName);
+    }
 
     public readonly LLVMValueRef MetadataAsValue(LLVMMetadataRef MD) => LLVM.MetadataAsValue(this, MD);
 

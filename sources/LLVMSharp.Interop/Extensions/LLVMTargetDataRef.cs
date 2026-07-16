@@ -18,6 +18,32 @@ public unsafe partial struct LLVMTargetDataRef(IntPtr handle) : IEquatable<LLVMT
 
     public static LLVMTargetDataRef FromStringRepresentation(ReadOnlySpan<char> stringRep) => LLVM.CreateTargetData(new MarshaledString(stringRep));
 
+    public readonly LLVMByteOrdering ByteOrder => (Handle != IntPtr.Zero) ? LLVM.ByteOrder(this) : default;
+
+    public readonly uint PointerSize => (Handle != IntPtr.Zero) ? LLVM.PointerSize(this) : default;
+
+    public readonly string StringRepresentation
+    {
+        get
+        {
+            if (Handle == IntPtr.Zero)
+            {
+                return string.Empty;
+            }
+
+            var pStr = LLVM.CopyStringRepOfTargetData(this);
+
+            if (pStr == null)
+            {
+                return string.Empty;
+            }
+
+            var result = SpanExtensions.AsString(pStr);
+            LLVM.DisposeMessage(pStr);
+            return result;
+        }
+    }
+
     public override readonly bool Equals(object? obj) => (obj is LLVMTargetDataRef other) && Equals(other);
 
     public readonly bool Equals(LLVMTargetDataRef other) => this == other;
@@ -41,6 +67,8 @@ public unsafe partial struct LLVMTargetDataRef(IntPtr handle) : IEquatable<LLVMT
     public readonly uint PreferredAlignmentOfType(LLVMTypeRef type) => LLVM.PreferredAlignmentOfType(this, type);
 
     public readonly uint PreferredAlignmentOfGlobal(LLVMValueRef globalVar) => LLVM.PreferredAlignmentOfGlobal(this, globalVar);
+
+    public readonly uint PointerSizeForAddressSpace(uint addressSpace) => LLVM.PointerSizeForAS(this, addressSpace);
 
     public override readonly string ToString() => $"{nameof(LLVMTargetDataRef)}: {Handle:X}";
 }
