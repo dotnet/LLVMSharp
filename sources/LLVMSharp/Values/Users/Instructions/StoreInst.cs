@@ -50,4 +50,8 @@ public sealed class StoreInst : Instruction
             handle.Volatile = value;
         }
     }
+
+    public Value PointerOperand => GetOperand(1);
+
+    public Value ValueOperand => GetOperand(0);
 }

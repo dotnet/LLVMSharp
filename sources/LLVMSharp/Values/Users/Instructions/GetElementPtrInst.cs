@@ -10,5 +10,39 @@ public sealed class GetElementPtrInst : Instruction
     {
     }
 
+    public bool IsInBounds
+    {
+        get
+        {
+            return Handle.IsInBounds;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.IsInBounds = value;
+        }
+    }
+
+    public LLVMGEPNoWrapFlags NoWrapFlags
+    {
+        get
+        {
+            return Handle.GEPNoWrapFlags;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.GEPNoWrapFlags = value;
+        }
+    }
+
+    public uint NumIndices => NumOperands - 1;
+
+    public Value PointerOperand => GetOperand(0);
+
+    public Type PointerOperandType => PointerOperand.Type;
+
     public Type SourceElementType => Context.GetOrCreate(Handle.GEPSourceElementType);
 }

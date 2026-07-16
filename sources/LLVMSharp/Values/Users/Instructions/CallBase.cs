@@ -48,6 +48,8 @@ public class CallBase : Instruction
 
     public FunctionType CalledFunctionType => Context.GetOrCreate<FunctionType>(Handle.CalledFunctionType);
 
+    public Function? CalledFunction => CalledOperand as Function;
+
     public Value CalledOperand => Context.GetOrCreate(Handle.CalledValue);
 
     public Value GetArgOperand(uint index) => Context.GetOrCreate(Handle.GetArgOperand(index));

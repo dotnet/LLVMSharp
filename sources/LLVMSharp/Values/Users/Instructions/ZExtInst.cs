@@ -9,4 +9,18 @@ public sealed class ZExtInst : CastInst
     internal ZExtInst(LLVMValueRef handle) : base(handle.IsAZExtInst)
     {
     }
+
+    public bool IsNonNeg
+    {
+        get
+        {
+            return Handle.NNeg;
+        }
+
+        set
+        {
+            var handle = Handle;
+            handle.NNeg = value;
+        }
+    }
 }

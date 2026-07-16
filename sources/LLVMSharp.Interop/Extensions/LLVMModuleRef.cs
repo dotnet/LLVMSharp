@@ -73,6 +73,33 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
         }
     }
 
+    public readonly string InlineAsm
+    {
+        get
+        {
+            if (Handle == IntPtr.Zero)
+            {
+                return string.Empty;
+            }
+
+            nuint len;
+            var pInlineAsm = LLVM.GetModuleInlineAsm(this, &len);
+
+            if (pInlineAsm == null)
+            {
+                return string.Empty;
+            }
+
+            return SpanExtensions.AsString(pInlineAsm);
+        }
+
+        set
+        {
+            using var marshaledInlineAsm = new MarshaledString(value.AsSpan());
+            LLVM.SetModuleInlineAsm2(this, marshaledInlineAsm, (nuint)marshaledInlineAsm.Length);
+        }
+    }
+
     public readonly LLVMValueRef LastFunction => (Handle != IntPtr.Zero) ? LLVM.GetLastFunction(this) : default;
 
     public readonly LLVMValueRef LastGlobal => (Handle != IntPtr.Zero) ? LLVM.GetLastGlobal(this) : default;
@@ -84,6 +111,60 @@ public unsafe partial struct LLVMModuleRef(IntPtr handle) : IDisposable, IEquata
     public readonly LLVMNamedMDNodeRef LastNamedMetadata => (Handle != IntPtr.Zero) ? LLVM.GetLastNamedMetadata(this) : default;
 
     public readonly LLVMModuleNamedMetadataEnumerable NamedMetadata => new LLVMModuleNamedMetadataEnumerable(this);
+
+    public readonly string ModuleIdentifier
+    {
+        get
+        {
+            if (Handle == IntPtr.Zero)
+            {
+                return string.Empty;
+            }
+
+            nuint len;
+            var pModuleIdentifier = LLVM.GetModuleIdentifier(this, &len);
+
+            if (pModuleIdentifier == null)
+            {
+                return string.Empty;
+            }
+
+            return SpanExtensions.AsString(pModuleIdentifier);
+        }
+
+        set
+        {
+            using var marshaledModuleIdentifier = new MarshaledString(value.AsSpan());
+            LLVM.SetModuleIdentifier(this, marshaledModuleIdentifier, (nuint)marshaledModuleIdentifier.Length);
+        }
+    }
+
+    public readonly string SourceFileName
+    {
+        get
+        {
+            if (Handle == IntPtr.Zero)
+            {
+                return string.Empty;
+            }
+
+            nuint len;
+            var pSourceFileName = LLVM.GetSourceFileName(this, &len);
+
+            if (pSourceFileName == null)
+            {
+                return string.Empty;
+            }
+
+            return SpanExtensions.AsString(pSourceFileName);
+        }
+
+        set
+        {
+            using var marshaledSourceFileName = new MarshaledString(value.AsSpan());
+            LLVM.SetSourceFileName(this, marshaledSourceFileName, (nuint)marshaledSourceFileName.Length);
+        }
+    }
 
     public readonly string Target
     {

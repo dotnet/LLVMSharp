@@ -403,4 +403,165 @@ public class ManagedApi
         var fence = (FenceInst)context.GetOrCreate(builder.BuildFence(LLVMAtomicOrdering.LLVMAtomicOrderingAcquire, singleThread: false, "fence"));
         Assert.That(fence.Ordering, Is.EqualTo(AtomicOrdering.Acquire));
     }
+
+    [Test]
+    public void ModuleAccessors()
+    {
+        var context = new LLVMContext();
+        var module = Module.Create(context, "m");
+        var int32 = Type.GetInt32Ty(context);
+
+        Assert.That(module.ModuleIdentifier, Is.EqualTo("m"));
+        Assert.That(module.Context, Is.EqualTo(context));
+
+        module.SourceFileName = "source.ll";
+        module.TargetTriple = "x86_64-pc-windows-msvc";
+        module.DataLayoutString = "e-m:w-p:64:64";
+        module.InlineAsm = "nop";
+
+        Assert.That(module.SourceFileName, Is.EqualTo("source.ll"));
+        Assert.That(module.TargetTriple, Is.EqualTo("x86_64-pc-windows-msvc"));
+        Assert.That(module.DataLayoutString, Is.EqualTo("e-m:w-p:64:64"));
+        Assert.That(module.InlineAsm, Does.Contain("nop"));
+
+        var functionType = LLVMTypeRef.CreateFunction(int32.Handle, [int32.Handle], IsVarArg: false);
+        var function = module.AddFunction("f", (FunctionType)context.GetOrCreate(functionType));
+        var global = module.AddGlobal(int32, "g");
+
+        Assert.That(module.GetFunction("f"), Is.EqualTo(function));
+        Assert.That(module.GetFunction("missing"), Is.Null);
+        Assert.That(module.GetGlobalVariable("g"), Is.EqualTo(global));
+        Assert.That(module.GetOrInsertFunction("f", (FunctionType)context.GetOrCreate(functionType)), Is.EqualTo(function));
+        Assert.That(module.GetFunctions().Length, Is.EqualTo(1));
+        Assert.That(module.GetGlobalVariables().Length, Is.EqualTo(1));
+
+        var structType = StructType.Create(context, "S");
+        structType.SetBody([int32], packed: false);
+        _ = module.AddGlobal(structType, "s");
+        Assert.That(module.GetTypeByName("S"), Is.EqualTo(structType));
+
+        Assert.That(module.TryVerify(LLVMVerifierFailureAction.LLVMReturnStatusAction, out _), Is.True);
+
+        var clone = module.Clone();
+        Assert.That(clone.GetFunction("f"), Is.Not.Null);
+    }
+
+    [Test]
+    public void BasicBlockAccessors()
+    {
+        var context = new LLVMContext();
+        var module = Module.Create(context, "m");
+        var int32 = Type.GetInt32Ty(context);
+
+        var functionType = LLVMTypeRef.CreateFunction(int32.Handle, [int32.Handle], IsVarArg: false);
+        var function = module.AddFunction("f", (FunctionType)context.GetOrCreate(functionType));
+        var entry = function.AppendBasicBlock("entry");
+        var next = function.AppendBasicBlock("next");
+
+        using var builder = LLVMBuilderRef.Create(context.Handle);
+        builder.PositionAtEnd(entry.Handle);
+
+        var addHandle = builder.BuildAdd(function.GetParam(0).Handle, function.GetParam(0).Handle, "sum");
+        var retHandle = builder.BuildRet(addHandle);
+
+        Assert.That(entry.Parent, Is.EqualTo(function));
+        Assert.That(entry.Terminator, Is.EqualTo(context.GetOrCreate(retHandle)));
+        Assert.That(entry.FirstInstruction, Is.EqualTo(context.GetOrCreate(addHandle)));
+        Assert.That(entry.LastInstruction, Is.EqualTo(context.GetOrCreate(retHandle)));
+        Assert.That(entry.GetInstructions().Length, Is.EqualTo(2));
+        Assert.That(entry.Next, Is.EqualTo(next));
+        Assert.That(next.Previous, Is.EqualTo(entry));
+        Assert.That(next.Terminator, Is.Null);
+    }
+
+    [Test]
+    public void InstructionFlagAccessors()
+    {
+        var context = new LLVMContext();
+        var module = Module.Create(context, "m");
+        var int32 = Type.GetInt32Ty(context);
+        var int64 = Type.GetInt64Ty(context);
+        var flt = Type.GetFloatTy(context);
+
+        var functionType = LLVMTypeRef.CreateFunction(Type.GetVoidTy(context).Handle, [int32.Handle, int32.Handle, flt.Handle, flt.Handle], IsVarArg: false);
+        var function = module.AddFunction("f", (FunctionType)context.GetOrCreate(functionType));
+        var entry = function.AppendBasicBlock("entry");
+
+        using var builder = LLVMBuilderRef.Create(context.Handle);
+        builder.PositionAtEnd(entry.Handle);
+
+        var lhs = function.GetParam(0).Handle;
+        var rhs = function.GetParam(1).Handle;
+
+        var add = (BinaryOperator)context.GetOrCreate(builder.BuildAdd(lhs, rhs, "add"));
+        add.HasNoSignedWrap = true;
+        add.HasNoUnsignedWrap = true;
+        Assert.That(add.HasNoSignedWrap, Is.True);
+        Assert.That(add.HasNoUnsignedWrap, Is.True);
+
+        var div = (BinaryOperator)context.GetOrCreate(builder.BuildUDiv(lhs, rhs, "div"));
+        div.IsExact = true;
+        Assert.That(div.IsExact, Is.True);
+
+        var disjoint = (BinaryOperator)context.GetOrCreate(builder.BuildOr(lhs, rhs, "or"));
+        disjoint.IsDisjoint = true;
+        Assert.That(disjoint.IsDisjoint, Is.True);
+
+        var zext = (ZExtInst)context.GetOrCreate(builder.BuildZExt(lhs, int64.Handle, "zext"));
+        zext.IsNonNeg = true;
+        Assert.That(zext.IsNonNeg, Is.True);
+
+        var icmp = (ICmpInst)context.GetOrCreate(builder.BuildICmp(LLVMIntPredicate.LLVMIntSLT, lhs, rhs, "cmp"));
+        icmp.HasSameSign = true;
+        Assert.That(icmp.HasSameSign, Is.True);
+
+        var fadd = (Instruction)context.GetOrCreate(builder.BuildFAdd(function.GetParam(2).Handle, function.GetParam(3).Handle, "fadd"));
+        fadd.FastMathFlags = LLVMFastMathFlags.LLVMFastMathAll;
+        Assert.That(fadd.FastMathFlags, Is.EqualTo(LLVMFastMathFlags.LLVMFastMathAll));
+
+        var arrayType = LLVMTypeRef.CreateArray(int32.Handle, 4);
+        var storage = builder.BuildAlloca(arrayType, "arr");
+        var gep = (GetElementPtrInst)context.GetOrCreate(builder.BuildGEP2(arrayType, storage, new[] { LLVMValueRef.CreateConstInt(int32.Handle, 0), LLVMValueRef.CreateConstInt(int32.Handle, 1) }, "elem"));
+        gep.IsInBounds = true;
+        Assert.That(gep.IsInBounds, Is.True);
+        Assert.That(gep.NumIndices, Is.EqualTo(2u));
+        Assert.That(gep.PointerOperand, Is.EqualTo(context.GetOrCreate(storage)));
+    }
+
+    [Test]
+    public void TargetAndTargetMachineAccessors()
+    {
+        LLVM.InitializeAllTargetInfos();
+        LLVM.InitializeAllTargets();
+        LLVM.InitializeAllTargetMCs();
+
+        var triple = Target.DefaultTriple;
+        Assert.That(triple, Is.Not.Empty);
+
+        var target = Target.GetTargetFromTriple(triple);
+        Assert.That(target.Name, Is.Not.Empty);
+        Assert.That(target.Description, Is.Not.Null);
+
+        var targetMachine = target.CreateTargetMachine(triple, "", "", LLVMCodeGenOptLevel.LLVMCodeGenLevelDefault, LLVMRelocMode.LLVMRelocDefault, LLVMCodeModel.LLVMCodeModelDefault);
+        Assert.That(targetMachine.Triple, Is.EqualTo(triple));
+        Assert.That(targetMachine.Target, Is.EqualTo(target));
+
+        var dataLayout = targetMachine.CreateTargetDataLayout();
+        var context = new LLVMContext();
+        Assert.That(dataLayout.GetTypeSizeInBits(Type.GetInt32Ty(context)), Is.EqualTo(32ul));
+    }
+
+    [Test]
+    public void DataLayoutAccessors()
+    {
+        var context = new LLVMContext();
+        var dataLayout = new DataLayout("e-m:w-p:64:64-i64:64-n8:16:32:64");
+
+        var structType = StructType.Create(context, "S");
+        structType.SetBody([Type.GetInt32Ty(context), Type.GetInt64Ty(context)], packed: false);
+
+        Assert.That(dataLayout.GetTypeSizeInBits(Type.GetInt64Ty(context)), Is.EqualTo(64ul));
+        Assert.That(dataLayout.GetOffsetOfElement(structType, 1), Is.EqualTo(8ul));
+        Assert.That(dataLayout.GetElementContainingOffset(structType, 8), Is.EqualTo(1u));
+    }
 }
