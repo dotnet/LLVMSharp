@@ -17,6 +17,7 @@ public sealed class LLVMContext : IEquatable<LLVMContext>
 
     private readonly Dictionary<LLVMValueRef, WeakReference<Value>> _createdValues = [];
     private readonly Dictionary<LLVMTypeRef, WeakReference<Type>> _createdTypes = [];
+    private readonly Dictionary<LLVMModuleRef, WeakReference<Module>> _createdModules = [];
 
     public LLVMContext() : this(LLVMContextRef.Create())
     {
@@ -127,4 +128,26 @@ public sealed class LLVMContext : IEquatable<LLVMContext>
     internal Type GetOrCreate(LLVMTypeRef handle) => GetOrCreate<Type>(handle);
 
     internal Value GetOrCreate(LLVMValueRef handle) => GetOrCreate<Value>(handle);
+
+    internal Module GetOrCreate(LLVMModuleRef handle)
+    {
+        WeakReference<Module>? moduleRef;
+
+        if (handle == null)
+        {
+            return null!;
+        }
+        else if (!_createdModules.TryGetValue(handle, out moduleRef))
+        {
+            moduleRef = new WeakReference<Module>(null!);
+            _createdModules.Add(handle, moduleRef);
+        }
+
+        if (!moduleRef.TryGetTarget(out var module))
+        {
+            module = new Module(handle);
+            moduleRef.SetTarget(module);
+        }
+        return module;
+    }
 }

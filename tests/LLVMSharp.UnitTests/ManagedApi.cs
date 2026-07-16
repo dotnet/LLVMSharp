@@ -403,4 +403,46 @@ public class ManagedApi
         var fence = (FenceInst)context.GetOrCreate(builder.BuildFence(LLVMAtomicOrdering.LLVMAtomicOrderingAcquire, singleThread: false, "fence"));
         Assert.That(fence.Ordering, Is.EqualTo(AtomicOrdering.Acquire));
     }
+
+    [Test]
+    public void ModuleAccessors()
+    {
+        var context = new LLVMContext();
+        var module = Module.Create(context, "m");
+        var int32 = Type.GetInt32Ty(context);
+
+        Assert.That(module.ModuleIdentifier, Is.EqualTo("m"));
+        Assert.That(module.Context, Is.EqualTo(context));
+
+        module.SourceFileName = "source.ll";
+        module.TargetTriple = "x86_64-pc-windows-msvc";
+        module.DataLayoutString = "e-m:w-p:64:64";
+        module.InlineAsm = "nop";
+
+        Assert.That(module.SourceFileName, Is.EqualTo("source.ll"));
+        Assert.That(module.TargetTriple, Is.EqualTo("x86_64-pc-windows-msvc"));
+        Assert.That(module.DataLayoutString, Is.EqualTo("e-m:w-p:64:64"));
+        Assert.That(module.InlineAsm, Does.Contain("nop"));
+
+        var functionType = LLVMTypeRef.CreateFunction(int32.Handle, [int32.Handle], IsVarArg: false);
+        var function = module.AddFunction("f", (FunctionType)context.GetOrCreate(functionType));
+        var global = module.AddGlobal(int32, "g");
+
+        Assert.That(module.GetFunction("f"), Is.EqualTo(function));
+        Assert.That(module.GetFunction("missing"), Is.Null);
+        Assert.That(module.GetGlobalVariable("g"), Is.EqualTo(global));
+        Assert.That(module.GetOrInsertFunction("f", (FunctionType)context.GetOrCreate(functionType)), Is.EqualTo(function));
+        Assert.That(module.GetFunctions().Length, Is.EqualTo(1));
+        Assert.That(module.GetGlobalVariables().Length, Is.EqualTo(1));
+
+        var structType = StructType.Create(context, "S");
+        structType.SetBody([int32], packed: false);
+        _ = module.AddGlobal(structType, "s");
+        Assert.That(module.GetTypeByName("S"), Is.EqualTo(structType));
+
+        Assert.That(module.TryVerify(LLVMVerifierFailureAction.LLVMReturnStatusAction, out _), Is.True);
+
+        var clone = module.Clone();
+        Assert.That(clone.GetFunction("f"), Is.Not.Null);
+    }
 }
