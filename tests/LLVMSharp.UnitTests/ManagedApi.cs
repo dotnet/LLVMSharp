@@ -172,6 +172,33 @@ public class ManagedApi
     }
 
     [Test]
+    public void GlobalObjectComdat()
+    {
+        var context = new LLVMContext();
+        var module = context.Handle.CreateModuleWithName("m");
+        var int32 = Type.GetInt32Ty(context);
+
+        var global = (GlobalVariable)context.GetOrCreate(module.AddGlobal(int32.Handle, "g"));
+        Assert.That(global.HasComdat, Is.False);
+        Assert.That(global.Comdat, Is.Null);
+
+        var comdat = new Comdat(module.GetOrInsertComdat("g"))
+        {
+            SelectionKind = LLVMComdatSelectionKind.LLVMLargestComdatSelectionKind,
+        };
+
+        global.Comdat = comdat;
+        Assert.That(global.HasComdat, Is.True);
+        Assert.That(global.Comdat, Is.Not.Null);
+        Assert.That(global.Comdat, Is.EqualTo(comdat));
+        Assert.That(global.Comdat!.SelectionKind, Is.EqualTo(LLVMComdatSelectionKind.LLVMLargestComdatSelectionKind));
+
+        global.Comdat = null;
+        Assert.That(global.HasComdat, Is.False);
+        Assert.That(global.Comdat, Is.Null);
+    }
+
+    [Test]
     public void FunctionAccessors()
     {
         var context = new LLVMContext();
