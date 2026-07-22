@@ -47,7 +47,7 @@
     <PackageValidationBaselineVersion>20.1.2</PackageValidationBaselineVersion>
     <Product>LLVMSharp</Product>
     <RootNamespace>LLVMSharp</RootNamespace>
-    <VersionPrefix>21.1.8</VersionPrefix>
+    <VersionPrefix>21.1.8.1</VersionPrefix>
     <VersionSuffix Condition="'$(PACKAGE_PUBLISH_MODE)' != 'stable'">rc1</VersionSuffix>
     <VersionSuffix Condition="'$(GITHUB_EVENT_NAME)' == 'pull_request'">pr</VersionSuffix>
   </PropertyGroup>
