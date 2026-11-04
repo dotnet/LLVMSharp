@@ -29,6 +29,8 @@ public partial class Instruction : User
 
     public LLVMOpcode Opcode => Handle.InstructionOpcode;
 
+    public string OpcodeName => llvmsharp.Instruction_getOpcodeName(Handle);
+
     public BasicBlock Parent => Context.GetOrCreate(Handle.InstructionParent);
 
     public uint SuccessorsCount => Handle.SuccessorsCount;

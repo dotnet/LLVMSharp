@@ -39,6 +39,8 @@ public class GlobalValue : Constant
 
     public bool IsDeclaration => Handle.IsDeclaration;
 
+    public string NameWithPrefix => llvmsharp.Mangler_getNameWithPrefix(Handle);
+
     public LLVMLinkage Linkage
     {
         get

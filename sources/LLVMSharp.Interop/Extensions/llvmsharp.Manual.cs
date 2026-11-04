@@ -15,6 +15,13 @@ public static unsafe partial class llvmsharp
         return new ReadOnlySpan<byte>(buffer, (int)length);
     }
 
+    public static string CmpInst_getPredicateName(LLVMValueRef instruction)
+    {
+        int length = 0;
+        var name = CmpInst_getPredicateName(instruction, &length);
+        return (name != null) ? new ReadOnlySpan<byte>(name, length).AsString() : string.Empty;
+    }
+
     public static LLVMMetadataRef[] DICompositeType_getElements(LLVMMetadataRef type)
     {
         LLVMMetadataRef* buffer = null;
@@ -120,6 +127,33 @@ public static unsafe partial class llvmsharp
             return "";
         }
         return new ReadOnlySpan<byte>(name, length).AsString();
+    }
+
+    public static string Instruction_getOpcodeName(LLVMValueRef instruction)
+    {
+        int length = 0;
+        var name = Instruction_getOpcodeName(instruction, &length);
+        return (name != null) ? new ReadOnlySpan<byte>(name, length).AsString() : string.Empty;
+    }
+
+    public static string Mangler_getNameWithPrefix(LLVMValueRef globalValue)
+    {
+        int length = 0;
+        var name = Mangler_getNameWithPrefix(globalValue, &length);
+
+        if (name == null)
+        {
+            return string.Empty;
+        }
+
+        try
+        {
+            return new ReadOnlySpan<byte>(name, length).AsString();
+        }
+        finally
+        {
+            Free(name);
+        }
     }
 
     public static string MDString_getString(LLVMMetadataRef mdstring)

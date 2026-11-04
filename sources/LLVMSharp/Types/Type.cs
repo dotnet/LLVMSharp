@@ -35,6 +35,8 @@ public class Type : IEquatable<Type>
 
     public bool IsBFloatTy => Handle.Kind == LLVMTypeKind.LLVMBFloatTypeKind;
 
+    public bool IsByteTy => Handle.Kind == LLVMTypeKind.LLVMByteTypeKind;
+
     public bool IsDoubleTy => Handle.Kind == LLVMTypeKind.LLVMDoubleTypeKind;
 
     public bool IsFP128Ty => Handle.Kind == LLVMTypeKind.LLVMFP128TypeKind;
@@ -180,6 +182,13 @@ public class Type : IEquatable<Type>
         return c.GetOrCreate<IntegerType>(handle);
     }
 
+    public static ByteType GetByteNTy(LLVMContext c, uint n)
+    {
+        ArgumentNullException.ThrowIfNull(c);
+        var handle = c.Handle.GetByteType(n);
+        return c.GetOrCreate<ByteType>(handle);
+    }
+
     public static Type GetFP128Ty(LLVMContext c)
     {
         ArgumentNullException.ThrowIfNull(c);
@@ -263,6 +272,7 @@ public class Type : IEquatable<Type>
         LLVMTypeKind.LLVMPPC_FP128TypeKind => new Type(handle, LLVMTypeKind.LLVMPPC_FP128TypeKind),
         LLVMTypeKind.LLVMLabelTypeKind => new Type(handle, LLVMTypeKind.LLVMLabelTypeKind),
         LLVMTypeKind.LLVMIntegerTypeKind => new IntegerType(handle),
+        LLVMTypeKind.LLVMByteTypeKind => new ByteType(handle),
         LLVMTypeKind.LLVMFunctionTypeKind => new FunctionType(handle),
         LLVMTypeKind.LLVMStructTypeKind => new StructType(handle),
         LLVMTypeKind.LLVMArrayTypeKind => new ArrayType(handle),

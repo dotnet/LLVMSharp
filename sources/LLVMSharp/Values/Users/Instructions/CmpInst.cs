@@ -11,6 +11,8 @@ public partial class CmpInst : Instruction
     {
     }
 
+    public string PredicateName => llvmsharp.CmpInst_getPredicateName(Handle);
+
     [SuppressMessage("Design", "CA1024:Use properties where appropriate", Justification = "Mirrors C++ CmpInst::getPredicate(); the 'Predicate' name is the nested predicate enum type.")]
     public Predicate GetPredicate() => (Handle.IsAICmpInst != null) ? (Predicate)Handle.ICmpPredicate : (Predicate)Handle.FCmpPredicate;
 

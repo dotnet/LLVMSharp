@@ -39,6 +39,12 @@ public class ManagedApi
         Assert.That(Type.GetIntNTy(context, 128), Is.SameAs(int128));
         Assert.That(Type.GetIntNTy(context, 256).BitWidth, Is.EqualTo(256u));
 
+        var byte128 = Type.GetByteNTy(context, 128);
+        Assert.That(byte128.BitWidth, Is.EqualTo(128u));
+        Assert.That(byte128.IsByteTy, Is.True);
+        Assert.That(byte128.IsIntegerTy, Is.False);
+        Assert.That(Type.GetByteNTy(context, 128), Is.SameAs(byte128));
+
         var flt = Type.GetFloatTy(context);
         Assert.That(flt.IsFloatingPointTy, Is.True);
         Assert.That(flt.IsFloatTy, Is.True);
@@ -420,6 +426,7 @@ public class ManagedApi
         var icmpHandle = builder.BuildICmp(LLVMIntPredicate.LLVMIntSLT, function.GetParam(0).Handle, function.GetParam(1).Handle, "c");
         var icmp = (ICmpInst)context.GetOrCreate(icmpHandle);
         Assert.That(icmp.GetPredicate(), Is.EqualTo(CmpInst.Predicate.ICMP_SLT));
+        Assert.That(icmp.PredicateName, Is.Not.Empty);
 
         var fcmpHandle = builder.BuildFCmp(LLVMRealPredicate.LLVMRealOEQ, function.GetParam(2).Handle, function.GetParam(3).Handle, "f");
         var fcmp = (FCmpInst)context.GetOrCreate(fcmpHandle);
@@ -435,6 +442,7 @@ public class ManagedApi
 
         var functionType = LLVMTypeRef.CreateFunction(Type.GetVoidTy(context).Handle, [], IsVarArg: false);
         var function = (Function)context.GetOrCreate(module.AddFunction("f", functionType));
+        Assert.That(function.NameWithPrefix, Is.Not.Empty);
         var entry = function.AppendBasicBlock("entry");
         var ifTrue = function.AppendBasicBlock("true");
         var ifFalse = function.AppendBasicBlock("false");
@@ -445,6 +453,7 @@ public class ManagedApi
         var cond = builder.BuildICmp(LLVMIntPredicate.LLVMIntSLT, LLVMValueRef.CreateConstInt(int32.Handle, 1), LLVMValueRef.CreateConstInt(int32.Handle, 2), "c");
         var branch = (BranchInst)context.GetOrCreate(builder.BuildCondBr(cond, ifTrue.Handle, ifFalse.Handle));
         Assert.That(branch.Opcode, Is.EqualTo(LLVMOpcode.LLVMCondBr));
+        Assert.That(branch.OpcodeName, Is.Not.Empty);
         Assert.That(branch.IsConditional, Is.True);
         Assert.That(branch.Condition, Is.EqualTo(context.GetOrCreate(cond)));
         Assert.That(branch.SuccessorsCount, Is.EqualTo(2u));

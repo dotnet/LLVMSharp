@@ -35,6 +35,9 @@ public sealed class LLVMContext : IEquatable<LLVMContext>
 
     public Attribute CreateEnumAttribute(ReadOnlySpan<char> name, ulong value) => new Attribute(Handle.CreateEnumAttribute(name, value));
 
+    public Attribute CreateDenormalFPEnvAttribute(LLVMDenormalModeKind defaultModeOutput, LLVMDenormalModeKind defaultModeInput, LLVMDenormalModeKind floatModeOutput, LLVMDenormalModeKind floatModeInput) =>
+        new Attribute(Handle.CreateDenormalFPEnvAttribute(defaultModeOutput, defaultModeInput, floatModeOutput, floatModeInput));
+
     public Attribute CreateStringAttribute(ReadOnlySpan<char> kind, ReadOnlySpan<char> value) => new Attribute(Handle.CreateStringAttribute(kind, value));
 
     public static uint GetEnumAttributeKindForName(ReadOnlySpan<char> name) => LLVMContextRef.GetEnumAttributeKindForName(name);
