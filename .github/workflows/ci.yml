@@ -99,7 +99,7 @@ jobs:
         os: [ macos ]
     steps:
     - uses: actions/checkout@v4
-    # The published macOS libLLVM package uses this Homebrew Z3 ABI.
+    # libLLVM 23.1.5 was linked against this Homebrew Z3 ABI.
     - name: Install libLLVM Z3 dependency
       env:
         HOMEBREW_NO_AUTO_UPDATE: 1
@@ -107,7 +107,7 @@ jobs:
         set -euo pipefail
         brew tap-new llvmsharp/ci
         formula="$(brew --repository llvmsharp/ci)/Formula/z3.rb"
-        curl -fsSL https://raw.githubusercontent.com/Homebrew/homebrew-core/4b627f740ac5fe1871072e12aab203275812b6c5/Formula/z/z3.rb -o "$formula"
+        curl -fsSL https://raw.githubusercontent.com/Homebrew/homebrew-core/768a1d39b034c6912104191026e3dd940289e8b2/Formula/z/z3.rb -o "$formula"
         brew install llvmsharp/ci/z3
     - run: ./scripts/cibuild.sh --configuration ${{ matrix.configuration }} --architecture ${{ matrix.architecture }}
       shell: bash
