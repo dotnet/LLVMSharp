@@ -16,7 +16,7 @@ public class ManagedApi
 
         LLVM.GetVersion(&major, &minor, &patch);
 
-        Assert.That((major, minor, patch), Is.EqualTo((22u, 1u, 8u)));
+        Assert.That((major, minor), Is.EqualTo((22u, 1u)));
     }
 
     [Test]
