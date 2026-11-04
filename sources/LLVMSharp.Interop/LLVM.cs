@@ -15,7 +15,7 @@ public static unsafe partial class LLVM
 {
     public static event DllImportResolver? ResolveLibrary;
 
-    public const int MajorVersion = 22;
+    public const int MajorVersion = 23;
     public const int MinorVersion = 1;
 
     static LLVM()

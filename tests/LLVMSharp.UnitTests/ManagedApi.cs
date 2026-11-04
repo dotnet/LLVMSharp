@@ -16,7 +16,7 @@ public class ManagedApi
 
         LLVM.GetVersion(&major, &minor, &patch);
 
-        Assert.That((major, minor), Is.EqualTo((22u, 1u)));
+        Assert.That((major, minor), Is.EqualTo((23u, 1u)));
     }
 
     [Test]
@@ -444,10 +444,17 @@ public class ManagedApi
 
         var cond = builder.BuildICmp(LLVMIntPredicate.LLVMIntSLT, LLVMValueRef.CreateConstInt(int32.Handle, 1), LLVMValueRef.CreateConstInt(int32.Handle, 2), "c");
         var branch = (BranchInst)context.GetOrCreate(builder.BuildCondBr(cond, ifTrue.Handle, ifFalse.Handle));
+        Assert.That(branch.Opcode, Is.EqualTo(LLVMOpcode.LLVMCondBr));
         Assert.That(branch.IsConditional, Is.True);
         Assert.That(branch.Condition, Is.EqualTo(context.GetOrCreate(cond)));
         Assert.That(branch.SuccessorsCount, Is.EqualTo(2u));
         Assert.That(branch.GetSuccessor(0), Is.EqualTo(ifTrue));
+
+        builder.PositionAtEnd(ifFalse.Handle);
+        var unconditionalBranch = (BranchInst)context.GetOrCreate(builder.BuildBr(entry.Handle));
+        Assert.That(unconditionalBranch.Opcode, Is.EqualTo(LLVMOpcode.LLVMUncondBr));
+        Assert.That(unconditionalBranch.IsConditional, Is.False);
+        Assert.That(unconditionalBranch.SuccessorsCount, Is.EqualTo(1u));
 
         builder.PositionAtEnd(ifTrue.Handle);
         var switchInst = (SwitchInst)context.GetOrCreate(builder.BuildSwitch(LLVMValueRef.CreateConstInt(int32.Handle, 0), ifFalse.Handle, 1));

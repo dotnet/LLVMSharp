@@ -127,7 +127,7 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     {
         get
         {
-            return (IsABranchInst != null) ? LLVM.GetCondition(this) : default;
+            return (IsACondBrInst != null) ? LLVM.GetCondition(this) : default;
         }
 
         set
@@ -505,7 +505,14 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMValueRef IsABlockAddress => LLVM.IsABlockAddress(this);
 
-    public readonly LLVMValueRef IsABranchInst => LLVM.IsABranchInst(this);
+    public readonly LLVMValueRef IsABranchInst
+    {
+        get
+        {
+            var unconditionalBranch = IsAUncondBrInst;
+            return (unconditionalBranch != null) ? unconditionalBranch : IsACondBrInst;
+        }
+    }
 
     public readonly LLVMValueRef IsACallBrInst => LLVM.IsACallBrInst(this);
 
@@ -524,6 +531,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     public readonly LLVMValueRef IsACleanupReturnInst => LLVM.IsACleanupReturnInst(this);
 
     public readonly LLVMValueRef IsACmpInst => LLVM.IsACmpInst(this);
+
+    public readonly LLVMValueRef IsACondBrInst => LLVM.IsACondBrInst(this);
 
     public readonly LLVMValueRef IsAConstant => LLVM.IsAConstant(this);
 
@@ -661,6 +670,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMValueRef IsAUndefValue => LLVM.IsAUndefValue(this);
 
+    public readonly LLVMValueRef IsAUncondBrInst => LLVM.IsAUncondBrInst(this);
+
     public readonly LLVMValueRef IsAUnreachableInst => LLVM.IsAUnreachableInst(this);
 
     public readonly LLVMValueRef IsAUser => LLVM.IsAUser(this);
@@ -701,7 +712,7 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         }
     }
 
-    public readonly bool IsConditional => (IsABranchInst != null) && LLVM.IsConditional(this) != 0;
+    public readonly bool IsConditional => IsACondBrInst != null;
 
     public readonly bool IsConstant => (Handle != IntPtr.Zero) && LLVM.IsConstant(this) != 0;
 

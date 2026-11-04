@@ -1,6 +1,6 @@
 // Copyright (c) .NET Foundation and Contributors. All Rights Reserved. Licensed under the MIT License (MIT). See License.md in the repository root for more information.
 
-// Ported from https://github.com/llvm/llvm-project/tree/llvmorg-22.1.8/llvm/include/llvm-c
+// Ported from https://github.com/llvm/llvm-project/tree/llvmorg-23.1.5/llvm/include/llvm-c
 // Original source is Copyright (c) the LLVM Project and Contributors. Licensed under the Apache License v2.0 with LLVM Exceptions. See NOTICE.txt in the project root for license information.
 
 namespace LLVMSharp.Interop;
@@ -8,7 +8,8 @@ namespace LLVMSharp.Interop;
 public enum LLVMOpcode
 {
     LLVMRet = 1,
-    LLVMBr = 2,
+    LLVMUncondBr = 70,
+    LLVMCondBr = 71,
     LLVMSwitch = 3,
     LLVMIndirectBr = 4,
     LLVMInvoke = 5,

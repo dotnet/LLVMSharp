@@ -99,7 +99,7 @@ jobs:
         os: [ macos ]
     steps:
     - uses: actions/checkout@v4
-    # libLLVM 22.1.8 was linked against this Homebrew Z3 ABI.
+    # The published macOS libLLVM package uses this Homebrew Z3 ABI.
     - name: Install libLLVM Z3 dependency
       env:
         HOMEBREW_NO_AUTO_UPDATE: 1
