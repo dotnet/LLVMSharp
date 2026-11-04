@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(LLVMSharp VERSION 23.1.0)
+project(LLVMSharp VERSION 23.1.5)
 
 if(MSVC)
   set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
