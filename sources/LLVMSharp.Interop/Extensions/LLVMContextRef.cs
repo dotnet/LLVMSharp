@@ -105,6 +105,9 @@ public unsafe partial struct LLVMContextRef(IntPtr handle) : IDisposable, IEquat
         return LLVM.CreateEnumAttribute(this, KindId, Val);
     }
 
+    public readonly LLVMAttributeRef CreateDenormalFPEnvAttribute(LLVMDenormalModeKind DefaultModeOutput, LLVMDenormalModeKind DefaultModeInput, LLVMDenormalModeKind FloatModeOutput, LLVMDenormalModeKind FloatModeInput) =>
+        LLVM.CreateDenormalFPEnvAttribute(this, DefaultModeOutput, DefaultModeInput, FloatModeOutput, FloatModeInput);
+
     public static uint GetEnumAttributeKindForName(ReadOnlySpan<char> Name)
     {
         using var marshaledName = new MarshaledString(Name);
@@ -230,6 +233,8 @@ public unsafe partial struct LLVMContextRef(IntPtr handle) : IDisposable, IEquat
     public readonly LLVMTypeRef GetIntPtrTypeForAS(LLVMTargetDataRef TD, uint AS) => LLVM.IntPtrTypeForASInContext(this, TD, AS);
 
     public readonly LLVMTypeRef GetIntType(uint NumBits) => LLVM.IntTypeInContext(this, NumBits);
+
+    public readonly LLVMTypeRef GetByteType(uint NumBits) => LLVM.ByteTypeInContext(this, NumBits);
 
     public readonly LLVMTypeRef GetIntrinsicType(uint ID, LLVMTypeRef[] ParamTypes) => GetIntrinsicType(ID, ParamTypes.AsSpan());
 

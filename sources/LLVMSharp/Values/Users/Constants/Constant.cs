@@ -23,6 +23,7 @@ public class Constant : User
         _ when handle.IsABlockAddress != null => new BlockAddress(handle),
         _ when handle.IsAConstantAggregateZero != null => new ConstantAggregateZero(handle),
         _ when handle.IsAConstantArray != null => new ConstantArray(handle),
+        _ when handle.IsAConstantByte != null => new ConstantByte(handle),
         _ when handle.IsAConstantDataSequential != null => ConstantDataSequential.Create(handle),
         _ when handle.IsAConstantExpr != null => ConstantExpr.Create(handle),
         _ when handle.IsAConstantFP != null => new ConstantFP(handle),

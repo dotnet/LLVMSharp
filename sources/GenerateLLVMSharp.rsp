@@ -23,6 +23,8 @@ multi-file
 preview-codegen
 trimmable-vtbls
 unix-types
+--exclude
+LLVM_FOR_EACH_METADATA_SUBCLASS
 --define-macro
 _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING
 LLVMSharp_EXPORTS

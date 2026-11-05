@@ -30,6 +30,19 @@ public class Functions
     }
 
     [Test]
+    public void CreatesDenormalFPEnvAttribute()
+    {
+        var context = new LLVMContext();
+        var attribute = context.CreateDenormalFPEnvAttribute(
+            LLVMDenormalModeKind.LLVMDenormalModeKindIEEE,
+            LLVMDenormalModeKind.LLVMDenormalModeKindIEEE,
+            LLVMDenormalModeKind.LLVMDenormalModeKindIEEE,
+            LLVMDenormalModeKind.LLVMDenormalModeKindIEEE);
+
+        Assert.That(attribute.Handle, Is.Not.EqualTo(default(LLVMAttributeRef)));
+    }
+
+    [Test]
     public void GlobalValueTypeReturnsFunctionType()
     {
         var module = LLVMModuleRef.CreateWithName("Test Module");

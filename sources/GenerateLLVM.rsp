@@ -95,9 +95,9 @@ llvm_blake3_version=@blake3_version
 LLVM_BLAKE3_VERSION_STRING=@BLAKE3_VERSION_STRING
 LLVMOpaqueValueMetadataEntry=LLVMValueMetadataEntry
 LLVMOpaqueModuleFlagEntry=LLVMModuleFlagEntry
-__AnonymousEnum_Core_L473_C1=@LLVMAttributeIndex
-__AnonymousEnum_Core_L497_C1=@LLVMFastMathFlags
-__AnonymousEnum_Core_L520_C1=@LLVMGEPNoWrapFlags
+__AnonymousEnum_Core_L483_C1=@LLVMAttributeIndex
+__AnonymousEnum_Core_L507_C1=@LLVMFastMathFlags
+__AnonymousEnum_Core_L530_C1=@LLVMGEPNoWrapFlags
 __AnonymousEnum_DebugInfo_L164_C1=@LLVMMetadataKind
 --test-output
 ./tests/LLVMSharp.UnitTests/Interop

@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="libLLVM" Version="22.1.8" />
+    <PackageReference Include="libLLVM" Version="23.1.5" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\sources\LLVMSharp.Interop\LLVMSharp.Interop.csproj" />
   </ItemGroup>
 

@@ -41,6 +41,34 @@ public class Constants
     }
 
     [Test]
+    public void CreateConstByteRejectsNonByteType()
+    {
+        var ex = Assert.Throws<ArgumentException>(() => LLVMValueRef.CreateConstByte(LLVMTypeRef.Int32, 8));
+        Assert.That(ex!.ParamName, Is.EqualTo("ByteTy"));
+    }
+
+    [Test]
+    public void CreateConstByteAcceptsByteType()
+    {
+        var context = new LLVMContext();
+        var byteType = Type.GetByteNTy(context, 128);
+        var value = LLVMValueRef.CreateConstByteOfArbitraryPrecision(byteType.Handle, [42UL, 0UL]);
+        var constant = (ConstantByte)context.GetOrCreate(value);
+
+        Assert.That(constant.Type, Is.SameAs(byteType));
+        Assert.That(constant.ZExtValue, Is.EqualTo(42UL));
+    }
+
+    [Test]
+    public void CreateConstByteOfStringAndSizeParsesValue()
+    {
+        var byteType = Type.GetByteNTy(new LLVMContext(), 128);
+        var value = LLVMValueRef.CreateConstByteOfStringAndSize(byteType.Handle, "2A", 16);
+
+        Assert.That(value.ConstByteZExt, Is.EqualTo(42UL));
+    }
+
+    [Test]
     public void CreateConstIntToPtrRejectsNonIntegerSource()
     {
         // Mirrors ConstantExpr::getIntToPtr's "source must be integer" assert.

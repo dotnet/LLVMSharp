@@ -54,6 +54,8 @@ public unsafe partial struct LLVMTypeRef(IntPtr handle) : IEquatable<LLVMTypeRef
 
     public readonly uint IntWidth => (Kind == LLVMTypeKind.LLVMIntegerTypeKind) ? LLVM.GetIntTypeWidth(this) : default;
 
+    public readonly uint ByteWidth => (Kind == LLVMTypeKind.LLVMByteTypeKind) ? LLVM.GetByteTypeWidth(this) : default;
+
     public readonly bool IsFunctionVarArg => (Kind == LLVMTypeKind.LLVMFunctionTypeKind) && LLVM.IsFunctionVarArg(this) != 0;
 
     public readonly bool IsLiteralStruct => (Kind == LLVMTypeKind.LLVMStructTypeKind) && LLVM.IsLiteralStruct(this) != 0;

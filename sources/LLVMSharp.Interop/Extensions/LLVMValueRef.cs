@@ -127,7 +127,7 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     {
         get
         {
-            return (IsABranchInst != null) ? LLVM.GetCondition(this) : default;
+            return (IsACondBrInst != null) ? LLVM.GetCondition(this) : default;
         }
 
         set
@@ -139,6 +139,10 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
     public readonly ulong ConstIntZExt => (IsAConstantInt != null) ? LLVM.ConstIntGetZExtValue(this) : default;
 
     public readonly long ConstIntSExt => (IsAConstantInt != null) ? LLVM.ConstIntGetSExtValue(this) : default;
+
+    public readonly ulong ConstByteZExt => (IsAConstantByte != null) ? LLVM.ConstByteGetZExtValue(this) : default;
+
+    public readonly long ConstByteSExt => (IsAConstantByte != null) ? LLVM.ConstByteGetSExtValue(this) : default;
 
     public readonly LLVMOpcode ConstOpcode => (IsAConstantExpr != null) ? LLVM.GetConstOpcode(this) : default;
 
@@ -505,7 +509,14 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMValueRef IsABlockAddress => LLVM.IsABlockAddress(this);
 
-    public readonly LLVMValueRef IsABranchInst => LLVM.IsABranchInst(this);
+    public readonly LLVMValueRef IsABranchInst
+    {
+        get
+        {
+            var unconditionalBranch = IsAUncondBrInst;
+            return (unconditionalBranch != null) ? unconditionalBranch : IsACondBrInst;
+        }
+    }
 
     public readonly LLVMValueRef IsACallBrInst => LLVM.IsACallBrInst(this);
 
@@ -525,11 +536,15 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMValueRef IsACmpInst => LLVM.IsACmpInst(this);
 
+    public readonly LLVMValueRef IsACondBrInst => LLVM.IsACondBrInst(this);
+
     public readonly LLVMValueRef IsAConstant => LLVM.IsAConstant(this);
 
     public readonly LLVMValueRef IsAConstantAggregateZero => LLVM.IsAConstantAggregateZero(this);
 
     public readonly LLVMValueRef IsAConstantArray => LLVM.IsAConstantArray(this);
+
+    public readonly LLVMValueRef IsAConstantByte => LLVM.IsAConstantByte(this);
 
     public readonly LLVMValueRef IsAConstantDataArray => LLVM.IsAConstantDataArray(this);
 
@@ -661,6 +676,8 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
 
     public readonly LLVMValueRef IsAUndefValue => LLVM.IsAUndefValue(this);
 
+    public readonly LLVMValueRef IsAUncondBrInst => LLVM.IsAUncondBrInst(this);
+
     public readonly LLVMValueRef IsAUnreachableInst => LLVM.IsAUnreachableInst(this);
 
     public readonly LLVMValueRef IsAUser => LLVM.IsAUser(this);
@@ -701,7 +718,7 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         }
     }
 
-    public readonly bool IsConditional => (IsABranchInst != null) && LLVM.IsConditional(this) != 0;
+    public readonly bool IsConditional => IsACondBrInst != null;
 
     public readonly bool IsConstant => (Handle != IntPtr.Zero) && LLVM.IsConstant(this) != 0;
 
@@ -1213,6 +1230,32 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         return LLVM.ConstIntOfStringAndSize(IntTy, marshaledText, (uint)marshaledText.Length, Radix);
     }
 
+    public static LLVMValueRef CreateConstByte(LLVMTypeRef ByteTy, ulong N)
+    {
+        ThrowIfNotByteType(ByteTy, nameof(ByteTy));
+        return LLVM.ConstByte(ByteTy, N);
+    }
+
+    public static LLVMValueRef CreateConstByteOfArbitraryPrecision(LLVMTypeRef ByteTy, ulong[] Words) => CreateConstByteOfArbitraryPrecision(ByteTy, Words.AsSpan());
+
+    public static LLVMValueRef CreateConstByteOfArbitraryPrecision(LLVMTypeRef ByteTy, ReadOnlySpan<ulong> Words)
+    {
+        ThrowIfNotByteType(ByteTy, nameof(ByteTy));
+        fixed (ulong* pWords = Words)
+        {
+            return LLVM.ConstByteOfArbitraryPrecision(ByteTy, (uint)Words.Length, pWords);
+        }
+    }
+
+    public static LLVMValueRef CreateConstByteOfStringAndSize(LLVMTypeRef ByteTy, string Text, byte Radix) => CreateConstByteOfStringAndSize(ByteTy, Text.AsSpan(), Radix);
+
+    public static LLVMValueRef CreateConstByteOfStringAndSize(LLVMTypeRef ByteTy, ReadOnlySpan<char> Text, byte Radix)
+    {
+        ThrowIfNotByteType(ByteTy, nameof(ByteTy));
+        using var marshaledText = new MarshaledString(Text);
+        return LLVM.ConstByteOfStringAndSize(ByteTy, marshaledText, (nuint)marshaledText.Length, Radix);
+    }
+
     public static LLVMValueRef CreateConstIntToPtr(LLVMValueRef ConstantVal, LLVMTypeRef ToType)
     {
         // Mirrors ConstantExpr::getIntToPtr: integer source, pointer destination.
@@ -1314,6 +1357,15 @@ public unsafe partial struct LLVMValueRef(IntPtr handle) : IEquatable<LLVMValueR
         if (IntTy.Kind is not LLVMTypeKind.LLVMIntegerTypeKind)
         {
             ThrowNotIntegerType(IntTy, paramName);
+        }
+    }
+
+    private static void ThrowIfNotByteType(LLVMTypeRef ByteTy, string paramName)
+    {
+        // The native ConstByte APIs expect ByteType and do not accept integer types.
+        if (ByteTy.Kind is not LLVMTypeKind.LLVMByteTypeKind)
+        {
+            throw new ArgumentException($"Expected a byte type, but was given '{ByteTy.Kind}'.", paramName);
         }
     }
 
