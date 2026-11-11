@@ -48,7 +48,8 @@ to take a language) rather than a code delta, so there is no `Chapter10` project
 
 ## Running
 
-Requires the .NET 10 preview SDK (resolved via the repo's `global.json`). From this directory:
+Requires the stable .NET 11 SDK (resolved via the repo's `global.json`). The tutorial targets both
+.NET 11 and .NET 10. From this directory:
 
 ```
 dotnet build KaleidoscopeTutorial.slnx -c Release

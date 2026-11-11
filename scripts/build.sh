@@ -319,7 +319,7 @@ function DetectChanges {
     detectLibllvmsharp=true
   else
     # libLLVM regenerates when the tracked LLVM version changes. The libLLVM package
-    # version tracks the full patch (e.g. 22.1.8), so compare the full version.
+    # version tracks the full patch (e.g. 23.1.5), so compare the full version.
     prevVersion="$(git -C "$RepoRoot" show "$base:CMakeLists.txt" 2>/dev/null | sed -n 's/^project(LLVMSharp VERSION \([0-9.]*\)).*/\1/p')"
 
     if [ "$llvm" != "$prevVersion" ]; then
@@ -642,7 +642,8 @@ if [[ ! -z "$architecture" ]]; then
   DotNetInstallDirectory="$ArtifactsDir/dotnet"
   CreateDirectory "$DotNetInstallDirectory"
 
-  . "$DotNetInstallScript" --channel 10.0 --version latest --install-dir "$DotNetInstallDirectory" --architecture "$architecture"
+  . "$DotNetInstallScript" --channel 11.0 --version latest --install-dir "$DotNetInstallDirectory" --architecture "$architecture"
+  . "$DotNetInstallScript" --channel 10.0 --runtime dotnet --version latest --install-dir "$DotNetInstallDirectory" --architecture "$architecture"
 
   PATH="$DotNetInstallDirectory:$PATH:"
 fi
