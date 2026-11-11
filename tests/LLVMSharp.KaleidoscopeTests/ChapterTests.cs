@@ -206,7 +206,8 @@ public sealed class ChapterTests
     {
         var repositoryRoot = FindRepositoryRoot();
         var configuration = GetBuildConfiguration();
-        var chapterBin = Path.Combine(repositoryRoot, "samples", "KaleidoscopeTutorial", chapter, "bin", configuration, "net10.0");
+        var targetFramework = GetTargetFramework();
+        var chapterBin = Path.Combine(repositoryRoot, "samples", "KaleidoscopeTutorial", chapter, "bin", configuration, targetFramework);
 
         if (Directory.Exists(chapterBin))
         {
@@ -249,5 +250,19 @@ public sealed class ChapterTests
         }
 
         return "Release";
+    }
+
+    private static string GetTargetFramework()
+    {
+        foreach (var metadata in typeof(ChapterTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>())
+        {
+            if ((metadata.Key == "TargetFramework") && !string.IsNullOrEmpty(metadata.Value))
+            {
+                return metadata.Value;
+            }
+        }
+
+        Assert.Fail("Could not determine the target framework from assembly metadata.");
+        return string.Empty; // unreachable; Assert.Fail throws.
     }
 }

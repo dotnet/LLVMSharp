@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net10.0</TargetFrameworks>
+    <TargetFrameworks>net11.0;net10.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -16,8 +16,9 @@
 
   <ItemGroup>
     <!-- The tests launch the sample chapters as subprocesses and locate their build output at run
-         time, so they only need to know which configuration was built. -->
+         time, so they need to know which configuration and target framework were built. -->
     <AssemblyMetadata Include="BuildConfiguration" Value="$(Configuration)" />
+    <AssemblyMetadata Include="TargetFramework" Value="$(TargetFramework)" />
   </ItemGroup>
 
 </Project>
